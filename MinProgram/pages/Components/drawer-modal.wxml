@@ -1,0 +1,9 @@
+<view class='mask {{show==true?"show":""}}' bindtap='cancel'>
+  <view class='modal-content {{show==true?"show":""}}'>
+    <view style='margin-top:{{navBarHeight}}px'></view>
+    <image bindtap='cancel' class='cancel-img {{show==true?"show":""}}' src='/assets/back.png'></image>
+
+    <slot></slot>
+    
+  </view>
+</view>

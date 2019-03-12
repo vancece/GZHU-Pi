@@ -1,0 +1,90 @@
+.menu {
+  width: 70rpx;
+  height: 70rpx;
+}
+
+.menu.show {
+  width: 70rpx;
+  height: 70rpx;
+}
+
+.dawer {
+  background: white;
+  height: 200px;
+}
+
+/* 悬浮图标 */
+
+.float-icon {
+  height: 100rpx;
+  width: 100rpx;
+  border-radius: 50%;
+  position: fixed;
+  bottom: 40rpx;
+  right: 40rpx;
+  z-index: 2;
+  /* box-shadow: 0rpx 3rpx 5rpx 5rpx #ddd; */
+  -webkit-animation: rotate 15s linear 1000ms infinite;
+  animation: rotate 15s linear 1000ms infinite;
+}
+
+@-webkit-keyframes rotate {
+  from {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  to {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes rotate {
+  from {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  to {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+.share-icon {
+  height: 70rpx;
+  width: 70rpx;
+  position: fixed;
+  bottom: 180rpx;
+  right: 50rpx;
+  z-index: 2;
+}
+
+.hover-icon {
+  opacity: 0.5;
+}
+
+/* 分割线 */
+
+.divide-line {
+  height: 35rpx;
+  background-color: #f2f6f9;
+}
+
+.ami {
+  animation: fadeInDown0 1s;
+}
+
+/* 从上往下淡入 */
+
+@keyframes fadeInDown0 {
+  0% {
+    transform: translate3d(0, -20%, 0);
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}

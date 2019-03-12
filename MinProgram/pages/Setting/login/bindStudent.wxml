@@ -1,0 +1,52 @@
+<navBar title="绑定学号"></navBar>
+<!-- 登录教务系统 -->
+<view class='page'>
+  <view class='exchange'>
+    <image mode='widthFix' class='icon' src='https://cloud-minapp-17768.cloud.ifanrusercontent.com/1g0eSyIiSqFIBEZe.png'></image>
+    <image mode='widthFix' style='width:80rpx' src='https://cloud-minapp-17768.cloud.ifanrusercontent.com/1g3BtwlkzLFxmpCY.png'></image>
+    <image mode='widthFix' class='icon' src='https://cloud-minapp-17768.cloud.ifanrusercontent.com/1fx04mwWmqxrOljX.png'></image>
+  </view>
+
+  <!-- 登录绑定 -->
+  <view hidden='{{hideLogin}}'>
+
+    <view style='font-weight:bold; text-shadow: 5rpx 25rpx 10rpx #ddd;font-size:150%'>教务系统登录</view>
+
+    <view class='login-form'>
+      <form bindsubmit='formSubmit'>
+        <view>
+          <view class='form-item'>
+            <input class='input-content' name="username" type='number' maxlength='10' placeholder="Username" cursor-spacing="120" />
+          </view>
+          <view class='form-item'>
+            <input class='input-content' name="password" password='true' placeholder="Password" cursor-spacing="120" />
+          </view>
+        </view>
+        <view style='font-size:60%'>使用前请阅读
+          <text bindtap='etrAgreement' style='color:#18b3eb'>《用户协议》</text>
+        </view>
+        <button class='login-btn' hidden='{{hideLoginBtn1}}' hover-class="btn-hover" formType="submit"  open-type="getUserInfo">绑定学号</button>
+        <button class='login-btn' hidden='{{hideLoginBtn2}}' style='background-color: #ddd;box-shadow:0rpx 0rpx 0rpx 0rpx #ddd'>登录中...</button>
+        <view hidden='{{hideSyncTip}}' style='color:grey;font-size:60%;margin:10rpx'>00:00-07:00教务系统通道关闭，将无绑定</view>
+      </form>
+    </view>
+
+  </view>
+
+  <!-- 绑定成功 -->
+  <view class='bind-success' hidden='{{hideSuccess}}'>
+    <image mode='widthFix' style='width:150rpx;margin:80rpx;' src='https://cloud-minapp-17768.cloud.ifanrusercontent.com/1g3l0zWfzjlLfjHN.png'></image>
+    <view style='font-weight:bold; text-shadow: 5rpx 25rpx 10rpx #ddd;font-size:150%'>绑定成功</view>
+
+    <view style='margin:50rpx;color:grey;font-size:80%'>若绑定后改过密码，请重新绑定</view>
+    <button bindtap='cleanStorage' type='warn' style='width:500rpx;;margin:50rpx 120rpx'>解除绑定</button>
+  </view>
+</view>
+
+<!-- 授权设置弹窗 -->
+<modal custom="true" show="{{show}}" hideCancel="true">
+  <view class='weixin'>
+    <image src='/assets/weixin.svg' style='width:100rpx;height:100rpx'></image>
+  </view>
+  <button open-type="getUserInfo" bindgetuserinfo='userInfoHandler' type='primary' style='margin: 50rpx'>微信授权</button>
+</modal>

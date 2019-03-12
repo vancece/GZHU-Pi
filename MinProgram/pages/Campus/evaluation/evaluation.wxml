@@ -1,0 +1,10 @@
+<navBar title="课程评价"></navBar>
+
+<view style='margin-top:300rpx;display:flex;justify-content:center;align-item:center'>
+  <image style='width:250rpx' mode='widthFix' src='https://cloud-minapp-17768.cloud.ifanrusercontent.com/1gEtLYHFBZNatsdj.png'></image>
+</view>
+
+<view style='text-align:center;margin:50rpx'>
+  <view style='font-weight:bold;margin:30rpx'>功能简介</view>
+  <view>用户可发表自己对各课程及老师的教学评价，方便同学们选课时相互参考。</view>
+</view>

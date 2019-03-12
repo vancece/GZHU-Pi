@@ -1,0 +1,17 @@
+<navBar title="广大校历"  navColor="white" ></navBar>
+
+
+<view class='page'>
+  <view class='img' bindtap='preview' id="0">
+    <image mode='widthFix' src='https://677a-gzhu-pi-f63be3-1258677591.tcb.qcloud.la/images/campus/1.jpg'></image>
+    <view class='text'>点击查看高清大图</view>
+  </view>
+
+  <view class='img' bindtap='preview' id="1">
+    <image mode='widthFix' src='https://677a-gzhu-pi-f63be3-1258677591.tcb.qcloud.la/images/campus/2.jpg'></image>
+    <view class='text'>点击查看高清大图</view>
+  </view>
+  
+</view>
+
+<view class='from'>来源：广州大学公众号</view>

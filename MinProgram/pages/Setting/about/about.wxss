@@ -1,0 +1,10 @@
+.tt{
+  background: rgb(211, 131, 131);
+  height: 95%
+}
+
+.back-btn {
+  width: 50rpx;
+  height: 50rpx;
+  opacity: 1;
+}

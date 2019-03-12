@@ -1,0 +1,5 @@
+<navBar title="广大墙" titleColor="" navColor="" hideBackBtn="true"></navBar>
+
+<view class='body'>
+  <image wx:for="{{url}}" wx:key="{{index}}" style='width:100%' mode='widthFix' src='{{item}}'></image>
+</view>
