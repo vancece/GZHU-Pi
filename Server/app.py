@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 from spider.jw_spider import *
+from spider.sy_spider import *
 import time
 import copy
 
@@ -85,6 +86,20 @@ def exam():
     spider = JW(username, password)
     if spider.login():
         data = spider.get_exam()
+        return res_json(status=200, data=data, msg="request succeed")
+    else:
+        return res_json(status=401, msg="Unauthorized")
+
+
+# 获取实验课程
+@app.route("/exp", methods=["POST"])
+def exp():
+    username = request.form['username']
+    password = request.form['password']
+
+    spider = SY(username, password)
+    if spider.login():
+        data = spider.get_experiment()
         return res_json(status=200, data=data, msg="request succeed")
     else:
         return res_json(status=401, msg="Unauthorized")

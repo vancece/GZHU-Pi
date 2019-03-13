@@ -114,7 +114,7 @@ class JW(object):
         return get_exam(res.text)
 
 
-# 把API请求记录写入知晓云
+# 把API请求记录写入数据库
 def set_log(student_info, api_type="其它"):
     """
     把API请求记录写入知晓云
