@@ -1,0 +1,71 @@
+<navBar navColor="white" title="同步中心"></navBar>
+<view class='switch'>
+  <view bindtap='switch' id='0' class='{{current==0?"selected":""}}'>实验</view>
+  <view bindtap='switch' id='1' class='{{current==1?"selected":""}}'>课表</view>
+  <view bindtap='switch' id='2' class='{{current==2?"selected":""}}'>考试</view>
+</view>
+
+
+<swiper bindchange='swiperChange' current='{{current}}' style='height:1000rpx'>
+  <!-- 实验 -->
+  <swiper-item>
+    <form bindsubmit='formSubmit' report-submit='{{true}}'>
+      <view class="item">
+        <view class='title'>学 号</view>
+        <input name='username' type='number' maxlength='10' value='{{exp_account.username}}' placeholder="请输入学号"></input>
+      </view>
+      <view class="item">
+        <view class='title'>密 码</view>
+        <input name='password' type='password' value='{{exp_account.password}}' placeholder="实验平台密码"></input>
+      </view>
+      <button formType="submit" type='primary' id='exp' loading="{{loading}}">{{exp_btn}}</button>
+    </form>
+    <view class='tips'>
+      <view>*密码一般和教务系统的不同</view>
+      <view>*密码连错5次将被锁定1小时</view>
+      <view>*信息从实验教学综合信息应用平台同步</view>
+      <view>*平台地址：http://202.192.67.23</view>
+    </view>
+  </swiper-item>
+
+  <!-- 课表 -->
+  <swiper-item>
+    <form bindsubmit='formSubmit' report-submit='{{true}}'>
+      <view class="item">
+        <view class='title'>学 期</view>
+        <picker name='sem' bindchange="pickerChange" value="{{pickerIndex}}" range="{{sem_list}}">
+          <view class="picker">{{sem_list[pickerIndex]}}</view>
+        </picker>
+      </view>
+      <view class="item">
+        <view class='title'>学 号</view>
+        <input name='username' type='number' maxlength='10' value='{{account.username}}' placeholder="请输入学号"></input>
+      </view>
+      <view class="item">
+        <view class='title'>密 码</view>
+        <input name='password' type='password' value='{{account.password}}' placeholder="教务系统密码"></input>
+      </view>
+      <button id='kb' formType="submit" type='primary' loading="{{loading}}">{{kb_btn}}</button>
+      <view style='text-align:center;font-size: 80%;color: rgb(68, 68, 68)'>上次同步：{{update_time}}</view>
+    </form>
+    <view class='tips'>
+      <view>*00:00~07:00不可同步</view>
+      <view>*后续将支持查看任意班级课表</view>
+    </view>
+  </swiper-item>
+
+  <!-- 考试 -->
+  <swiper-item>
+    <form bindsubmit='formSubmit' report-submit='{{true}}'>
+      <view class="item">
+        <view class='title'>准考证</view>
+        <input name="cet" type='number' maxlength='15' value='{{cet}}' placeholder="请输入 CET4/6 考号"></input>
+      </view>
+      <button id='cet' formType="submit" type='primary'>预存准考证</button>
+    </form>
+    <view class='tips'>
+      <view>*信息仅存在本机缓存，删除应用将消失</view>
+      <view>*小程序后续会加入CET4/6等考试的查询</view>
+    </view>
+  </swiper-item>
+</swiper>

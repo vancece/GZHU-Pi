@@ -1,0 +1,35 @@
+<navBar hideTitle="{{true}}" navColor="#ecececf1">
+  <form bindsubmit='formSubmit'>
+    <view class='search-box'>
+      <input name="query" placeholder='{{query}}'></input>
+      <button formType="submit" class='search-btn' hover-class='search-btn-hover' hover-stay-time='0.2s'>
+        <image src='cloud://gzhu-pi-f63be3.677a-gzhu-pi-f63be3/images/icon/search-white.svg'></image>
+      </button>
+    </view>
+  </form>
+</navBar>
+
+<view wx:for="{{books}}" wx:key="{{index}}" class='book' bindtap='navToDetail' id='{{index}}'>
+  <view class='book-name'>{{index+1}}、{{item.book_name}}</view>
+
+  <view class='book-info'>
+    <view class='cover'>
+      <image mode='aspectFit' src='{{item.image.length!=0?item.image:noCover}}'></image>
+    </view>
+
+    <view class='info'>
+      <view class='author'>{{item.author}}</view>
+      <view class='pub'>{{item.publisher}}</view>
+      <view class='call-No'>索书号：{{item.call_No}}</view>
+      <view class='collection'>
+        <view style='background:#f8e8e8;color:#a3816a'>复本数：{{item.copies}}</view>
+        <view style='background:#defcfc;color:#72dd1b'>可借数：{{item.loanable}}</view>
+      </view>
+    </view>
+
+  </view>
+</view>
+
+<view bindtap='next'>
+<image mode='widthFix' style='width:150rpx;height:150rpx;' src='/assets/back.png'></image>
+</view>

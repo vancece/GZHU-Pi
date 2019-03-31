@@ -1,3 +1,4 @@
+var Config = require("config.js")
 /*
   时间戳格式化输出
 */
@@ -9,7 +10,7 @@ const formatTime = date => {
   const minute = date.getMinutes()
   const second = date.getSeconds()
 
-  return [year, month, day].map(formatNumber).join('/') + ' ' + [hour, minute, second].map(formatNumber).join(':')
+  return [year, month, day].map(formatNumber).join('-') + ' ' + [hour, minute, second].map(formatNumber).join(':')
 }
 
 const formatNumber = n => {
@@ -61,7 +62,13 @@ function setWeekDate(intervalWeeks = 0) {
 */
 function getTodayCourse() {
   let weekday = new Date().getDay()
-  let kbList = wx.getStorageSync("course").course_list
+  let course = wx.getStorageSync("course")
+  let kbList = course == "" ? [] : course.course_list
+
+  let exp = wx.getStorageSync("exp")
+  if (Config.get("showExp") && exp != "") {
+    kbList = kbList.concat(exp)
+  }
   let todayCourse = []
   // if (getSchoolWeek() <= 0) return todayCourse
   if (kbList) {

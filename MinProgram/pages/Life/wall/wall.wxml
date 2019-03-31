@@ -3,3 +3,4 @@
 <view class='body'>
   <image wx:for="{{url}}" wx:key="{{index}}" style='width:100%' mode='widthFix' src='{{item}}'></image>
 </view>
+ <image bindtap="openDrawer" class='menu {{showDrawer==true?"show":""}}' src='/assets/add.svg'></image>

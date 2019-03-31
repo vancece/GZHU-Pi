@@ -46,10 +46,9 @@ Component({
           })
           break
         case "6":
-          // wx.navigateTo({
-          //   url: '/pages/Campus/welfare/welfare',
-          // })
-          this.triggerEvent('touchEvent')
+          wx.navigateTo({
+            url: '/pages/Campus/exp/exp',
+          })
           break
         case "7":
           wx.navigateTo({

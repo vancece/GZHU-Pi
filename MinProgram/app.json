@@ -1,7 +1,11 @@
 {
   "pages": [
-
+    "pages/Campus/library/search",
+    "pages/Campus/library/detail",
+    "pages/Campus/library/list",
     "pages/Campus/home/home",
+    "pages/Setting/login/sync",
+    "pages/Campus/exp/exp",
     "pages/Setting/about/about",
     "pages/Setting/login/bindStudent",
     "pages/Campus/home/addCourse/addCourse",
@@ -9,7 +13,8 @@
     "pages/Campus/tools/calendar",
     "pages/Life/wall/wall",
     "pages/Setting/mine/mine",
-    "pages/Campus/evaluation/evaluation"
+    "pages/Campus/evaluation/evaluation",
+    "pages/Campus/library/sub/overview"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -20,35 +25,12 @@
   },
   "plugins": {
     "sdkPlugin": {
-      "version": "1.16.0",
+      "version": "2.0.2",
       "provider": "wxc6b86e382a1e3294"
     },
     "brickLayout": {
       "version": "0.2.0",
       "provider": "wx3c042630f3cdc175"
     }
-  },
-  "tabBar": {
-    "selectedColor": "#06cd0f",
-    "list": [
-      {
-        "pagePath": "pages/Campus/home/home",
-        "text": "课表",
-        "iconPath": "/assets/tabbar/kb.png",
-        "selectedIconPath": "/assets/tabbar/kb-selected.png"
-      },
-      {
-        "pagePath": "pages/Life/wall/wall",
-        "text": "广大墙",
-        "iconPath": "/assets/tabbar/wall.png",
-        "selectedIconPath": "/assets/tabbar/wall-selected.png"
-      },
-      {
-        "pagePath": "pages/Setting/mine/mine",
-        "text": "我的",
-        "iconPath": "/assets/tabbar/mine.png",
-        "selectedIconPath": "/assets/tabbar/mine-selected.png"
-      }
-    ]
   }
 }

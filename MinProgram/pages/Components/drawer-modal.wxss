@@ -21,16 +21,13 @@
 
 .modal-content {
   display: inline-block;
-  width: 50%;
+  width: 60%;
   height: 100%;
   transition: 0.5s;
   transform: translateX(-100%);
 }
 
 .modal-content.show {
-  /* background: wheat; */
-  width: 50%;
-  height: 100%;
   transform: translateX(0%);
 }
 
@@ -41,14 +38,14 @@
   height: 35rpx;
   border-radius: 50%;
   padding: 25rpx;
-  background-color: rgba(247, 244, 244, 0.8);
+  background-color: rgba(200, 200, 200, 0.8);
   position: fixed;
   bottom: 2%;
   right: 10rpx;
-  transition: 0.5s;
+  transition: 0.7s;
   transform: rotate(180deg);
 }
 
 .cancel-img.show {
-  transform: rotate(0deg) translateX(-100%);
+  transform: rotate(0deg) translateX(-10%);
 }

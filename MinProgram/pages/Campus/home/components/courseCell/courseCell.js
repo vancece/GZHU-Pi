@@ -1,4 +1,4 @@
-var publicData = require("../../../../../utils/public_data.js")
+var Data = require("../../../../../utils/data.js")
 Component({
 
   properties: {
@@ -16,7 +16,7 @@ Component({
   },
 
   data: {
-    colors: publicData.colors
+    colors: Data.colors
   },
 
   methods: {

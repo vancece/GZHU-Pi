@@ -29,6 +29,12 @@ Component({
     hideBackBtn: {
       type: Boolean,
       value: false
+    },
+
+    // 导航栏是fixed布局，是否空白占位
+    occupy: {
+      type: Boolean,
+      value: true
     }
   },
 
@@ -61,7 +67,7 @@ Component({
         success: function(res) {
           that.setData({
             statusBarHeight: res.statusBarHeight, //状态栏高度
-            navBarHeight: res.statusBarHeight + 40 // 小程序导航栏高度
+            navBarHeight: res.statusBarHeight + 45 // 小程序导航栏高度
           })
         },
       })

@@ -21,8 +21,8 @@
   z-index: -1000;
   position: fixed;
   top: 0;
-  -webkit-filter: blur(8px);
-  filter: blur(8px);
+  /* -webkit-filter: blur(8px); */
+  /* filter: blur(8px); */
   opacity: 0.9
 }
 

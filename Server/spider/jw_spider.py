@@ -63,7 +63,7 @@ class JW(object):
 
         credit = self.client.post(url["id-credit"], data=data, headers=self.headers)
         course = add_credit(credit.text, course)
-
+        course["update_time"] = time.strftime(" %Y-%m-%d %H:%M:%S")
         set_log(self.get_info(), "课表查询")
         return course
 

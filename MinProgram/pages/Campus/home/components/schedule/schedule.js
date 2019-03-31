@@ -1,7 +1,8 @@
 var utils = require("../../../../../utils/utils.js")
-var publicData = require("../../../../../utils/public_data.js")
+var Data = require("../../../../../utils/data.js")
+var Config = require("../../../../../utils/config.js")
+var showTimes = 0
 Component({
-
   properties: {
     show: {
       type: Boolean,
@@ -18,14 +19,17 @@ Component({
     week: utils.getSchoolWeek(), //周数
     schoolWeek: utils.getSchoolWeek(), //校历周
     weekDate: utils.setWeekDate(), //一周日期
+    bg: Config.get("schedule_bg"), // 获取背景
+    blur: Config.get("blur"), //高斯模糊
 
-    weekDays: publicData.weekDays,
-    timeLine: publicData.timeLine,
-    colors: publicData.colors,
-    kbList: publicData.course_sample
+    weekDays: Data.weekDays,
+    timeLine: Data.timeLine,
+    colors: Data.colors,
+    kbList: Data.course_sample
   },
 
   methods: {
+
     // 恢复校历周
     resetWeek() {
       let week = utils.getSchoolWeek()
@@ -163,24 +167,50 @@ Component({
         }
       })
     },
+
+    // 更新背景视图使用
+    updateBg() {
+      this.setData({
+        bg: Config.get("schedule_bg"),
+        blur: Config.get("blur"),
+      })
+    },
+    viewUpdate() {
+      let course = wx.getStorageSync('course')
+      let exp = wx.getStorageSync('exp')
+      if (course != "" || exp != "") {
+        let kbList = course == "" ? [] : course.course_list
+        if (Config.get("showExp")) {
+          kbList = kbList.concat(exp)
+        }
+        this.setData({
+          kbList: kbList,
+          sjkList: course == "" ? [] : course.sjk_course_list
+        })
+      }
+    }
   },
 
   lifetimes: {
     created: function() {},
 
     attached: function() {
-      if (wx.getStorageSync('course') != "") {
-        this.setData({
-          kbList: wx.getStorageSync('course').course_list,
-          sjkList: wx.getStorageSync('course').sjk_course_list
-        })
-      }
+      this.viewUpdate()
     },
 
     ready: function() {
-
     }
   },
 
+  pageLifetimes: {
+    show() {
+      // 初次onshow不执行
+      if (showTimes) {
+        this.viewUpdate()
+      }
+      showTimes++
+
+    }
+  }
 
 })

@@ -1,18 +1,5 @@
-<!-- <button bindtap="showModal" data-target="DrawerModalL">Left</button>
-<button bindtap="showModal" data-target="DrawerModalR">Right</button>
+<navBar title="关于课表" titleColor="" navColor="" ></navBar>
 
-<view class="cu-modal drawer-modal justify-start {{modalName=='DrawerModalL'?'show':''}}" bindtap='hideModal'>
-  <view class='bb '></view>
+<view class='body'>
+  <image wx:for="{{url}}" wx:key="{{index}}" style='width:100%' mode='widthFix' src='{{item}}'></image>
 </view>
-
-<view class='bb '></view> -->
-
-<navBar title="绑定学号" navColor="white" hideBackBtn='{{true}}'>
-  <image class='back-btn' src='/assets/menu.svg'></image>
-</navBar>
-<drawer-modal>
-  <view class='tt'>
-    545fsf
-  </view>
-
-</drawer-modal>

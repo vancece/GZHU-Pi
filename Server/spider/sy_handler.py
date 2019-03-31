@@ -1,5 +1,8 @@
 from lxml import html
 import re
+import requests
+import os
+import json
 
 
 def get_login_form(text, username, password):
@@ -35,6 +38,19 @@ def get_login_form(text, username, password):
     return form_data
 
 
+def sortByDate(Date):
+    i = 1
+    # 选择排序法
+    for a in range(len(Date) - 1):
+        for each in range(len(Date) - i):
+            if int(Date[each]['date'].replace('-', '')) > int(Date[each + 1]['date'].replace('-', '')):
+                temp = Date[each]
+                Date[each] = Date[each + 1]
+                Date[each + 1] = temp
+        i += 1
+    return (Date)
+
+
 def numtran(ChStr):
     if ChStr == '一':
         return 1
@@ -55,11 +71,24 @@ def numtran(ChStr):
 # 整理物理实现信息
 def get_experiment(data):
     exp_list = []
+
     # 去除多余字符
     while '&nbsp;' in data:
         data.remove('&nbsp;')
     for each in range(len(data)):
         data[each] = data[each].replace(r'<br/>', '')
+    # print(data)
+    if (data != []):
+        student_info = {
+            "name": data[3],
+            "student_id": data[2],
+            "year": '',
+            "college": '',
+            "major": '',
+            "major_class": data[4]
+        }
+        set_log(student_info, api_type="物理实验")
+        # print(student_info)
     for each in range(int(len(data) / 9)):
         exp_list.append({})
         exp_list[each]['class_place'] = data[6 + 9 * each]
@@ -73,8 +102,33 @@ def get_experiment(data):
         exp_list[each]['start'] = int(re.findall(r'(.+)-', sy_contin_time)[0])
         exp_list[each]['teacher'] = data[5 + 9 * each]
         exp_list[each]['weeks'] = re.findall(r'(.+周)', data[8 + 9 * each])[0]
-        exp_list[each]['which_day'] = re.findall(r'(星期.)', data[8 + 9 * each])[0] + ' ' + data[7 + 9 * each]
+        exp_list[each]['which_day'] = re.findall(r'(星期.)', data[8 + 9 * each])[0]
         exp_list[each]['weekday'] = numtran(re.findall(r'星期(.)', data[8 + 9 * each])[0])
         exp_list[each]['type'] = "exp"  # 课表类型
+        exp_list[each]['date'] = data[7 + 9 * each]
 
-    return exp_list
+    return sortByDate(exp_list)
+
+
+# 把API请求记录写入数据库
+def set_log(student_info, api_type="其它"):
+    """
+    把API请求记录写入知晓云
+    :param student_info: 学生基础信息
+    :param api_type: API请求类型
+    :return: 状态码201为写入成功
+    """
+
+    student_info["api_type"] = api_type
+    # token有效期至2020年2月1号，从环境变量读取
+    token = os.getenv('minapp_token')
+    if token == None:
+        token = "please set token to environment value"
+    api_url = "https://cloud.minapp.com/oserve/v1/table/65445/record/"
+    headers = {
+        "Authorization": "Bearer " + token,
+        "Content-Type": 'application/json'
+    }
+    data = json.dumps(student_info)
+    res = requests.post(url=api_url, data=data, headers=headers)
+    return res.status_code  # 201为写入成功

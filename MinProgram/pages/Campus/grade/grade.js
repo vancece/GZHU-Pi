@@ -143,6 +143,11 @@ Page({
           grade: res.data.data,
           height: 350 + res.data.data.sem_list[0].grade_list.length * 170
         })
+        wx.showToast({
+          title: '更新完成 ~~ ',
+          icon: "success",
+          duration: 1500,
+        })
       },
       fail: function(err) {
         console.log("err:", err)
@@ -156,11 +161,7 @@ Page({
         clearInterval(that.data.num) // 停止动画
         wx.hideLoading()
 
-        wx.showToast({
-          title: '更新完成 ~~ ',
-          icon: "success",
-          duration: 1500,
-        })
+       
         wx.stopPullDownRefresh()
       }
     })

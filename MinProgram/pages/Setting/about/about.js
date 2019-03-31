@@ -1,4 +1,4 @@
-// pages/Setting/about/about.js
+
 Page({
 
   /**
@@ -7,12 +7,30 @@ Page({
   data: {
 
   },
- 
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    wx.showLoading({
+      title: 'Loading...',
+    })
+    let tableName = 'temp'
+    let recordID = '5c7225018bb6cc5394a17ab7'
+
+    let Product = new wx.BaaS.TableObject(tableName)
+
+    Product.get(recordID).then(res => {
+
+      this.setData({
+        url: res.data.data.url
+      })
+      setTimeout(function () {
+        wx.hideLoading()
+      }, 500)
+    }, err => {
+      // err
+    })
 
   },
 

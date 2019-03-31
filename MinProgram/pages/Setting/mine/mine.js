@@ -1,4 +1,4 @@
-// pages/Setting/mine/mine.js
+
 Page({
 
   /**

@@ -8,7 +8,6 @@
   justify-content: space-around;
   align-items: center;
   padding: 100rpx;
-
 }
 
 .icon {
@@ -61,9 +60,23 @@ button::after {
   align-items: center;
 }
 
-
 .weixin {
   display: flex;
   justify-content: center;
   margin: 40rpx;
+}
+
+.guide {
+  padding: 20rpx;
+  text-align: center;
+}
+
+.concat {
+  align-items: center;
+  background: rgba(255, 255, 255, 0);
+}
+
+.concat image {
+  width: 80rpx;
+  height: 80rpx;
 }

@@ -2,7 +2,7 @@ var app = getApp()
 Page({
 
   data: {
-    hideSyncTip:true,
+    hideSyncTip: true,
     hideLoginBtn1: false,
     hideLoginBtn2: true,
     hideLogin: false,
@@ -11,7 +11,7 @@ Page({
   },
 
   onLoad: function(options) {
-    console.log(options)
+
     this.setData({
       show: !app.globalData.isAuthorized,
       hideLogin: app.globalData.bindStatus,
@@ -20,7 +20,7 @@ Page({
     })
 
     // 用户迁移绑定
-    if (!app.globalData.isAuthorized ||　JSON.stringify(options) == "{}") return
+    if (!app.globalData.isAuthorized || 　JSON.stringify(options) == "{}") return
     if (!app.globalData.bindStatus && options.username != "undefined") {
       wx.showLoading({
         title: '迁移绑定...',
@@ -28,22 +28,28 @@ Page({
       this.login()
     }
   },
-onShow(){
-  let that = this
-  var time = new Date()
-  if (time.getHours() >= 0 && time.getHours() < 6) {
-    this.setData({
-      hideSyncTip: false
-    })
-  }
-},
+  onShow() {
+    let that = this
+    var time = new Date()
+    if (time.getHours() >= 0 && time.getHours() < 7) {
+      this.setData({
+        hideSyncTip: false
+      })
+    }
+  },
   onReady() {
     if (app.globalData.bindStatus) {
       wx.showToast({
         title: '您已绑定学号',
         icon: "none"
       })
+      this.setData({
+        show: !app.globalData.isAuthorized,
+        hideLogin: app.globalData.bindStatus,
+        hideSuccess: !app.globalData.bindStatus,
+      })
     }
+
   },
 
   userInfoHandler(data) {
@@ -51,8 +57,9 @@ onShow(){
     wx.showLoading({
       title: '授权中...',
     })
-    wx.BaaS.handleUserInfo(data).then(res => {
-      console.log(" 授权", res)
+
+    if (data.detail.errMsg == "getUserInfo:ok") {
+      console.log(" 授权", data)
       wx.hideLoading()
       app.globalData.isAuthorized = true
       that.setData({
@@ -66,18 +73,36 @@ onShow(){
         })
         that.login()
       }
-    }, res => {
-      console.log("拒绝授权", res)
+    } else {
+      console.log("拒绝授权", data)
       wx.hideLoading()
       wx.showToast({
-        title: '拒绝授权',
-        icon:"none"
+        title: '授权失败，可退出重试',
+        icon: "none"
       })
-    })
+      that.setData({
+        hideLoginBtn1: false,
+        hideLoginBtn2: true,
+        show: false,
+        showGuide: true
+      })
+
+      if (JSON.stringify(this.data.account) == "{}") return
+      if (!app.globalData.bindStatus && this.data.account.username != "undefined") {
+        wx.showLoading({
+          title: '迁移绑定...',
+        })
+        that.login()
+      }
+    }
+
+    wx.BaaS.auth.loginWithWechat(data).then(res => {}, res => {})
   },
 
   // 提交登录表单
   formSubmit(e) {
+    // 上报formId
+    wx.BaaS.wxReportTicket(e.detail.formId)
     let account = {
       username: e.detail.value.username,
       password: e.detail.value.password
@@ -143,10 +168,6 @@ onShow(){
         // 同步课表
         that.syncData("course")
 
-        that.setData({
-          hideLogin: true,
-          hideSuccess: false,
-        })
       },
       fail: function(err) {
         wx.hideLoading()
@@ -155,7 +176,9 @@ onShow(){
           title: "访问超时",
           icon: "none"
         })
-        thta.setData({
+      },
+      complete: function() {
+        that.setData({
           hideLoginBtn1: false,
           hideLoginBtn2: true,
         })
@@ -199,7 +222,7 @@ onShow(){
         wx.setStorage({
           key: type,
           data: res.data.data,
-          success: function () {
+          success: function() {
             wx.reLaunch({
               url: '/pages/Campus/home/home',
             })

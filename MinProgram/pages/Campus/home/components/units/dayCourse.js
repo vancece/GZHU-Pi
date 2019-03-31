@@ -1,15 +1,11 @@
 var utils = require("../../../../../utils/utils.js")
+var showTimes = 0
 Component({
-  /**
-   * 组件的属性列表
-   */
+
   properties: {
 
   },
 
-  /**
-   * 组件的初始数据
-   */
   data: {
     todayCourse: utils.getTodayCourse(),
     week: utils.getSchoolWeek(), //周数
@@ -18,9 +14,6 @@ Component({
     weekday: new Date().getDay()
   },
 
-  /**
-   * 组件的方法列表
-   */
   methods: {
     nav() {
       wx.navigateTo({
@@ -48,6 +41,16 @@ Component({
         }
       })
     },
-
+  },
+  pageLifetimes: {
+    show() {
+      // 初次onshow不执行
+      if (showTimes) {
+        this.setData({
+          todayCourse: utils.getTodayCourse()
+        })
+      }
+      showTimes++
+    }
   }
 })

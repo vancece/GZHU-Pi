@@ -10,8 +10,11 @@ Component({
     },
   },
 
+  data: {
+    hide: true //初始化隐藏
+  },
   methods: {
-    
+
     cancel() {
       this.setData({
         show: false
@@ -22,10 +25,10 @@ Component({
 
   // 生命周期方法
   lifetimes: {
-    attached: function () {
+    attached: function() {
       let that = this
       wx.getSystemInfo({
-        success: function (res) {
+        success: function(res) {
           that.setData({
             statusBarHeight: res.statusBarHeight, //状态栏高度
             navBarHeight: res.statusBarHeight + 40 // 小程序导航栏高度

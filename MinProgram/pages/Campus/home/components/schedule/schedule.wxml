@@ -1,6 +1,7 @@
 <wxs src="module.wxs" module="tools" />
 <view wx:if='{{show}}' class='schedule'>
-  <image mode='widthFix' class='bg' src='/assets/kb_bg.jpg'></image>
+  <image mode='widthFix' class='bg' src='{{bg.length>15?bg:""}}' style="filter:blur({{blur}}px);background-image: linear-gradient(to top,{{bg.length<=15?bg:''}})"></image>
+
   <!-- 日期栏 -->
   <view class='date-bar'>
     <view class='week' bindtap='resetWeek' style='color:{{week==schoolWeek?"":"red"}}'>
@@ -66,8 +67,7 @@
 
   <!-- 课程详情弹窗 -->
   <modal custom="true" show="{{showDetail}}" bind:cancel="cancelModal">
-    <swiper bindchange="switchCourse" indicator-dots="{{detail.length>1?true:false}}" current="{{currentIndex}}" style='height:570rpx'>
-      <!-- <view wx:for="{{detail}}" wx:key="{{index}}"> -->
+    <swiper bindchange="switchCourse" indicator-dots="{{detail.length>1?true:false}}" current="{{currentIndex}}" style='height:580rpx'>
       <swiper-item wx:for="{{detail}}" wx:key="{{index}}">
         <view class='course' style='background-color:{{colors[item.color]}}'>
           <view>{{item.course_name}}</view>
@@ -89,17 +89,16 @@
             <view class='key'>教师</view>
             <view class='value'>{{item.teacher}}</view>
           </view>
-          <view class='detail-item'>
+          <view class='detail-item' wx:if="{{item.check_type!=null}}">
             <view class='key'>考核</view>
             <view class='value'>{{item.check_type}}</view>
           </view>
-          <view class='detail-item'>
+          <view class='detail-item' wx:if="{{item.credit!=null}}">
             <view class='key'>学分</view>
             <view class='value'>{{item.credit}}</view>
           </view>
         </view>
       </swiper-item>
-      <!-- </view> -->
     </swiper>
     <view class='operate'>
       <image id="0" bindtap='navTo' src='/assets/add.svg'></image>

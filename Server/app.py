@@ -1,8 +1,10 @@
 from flask import Flask, request, jsonify
 from spider.jw_spider import *
 from spider.sy_spider import *
+from spider.lib_spider import *
 import time
 import copy
+import os
 
 
 def res_json(status=405, data="", msg="Bad request"):
@@ -13,7 +15,6 @@ def res_json(status=405, data="", msg="Bad request"):
     :param msg: 响应信息
     :return: 完整响应请求的数据
     """
-
     res = {
         "data": data,
         "msg": msg,
@@ -32,6 +33,11 @@ def index():
     return res_json()
 
 
+"""
+教务系统
+"""
+
+
 # 登录绑定，获取学生信息
 @app.route("/bind", methods=["POST"])
 def bind():
@@ -43,7 +49,6 @@ def bind():
         student_info = spider.get_info()
         data = copy.deepcopy(student_info)
         set_log(student_info, "登录绑定")
-        print(data)
         return res_json(status=200, data=data, msg="request succeed")
     else:
         return res_json(status=401, msg="Unauthorized")
@@ -91,12 +96,16 @@ def exam():
         return res_json(status=401, msg="Unauthorized")
 
 
+"""
+实验平台
+"""
+
+
 # 获取实验课程
 @app.route("/exp", methods=["POST"])
 def exp():
     username = request.form['username']
     password = request.form['password']
-
     spider = SY(username, password)
     if spider.login():
         data = spider.get_experiment()
@@ -105,8 +114,55 @@ def exp():
         return res_json(status=401, msg="Unauthorized")
 
 
-if __name__ == "__main__":
-    app.run("127.0.0.1", threaded=True)
+"""
+图书馆
+"""
 
-# def handler(environ, start_response):
-#     return app(environ, start_response)
+
+# 图书查询
+@app.route("/library/search", methods=["POST", "GET"])
+def search():
+    if request.method == "POST":
+        query = request.form['query']
+        page = request.form['page']
+
+        data = Lib().search(query=query, page=page)
+        return res_json(status=200, data=data, msg="ok")
+    else:
+        query = request.args.get('query')
+        page = request.args.get('page')
+
+        data = Lib().search(query=query, page=page)
+        return res_json(status=200, data=data, msg="ok")
+
+
+# 馆藏信息
+@app.route("/library/holdings", methods=["POST", "GET"])
+def holdings():
+    if request.method == "POST":
+        id = request.form['id']
+        source = request.form['source']
+
+        data = Lib().holdings(id, source)
+        if data:
+            return res_json(status=200, data=data, msg="ok")
+        else:
+            return res_json(status=408, data=data, msg="connect timeout")
+    else:
+        id = request.args.get('id')
+        source = request.args.get('source')
+
+        data = Lib().holdings(id, source)
+        if data:
+            return res_json(status=200, data=data, msg="ok")
+        else:
+            return res_json(status=408, data=data, msg="connect timeout")
+
+
+if __name__ == "__main__":
+    app.run("0.0.0.0", threaded=True)
+
+
+# 云函数入口
+def handler(environ, start_response):
+    return app(environ, start_response)

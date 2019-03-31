@@ -1,7 +1,5 @@
 import requests
 from spider.sy_handler import *
-import os
-import json
 
 url = {
     "login": "http://202.192.67.23",
@@ -43,28 +41,5 @@ class SY(object):
             headers=self.headers)
 
         row_data = re.findall(r'padding-bottom:5px;">(.+?)</td>', res.content.decode())
+
         return get_experiment(row_data)
-
-
-# 把API请求记录写入数据库
-def set_log(student_info, api_type="其它"):
-    """
-    把API请求记录写入知晓云
-    :param student_info: 学生基础信息
-    :param api_type: API请求类型
-    :return: 状态码201为写入成功
-    """
-
-    student_info["api_type"] = api_type
-    # token有效期至2020年2月1号，从环境变量读取
-    token = os.getenv('minapp_token')
-    if token == None:
-        token = "please set token to environment value"
-    api_url = "https://cloud.minapp.com/oserve/v1/table/65445/record/"
-    headers = {
-        "Authorization": "Bearer " + token,
-        "Content-Type": 'application/json'
-    }
-    data = json.dumps(student_info)
-    res = requests.post(url=api_url, data=data, headers=headers)
-    return res.status_code  # 201为写入成功

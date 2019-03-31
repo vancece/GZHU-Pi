@@ -1,3 +1,4 @@
+var Config = require("/utils/config.js")
 App({
 
   globalData: {
@@ -6,7 +7,8 @@ App({
   },
 
   onLaunch: function(options) {
-    this.updata()
+    Config.init() //初始化配置文件
+    this.updata() //更新小程序
 
     console.log("App启动：", options)
     // 初始化知晓云
@@ -24,9 +26,9 @@ App({
 
   },
 
-  onError: function (res) {
+  onError: function(res) {
     wx.BaaS.ErrorTracker.track(res)
-   
+
   },
 
   // 获取认证状态
@@ -84,12 +86,12 @@ App({
   updata() {
     const updateManager = wx.getUpdateManager()
 
-    updateManager.onCheckForUpdate(function (res) {
+    updateManager.onCheckForUpdate(function(res) {
       // 请求完新版本信息的回调
-      console.log(res.hasUpdate)
+      console.log("新版本：", res.hasUpdate)
     })
 
-    updateManager.onUpdateReady(function () {
+    updateManager.onUpdateReady(function() {
       wx.showModal({
         title: '更新提示',
         content: '新版本已经准备好，是否重启应用？',
@@ -102,7 +104,7 @@ App({
       })
     })
 
-    updateManager.onUpdateFailed(function () {
+    updateManager.onUpdateFailed(function() {
       // 新版本下载失败
     })
   }

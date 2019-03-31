@@ -1,17 +1,15 @@
 <navBar title="广大课表" titleColor="" hideTitle="{{true}}" navColor="{{navColor}}" hideBackBtn="{{true}}">
-  <image bindtap="openDrawer" class='menu {{showDrawer==true?"show":""}}' src='/assets/menu.svg'></image>
-
+  <image bindtap="openDrawer" class='menu {{showDrawer==true?"show":""}}' src='/assets/setting.svg'></image>
 </navBar>
-
-<!-- 抽屉弹窗 -->
-<drawer-modal show='{{showDrawer}}'>
-<view catchtap class='dawer'>454544545</view>
-</drawer-modal>
 
 
 <!-- 悬浮图标 -->
 <view>
-  <image bindtap='switchModel' class='float-icon' mode='aspectFit' src='https://cloud-minapp-17768.cloud.ifanrusercontent.com/1fx04mwWmqxrOljX.png'></image>
+  <form bindsubmit='formSubmit' report-submit='{{true}}'>
+    <button formType="submit">
+      <image bindtap='switchModel' class='float-icon' mode='aspectFit' src='https://cloud-minapp-17768.cloud.ifanrusercontent.com/1fx04mwWmqxrOljX.png'></image>
+    </button>
+  </form>
   <button open-type="share">
     <image class='share-icon' mode='aspectFit' src='https://cloud-minapp-17768.cloud.ifanrusercontent.com/1g3viOkNmZOlcqSF.png'></image>
   </button>
@@ -19,7 +17,7 @@
 
 
 <!-- 课表模式 -->
-<schedule show="{{schedule}}"></schedule>
+<schedule id='schedule' show="{{schedule}}"></schedule>
 
 <view hidden="{{schedule}}" class='{{out}}'>
 
@@ -35,3 +33,72 @@
   <view class='divide-line'></view>
 
 </view>
+
+
+<!-- 抽屉弹窗 -->
+<drawer-modal show='{{showDrawer}}'>
+  <view catchtap="catchtap" class='dawer'>
+    <view class='avator'>
+      <open-data type="userAvatarUrl" class='img'></open-data>
+      <open-data type="userNickName" class="nickname"></open-data>
+    </view>
+
+    <view class='item' bindtap='tapDrawer' id='changeBg'>
+      <image src='cloud://gzhu-pi-f63be3.677a-gzhu-pi-f63be3/images/icon/theme.svg'></image>
+      <view>更换背景</view>
+      <image src='{{arrowUrl}}' class='{{drawerItem=="changeBg"?"show":""}}'></image>
+    </view>
+    <view class='flod {{drawerItem=="changeBg"?"show1":""}}'>
+      <view class='flodItem' bindtap='tapDrawer' id='selectImg'>
+        <text style='flex:2'>选择图片</text>
+        <image style='flex:1' src='{{arrowUrl}}'></image>
+      </view>
+      <view class='flodItem'>
+        <text style='flex:2'>高斯模糊</text>
+        <switch checked='{{checkedBlur}}' bindchange='switchChange' style='flex:1'></switch>
+      </view>
+      <view class='flodItem'>
+        <view wx:for="{{['white,white','#ddd,#ddd','#d299c2,#fef9d7','#a8edea,#fed6e3']}}" wx:key="{{index}}">
+          <view bindtap='tapDrawer' id="{{item}}" class='color' style='background-image: linear-gradient(to top, {{item}})'></view>
+        </view>
+      </view>
+    </view>
+
+    <view class='item' bindtap='tapDrawer' id='changeMode'>
+      <image src='cloud://gzhu-pi-f63be3.677a-gzhu-pi-f63be3/images/icon/switch.svg'></image>
+      <view>课表模式</view>
+      <image src='{{arrowUrl}}' class='{{drawerItem=="changeMode"?"show":""}}'></image>
+    </view>
+    <radio-group bindchange="radioChange" class='flod {{drawerItem=="changeMode"?"show2":""}}'>
+      <view class='flodItem'>
+        <text style='flex:2'>日表模式</text>
+        <radio style='flex:1' value='day' checked='{{mode=="day"?true:false}}'></radio>
+      </view>
+      <view class='flodItem'>
+        <text style='flex:2'>周表模式</text>
+        <radio style='flex:1' value='week' checked='{{mode=="week"?true:false}}'></radio>
+      </view>
+    </radio-group>
+
+    <view class='item' bindtap='tapDrawer' id='navToSync'>
+      <image src='cloud://gzhu-pi-f63be3.677a-gzhu-pi-f63be3/images/icon/update.svg'></image>
+      <view>同步中心</view>
+      <image src='{{arrowUrl}}'></image>
+    </view>
+    <button open-type="contact">
+      <image src='cloud://gzhu-pi-f63be3.677a-gzhu-pi-f63be3/images/icon/kefu.svg'></image>
+      <view>意见反馈</view>
+      <image src='{{arrowUrl}}'></image>
+    </button>
+    <view class='item' bindtap='tapDrawer' id='navToHelp'>
+      <image src='cloud://gzhu-pi-f63be3.677a-gzhu-pi-f63be3/images/icon/help.svg'></image>
+      <view>使用帮助</view>
+      <image src='{{arrowUrl}}'></image>
+    </view>
+    <view class='item' bindtap='tapDrawer' id='navToAbout'>
+      <image src='cloud://gzhu-pi-f63be3.677a-gzhu-pi-f63be3/images/icon/about.svg'></image>
+      <view>关于课表</view>
+      <image src='{{arrowUrl}}'></image>
+    </view>
+  </view>
+</drawer-modal>

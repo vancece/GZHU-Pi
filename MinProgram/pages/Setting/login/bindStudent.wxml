@@ -13,7 +13,7 @@
     <view style='font-weight:bold; text-shadow: 5rpx 25rpx 10rpx #ddd;font-size:150%'>教务系统登录</view>
 
     <view class='login-form'>
-      <form bindsubmit='formSubmit'>
+      <form bindsubmit='formSubmit' report-submit='{{true}}'>
         <view>
           <view class='form-item'>
             <input class='input-content' name="username" type='number' maxlength='10' placeholder="Username" cursor-spacing="120" />
@@ -25,7 +25,7 @@
         <view style='font-size:60%'>使用前请阅读
           <text bindtap='etrAgreement' style='color:#18b3eb'>《用户协议》</text>
         </view>
-        <button class='login-btn' hidden='{{hideLoginBtn1}}' hover-class="btn-hover" formType="submit"  open-type="getUserInfo">绑定学号</button>
+        <button class='login-btn' hidden='{{hideLoginBtn1}}' hover-class="btn-hover" formType="submit" open-type="getUserInfo">绑定学号</button>
         <button class='login-btn' hidden='{{hideLoginBtn2}}' style='background-color: #ddd;box-shadow:0rpx 0rpx 0rpx 0rpx #ddd'>登录中...</button>
         <view hidden='{{hideSyncTip}}' style='color:grey;font-size:60%;margin:10rpx'>00:00-07:00教务系统通道关闭，将无绑定</view>
       </form>
@@ -44,9 +44,21 @@
 </view>
 
 <!-- 授权设置弹窗 -->
-<modal custom="true" show="{{show}}" hideCancel="true">
+<modal custom="true" show="{{show}}" >
   <view class='weixin'>
     <image src='/assets/weixin.svg' style='width:100rpx;height:100rpx'></image>
   </view>
   <button open-type="getUserInfo" bindgetuserinfo='userInfoHandler' type='primary' style='margin: 50rpx'>微信授权</button>
+</modal>
+
+<!-- 授权设置弹窗 -->
+<modal custom="true" show="{{showGuide}}">
+  <view class='guide'>
+    <view style='font-weight:blod;margin:20rpx'>提示</view>
+    <view>小程序的部分功能依赖于微信授权，如授权失败可退出重试/手动授权/联系开发者。</view>
+    <view style='margin:20rpx 0;color:red'>手动：右上角菜单→→关于广大派→→菜单→→设置→→允许</view>
+  </view>
+  <button class='concat' open-type="contact">
+    <image src='cloud://gzhu-pi-f63be3.677a-gzhu-pi-f63be3/images/icon/kefu.svg'></image>
+  </button>
 </modal>

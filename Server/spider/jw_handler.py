@@ -284,8 +284,12 @@ def handle_grade(grade_list, total_count):
             xf = xf + float(item["credit"])  # 总学分，分母
             jd_xf = jd_xf + float(item["course_gpa"]) * float(item["credit"])
 
-    GPA = round(jd_xf / xf, 2)  # 大学总绩点
-    grade = {"GPA": GPA, "total_credit": xf, "totalCount": total_count}
+    if xf == 0:
+        GPA = round(0, 2)
+    else:
+        GPA = round(jd_xf / xf, 2)  # 大学总绩点
+    grade = {"GPA": GPA, "total_credit": xf, "totalCount": total_count,
+             "update_time": time.strftime("%Y-%m-%d %H:%M:%S")}
 
     # 添加 学年-学期  如2017-2018-2
     for set_item in list_year:
@@ -313,8 +317,10 @@ def handle_grade(grade_list, total_count):
                 if item["course_gpa"] != "0.00" and item["invalid"] == "否":
                     xf = xf + float(item["credit"])  # 总学分，分母
                     jd_xf = jd_xf + float(item["course_gpa"]) * float(item["credit"])
-
-        sem_gpa = round(jd_xf / xf, 2)
+        if xf == 0:
+            sem_gpa = round(0, 2)
+        else:
+            sem_gpa = round(jd_xf / xf, 2)
         temp_sem["sem_credit"] = xf  # 学期总学分
         temp_sem["sem_gpa"] = sem_gpa  # 学期绩点
         temp_sem_list.append(temp_sem)
@@ -350,4 +356,3 @@ def handle_grade(grade_list, total_count):
     grade["sem_list"] = sem_list
 
     return grade
-
