@@ -114,6 +114,29 @@ class JW(object):
         return get_exam(res.text)
 
 
+    def getEmptyRoom(self,date):
+        #本地预先提供的默认参数
+        postDate={
+            'fwzt': 'cx',
+            'cdejlb_id':'',
+            'qssd': '',
+            'jssd': '',
+            'qssj':'' ,
+            'jssj': '',
+            'jyfs': '0',
+            'cdjylx':'',
+            '_search': 'false',
+            'queryModel.showCount': '30',
+            'queryModel.sortName': 'cdbh',
+            'queryModel.sortOrder': 'asc',
+            'time': '1'
+        }
+        #合并字典
+        postDate=dict(postDate, **date)
+        res = self.client.post("http://jwxt.gzhu.edu.cn/jwglxt/cdjy/cdjy_cxKxcdlb.html?doType=query&gnmkdm=N2155", data=postDate, headers=self.headers)
+        return EmptyRoomGetMeg(res)
+
+
 # 把API请求记录写入数据库
 def set_log(student_info, api_type="其它"):
     """
@@ -136,3 +159,5 @@ def set_log(student_info, api_type="其它"):
     data = json.dumps(student_info)
     res = requests.post(url=api_url, data=data, headers=headers)
     return res.status_code  # 201为写入成功
+
+

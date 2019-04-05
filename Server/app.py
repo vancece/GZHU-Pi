@@ -5,6 +5,7 @@ from spider.lib_spider import *
 import time
 import copy
 import os
+from spider.jw_handler import *
 
 
 def res_json(status=405, data="", msg="Bad request"):
@@ -157,6 +158,20 @@ def holdings():
             return res_json(status=200, data=data, msg="ok")
         else:
             return res_json(status=408, data=data, msg="connect timeout")
+
+
+#
+@app.route("/room", methods=["POST"])
+def room():
+    username = request.form['username']
+    password = request.form['password']
+    newRequestDate=roomRequestHandle(request)
+    spider = JW(username, password)
+    if spider.login():
+        data = spider.getEmptyRoom(newRequestDate)
+        return res_json(status=200, data=data, msg="request succeed")
+    else:
+        return res_json(status=401, msg="Unauthorized")
 
 
 if __name__ == "__main__":

@@ -10,7 +10,135 @@ import time
 
 """
 
+#空教室表单中次方处理
+def ERNumHandle(target):
+    sum=0
+    numList=target.split(',')
+    for each in numList:
+        sum+=pow(2,int(each)-1)
+    return sum
 
+
+#空教室提交表单处理
+def roomRequestHandle(request):
+    returnRequest={}
+    try:#校区号
+        returnRequest['xqh_id']=request.form['xqh_id']
+    except:
+        returnRequest['xqh_id']='1'
+    try:#学年名
+        returnRequest['xnm']=request.form['xnm']
+    except:
+        returnRequest['xnm']='2018'
+    try:#学期名
+        returnRequest['xqm']=request.form['xqm']
+    except:
+        returnRequest['xqm']='12'
+    try:#场地类别
+        returnRequest['cdlb_id']=request.form['cdlb_id']
+    except:
+        returnRequest['cdlb_id']=''
+    try:#最小座位号
+        returnRequest['qszws']=request.form['qszws']
+    except:
+        returnRequest['qszws']=''
+    try:#最大座位号
+        returnRequest['jszws']=request.form['jszws']
+    except:
+        returnRequest['jszws']=''
+    try:#场地名称
+        returnRequest['cdmc']=request.form['cdmc']
+    except:
+        returnRequest['cdmc']=''
+    try:#楼号
+        returnRequest['lh']=request.form['lh']
+    except:
+        returnRequest['lh']=''
+    try:#节次
+        returnRequest['jcd']=ERNumHandle(request.form['jcd'])
+    except:
+        returnRequest['jcd']='2047'
+    try:#前往页面数
+        returnRequest['queryModel.currentPage']=request.form['queryModel.currentPage']
+    except:
+        returnRequest['queryModel.currentPage']='1'
+    #处理周次和星期数
+    returnRequest['zcd']=str(ERNumHandle(request.form['zcd']))
+    returnRequest['xqj']=request.form['xqj']
+    #生成时间戳
+    returnRequest['nd']=str(round(time.time() * 1000))
+    return returnRequest
+
+#空教室查询---提取有用信息
+def EmptyRoomGetMeg(res):
+    #空教室字典,数组
+    EmptyRoomDict={}
+    EmptyRoomDict['items']=[]
+    dateJson = json.loads(res.text)
+    EmptyRoomDict['total']=dateJson['totalCount']
+    for each in range(len(dateJson["items"])):
+        EmptyRoomDict['items'].append({})
+        try:
+            EmptyRoomDict['items'][each]['cdbh']=dateJson["items"][each]['cdbh']
+        except:
+            EmptyRoomDict['items'][each]['cdbh']=''
+        try:
+            EmptyRoomDict['items'][each]['cdmc']=dateJson["items"][each]['cdmc']
+        except:
+            EmptyRoomDict['items'][each]['cdmc']=''
+        try:
+            EmptyRoomDict['items'][each]['xqmc']=dateJson["items"][each]['xqmc']
+        except:
+            EmptyRoomDict['items'][each]['xqmc']=''
+        try:
+            EmptyRoomDict['items'][each]['cdlb_id']=dateJson["items"][each]['cdlb_id']
+        except:
+            EmptyRoomDict['items'][each]['cdlb_id']=''
+        try:
+            EmptyRoomDict['items'][each]['zws']=dateJson["items"][each]['zws']
+        except:
+            EmptyRoomDict['items'][each]['zws']=''
+        try:
+            EmptyRoomDict['items'][each]['kszws1']=dateJson["items"][each]['kszws1']
+        except:
+            EmptyRoomDict['items'][each]['kszws1']=''
+        try:
+            EmptyRoomDict['items'][each]['jxlmc']=dateJson["items"][each]['jxlmc']
+        except:
+            EmptyRoomDict['items'][each]['jxlmc']=''
+        try:
+            EmptyRoomDict['items'][each]['lch']=dateJson["items"][each]['lch']
+        except:
+            EmptyRoomDict['items'][each]['lch']=''
+        try:
+            EmptyRoomDict['items'][each]['cdjylx']=dateJson["items"][each]['cdjylx']
+        except:
+            EmptyRoomDict['items'][each]['cdjylx']=''
+        try:
+            EmptyRoomDict['items'][each]['bz']=dateJson["items"][each]['bz']
+        except:
+            EmptyRoomDict['items'][each]['bz']=''
+        try:
+            EmptyRoomDict['items'][each]['sydxmc']=dateJson["items"][each]['sydxmc']
+        except:
+            EmptyRoomDict['items'][each]['sydxmc']=''
+        try:
+            EmptyRoomDict['items'][each]['sybj']=dateJson["items"][each]['sybj']
+        except:
+            EmptyRoomDict['items'][each]['sybj']=''
+        try:
+            EmptyRoomDict['items'][each]['cdejlbmc']=dateJson["items"][each]['cdejlbmc']
+        except:
+            EmptyRoomDict['items'][each]['cdejlbmc']=''
+        try:
+            EmptyRoomDict['items'][each]['jzmj']=dateJson["items"][each]['jzmj']
+        except:
+            EmptyRoomDict['items'][each]['jzmj']=''
+        try:
+            EmptyRoomDict['items'][each]['jgmc']=dateJson["items"][each]['jgmc']
+        except:
+            EmptyRoomDict['items'][each]['jgmc']=''
+    return EmptyRoomDict
 def get_login_form(text, username, password):
     """
     获取登录表单
@@ -356,3 +484,7 @@ def handle_grade(grade_list, total_count):
     grade["sem_list"] = sem_list
 
     return grade
+
+text='{"currentPage":1,"currentResult":0,"entityOrField":false,"items":[{"a":"b"},{"a":"d"}]}'
+test=json.loads(text)
+print(test)
