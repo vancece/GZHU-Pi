@@ -1,5 +1,4 @@
-<navBar title="书本详情">
-</navBar>
+<navBar title="书本详情" navColor="white"></navBar>
 
 <!-- 传入的数据 -->
 <view class='book'>
@@ -8,7 +7,7 @@
   </view>
   <view class='book-info'>
     <view class='cover'>
-      <image mode='aspectFit' src='{{book.image.length!=0?book.image:noCover}}'></image>
+      <image mode='aspectFit' src='{{book.image!=""?book.image:douban.image==""?noCover:douban.image}}'></image>
     </view>
     <view class='info'>
       <view>
@@ -55,13 +54,14 @@
       <view style='flex:2'>应还</view>
       <view style='flex:1'>更多</view>
     </view>
-    <view class='item' wx:for="{{holdings}}" wx:key="{{index}}" style='color:{{item.status=="在馆"?"#0b8457":"#283148"}}'>
+    <view class='item' wx:if="{{holdings.length}}" wx:for="{{holdings}}" wx:key="{{index}}" style='color:{{item.status=="在馆"?"#0b8457":"#283148"}}'>
       <view style='flex:1'>{{item.status}}</view>
       <view style='flex:4.5'>{{item.location}}</view>
       <view style='flex:2'>{{item.loandate}}</view>
       <view style='flex:2'>{{item.due_back}}</view>
       <view style='flex:1;color:#065099'>更多</view>
     </view>
+    <view wx:if="{{!holdings.length}}" style='font-size:80%;margin:15rpx;color:grey'>未找到馆藏信息</view>
   </view>
 
   <!-- 其他信息 -->

@@ -11,6 +11,7 @@ page {
   border-radius: 35rpx;
   border: 2rpx solid #1f73c7;
   margin-right: 100rpx;
+  position: relative;
 }
 
 .search-box input {
@@ -127,4 +128,19 @@ button::after {
   border-radius: 30rpx;
   padding: 5rpx 20rpx;
   margin: 0rpx 10rpx;
+}
+
+.switch-page {
+  /* border: 1rpx solid rgb(209, 32, 32); */
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 20rpx 100rpx;
+  color: grey;
+  font-size: 85%;
+}
+
+.switch-page image {
+  width: 70rpx;
+  height: 70rpx;
 }

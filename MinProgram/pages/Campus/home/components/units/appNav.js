@@ -1,4 +1,3 @@
-
 Component({
   /**
    * 组件的属性列表
@@ -27,7 +26,7 @@ Component({
           })
           break
         case "1":
-          
+
           break
         case "2":
           wx.navigateTo({
@@ -35,10 +34,12 @@ Component({
           })
           break
         case "3":
-          
+          wx.navigateTo({
+            url: '/pages/Campus/library/search',
+          })
           break
         case "4":
-         
+
           break
         case "5":
           wx.navigateTo({

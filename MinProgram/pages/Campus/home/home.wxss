@@ -175,13 +175,21 @@ image.show {
   height: 180rpx;
 }
 
-
 /* 颜色单选 */
 
 .color {
   width: 50rpx;
   height: 50rpx;
   border-radius: 50%;
-
 }
 
+/* callme */
+
+.callme {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin: 15rpx;
+  background: rgba(247, 226, 36, 0.822)
+}

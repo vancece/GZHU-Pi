@@ -79,14 +79,10 @@ button::after {
 
 .visit {
   text-align: center;
-  margin: 50rpx;
+  margin: 20rpx;
   font-weight: bold;
   color: rgba(39, 39, 39, 0.8);
-}
-
-.visit text {
-  color: #1f73c7;
-  font-weight: bold;
+  font-size: 85%;
 }
 
 /* 功能导航 */

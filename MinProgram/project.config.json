@@ -4,7 +4,7 @@
 		"ignore": []
 	},
 	"setting": {
-		"urlCheck": false,
+		"urlCheck": true,
 		"es6": true,
 		"postcss": true,
 		"minified": true,
@@ -13,7 +13,7 @@
 		"uglifyFileName": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.5.0",
+	"libVersion": "2.4.0",
 	"appid": "wxe194e8a8d4601dae",
 	"projectname": "GZHU%20Pi",
 	"debugOptions": {
@@ -38,7 +38,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 1,
+			"current": 2,
 			"list": [
 				{
 					"id": 0,
@@ -57,6 +57,13 @@
 					"pathName": "pages/Campus/home/home",
 					"query": "",
 					"scene": null
+				},
+				{
+					"id": 2,
+					"name": "二维码",
+					"pathName": "pages/Campus/home/home",
+					"query": "",
+					"scene": 1047
 				}
 			]
 		}

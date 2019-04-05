@@ -2,7 +2,9 @@ Page({
 
   data: {
     noCover: "cloud://gzhu-pi-f63be3.677a-gzhu-pi-f63be3/images/icon/book.svg",
-    page: 1
+    page: 1,
+    pages: 1,
+    books: []
   },
 
   onLoad: function(options) {
@@ -10,16 +12,18 @@ Page({
     this.setData({
       query: options.query
     })
-
-    let curPage = getCurrentPages()
-    let prePage = curPage[curPage.length - 2]
-    console.log(curPage,555)
-    console.log(curPage, 555)
-    console.log(122,prePage.data)
-
   },
 
   formSubmit(e) {
+    var time = new Date()
+    if (time.getHours() >= 0 && time.getHours() < 7) {
+      wx.showToast({
+        title: '当前时间段不可用~',
+        icon: "none"
+      })
+      return
+    }
+    
     let query = e.detail.value.query
     if (query == "") {
       wx.showToast({
@@ -29,25 +33,31 @@ Page({
       return
     }
     this.setData({
-      query: query
+      query: query,
+      books: [],
+      page: 1
     })
     this.getBooks(query)
   },
 
-  next() {
-    this.data.page = this.data.page + 1
-    this.getBooks(this.data.query, this.data.page)
-  },
-
 
   navToDetail(e) {
-    let id = Number(e.currentTarget.id)
-    let arg = JSON.stringify(this.data.books[id])
-    arg = arg.replace("=", "")
+    let index = e.currentTarget.id
     wx.navigateTo({
-      url: '/pages/Campus/library/detail?arg=' + arg,
+      url: '/pages/Campus/library/detail?index=' + index,
     })
+  },
 
+  loadMore() {
+    let page = this.data.page + 1
+    if (page > this.data.pages) {
+      wx.showToast({
+        title: '没有更多啦！',
+        icon: "none"
+      })
+      return
+    }
+    this.getBooks(this.data.query, page)
   },
 
   // 发送GET请求
@@ -58,14 +68,22 @@ Page({
     })
 
     let url = "https://1171058535813521.cn-shanghai.fc.aliyuncs.com/2016-08-15/proxy/GZHU-API/Spider/"
-    let url2 = "http://192.168.8.1:5000/"
     wx.request({
       url: url + 'library/search?query=' + query + "&page=" + page,
       method: "get",
       success: function(res) {
         console.log(res.data.data)
+        if (res.data.data.total == 0) {
+          wx.showToast({
+            title: '无结果',
+            icon: "none"
+          })
+          return
+        }
         that.setData({
-          books: res.data.data.books
+          books: that.data.books.concat(res.data.data.books),
+          pages: res.data.data.pages == 0 ? 1 : res.data.data.pages,
+          page: page
         })
       },
       complete: function() {

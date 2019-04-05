@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "navBar": "/pages/Components/navBar",
+    "modal": "/pages/Components/modal",
+    "txv-video": "plugin://tencentvideo/video"
+  }
+}

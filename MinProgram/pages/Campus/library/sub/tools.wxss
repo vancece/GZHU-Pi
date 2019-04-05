@@ -1,0 +1,72 @@
+/* 进馆数据 */
+
+.visit {
+  text-align: center;
+}
+
+.module {
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0rpx 1rpx 1rpx 1rpx #ddd;
+  margin-bottom: 3rpx;
+  padding: 10rpx;
+}
+
+.module-bar {
+  display: flex;
+  flex-direction: row;
+  padding: 20rpx 10rpx;
+  border-bottom: #f7f7f7f8 solid 4rpx;
+}
+
+.module-icon {
+  flex: 1;
+  width: 75rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.module-text {
+  flex: 4;
+  display: flex;
+  align-items: center;
+  font-size: 120%;
+  font-weight: bold;
+  justify-content: space-around;
+}
+
+.table-head {
+  display: flex;
+  flex-direction: row;
+  padding: 20rpx;
+  border-bottom: #ddd solid 1rpx;
+  color: rgb(114, 195, 228);
+}
+
+.table-body {
+  display: flex;
+  flex-direction: row;
+  font-size: 85%;
+  padding: 20rpx 15rpx;
+  border-bottom: rgb(238, 235, 235) solid 1rpx;
+}
+
+.sem-cell {
+  border-bottom: #ddd solid 2rpx;
+  padding: 20rpx;
+}
+
+/* 全景 */
+
+.overall {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.overall image {
+  width: 400rpx;
+  height: 400rpx;
+}

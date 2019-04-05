@@ -2,6 +2,7 @@
 
 .book {
   padding: 10rpx;
+  color: rgba(218, 218, 218, 0.8)
 }
 
 .book-name {

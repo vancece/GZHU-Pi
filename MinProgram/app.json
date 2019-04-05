@@ -1,8 +1,6 @@
 {
   "pages": [
-    "pages/Campus/library/search",
-    "pages/Campus/library/detail",
-    "pages/Campus/library/list",
+    "pages/Campus/tools/emptyRoom",
     "pages/Campus/home/home",
     "pages/Setting/login/sync",
     "pages/Campus/exp/exp",
@@ -14,7 +12,18 @@
     "pages/Life/wall/wall",
     "pages/Setting/mine/mine",
     "pages/Campus/evaluation/evaluation",
-    "pages/Campus/library/sub/overview"
+    "pages/Campus/gzhu/index"
+  ],
+  "subpackages": [
+    {
+      "root": "pages/Campus/library",
+      "pages": [
+        "search",
+        "list",
+        "detail",
+        "sub/tools"
+      ]
+    }
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -31,6 +40,10 @@
     "brickLayout": {
       "version": "0.2.0",
       "provider": "wx3c042630f3cdc175"
+    },
+    "tencentvideo": {
+      "version": "1.2.5",
+      "provider": "wxa75efa648b60994b"
     }
   }
 }

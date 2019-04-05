@@ -34,9 +34,14 @@ Component({
       value: "标题"
     },
     // 禁止关闭
-    hideCancel:{
+    hideCancel: {
       type: Boolean,
       value: false
+    },
+    // 宽度
+    width: {
+      type: String,
+      value: "70%"
     }
   },
 

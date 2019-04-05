@@ -16,26 +16,33 @@
   </view>
 </form>
 
-<view class='visit'>今日进馆：
-  <text>{{lib.total}}</text> 人次</view>
-
-
 <view class='nav'>
-  <view class='item'>
+  <view class='item' bindtap='nav' id='room'>
     <image src='cloud://gzhu-pi-f63be3.677a-gzhu-pi-f63be3/images/icon/lib-dist.svg'></image>
     <view>库室分布</view>
   </view>
-  <view class='item'>
+  <view class='item' bindtap='nav' id='open'>
     <image src='cloud://gzhu-pi-f63be3.677a-gzhu-pi-f63be3/images/icon/lib-classify.svg'></image>
-    <view>分类体系</view>
+    <view>开放时间</view>
   </view>
-  <view class='item'>
+  <view class='item' bindtap='nav' id='visit'>
     <image src='cloud://gzhu-pi-f63be3.677a-gzhu-pi-f63be3/images/icon/lib-data.svg'></image>
     <view>进馆数据</view>
   </view>
-  <view class='item' bindtap='nav'>
+  <view class='item' bindtap='nav' id='overall'>
     <image src='cloud://gzhu-pi-f63be3.677a-gzhu-pi-f63be3/images/icon/lib-overall.svg'></image>
     <view>360全景</view>
   </view>
-
 </view>
+
+<view class='visit'>
+  <view>
+    <text>大学城总馆：</text>
+    <text style='color:#1f73c7;'>{{lib.master}}</text> 人次
+  </view>
+  <view>
+    <text>桂花岗分馆：</text>
+    <text style='color:#1f73c7;'>{{lib.branch}}</text> 人次
+  </view>
+</view>
+

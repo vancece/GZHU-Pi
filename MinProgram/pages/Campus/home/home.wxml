@@ -20,7 +20,7 @@
 <schedule id='schedule' show="{{schedule}}"></schedule>
 
 <view hidden="{{schedule}}" class='{{out}}'>
-
+  <official-account></official-account>
   <!-- 导航模式 -->
   <!-- 应用 -->
   <app></app>
@@ -102,3 +102,28 @@
     </view>
   </view>
 </drawer-modal>
+
+
+<modal show="{{showUpdate}}" title="版本更新">
+  <view>
+    广大图书馆
+  </view>
+  <view style='font-size:90%;color:rgb(80,80,80);margin:20rpx;'>
+    <view> * 一键查询图书馆馆藏书目</view>
+    <view> * 一键查看书本馆藏可借数据</view>
+    <view> * 便捷查看索书号、馆藏位置</view>
+    <view> * 实时了解当天进入馆人数</view>
+    <view> * 结合豆瓣api获取封面，书本详情</view>
+  </view>
+  <view>近期计划</view>
+  <view style='font-size:90%;color:rgb(80,80,80);margin:20rpx;'>
+    <view> * 一键查询全校班级课表</view>
+    <view> * 一键收藏男神女神的课表</view>
+    <view> * 方便快捷蹭课查询</view>
+    <view> * 全校空教室实时查询</view>
+  </view>
+  <button open-type="contact" class='callme'>
+    <image style='width:80rpx;height:80rpx' src='cloud://gzhu-pi-f63be3.677a-gzhu-pi-f63be3/images/icon/kefu.svg'></image>
+    <view style='font-size:90%;margin-left:10rpx'>提供建议</view>
+  </button>
+</modal>

@@ -1,6 +1,6 @@
 <view class='mask' wx:if='{{show}}' bindtap='clickMask'>
 
-  <view class='modal-content'>
+  <view class='modal-content' style='width:{{width}}'>
     <view class='{{custom?"":"main-content"}}'>
       <view class='title' hidden='{{custom}}'>{{title}}</view>
       <scroll-view scroll-y>

@@ -159,6 +159,13 @@ def holdings():
             return res_json(status=408, data=data, msg="connect timeout")
 
 
+# 馆藏信息
+@app.route("/library/visit", methods=["GET"])
+def visit():
+    data = Lib().get_visit()
+    return res_json(status=200, data=data, msg="ok")
+
+
 if __name__ == "__main__":
     app.run("0.0.0.0", threaded=True)
 

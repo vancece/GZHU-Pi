@@ -1,4 +1,6 @@
 from spider.lib_handler import *
+from lxml import html
+import time
 
 
 class Lib(object):
@@ -49,3 +51,24 @@ class Lib(object):
             return get_holdings(res.text)
         except:
             return 0
+
+    # 图书馆进馆人次
+    def get_visit(self):
+        hour = int(time.strftime("%H"))
+        if (0 + 8) <= hour < (6 + 8):       # UCT时区
+            visit = {"master": 0, "branch": 0}
+            return visit
+
+        url = "http://lib.gzhu.edu.cn/w/"
+        res = self.client.get(url, timeout=10)
+
+        html_text = html.fromstring(res.text)
+        view1 = html_text.xpath('//*[@id="form1"]/div[4]/div/p[1]/span[4]')[0].text
+        view2 = html_text.xpath('//*[@id="form1"]/div[4]/div/p[1]/span[5]')[0].text
+
+        master = re.findall("\d+", view1)[0]  # 总馆
+        branch = re.findall("\d+", view2)[0]  # 分馆
+
+        visit = {"master": master, "branch": branch}
+
+        return visit
