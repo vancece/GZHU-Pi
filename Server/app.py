@@ -4,7 +4,6 @@ from spider.sy_spider import *
 from spider.lib_spider import *
 import time
 import copy
-import os
 
 
 def res_json(status=405, data="", msg="Bad request"):
@@ -91,6 +90,20 @@ def exam():
     spider = JW(username, password)
     if spider.login():
         data = spider.get_exam()
+        return res_json(status=200, data=data, msg="request succeed")
+    else:
+        return res_json(status=401, msg="Unauthorized")
+
+
+# 空教室查询
+@app.route("/room", methods=["POST"])
+def room():
+    username = request.form['username']
+    password = request.form['password']
+
+    spider = JW(username, password)
+    if spider.login():
+        data = spider.get_empty_room(request)
         return res_json(status=200, data=data, msg="request succeed")
     else:
         return res_json(status=401, msg="Unauthorized")

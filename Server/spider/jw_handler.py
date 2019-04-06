@@ -124,7 +124,7 @@ def add_credit(text, courses):
     kb_json = json.loads(text)
     course_id = parse('$.items[*].kch').find(kb_json)  # 课程ID
     credit = parse('$.items[*].xf').find(kb_json)  # 课程名称
-    print(len(credit))
+
     for i, item in enumerate(course_id):
         for i2, item2 in enumerate(courses["course_list"]):
             if item.value == item2["course_id"]:
@@ -356,3 +356,96 @@ def handle_grade(grade_list, total_count):
     grade["sem_list"] = sem_list
 
     return grade
+
+
+"""
+空教室查询处理
+"""
+
+
+# 节次和周次 次方处理
+def pow_handle(target):
+    result = 0
+    num_list = target.split(',')
+    for each in num_list:
+        result += pow(2, int(each) - 1)
+    return result
+
+
+# 读取前端发送的表单并合并处理
+def form_handle(request):
+    form_data = {
+        'xqh_id': request.form['xqh_id'],  # 校区号
+        'xnm': request.form['xnm'],  # 学年名
+        'xqm': request.form['xqm'],  # 学期名
+        'cdlb_id': request.form['cdlb_id'],  # 场地类别
+        'qszws': request.form['qszws'],  # 最小座位号
+        'jszws': request.form['jszws'],  # 最大座位号
+        'cdmc': request.form['cdmc'],  # 场地名称
+        'lh': request.form['lh'],  # 楼号
+        'jcd': pow_handle(request.form['jcd']),  # 节次
+        'queryModel.currentPage': request.form['queryModel.currentPage'],  # 前往页面数
+        'nd': str(round(time.time() * 1000)),  # 生成时间戳
+        'xqj': request.form['xqj'],  # 星期
+        'zcd': str(pow_handle(request.form['zcd'])),  # 周次
+    }
+    # 默认参数
+    default = {
+        'fwzt': 'cx',
+        'cdejlb_id': '',
+        'qssd': '',
+        'jssd': '',
+        'qssj': '',
+        'jssj': '',
+        'jyfs': '0',
+        'cdjylx': '',
+        '_search': 'false',
+        'queryModel.showCount': '30',
+        'queryModel.sortName': 'cdbh',
+        'queryModel.sortOrder': 'asc',
+        'time': '1'
+    }
+    # 合并字典
+    form_data = dict(default, **form_data)
+
+    return form_data
+
+
+# 空教室查询---提取有用信息
+def get_empty_room(text):
+    room_json = json.loads(text)
+    items = parse('$.items[*]').find(room_json)
+
+    rooms = []
+    for item in items:
+        room = {}
+        cdbh = parse('$.cdbh').find(item.value)  # 场地编号
+        bz = parse('$.bz').find(item.value)  # 备注
+        cdjylx = parse('$.cdjylx').find(item.value)  # 场地借用类型
+        cdlb_id = parse('$.cdlb_id').find(item.value)  # 场地类别id
+        cdlbmc = parse('$.cdlbmc').find(item.value)  # 场地类别名称
+        cdmc = parse('$.cdmc').find(item.value)  # 场地名称
+        jxlmc = parse('$.jxlmc').find(item.value)  # 教学楼
+        kszws1 = parse('$.kszws1').find(item.value)  # 考试座位数
+        zws = parse('$.zws').find(item.value)  # 座位数
+        xqmc = parse('$.xqmc').find(item.value)  # 校区
+        sydxmc = parse('$.sydxmc').find(item.value)  # 使用部门
+        lch = parse('$.lch').find(item.value)  # 楼层号
+
+        room["cdbh"] = cdbh[0].value if len(cdbh) != 0 else ""
+        room["bz"] = bz[0].value if len(bz) != 0 else ""
+        room["cdjylx"] = cdjylx[0].value if len(cdjylx) != 0 else ""
+        room["cdlb_id"] = cdlb_id[0].value if len(cdlb_id) != 0 else ""
+        room["cdlbmc"] = cdlbmc[0].value if len(cdlbmc) != 0 else ""
+        room["cdmc"] = cdmc[0].value if len(cdmc) != 0 else ""
+        room["jxlmc"] = jxlmc[0].value if len(jxlmc) != 0 else ""
+        room["kszws1"] = kszws1[0].value if len(kszws1) != 0 else ""
+        room["zws"] = zws[0].value if len(zws) != 0 else ""
+        room["xqmc"] = xqmc[0].value if len(xqmc) != 0 else ""
+        room["sydxmc"] = sydxmc[0].value if len(sydxmc) != 0 else ""
+        room["lch"] = lch[0].value if len(lch) != 0 else ""
+
+        rooms.append(room)
+
+    room_data = {'total': room_json['totalCount'], "rooms": rooms}
+    return room_data

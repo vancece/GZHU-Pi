@@ -9,7 +9,8 @@ url = {
     "course": "http://jwxt.gzhu.edu.cn/jwglxt/kbcx/xskbcx_cxXsKb.html?gnmkdm=N2151",
     "grade": "http://jwxt.gzhu.edu.cn/jwglxt/cjcx/cjcx_cxDgXscj.html?doType=query&gnmkdm=N100801",
     "exam": "http://jwxt.gzhu.edu.cn/jwglxt/kwgl/kscx_cxXsksxxIndex.html?doType=query&gnmkdm=N358105",
-    "id-credit": "http://jwxt.gzhu.edu.cn/jwglxt/xsxxxggl/xsxxwh_cxXsxkxx.html?gnmkdm=N100801"  # 获取课程学分
+    "id-credit": "http://jwxt.gzhu.edu.cn/jwglxt/xsxxxggl/xsxxwh_cxXsxkxx.html?gnmkdm=N100801",  # 获取课程学分
+    "empty-room": "http://jwxt.gzhu.edu.cn/jwglxt/cdjy/cdjy_cxKxcdlb.html?doType=query&gnmkdm=N2155"
 }
 
 """
@@ -86,7 +87,7 @@ class JW(object):
         set_log(self.get_info(), "成绩查询")
         return get_grade(res.text)
 
-    def get_exam(self, year="2018", semester="3"):
+    def get_exam(self, year="2018", semester="12"):
         """
         获取考试信息
         :param year: 学年段的第一年
@@ -112,6 +113,14 @@ class JW(object):
 
         set_log(self.get_info(), "考试查询")
         return get_exam(res.text)
+
+    # 查询空教室
+    def get_empty_room(self, request):
+        # 处理表单参数
+        post_data = form_handle(request)
+
+        res = self.client.post(url=url["empty-room"], data=post_data, headers=self.headers)
+        return get_empty_room(res.text)
 
 
 # 把API请求记录写入数据库
