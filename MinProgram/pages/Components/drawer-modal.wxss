@@ -17,9 +17,9 @@
   pointer-events: auto;
 }
 
-/* 内容区域 */
+/* 左侧内容区域 */
 
-.modal-content {
+.modal-left {
   display: inline-block;
   width: 60%;
   height: 100%;
@@ -27,7 +27,7 @@
   transform: translateX(-100%);
 }
 
-.modal-content.show {
+.modal-left.show {
   transform: translateX(0%);
 }
 
@@ -48,4 +48,27 @@
 
 .cancel-img.show {
   transform: rotate(0deg) translateX(-10%);
+}
+
+/* 底部模式 */
+
+.modal-bottom {
+  display: inline-block;
+  width: 100%;
+  transition: 0.5s;
+  transform: translateY(100%);
+  position: absolute;
+  bottom: 0;
+}
+
+.modal-bottom.show {
+  transform: translateY(0%);
+}
+
+.modal-bottom .btn {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 20rpx 30rpx;
+  background: whitesmoke;
 }

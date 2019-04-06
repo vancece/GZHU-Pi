@@ -8,6 +8,10 @@ Component({
       type: Boolean,
       value: false
     },
+    mode: {
+      type: String,
+      value: "left"
+    }
   },
 
   data: {
@@ -20,6 +24,13 @@ Component({
         show: false
       })
     },
+
+    confirm() {
+      this.setData({
+        show: false
+      })
+      this.triggerEvent('confirm')
+    }
 
   },
 
