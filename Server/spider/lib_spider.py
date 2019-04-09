@@ -55,7 +55,7 @@ class Lib(object):
     # 图书馆进馆人次
     def get_visit(self):
         hour = int(time.strftime("%H"))
-        if (0 + 8) <= hour < (6 + 8):       # UCT时区
+        if 0 <= (hour + 8) % 24 < 6:  # UCT时区
             visit = {"master": 0, "branch": 0}
             return visit
 
@@ -72,3 +72,4 @@ class Lib(object):
         visit = {"master": master, "branch": branch}
 
         return visit
+

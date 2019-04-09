@@ -3,6 +3,7 @@ from spider.jw_handler import *
 import time
 import os
 
+
 url = {
     "login": "https://cas.gzhu.edu.cn/cas_server/login?service=http%3A%2F%2Fjwxt.gzhu.edu.cn%2Fjwglxt%2Flyiotlogin",
     "info": "http://jwxt.gzhu.edu.cn/jwglxt/xsxxxggl/xsgrxxwh_cxXsgrxx.html?gnmkdm=N100801&layout=default",
@@ -115,6 +116,7 @@ class JW(object):
         return get_exam(res.text)
 
     # 查询空教室
+
     def get_empty_room(self, request):
         # 处理表单参数
         post_data = form_handle(request)

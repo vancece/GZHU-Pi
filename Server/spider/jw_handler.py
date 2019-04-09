@@ -70,7 +70,6 @@ def get_course(text):
     :param text: 获取的课表JSON文本
     :return: 处理过的课表数据 dict
     """
-
     kb_json = json.loads(text)  # 转换成json,dict类型
 
     # 用jsonpath选取课程信息，类型为list
@@ -138,7 +137,6 @@ def get_grade(text):
     :param text: 获取的成绩JSON文本
     :return: 筛选处理的成绩数据
     """
-
     grade_json = json.loads(text)
     # 筛选数据
     year = parse('$.items[*].xnmmc').find(grade_json)  # 学年 2017~2018
@@ -266,7 +264,6 @@ def handle_grade(grade_list, total_count):
     :param total_count: 成绩数据总条数
     :return:
     """
-
     if total_count == 0:
         grade = {"update_time": time.strftime("%Y-%m-%d %H:%M:%S"), "sem_list": [], "totalCount": total_count}
         return grade
@@ -354,7 +351,6 @@ def handle_grade(grade_list, total_count):
                 sem_list.append(sem_item)
 
     grade["sem_list"] = sem_list
-
     return grade
 
 
@@ -414,37 +410,19 @@ def form_handle(request):
 # 空教室查询---提取有用信息
 def get_empty_room(text):
     room_json = json.loads(text)
-    items = parse('$.items[*]').find(room_json)
-
+    items = room_json["items"]
     rooms = []
+
+    # 场地编号\备注\借用类型\场地类别id\类别名称\场地名称\教学楼\考试座位数\座位数\校区\使用部门
+    target = ["cdbh", "bz", "cdjylx", "cdlb_id", "cdlbmc", "cdmc", "jxlmc", "kszws1", "zws", "xqmc", "sydxmc"]
+
     for item in items:
         room = {}
-        cdbh = parse('$.cdbh').find(item.value)  # 场地编号
-        bz = parse('$.bz').find(item.value)  # 备注
-        cdjylx = parse('$.cdjylx').find(item.value)  # 场地借用类型
-        cdlb_id = parse('$.cdlb_id').find(item.value)  # 场地类别id
-        cdlbmc = parse('$.cdlbmc').find(item.value)  # 场地类别名称
-        cdmc = parse('$.cdmc').find(item.value)  # 场地名称
-        jxlmc = parse('$.jxlmc').find(item.value)  # 教学楼
-        kszws1 = parse('$.kszws1').find(item.value)  # 考试座位数
-        zws = parse('$.zws').find(item.value)  # 座位数
-        xqmc = parse('$.xqmc').find(item.value)  # 校区
-        sydxmc = parse('$.sydxmc').find(item.value)  # 使用部门
-        lch = parse('$.lch').find(item.value)  # 楼层号
-
-        room["cdbh"] = cdbh[0].value if len(cdbh) != 0 else ""
-        room["bz"] = bz[0].value if len(bz) != 0 else ""
-        room["cdjylx"] = cdjylx[0].value if len(cdjylx) != 0 else ""
-        room["cdlb_id"] = cdlb_id[0].value if len(cdlb_id) != 0 else ""
-        room["cdlbmc"] = cdlbmc[0].value if len(cdlbmc) != 0 else ""
-        room["cdmc"] = cdmc[0].value if len(cdmc) != 0 else ""
-        room["jxlmc"] = jxlmc[0].value if len(jxlmc) != 0 else ""
-        room["kszws1"] = kszws1[0].value if len(kszws1) != 0 else ""
-        room["zws"] = zws[0].value if len(zws) != 0 else ""
-        room["xqmc"] = xqmc[0].value if len(xqmc) != 0 else ""
-        room["sydxmc"] = sydxmc[0].value if len(sydxmc) != 0 else ""
-        room["lch"] = lch[0].value if len(lch) != 0 else ""
-
+        for i in target:
+            try:
+                room[i] = item[i]
+            except:
+                room[i] = ''
         rooms.append(room)
 
     room_data = {'total': room_json['totalCount'], "rooms": rooms}
