@@ -26,7 +26,9 @@ Component({
           })
           break
         case "1":
-
+          wx.navigateTo({
+            url: '/pages/Campus/tools/emptyRoom',
+          })
           break
         case "2":
           wx.navigateTo({
@@ -39,7 +41,9 @@ Component({
           })
           break
         case "4":
-
+          wx.navigateTo({
+            url: '/pages/Campus/tools/exam',
+          })
           break
         case "5":
           wx.navigateTo({
@@ -52,9 +56,9 @@ Component({
           })
           break
         case "7":
-          wx.navigateTo({
-            url: '/pages/Setting/login/bindStudent',
-          })
+          // wx.navigateTo({
+          //   url: '/module/vote/vote',
+          // })
           break
       }
     },

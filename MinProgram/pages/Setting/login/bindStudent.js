@@ -95,7 +95,10 @@ Page({
         that.login()
       }
     }
-
+  
+    wx.BaaS.auth.loginWithWechat().then(user => {
+    }, err => {
+    })
     wx.BaaS.auth.loginWithWechat(data).then(res => {}, res => {})
   },
 
@@ -132,7 +135,7 @@ Page({
     let that = this
     wx.request({
       method: "POST",
-      url: this.data.api + "bind",
+      url: this.data.api + "student_info",
       header: {
         'content-type': 'application/x-www-form-urlencoded'
       },
@@ -164,13 +167,10 @@ Page({
         })
         app.globalData.bindStatus = true
         app.globalData.account = that.data.account
-        wx.hideLoading()
         // 同步课表
         that.syncData("course")
-
       },
       fail: function(err) {
-        wx.hideLoading()
         console.log("err:", err)
         wx.showToast({
           title: "访问超时",
@@ -178,6 +178,7 @@ Page({
         })
       },
       complete: function() {
+        wx.hideLoading()
         that.setData({
           hideLoginBtn1: false,
           hideLoginBtn2: true,
@@ -214,9 +215,6 @@ Page({
           })
           return
         }
-        wx.showToast({
-          title: "同步完成",
-        })
 
         // 缓存信息
         wx.setStorage({
@@ -227,6 +225,9 @@ Page({
               url: '/pages/Campus/home/home',
             })
           }
+        })
+        wx.showToast({
+          title: "同步完成",
         })
       },
       fail: function(err) {

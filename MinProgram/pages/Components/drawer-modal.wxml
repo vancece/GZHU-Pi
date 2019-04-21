@@ -4,10 +4,9 @@
     <view style='margin-top:{{navBarHeight}}px'></view>
     <image bindtap='cancel' class='cancel-img {{show==true?"show":""}}' src='/assets/back.png'></image>
 
-    <slot></slot>
+    <slot name="left"></slot>
 
   </view>
-
 
   <!-- 底部弹窗 -->
   <view class='modal-bottom {{show==true?"show":""}}' hidden='{{mode!="bottom"}}'>
@@ -16,8 +15,9 @@
       <view style='color:#39b54a' bindtap='confirm'>确定</view>
     </view>
 
-    <slot></slot>
+    <slot name="bottom"></slot>
 
   </view>
+
 
 </view>

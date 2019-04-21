@@ -2,13 +2,18 @@
 
 
 <view class='page'>
+  <view class='img' bindtap='preview' id="2">
+    <image mode='widthFix' src='{{urls[2]}}'></image>
+    <view class='text'>校历（修订版）</view>
+  </view>
+
   <view class='img' bindtap='preview' id="0">
-    <image mode='widthFix' src='https://677a-gzhu-pi-f63be3-1258677591.tcb.qcloud.la/images/campus/1.jpg'></image>
+    <image mode='widthFix' src='{{urls[0]}}'></image>
     <view class='text'>点击查看高清大图</view>
   </view>
 
   <view class='img' bindtap='preview' id="1">
-    <image mode='widthFix' src='https://677a-gzhu-pi-f63be3-1258677591.tcb.qcloud.la/images/campus/2.jpg'></image>
+    <image mode='widthFix' src='{{urls[1]}}'></image>
     <view class='text'>点击查看高清大图</view>
   </view>
   

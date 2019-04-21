@@ -1,0 +1,5 @@
+{
+  "usingComponents": {
+    "modal": "/module/com/modal"
+  }
+}

@@ -4,7 +4,7 @@
   <view class='search-box'>
     <input name="query" placeholder='场地名/编号'></input>
     <button formType="submit" class='search-btn' hover-class='search-btn-hover' hover-stay-time='0.2s'>
-      <image src='cloud://gzhu-pi-f63be3.677a-gzhu-pi-f63be3/images/icon/search-white.svg'></image>
+      <image src='https://cos.ifeel.vip/gzhu-pi/images/icon/search-white.svg'></image>
     </button>
   </view>
 </form>
@@ -14,35 +14,37 @@
   <view class='filter' bindtap='openFilter'>筛选</view>
 </view>
 
-<view>
-  <view wx:for="{{rooms}}" wx:key="{{index}}" class='room'>
 
-    <view class='title'>{{index+1}}. {{item.cdmc}}</view>
+<view wx:for="{{rooms}}" wx:key="{{index}}" class='room'>
 
-    <view class='p1'>
-      <view class='p2' style='flex:3'>
-        <view>编号：{{item.cdbh}}</view>
-        <view>类别：{{item.cdlbmc}}</view>
-      </view>
+  <view class='title'>{{index+1}}. {{item.cdmc}}</view>
 
-      <view class='p2' style='flex:2'>
-        <view>座位：{{item.zws}}</view>
-        <view>校区：{{item.xqmc}}</view>
-      </view>
+  <view class='p1'>
+    <view class='p2' style='flex:3'>
+      <view>编号：{{item.cdbh}}</view>
+      <view>类别：{{item.cdlbmc}}</view>
     </view>
 
-    <view wx:if="{{item.bz}}" class='p1'>备注：{{item.bz}}</view>
-    <view class='p1'>
-      <view wx:if="{{item.cdjylx}}" style='flex:3'>借用类型：{{item.cdjylx}}</view>
-      <view wx:if="{{item.sydxmc}}" style='flex:2'>使用：{{item.sydxmc}}</view>
+    <view class='p2' style='flex:2'>
+      <view>座位：{{item.zws}}</view>
+      <view>校区：{{item.xqmc}}</view>
     </view>
   </view>
+
+  <view wx:if="{{item.bz}}" class='p1'>备注：{{item.bz}}</view>
+  <view class='p1'>
+    <view wx:if="{{item.cdjylx}}" style='flex:3'>借用类型：{{item.cdjylx}}</view>
+    <view wx:if="{{item.sydxmc}}" style='flex:2'>使用：{{item.sydxmc}}</view>
+  </view>
 </view>
+<view wx:if="{{total!=0}}" style='color:grey;font-size:85%;text-align:center;margin:20rpx'>上拉加载更多...</view>
+
+
 
 <!-- 查询条件弹窗 -->
 
 <drawer-modal mode="bottom" show="{{showFilter}}" bind:confirm="confirm">
-  <view catchtap="catchtap" style='background:rgba(250,250,250,0.9);padding:10rpx 20rpx'>
+  <view slot="bottom" catchtap="catchtap" style='background:rgba(250,250,250,0.9);padding:10rpx 20rpx'>
     <!-- 周次 -->
     <view class='title'>校区</view>
     <view class='selection' bindtap='switchZone' style='margin:20rpx;'>> {{tapIndex==1?"桂花岗校区":"大学城校区"}} </view>

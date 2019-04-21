@@ -1,5 +1,5 @@
 page {
-  background: #ecececf1;
+  background: rgba(240, 240, 240, 0.9);
 }
 
 .search-box {

@@ -5,28 +5,21 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    urls: [
+      ["https://cos.ifeel.vip/gzhu-pi/images/campus/1.jpg"],
+      ["https://cos.ifeel.vip/gzhu-pi/images/campus/2.jpg"],
+      ["https://cos.ifeel.vip/gzhu-pi/images/campus/calendar_new.png"]
+    ]
   },
 
   preview(e) {
-    let urls = [
-      ["https://677a-gzhu-pi-f63be3-1258677591.tcb.qcloud.la/images/campus/1.jpg"],
-      ["https://677a-gzhu-pi-f63be3-1258677591.tcb.qcloud.la/images/campus/2.jpg"]
-      
-    ]
+    let id = Number(e.currentTarget.id)
+    wx.previewImage({
+      urls: this.data.urls[id],
+    })
 
-    if (e.currentTarget.id == "0") {
-      wx.previewImage({
-        urls: urls[0],
-      })
-    }
-    if (e.currentTarget.id == "1") {
-      wx.previewImage({
-        urls: urls[1],
-      })
-    }
   },
-  onShareAppMessage: function () {
+  onShareAppMessage: function() {
 
   }
 })

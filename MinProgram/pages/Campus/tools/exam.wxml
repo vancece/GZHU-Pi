@@ -1,0 +1,19 @@
+<navBar title="考试查询" navColor=""></navBar>
+
+<view class='page'>
+  <view class='body'>
+    <view class='base-info'>
+      <view style='font-size: 115%; font-weight:bold;'>{{exam[0].year}}学年 第{{exam[0].sem}}学期 </view>
+      <view style='color:grey;padding:10rpx'>{{exam[0].major}}</view>
+    </view>
+
+    <view wx:for="{{exam}}" wx:key="{{index}}" class='exam-list'>
+      <view class='course'>{{item.exam_course}}</view>
+      <view class='exam-room'>{{item.exam_room}}</view>
+      <view>{{item.exam_time}}</view>
+    </view>
+  </view>
+
+  <button type='primary' class='share-btn' open-type='share'>分享到班级</button>
+  <view style='font-size:80%;text-align:center;color:grey'>下拉可刷新同步</view>
+</view>

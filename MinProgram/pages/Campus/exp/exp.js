@@ -11,6 +11,7 @@ Page({
 
 
   onLoad: function(options) {},
+
   onShareAppMessage: function() {},
   onShow: function() {
     this.setData({

@@ -1,4 +1,6 @@
-<navBar title="书本详情" navColor="white"></navBar>
+<navBar title="书本详情" navColor="rgba(255, 255, 255, 0.8)"></navBar>
+
+<image bindtap='favorite' class='float-icon' mode='aspectFit' src='https://cos.ifeel.vip/gzhu-pi/images/icon/favorite{{favorite?"d":""}}.svg'></image>
 
 <!-- 传入的数据 -->
 <view class='book'>
@@ -7,7 +9,7 @@
   </view>
   <view class='book-info'>
     <view class='cover'>
-      <image mode='aspectFit' src='{{book.image!=""?book.image:douban.image==""?noCover:douban.image}}'></image>
+      <image mode='aspectFit' src='{{douban.image==""?noCover:douban.image}}'></image>
     </view>
     <view class='info'>
       <view>
@@ -76,8 +78,8 @@
         <view class='average'>
           <view>{{douban.rating.average}}</view>
           <text style='font-size:12px;'>({{douban.rating.numRaters}}人评分)</text>
+          <view class='star' style='background-position: 0 {{-20*tool.star(douban.rating.average)}}px;'></view>
         </view>
-        <view class='star' style='background-position: 0 {{-30*tool.star(douban.rating.average)}}px;'></view>
       </view>
     </view>
 

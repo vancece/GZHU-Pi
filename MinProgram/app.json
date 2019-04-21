@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/Campus/tools/emptyRoom",
     "pages/Campus/home/home",
+    "pages/Campus/tools/emptyRoom",
     "pages/Setting/login/sync",
     "pages/Campus/exp/exp",
     "pages/Setting/about/about",
@@ -12,7 +12,8 @@
     "pages/Life/wall/wall",
     "pages/Setting/mine/mine",
     "pages/Campus/evaluation/evaluation",
-    "pages/Campus/gzhu/index"
+    "pages/Campus/gzhu/index",
+    "pages/Campus/tools/exam"
   ],
   "subpackages": [
     {
@@ -23,6 +24,13 @@
         "detail",
         "sub/tools"
       ]
+    },
+    {
+      "root": "module",
+      "pages": [
+        "vote/vote"
+      ],
+      "independent": true
     }
   ],
   "window": {
@@ -34,7 +42,7 @@
   },
   "plugins": {
     "sdkPlugin": {
-      "version": "2.0.2",
+      "version": "2.0.8",
       "provider": "wxc6b86e382a1e3294"
     },
     "brickLayout": {
@@ -42,8 +50,9 @@
       "provider": "wx3c042630f3cdc175"
     },
     "tencentvideo": {
-      "version": "1.2.5",
+      "version": "1.2.9",
       "provider": "wxa75efa648b60994b"
     }
-  }
+  },
+  "sitemapLocation": "sitemap.json"
 }

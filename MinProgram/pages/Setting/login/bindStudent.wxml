@@ -2,9 +2,9 @@
 <!-- 登录教务系统 -->
 <view class='page'>
   <view class='exchange'>
-    <image mode='widthFix' class='icon' src='https://cloud-minapp-17768.cloud.ifanrusercontent.com/1g0eSyIiSqFIBEZe.png'></image>
+    <image mode='widthFix' class='icon' src='https://cloud-minapp-17768.cloud.ifanrusercontent.com/1g0eSyIiSqFIBEZe.png!/fw/150'></image>
     <image mode='widthFix' style='width:80rpx' src='https://cloud-minapp-17768.cloud.ifanrusercontent.com/1g3BtwlkzLFxmpCY.png'></image>
-    <image mode='widthFix' class='icon' src='https://cloud-minapp-17768.cloud.ifanrusercontent.com/1fx04mwWmqxrOljX.png'></image>
+    <image mode='widthFix' class='icon' src='https://cloud-minapp-17768.cloud.ifanrusercontent.com/1fx04mwWmqxrOljX.png!/fw/150'></image>
   </view>
 
   <!-- 登录绑定 -->

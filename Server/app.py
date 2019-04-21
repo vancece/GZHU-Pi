@@ -52,6 +52,20 @@ def bind():
     else:
         return res_json(status=401, msg="Unauthorized")
 
+# 登录绑定，获取学生信息
+@app.route("/student_info", methods=["POST"])
+def student_info():
+    username = request.form['username']
+    password = request.form['password']
+
+    spider = JW(username, password)
+    if spider.login():
+        student_info = spider.get_info()
+        data = copy.deepcopy(student_info)
+        set_log(student_info, "登录绑定")
+        return res_json(status=200, data=data, msg="request succeed")
+    else:
+        return res_json(status=401, msg="Unauthorized")
 
 # 课表查询
 @app.route("/course", methods=["POST"])

@@ -1,9 +1,9 @@
-<navBar hideTitle="{{true}}">
+<navBar hideTitle="{{true}}" navColor="rgba(240, 240, 240, 0.8)">
   <form bindsubmit='formSubmit'>
     <view class='search-box'>
       <input name="query" placeholder='{{query}}'></input>
       <button formType="submit" class='search-btn' hover-class='search-btn-hover' hover-stay-time='0.2s'>
-        <image src='cloud://gzhu-pi-f63be3.677a-gzhu-pi-f63be3/images/icon/search-white.svg'></image>
+        <image src='https://cos.ifeel.vip/gzhu-pi/images/icon/search-white.svg'></image>
       </button>
     </view>
   </form>

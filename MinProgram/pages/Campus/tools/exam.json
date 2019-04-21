@@ -1,0 +1,7 @@
+{
+  "backgroundTextStyle": "dark",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "navBar": "/pages/Components/navBar"
+  }
+}

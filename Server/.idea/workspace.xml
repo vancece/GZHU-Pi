@@ -2,12 +2,49 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a5b7c32f-f673-4e8f-b7e9-a051183d78be" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../MinProgram/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/assets/left.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/assets/menu.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/assets/up.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/exp/exp.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/exp/exp.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/exp/exp.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/exp/exp.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/grade/grade.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/grade/grade.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/home/components/units/appNav.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/home/components/units/appNav.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/home/components/units/appNav.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/home/components/units/appNav.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/home/home.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/home/home.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/home/home.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/home/home.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/library/detail.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/library/detail.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/library/detail.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/library/detail.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/library/detail.wxss" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/library/detail.wxss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/library/list.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/library/list.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/library/list.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/library/list.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/library/list.wxss" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/library/list.wxss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/library/search.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/library/search.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/library/search.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/library/search.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/library/search.wxss" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/library/search.wxss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/library/sub/tools.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/library/sub/tools.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/library/sub/tools.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/library/sub/tools.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/library/sub/tools.wxss" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/library/sub/tools.wxss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/tools/calendar.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/tools/calendar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/tools/calendar.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/tools/calendar.wxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/tools/emptyRoom.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/tools/emptyRoom.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/tools/emptyRoom.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/tools/emptyRoom.wxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/tools/emptyRoom.wxss" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/tools/emptyRoom.wxss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Components/drawer-modal.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Components/drawer-modal.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Components/drawer-modal.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Components/drawer-modal.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Components/navBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Components/navBar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Components/navBar.wxss" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Components/navBar.wxss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Setting/about/about.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Setting/about/about.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Setting/login/bindStudent.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Setting/login/bindStudent.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Setting/login/bindStudent.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Setting/login/bindStudent.wxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../MinProgram/project.config.json" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/project.config.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/utils/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/utils/config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/utils/request.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/utils/request.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/utils/setting.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/utils/setting.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spider/exam_spider.py" beforeDir="false" afterPath="$PROJECT_DIR$/spider/exam_spider.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/spider/jw_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/spider/jw_handler.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/spider/jw_spider.py" beforeDir="false" afterPath="$PROJECT_DIR$/spider/jw_spider.py" afterDir="false" />
     </list>
@@ -18,13 +55,13 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/Server$exam_spider.coverage" NAME="exam_spider Coverage Results" MODIFIED="1553502027218" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/spider" />
-    <SUITE FILE_PATH="coverage/Server$jw_handler.coverage" NAME="jw_handler Coverage Results" MODIFIED="1554482800891" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/spider" />
+    <SUITE FILE_PATH="coverage/Server$exam_spider.coverage" NAME="exam_spider Coverage Results" MODIFIED="1554698751653" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/spider" />
+    <SUITE FILE_PATH="coverage/Server$jw_handler.coverage" NAME="jw_handler Coverage Results" MODIFIED="1554692062612" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/spider" />
     <SUITE FILE_PATH="coverage/Server$aa.coverage" NAME="aa Coverage Results" MODIFIED="1553011717225" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Server$sy_spider.coverage" NAME="sy_spider Coverage Results" MODIFIED="1552476777424" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/spider" />
-    <SUITE FILE_PATH="coverage/Server$lib_spider.coverage" NAME="lib_spider Coverage Results" MODIFIED="1554266952896" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/spider" />
     <SUITE FILE_PATH="coverage/Server$exam_handler.coverage" NAME="exam_handler Coverage Results" MODIFIED="1554441873810" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/spider" />
-    <SUITE FILE_PATH="coverage/Server$Flask__app_py_.coverage" NAME="Flask (app.py) Coverage Results" MODIFIED="1554563811425" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Server$lib_spider.coverage" NAME="lib_spider Coverage Results" MODIFIED="1554692027488" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/spider" />
+    <SUITE FILE_PATH="coverage/Server$Flask__app_py_.coverage" NAME="Flask (app.py) Coverage Results" MODIFIED="1554829288199" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="CoverageViewManager">
     <option name="myElementSize" value="321" />
@@ -34,8 +71,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="95">
-              <caret line="5" column="11" selection-start-line="5" selection-start-column="11" selection-end-line="5" selection-end-column="11" />
+            <state relative-caret-position="-1296">
+              <caret line="60" column="35" lean-forward="true" selection-start-line="60" selection-start-column="35" selection-end-line="60" selection-end-column="35" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
               </folding>
@@ -43,11 +80,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/spider/jw_spider.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="211">
-              <caret line="122" column="39" lean-forward="true" selection-start-line="122" selection-start-column="39" selection-end-line="122" selection-end-column="39" />
+            <state relative-caret-position="266">
+              <caret line="141" lean-forward="true" selection-start-line="141" selection-end-line="141" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -55,11 +92,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/spider/jw_handler.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-268">
-              <caret line="381" column="48" lean-forward="true" selection-start-line="381" selection-start-column="48" selection-end-line="381" selection-end-column="48" />
+            <state relative-caret-position="3344">
+              <caret line="180" column="7" selection-start-line="180" selection-start-column="7" selection-end-line="180" selection-end-column="7" />
               <folding>
                 <element signature="e#0#21#0" expanded="true" />
               </folding>
@@ -98,18 +135,18 @@
         <option value="$PROJECT_DIR$/spider/sy_handler.py" />
         <option value="$PROJECT_DIR$/spider/sy_spider.py" />
         <option value="$PROJECT_DIR$/spider/lib_handler.py" />
-        <option value="$PROJECT_DIR$/spider/exam_spider.py" />
         <option value="$PROJECT_DIR$/spider/lib_spider.py" />
+        <option value="$PROJECT_DIR$/spider/exam_spider.py" />
+        <option value="$PROJECT_DIR$/spider/jw_handler.py" />
+        <option value="$PROJECT_DIR$/app.py" />
         <option value="$PROJECT_DIR$/spider/exam_handler.py" />
         <option value="$PROJECT_DIR$/spider/jw_spider.py" />
-        <option value="$PROJECT_DIR$/app.py" />
-        <option value="$PROJECT_DIR$/spider/jw_handler.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="57" />
-    <option name="y" value="21" />
+  <component name="ProjectFrameBounds" extendedState="7">
+    <option name="x" value="354" />
+    <option name="y" value="123" />
     <option name="width" value="1623" />
     <option name="height" value="921" />
   </component>
@@ -121,6 +158,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -133,16 +171,23 @@
               <item name="Server" type="462c0819:PsiDirectoryNode" />
               <item name="spider" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="Server" type="b2602c69:ProjectViewProjectNode" />
+              <item name="External Libraries" type="cb654da1:ExternalLibrariesNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
@@ -159,7 +204,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Flask server.Flask (app.py)">
+  <component name="RunManager" selected="Python.jw_spider">
     <configuration name="exam_handler" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Server" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -226,7 +271,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="lib_spider" type="PythonConfigurationType" factoryName="Python" temporary="true">
+    <configuration name="jw_spider" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Server" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -239,7 +284,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/spider/lib_spider.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/spider/jw_spider.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -248,7 +293,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="Flask (app.py)" type="Python.FlaskServer" factoryName="Flask server" temporary="true" nameIsGenerated="true">
+    <configuration name="Flask (app.py)" type="Python.FlaskServer" temporary="true" nameIsGenerated="true">
       <module name="Server" />
       <option name="target" value="$PROJECT_DIR$/app.py" />
       <option name="targetType" value="PATH" />
@@ -263,7 +308,7 @@
       <option name="launchJavascriptDebuger" value="false" />
       <method v="2" />
     </configuration>
-    <configuration name="Server" type="Python.FlaskServer" factoryName="Flask server">
+    <configuration name="Server" type="Python.FlaskServer">
       <module name="Server" />
       <option name="target" value="$PROJECT_DIR$/app.py" />
       <option name="targetType" value="PATH" />
@@ -282,17 +327,17 @@
       <item itemvalue="Flask server.Server" />
       <item itemvalue="Flask server.Flask (app.py)" />
       <item itemvalue="Python.exam_spider" />
-      <item itemvalue="Python.lib_spider" />
       <item itemvalue="Python.exam_handler" />
       <item itemvalue="Python.jw_handler" />
+      <item itemvalue="Python.jw_spider" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Flask server.Flask (app.py)" />
-        <item itemvalue="Python.jw_handler" />
+        <item itemvalue="Python.jw_spider" />
         <item itemvalue="Python.exam_handler" />
-        <item itemvalue="Python.lib_spider" />
+        <item itemvalue="Flask server.Flask (app.py)" />
         <item itemvalue="Python.exam_spider" />
+        <item itemvalue="Python.jw_handler" />
       </list>
     </recent_temporary>
   </component>
@@ -327,23 +372,30 @@
       <workItem from="1554447925782" duration="1004000" />
       <workItem from="1554462161083" duration="3981000" />
       <workItem from="1554480094658" duration="2348000" />
-      <workItem from="1554530501236" duration="7000000" />
+      <workItem from="1554530501236" duration="9524000" />
+      <workItem from="1554690858760" duration="3244000" />
+      <workItem from="1554826880122" duration="2756000" />
+      <workItem from="1555401080747" duration="1221000" />
+      <workItem from="1555404414412" duration="1670000" />
+      <workItem from="1555430159000" duration="5630000" />
+      <workItem from="1555731992929" duration="143000" />
+      <workItem from="1555765526212" duration="3363000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="67773000" />
+    <option name="totallyTimeSpent" value="88324000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1721" height="944" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.122068554" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.122669876" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32951653" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.2697201" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.34351146" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3994911" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -352,7 +404,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.3167939" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.20737913" />
       <window_info anchor="bottom" id="Python Console" order="12" weight="0.32951653" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -365,31 +417,16 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Server$jw_spider.coverage" NAME="jw_spider Coverage Results" MODIFIED="1555767131522" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/spider" />
+    <SUITE FILE_PATH="coverage/Server$exam_handler.coverage" NAME="exam_handler Coverage Results" MODIFIED="1555732032851" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/spider" />
+    <SUITE FILE_PATH="coverage/Server$Flask__app_py_.coverage" NAME="Flask (app.py) Coverage Results" MODIFIED="1555494769203" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/aa.py" />
     <entry file="file://$USER_HOME$/.PyCharm2018.3/system/python_stubs/1068538999/time.py" />
     <entry file="file://D:/Program Files/Anaconda/Lib/site-packages/requests/api.py" />
     <entry file="file://$PROJECT_DIR$/spider/visit_data.json" />
-    <entry file="file://$PROJECT_DIR$/spider/lib_handler.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="436">
-          <caret line="96" selection-start-line="96" selection-end-line="96" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/spider/lib_spider.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="436">
-          <caret line="58" column="46" selection-start-line="58" selection-start-column="46" selection-end-line="58" selection-end-column="46" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/spider/sy_handler.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="114">
@@ -410,16 +447,67 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://D:/Program Files/Anaconda/Lib/site-packages/flask/app.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="821" selection-start-line="821" selection-end-line="821" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/spider/lib_handler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="94">
+          <caret line="96" selection-start-line="96" selection-end-line="96" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/Program Files/Anaconda/Lib/site-packages/requests/sessions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="163">
+          <caret line="520" selection-start-line="520" selection-end-line="520" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/spider/lib_spider.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="872">
+          <caret line="75" selection-start-line="75" selection-end-line="75" />
+          <folding>
+            <element signature="e#0#32#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/spider/exam_spider.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-line="10" selection-end-column="23" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/spider/exam_handler.py">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/spider/exam_spider.py">
-      <provider selected="true" editor-type-id="text-editor" />
+    <entry file="file://$PROJECT_DIR$/spider/jw_handler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3344">
+          <caret line="180" column="7" selection-start-line="180" selection-start-column="7" selection-end-line="180" selection-end-column="7" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="5" column="11" selection-start-line="5" selection-start-column="11" selection-end-line="5" selection-end-column="11" />
+        <state relative-caret-position="-1296">
+          <caret line="60" column="35" lean-forward="true" selection-start-line="60" selection-start-column="35" selection-end-line="60" selection-end-column="35" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
           </folding>
@@ -428,20 +516,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/spider/jw_spider.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="211">
-          <caret line="122" column="39" lean-forward="true" selection-start-line="122" selection-start-column="39" selection-end-line="122" selection-end-column="39" />
+        <state relative-caret-position="266">
+          <caret line="141" lean-forward="true" selection-start-line="141" selection-end-line="141" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/spider/jw_handler.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-268">
-          <caret line="381" column="48" lean-forward="true" selection-start-line="381" selection-start-column="48" selection-end-line="381" selection-end-column="48" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
           </folding>
         </state>
       </provider>

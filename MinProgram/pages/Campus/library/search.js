@@ -1,11 +1,9 @@
-// pages/Campus/library/search.js
-Page({
 
+Page({
 
   data: {
 
   },
-
 
   onLoad: function(options) {
     let that = this

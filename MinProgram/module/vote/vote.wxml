@@ -1,0 +1,68 @@
+<view style='margin-top:{{statusBarHeight+10}}px'></view>
+
+
+
+<view style='text-align:center'>
+  <view style='font-weight:bold'>广州大学女生风采大赛</view>
+  <view class='title'>人气王投票</view>
+  <view style='margin:20rpx;'>复赛</view>
+</view>
+
+
+<view wx:for="{{vote_list}}" wx:key="{{index}}" class='vote-list' bindtap='select' data-id="{{index}}" data-record="{{item.id}}" style='background:{{tmp_list[index]?"rgba(102, 240, 0, 0.7)":""}}'>
+  <view class='item'>
+    <view class='p1'>
+      <view style='flex:1'>{{item.No}}</view>
+      <view style='flex:4;color:brown'>{{item.perform}}</view>
+    </view>
+
+    <view class='cp-list'>
+      <view wx:for="{{item.info}}" wx:key="{{id}}" wx:for-item="each" class='info'>
+        <image class='avatar' bindtap='viewImg' data-img="{{each.img}}" mode='aspectFill' src='{{each.img}}!/fw/150'></image>
+        <view class='name'>{{each.name}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class='count'>
+    <view>{{item.count}}</view>
+    <view style='font-size:70%'>票</view>
+  </view>
+</view>
+
+
+<modal show="{{show}}" title="PICK HER" bind:confirm="confirm">
+  <view>
+    <view style='display:flex;justify-content:space-around;margin:20rpx 0;'>
+      <view wx:for="{{selected}}" wx:key="{{index}}" bindtap='keyFor' data-perform="{{item.perform}}">
+        <image src='{{item.info[0].img}}' class='avatar' mode='aspectFill'></image>
+        <view style='color:{{key_for==item.perform?"green":"grey"}};font-size:85%;text-align:center;font-weight:{{key_for==item.perform?"bold":"normal"}}'>{{item.No}}</view>
+      </view>
+    </view>
+
+    <view style='color:grey;font-size:80%;text-align:center'>
+      <view>可再为你喜欢的一位选手加投2票</view>
+      <view>注：无论投票码是否正确都会提交</view>
+    </view>
+
+  </view>
+</modal>
+
+
+<view class='form' wx:if="{{end}}">
+  <button class='vote-btn' style='background:white;color:black'>不在投票时间</button>
+</view>
+
+<form bindsubmit='formSubmit' report-submit='{{true}}' wx:if="{{!end}}">
+  <view class='form' wx:if="{{votedToday}}">
+    <button class='vote-btn' style='background:white;color:black'>今天已经投票</button>
+  </view>
+
+  <view class='form' wx:if="{{!votedToday}}">
+    <input name="key" placeholder='线下投票码(选填)' type='number'></input>
+    <button class='vote-btn' wx:if="{{selected.length!=3}}" style='background:white;color:black' open-type="getUserInfo" bindgetuserinfo="userInfoHandler">请选择3项</button>
+    <button form-type='submit' class='vote-btn' wx:if="{{selected.length==3}}" open-type="getUserInfo" bindgetuserinfo="userInfoHandler">PICK</button>
+  </view>
+</form>
+
+<official-account></official-account>

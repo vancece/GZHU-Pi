@@ -8,6 +8,21 @@ Page({
   },
 
   onLoad: function(options) {
+
+    // 从收藏页面进入 options.id != undefined 
+    if (options.id != undefined) {
+      let fav = wx.getStorageSync("fav_books")
+      let fav_book = fav[options.id]
+
+      this.setData({
+        book: fav_book
+      })
+      this.checkFav()
+      this.douban(fav_book.ISBN)
+      this.getHoldings(fav_book.id, fav_book.source)
+      return
+    }
+
     // 根据点击获取上一页面对应书本的信息
     let curPage = getCurrentPages()
     let prePage = curPage[curPage.length - 2]
@@ -20,7 +35,75 @@ Page({
       this.douban(book.ISBN)
     if (book.copies != 0)
       this.getHoldings(book.id, book.source)
+
+    this.checkFav()
   },
+
+  checkFav() {
+    let fav = wx.getStorageSync("fav_books")
+    if (fav == "") {
+      this.setData({
+        favorite: false
+      })
+      return
+    }
+    let flag = false
+    for (let i = 0; i < fav.length; i++) {
+      if (fav[i].ISBN == this.data.book.ISBN) {
+        flag = true
+      }
+    }
+    this.setData({
+      favorite: flag
+    })
+  },
+
+  // 点击图标收藏
+  favorite() {
+    if (this.data.book.ISBN == "") {
+      wx.showToast({
+        title: '无ISBN，无法收藏',
+        icon: 'none'
+      })
+      return
+    }
+
+    let book = {
+      id: this.data.book.id,
+      source: this.data.book.source,
+      ISBN: this.data.book.ISBN,
+      book_name: this.data.book.book_name,
+      call_No: this.data.book.call_No,
+      author: this.data.book.author,
+      publisher: this.data.exist ? this.data.douban.publisher : this.data.book.publisher,
+      image: this.data.exist ? this.data.douban.image : this.data.noCover
+    }
+
+    let fav = wx.getStorageSync("fav_books")
+    let flag = -1
+
+    if (fav == "") {
+      wx.setStorageSync("fav_books", [book])
+    } else {
+      for (let i = 0; i < fav.length; i++) {
+        if (fav[i].ISBN == this.data.book.ISBN) {
+          flag = i
+        }
+      }
+
+      if (flag != -1) {
+        // 取消收藏
+        fav.splice(flag, 1)
+        wx.setStorageSync("fav_books", fav)
+      } else {
+        // 加入收藏
+        fav[fav.length] = book
+        wx.setStorageSync("fav_books", fav)
+      }
+    }
+    this.checkFav()
+  },
+
 
   // 豆瓣获取图书信息
   douban(ISBN) {
@@ -66,12 +149,12 @@ Page({
     var time = new Date()
     if (time.getHours() >= 0 && time.getHours() < 7) {
       wx.showToast({
-        title: '当前时间段不可用~',
+        title: '当前数据馆藏查询不可用~',
         icon: "none"
       })
       return
     }
-    
+
     let that = this
     let url = "https://1171058535813521.cn-shanghai.fc.aliyuncs.com/2016-08-15/proxy/GZHU-API/Spider/"
     wx.request({

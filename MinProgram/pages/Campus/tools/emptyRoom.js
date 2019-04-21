@@ -60,7 +60,7 @@ Page({
       })
       return
     }
-    this.getRooms()
+    this.getRooms(true)
   },
 
   checkAccount() {
@@ -85,18 +85,26 @@ Page({
     console.log(e.detail.value.query)
     if (e.detail.value.query == "") {
       wx.showToast({
-        title: '请输入场地名称',
+        title: '默认查询当天全部',
         icon: "none"
       })
-      return
     }
     this.data.postDate.cdmc = e.detail.value.query
     this.getRooms()
   },
 
 
-  getRooms() {
+  getRooms(load = false) {
+    var time = new Date()
+    if (time.getHours() >= 0 && time.getHours() < 7) {
+      wx.showToast({
+        title: '当前时间段不可用~',
+        icon: "none"
+      })
+      return
+    }
     if (!this.checkAccount()) return
+
     let that = this
     wx.showLoading({
       title: '加载中...',
@@ -104,7 +112,8 @@ Page({
     })
 
     wx.request({
-      url: 'http://127.0.0.1:5000/room',
+      // url:"http://127.0.0.1:5000/room",
+      url: 'https://1171058535813521.cn-shanghai.fc.aliyuncs.com/2016-08-15/proxy/GZHU-API/Spider/room',
       data: this.data.postDate,
       method: "post",
       header: {
@@ -129,9 +138,13 @@ Page({
           title: '找到 ' + res.data.data.total + " 间教室",
           icon: "none"
         })
-        console.log(res.data.data)
+
+        let rooms = res.data.data.rooms
+        if (load) { //加载更多，拼接
+          rooms = that.data.rooms.concat(res.data.data.rooms)
+        }
         that.setData({
-          rooms: that.data.rooms.concat(res.data.data.rooms),
+          rooms: rooms,
           total: res.data.data.total,
         })
       },
@@ -156,6 +169,7 @@ Page({
 
   // 弹窗确定
   confirm() {
+    this.data.postDate["queryModel.currentPage"] = 1
     this.form()
     this.getRooms()
   },

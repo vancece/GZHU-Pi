@@ -1,4 +1,6 @@
 var Config = require("/utils/config.js")
+var Request = require("/utils/request.js")
+
 App({
 
   globalData: {
@@ -14,8 +16,10 @@ App({
     // 初始化知晓云
     wx.BaaS = requirePlugin('sdkPlugin')
     wx.BaaS.wxExtend(wx.login, wx.getUserInfo, wx.requestPayment)
-    let clientID = 'd5add948fe00fbdd6cdf'
-    wx.BaaS.init(clientID)
+    let ClientID = 'd5add948fe00fbdd6cdf'
+    wx.BaaS.init(ClientID, {
+      autoLogin: true
+    })
     wx.BaaS.ErrorTracker.enable()
 
     if (options.scene == 1037 && JSON.stringify(options.referrerInfo) != "{}") {
@@ -60,9 +64,13 @@ App({
         wx.getStorage({
           key: 'account',
           success: function(res) {
-            console.log("已绑定学号")
+            console.log("已绑定学号", res.data.username)
             that.globalData.bindStatus = true
             that.globalData.account = res.data
+
+            // 本地无信息记录
+            if (wx.getStorageSync("student_info") == "")
+              Request.sync(res.data.username, res.data.password, "student_info")
           },
           fail: function(res) {
             // 来自迁移

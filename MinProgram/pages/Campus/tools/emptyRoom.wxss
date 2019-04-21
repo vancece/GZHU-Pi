@@ -80,7 +80,7 @@ button::after {
 /* 教室 */
 
 .room {
-  border-bottom: 1rpx solid rgb(170, 170, 170);
+  border-bottom: 1rpx solid #ddd;
   display: flex;
   flex-direction: column;
   align-items: center;

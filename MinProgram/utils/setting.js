@@ -41,56 +41,6 @@ function setBg() {
   })
 }
 
-function setBg1() {
-  return new Promise(function(callback) {
-    wx.getSavedFileList({
-      success(res) {
-        if (res.fileList.length > 0) {
-          wx.removeSavedFile({
-            filePath: res.fileList[0].filePath,
-            complete(res) {
-              wx.chooseImage({
-                count: 1,
-                success(res) {
-                  wx.compressImage({
-                    src: res.tempFilePaths[0], // 图片路径
-                    quality: 80, // 压缩质量
-                    complete: function(res) {
-                      wx.saveFile({
-                        tempFilePath: res.tempFilePath,
-                        success(res) {
-                          callback(res.savedFilePath)
-                        }
-                      })
-                    }
-                  })
-                }
-              })
-            }
-          })
-        } else {
-          wx.chooseImage({
-            count: 1,
-            success(res) {
-              wx.compressImage({
-                src: res.tempFilePaths[0], // 图片路径
-                quality: 80, // 压缩质量
-                complete: function(res) {
-                  wx.saveFile({
-                    tempFilePath: res.tempFilePath,
-                    success(res) {
-                      callback(res.savedFilePath)
-                    }
-                  })
-                }
-              })
-            }
-          })
-        }
-      }
-    })
-  })
-}
 
 module.exports = {
   setBg: setBg

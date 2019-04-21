@@ -3,7 +3,6 @@ from spider.jw_handler import *
 import time
 import os
 
-
 url = {
     "login": "https://cas.gzhu.edu.cn/cas_server/login?service=http%3A%2F%2Fjwxt.gzhu.edu.cn%2Fjwglxt%2Flyiotlogin",
     "info": "http://jwxt.gzhu.edu.cn/jwglxt/xsxxxggl/xsgrxxwh_cxXsgrxx.html?gnmkdm=N100801&layout=default",
@@ -37,7 +36,8 @@ class JW(object):
         get_res = self.client.get(url["login"], headers=self.headers)
         form_data = get_login_form(get_res.text, self.username, self.password)
 
-        res = self.client.post(url["login"], data=form_data, headers=self.headers)
+        res = self.client.post(
+            url["login"], data=form_data, headers=self.headers)
         if "账号或密码错误" in res.text:
             return 0
         else:
@@ -63,7 +63,8 @@ class JW(object):
         res = self.client.post(url["course"], data=data, headers=self.headers)
         course = get_course(res.text)
 
-        credit = self.client.post(url["id-credit"], data=data, headers=self.headers)
+        credit = self.client.post(
+            url["id-credit"], data=data, headers=self.headers)
         course = add_credit(credit.text, course)
         course["update_time"] = time.strftime(" %Y-%m-%d %H:%M:%S")
         set_log(self.get_info(), "课表查询")
@@ -95,6 +96,7 @@ class JW(object):
         :param semester: 学期  第一学期：3，第二学期：12
         :return: 处理后的考试数据
         """
+
         data = {
             "xnm": year,
             "xqm": semester,
@@ -113,6 +115,7 @@ class JW(object):
         res = self.client.post(url["exam"], data=data, headers=self.headers)
 
         set_log(self.get_info(), "考试查询")
+
         return get_exam(res.text)
 
     # 查询空教室
@@ -121,8 +124,24 @@ class JW(object):
         # 处理表单参数
         post_data = form_handle(request)
 
-        res = self.client.post(url=url["empty-room"], data=post_data, headers=self.headers)
+        res = self.client.post(
+            url=url["empty-room"], data=post_data, headers=self.headers)
         return get_empty_room(res.text)
+
+    def course_query(self):
+        post = {
+            "xnm": 2018,
+            "xqm": 12,
+            "_search": "false",
+            "nd": 1555766618825,
+            "queryModel.showCount": 15,
+            "queryModel.currentPage": 1,
+            "queryModel.sortName": "",
+            "queryModel.sortOrder": "asc"
+        }
+        res = self.client.post(
+            "http://jwxt.gzhu.edu.cn/jwglxt/design/funcData_cxFuncDataList.html?func_widget_guid=DA1B5BB30E1F4CB99D1F6F526537777B&gnmkdm=N219904")
+        print(res.text)
 
 
 # 把API请求记录写入数据库

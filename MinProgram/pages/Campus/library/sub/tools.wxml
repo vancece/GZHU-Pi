@@ -2,12 +2,12 @@
 
 <!-- 开放时间 -->
 <view wx:if="{{id=='open'}}">
-  <image mode='widthFix' style='width:100%' src="cloud://gzhu-pi-f63be3.677a-gzhu-pi-f63be3/images/campus/开放时间.png"></image>
+  <image mode='widthFix' style='width:100%' src="https://cos.ifeel.vip/gzhu-pi/images/campus/开放时间.png"></image>
 </view>
 
 <!-- 库室分布 -->
 <view wx:if="{{id=='room'}}">
-  <image mode='widthFix' style='width:100%' src="cloud://gzhu-pi-f63be3.677a-gzhu-pi-f63be3/images/campus/库室分布.png"></image>
+  <image mode='widthFix' style='width:100%' src="https://cos.ifeel.vip/gzhu-pi/images/campus/库室分布.png"></image>
 </view>
 
 <!-- 进馆数据 -->
@@ -46,8 +46,31 @@
   <view style='margin-top:30rpx'>暂无法使用内嵌网页</view>
   <view>可关注服务号查看</view>
 
-  <image mode='widthFix' bindtap='preview' src='cloud://gzhu-pi-f63be3.677a-gzhu-pi-f63be3/images/res/qrcode.jpg'></image>
+  <image mode='widthFix' bindtap='preview' src='https://cos.ifeel.vip/gzhu-pi/images/resource/qrcode.jpg'></image>
   <view style='margin:30rpx;font-size:85%;color:grey'>扫码或搜索「广大派」即可关注服务号</view>
-  <image mode='widthFix' style='width:500rpx;' src='cloud://gzhu-pi-f63be3.677a-gzhu-pi-f63be3/images/tmp/WechatIMG506.jpeg'></image>
+  <image mode='widthFix' style='width:500rpx;' src='https://cos.ifeel.vip/gzhu-pi/images/tmp/WechatIMG506.jpeg'></image>
+
+</view>
+
+
+
+<!-- 书籍收藏 -->
+<view wx:if="{{id=='favorite'}}">
+
+  <view wx:for="{{fav}}" wx:key="{{index}}" class='book' bindtap='navToDetail' id='{{index}}'>
+  <view class='book-name'>{{index+1}}、{{item.book_name}}</view>
+
+  <view class='book-info'>
+    <view class='cover'>
+      <image mode='aspectFit' src='{{item.image.length!=0?item.image:noCover}}'></image>
+    </view>
+    <view class='info'>
+      <view class='author'>{{item.author}}</view>
+      <view class='pub'>{{item.publisher}}</view>
+      <view class='ISBN'>ISBN:{{item.ISBN}}</view>
+      <view class='call-No'>索书号：{{item.call_No}}</view>
+    </view>
+  </view>
+  </view>
 
 </view>

@@ -1,8 +1,19 @@
+/* 悬浮图标 */
+
+.float-icon {
+  height: 60rpx;
+  width: 60rpx;
+  position: fixed;
+  bottom: 50rpx;
+  right: 50rpx;
+  z-index: 2;
+}
+
 /* 书本基础信息 */
 
 .book {
   padding: 10rpx;
-  color: rgba(218, 218, 218, 0.8)
+  color: rgba(218, 218, 218, 0.8);
 }
 
 .book-name {
@@ -139,7 +150,8 @@
 
 .star {
   background: url("https://img3.doubanio.com/f/shire/680a4bc4c384199245b080c7104da5be8ed717d3/pics/rating_icons/ic_rating_m.png") no-repeat;
-  width: 150px;
-  height: 30px;
+  width: 100px;
+  height: 20px;
   background-size: 100%;
+  margin-top: 20rpx;
 }

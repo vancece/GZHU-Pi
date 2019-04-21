@@ -1,7 +1,7 @@
 Page({
 
   data: {
-    noCover: "cloud://gzhu-pi-f63be3.677a-gzhu-pi-f63be3/images/icon/book.svg",
+    noCover: "https://cos.ifeel.vip/gzhu-pi/images/icon/book.svg",
     page: 1,
     pages: 1,
     books: []
@@ -23,7 +23,7 @@ Page({
       })
       return
     }
-    
+
     let query = e.detail.value.query
     if (query == "") {
       wx.showToast({

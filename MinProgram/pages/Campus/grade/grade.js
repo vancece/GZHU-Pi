@@ -70,6 +70,15 @@ Page({
 
   // 更新成绩
   updateGrade() {
+    var time = new Date()
+    if (time.getHours() >= 0 && time.getHours() < 7) {
+      wx.showToast({
+        title: '当前时间段不可用~',
+        icon: "none"
+      })
+      return
+    }
+    
     if (!app.globalData.bindStatus) {
       wx.showToast({
         title: '尚未绑定学号',
