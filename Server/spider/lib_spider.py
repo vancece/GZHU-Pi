@@ -12,7 +12,7 @@ class Lib(object):
             'searchPage': '1',
             'query': '',
             'submit': 'Bookle 搜索',
-            'minPublishYear': '',
+            'minPublishYear': '2005',
             'maxPublishYear': ''
         }
         self.client = requests.Session()
