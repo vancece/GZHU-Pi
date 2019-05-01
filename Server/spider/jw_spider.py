@@ -1,5 +1,5 @@
 import requests
-from spider.jw_handler import *
+from jw_handler import *
 import time
 import os
 
@@ -11,7 +11,8 @@ url = {
     "grade": "http://jwxt.gzhu.edu.cn/jwglxt/cjcx/cjcx_cxDgXscj.html?doType=query&gnmkdm=N100801",
     "exam": "http://jwxt.gzhu.edu.cn/jwglxt/kwgl/kscx_cxXsksxxIndex.html?doType=query&gnmkdm=N358105",
     "id-credit": "http://jwxt.gzhu.edu.cn/jwglxt/xsxxxggl/xsxxwh_cxXsxkxx.html?gnmkdm=N100801",  # 获取课程学分
-    "empty-room": "http://jwxt.gzhu.edu.cn/jwglxt/cdjy/cdjy_cxKxcdlb.html?doType=query&gnmkdm=N2155"
+    "empty-room": "http://jwxt.gzhu.edu.cn/jwglxt/cdjy/cdjy_cxKxcdlb.html?doType=query&gnmkdm=N2155",
+    "all-room":"http://jwxt.gzhu.edu.cn/jwglxt/design/funcData_cxFuncDataList.html?func_widget_guid=DA1B5BB30E1F4CB99D1F6F526537777B&gnmkdm=N219904&su="
 }
 
 """
@@ -123,6 +124,14 @@ class JW(object):
 
         res = self.client.post(url=url["empty-room"], data=post_data, headers=self.headers)
         return get_empty_room(res.text)
+    
+
+    #查询全校课表
+    def get_all_course(self,request,pagenum='1'):
+        post_data = all_course_form_handle(request,pagenum)
+
+        res = self.client.post(url=url["all-room"]+'1706300042', data=post_data, headers=self.headers)
+        return get_all_room(res.text)
 
 
 # 把API请求记录写入数据库
@@ -147,3 +156,12 @@ def set_log(student_info, api_type="其它"):
     data = json.dumps(student_info)
     res = requests.post(url=api_url, data=data, headers=headers)
     return res.status_code  # 201为写入成功
+
+#test空教室
+'''
+spider = JW('1706300042', '059055')
+spider.login()
+data= spider.get_all_course({'username':'1706300042','xnm': '2018',
+'xqm': '12'})
+print(data)
+'''

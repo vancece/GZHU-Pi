@@ -54,7 +54,8 @@ def get_img(Session, id_numm):
         return ''
 
 #获取分数
-def get_score(Session, id_num,name,capcha):
+def get_score(Session, id_num,name,capcha,cookies):
+    Session.cookies=requests.utils.cookiejar_from_dict(cookies)
     level=id_num[9]
     returnData={}
     headers = {
@@ -84,6 +85,7 @@ def get_score(Session, id_num,name,capcha):
             if '验证码错误' in e[1]:
                 return '验证码错误'
             else:
+                print(e)
                 return '查询不到该人成绩'
     else:
         id_num = re.compile("z:'(.*?)'").findall(response.text)[0]

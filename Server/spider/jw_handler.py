@@ -427,3 +427,47 @@ def get_empty_room(text):
 
     room_data = {'total': room_json['totalCount'], "rooms": rooms}
     return room_data
+
+#处理全校课表--提交表单
+def all_course_form_handle(Data,pagenum):
+    #Data=request.form
+    postData={
+        '_search': 'false',
+'nd': '1555995123405',
+'queryModel.showCount': '15',
+'queryModel.currentPage': pagenum,
+'queryModel.sortName': '',
+'queryModel.sortOrder': 'asc'
+    }
+    for key in Data:
+        if Data[key]!='':
+            postData[key]=Data[key]
+    return postData
+
+
+#处理全校课表--处理数据
+def get_all_room(text):
+    #获取数据的名称,依次为：学年，学期，星期几，上课节次，起始周，课程号，课程名称，教工号，姓名，性别，职称名称，最高学历，教师所属学院，场地编号，场地名称
+    #场地类别名称，场地上课起始周，场地上课节次，校区，教学班人数，教学班组成，选课课号，学分，总学时，开课学院，选课人数，周学时，上课时间，上课地点课程性质
+    #教师联系电话，专业组成
+    itemNameList=['xn','xq','xqj','skjc','qsjsz','kch','kcmc','jgh','xm','xbmc','zcmc','zgxl','jsxy','cdbh','cdmc',
+    'cdlbmc','cdqsjsz','cdskjc','xqmc','jxbrs','jxbzc','jxbmc','xf','rwzxs','kkxy','xkrs','zhxs','sksj','jxdd','kcxzmc',
+    'jslxdh','zyzc']
+    returnData={'items':[]}
+    items=json.loads(text)
+    for each in range(len(items['items'])):
+        returnData['items'].append({})
+        for every in itemNameList:
+            if every in items['items'][each].keys():
+                returnData['items'][each][every]=items['items'][each][every]
+            else:
+                returnData['items'][each][every]=''
+    returnData['totalcount']=items['totalCount']
+    return returnData
+
+
+
+
+#all_course_form_handle({'a':'ddd','b':''})
+
+
