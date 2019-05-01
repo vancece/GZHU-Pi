@@ -4,7 +4,7 @@ Component({
     // 页面标题
     title: {
       type: String,
-      value: "Hello 广大"
+      value: "广大派"
     },
 
     // 标题颜色

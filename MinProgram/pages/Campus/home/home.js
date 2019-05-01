@@ -9,7 +9,7 @@ Page({
     out: "ami",
     showUpdate: false,
     showDrawer: false,
-    arrowUrl: "cloud://gzhu-pi-f63be3.677a-gzhu-pi-f63be3/images/icon/right-arrow.svg",
+    arrowUrl: "https://cos.ifeel.vip/gzhu-pi/images/icon/right-arrow.svg",
   },
 
   onLoad: function(options) {
@@ -27,11 +27,11 @@ Page({
 
   updateCheck(){
     let version=Config.get("version")
-    if(version <"0.8.1.20190404"){
+    if(version <"0.8.7.20190418"){
       this.setData({
         showUpdate:true
       })
-      Config.set("version","0.8.1.20190404")
+      Config.set("version","0.8.7.20190418")
     }
   },
   

@@ -3,7 +3,7 @@
 <view class='op'>
   <view class='item'>
     <button type='primary' bindtap='navToSync'>
-      <image src='cloud://gzhu-pi-f63be3.677a-gzhu-pi-f63be3/images/icon/update.svg'></image>
+      <image src='https://cos.ifeel.vip/gzhu-pi/images/icon/update.svg'></image>
       <view>同步中心</view>
     </button>
   </view>

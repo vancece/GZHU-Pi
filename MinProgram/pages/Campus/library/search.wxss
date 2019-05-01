@@ -1,7 +1,18 @@
+/* 悬浮图标 */
+
+.float-icon {
+  height: 70rpx;
+  width: 70rpx;
+  position: fixed;
+  bottom: 50rpx;
+  right: 50rpx;
+  z-index: 2;
+}
+
 /* 页面背景 */
 
 .lib-bg {
-  background: url(http://lib.gzhu.edu.cn/w/static/WebUI/images/body.jpg);
+  background: url(https://cos.ifeel.vip/gzhu-pi/images/campus/library-bg.jpg);
   background-color: #065099;
   background-size: 100% 450rpx;
   height: 420rpx;

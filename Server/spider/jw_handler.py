@@ -185,7 +185,8 @@ def get_exam(text):
     exam_course = parse('$.items[*].kcmc').find(exam_json)  # 课程名称
     exam_time = parse('$.items[*].kssj').find(exam_json)  # 考试时间
     exam_room = parse('$.items[*].cdmc').find(exam_json)  # 考试地点
-    exam_major = parse('$.items[*].bj').find(exam_json)  # 专业班级
+    major_class = parse('$.items[*].bj').find(exam_json)  # 专业班级
+    major = parse('$.items[*].zymc').find(exam_json)  # 专业
     exam_class = parse('$.items[*].jxbzc').find(exam_json)  # 教学班级
     year = parse('$.items[*].xnmc').find(exam_json)  # 学年
     sem = parse('$.items[*].xqmmc').find(exam_json)  # 学期
@@ -197,7 +198,8 @@ def get_exam(text):
         temp["exam_course"] = exam_course[idx].value
         temp["exam_time"] = exam_time[idx].value
         temp["exam_room"] = exam_room[idx].value
-        temp["exam_major"] = exam_major[idx].value
+        temp["major_class"] = major_class[idx].value
+        temp["major"] = major[idx].value
         temp["exam_class"] = exam_class[idx].value
         temp["year"] = year[idx].value
         temp["sem"] = sem[idx].value

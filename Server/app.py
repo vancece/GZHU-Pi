@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from spider.jw_spider import *
 from spider.sy_spider import *
 from spider.lib_spider import *
+from spider.exam_spider import *
 import time
 import copy
 
@@ -40,6 +41,22 @@ def index():
 # 登录绑定，获取学生信息
 @app.route("/bind", methods=["POST"])
 def bind():
+    username = request.form['username']
+    password = request.form['password']
+
+    spider = JW(username, password)
+    if spider.login():
+        student_info = spider.get_info()
+        data = copy.deepcopy(student_info)
+        set_log(student_info, "登录绑定")
+        return res_json(status=200, data=data, msg="request succeed")
+    else:
+        return res_json(status=401, msg="Unauthorized")
+
+
+# 登录绑定，获取学生信息
+@app.route("/student_info", methods=["POST"])
+def student_info():
     username = request.form['username']
     password = request.form['password']
 
@@ -192,6 +209,29 @@ def holdings():
 def visit():
     data = Lib().get_visit()
     return res_json(status=200, data=data, msg="ok")
+
+
+"""
+各类考试查询
+"""
+
+
+# 高考录取查询
+@app.route("/admit_query", methods=["post"])
+def admit_query():
+    if request.method == "POST":
+        id = request.form['stu_id']
+        stu_name = request.form['stu_name']
+        data = Exam().admit_query(stu_id=id, stu_name=stu_name)
+        return res_json(status=200, data=data, msg="ok")
+
+
+# 普通话考试查询
+@app.route("/ch_test", methods=["post"])
+def ch_test():
+    if request.method == "POST":
+        data = Exam().ch_test_query(request.form)
+        return res_json(status=200, data=data, msg="ok")
 
 
 if __name__ == "__main__":

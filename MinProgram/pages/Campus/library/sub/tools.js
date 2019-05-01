@@ -10,17 +10,37 @@ Page({
       room: "库室分布",
       open: "开放时间",
       visit: "进馆数据",
-      overall: "校园全景"
+      overall: "校园全景",
+      favorite: "我的收藏"
     }
     this.setData({
       id: options.id,
       title: title[options.id]
     })
-    this.getVisit()
+
+    if (options.id == "visit") this.getVisit()
+
+    if (options.id == "favorite") this.getFav()
   },
 
   onShareAppMessage: function() {
 
+  },
+
+  getFav() {
+    let fav = wx.getStorageSync("fav_books")
+    let favourite
+    if (fav == "" || fav.length == 0) fav = []
+    this.setData({
+      fav: fav
+    })
+  },
+
+  navToDetail(e) {
+    let index = e.currentTarget.id
+    wx.navigateTo({
+      url: '/pages/Campus/library/detail?id=' + index,
+    })
   },
 
   getVisit() {
@@ -41,7 +61,7 @@ Page({
   },
 
   preview() {
-    let imgurl = "cloud://gzhu-pi-f63be3.677a-gzhu-pi-f63be3/images/res/qrcode.jpg"
+    let imgurl = "https://cos.ifeel.vip/gzhu-pi/images/resource/qrcode.jpg"
     wx.previewImage({
       urls: [imgurl]
     })

@@ -37,14 +37,14 @@
 
 <!-- 抽屉弹窗 -->
 <drawer-modal show='{{showDrawer}}'>
-  <view catchtap="catchtap" class='dawer'>
+  <view  slot="left" catchtap="catchtap" class='dawer'>
     <view class='avator'>
       <open-data type="userAvatarUrl" class='img'></open-data>
       <open-data type="userNickName" class="nickname"></open-data>
     </view>
 
     <view class='item' bindtap='tapDrawer' id='changeBg'>
-      <image src='cloud://gzhu-pi-f63be3.677a-gzhu-pi-f63be3/images/icon/theme.svg'></image>
+      <image src='https://cos.ifeel.vip/gzhu-pi/images/icon/theme.svg'></image>
       <view>更换背景</view>
       <image src='{{arrowUrl}}' class='{{drawerItem=="changeBg"?"show":""}}'></image>
     </view>
@@ -65,7 +65,7 @@
     </view>
 
     <view class='item' bindtap='tapDrawer' id='changeMode'>
-      <image src='cloud://gzhu-pi-f63be3.677a-gzhu-pi-f63be3/images/icon/switch.svg'></image>
+      <image src='https://cos.ifeel.vip/gzhu-pi/images/icon/switch.svg'></image>
       <view>课表模式</view>
       <image src='{{arrowUrl}}' class='{{drawerItem=="changeMode"?"show":""}}'></image>
     </view>
@@ -81,22 +81,22 @@
     </radio-group>
 
     <view class='item' bindtap='tapDrawer' id='navToSync'>
-      <image src='cloud://gzhu-pi-f63be3.677a-gzhu-pi-f63be3/images/icon/update.svg'></image>
+      <image src='https://cos.ifeel.vip/gzhu-pi/images/icon/update.svg'></image>
       <view>同步中心</view>
       <image src='{{arrowUrl}}'></image>
     </view>
     <button open-type="contact">
-      <image src='cloud://gzhu-pi-f63be3.677a-gzhu-pi-f63be3/images/icon/kefu.svg'></image>
+      <image src='https://cos.ifeel.vip/gzhu-pi/images/icon/kefu.svg'></image>
       <view>意见反馈</view>
       <image src='{{arrowUrl}}'></image>
     </button>
     <view class='item' bindtap='tapDrawer' id='navToHelp'>
-      <image src='cloud://gzhu-pi-f63be3.677a-gzhu-pi-f63be3/images/icon/help.svg'></image>
+      <image src='https://cos.ifeel.vip/gzhu-pi/images/icon/help.svg'></image>
       <view>使用帮助</view>
       <image src='{{arrowUrl}}'></image>
     </view>
     <view class='item' bindtap='tapDrawer' id='navToAbout'>
-      <image src='cloud://gzhu-pi-f63be3.677a-gzhu-pi-f63be3/images/icon/about.svg'></image>
+      <image src='https://cos.ifeel.vip/gzhu-pi/images/icon/about.svg'></image>
       <view>关于课表</view>
       <image src='{{arrowUrl}}'></image>
     </view>
@@ -106,24 +106,22 @@
 
 <modal show="{{showUpdate}}" title="版本更新">
   <view>
-    广大图书馆
+    本周更新
   </view>
   <view style='font-size:90%;color:rgb(80,80,80);margin:20rpx;'>
-    <view> * 一键查询图书馆馆藏书目</view>
-    <view> * 一键查看书本馆藏可借数据</view>
-    <view> * 便捷查看索书号、馆藏位置</view>
-    <view> * 实时了解当天进入馆人数</view>
-    <view> * 结合豆瓣api获取封面，书本详情</view>
+    <view> * 一键查询期末考试安排</view>
+    <view> * 新增图书馆书籍收藏功能</view>
   </view>
-  <view>近期计划</view>
+
+  <view>计划开发</view>
   <view style='font-size:90%;color:rgb(80,80,80);margin:20rpx;'>
     <view> * 一键查询全校班级课表</view>
     <view> * 一键收藏男神女神的课表</view>
     <view> * 方便快捷蹭课查询</view>
-    <view> * 全校空教室实时查询</view>
+
   </view>
   <button open-type="contact" class='callme'>
-    <image style='width:80rpx;height:80rpx' src='cloud://gzhu-pi-f63be3.677a-gzhu-pi-f63be3/images/icon/kefu.svg'></image>
+    <image style='width:80rpx;height:80rpx' src='https://cos.ifeel.vip/gzhu-pi/images/icon/kefu.svg'></image>
     <view style='font-size:90%;margin-left:10rpx'>提供建议</view>
   </button>
 </modal>

@@ -14,17 +14,16 @@
 }
 
 .title {
-  width: 100%;
   font-weight: bold;
   font-size: 105%;
   display: flex;
   align-items: center;
   justify-content: center;
-  /* border: 1rpx solid red; */
 }
 
 .back-btn {
   width: 50rpx;
   height: 50rpx;
+  padding: 10rpx;
   opacity: 1;
 }
