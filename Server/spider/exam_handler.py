@@ -1,6 +1,7 @@
 import re
 import random
 from urllib.parse import urlencode
+import requests
 
 
 # 处理普通话考试得到的数据
@@ -55,11 +56,12 @@ def get_img(Session, id_numm):
     except Exception as e:
         return ''
 
-#获取分数
-def get_score(Session, id_num,name,capcha,cookies):
-    Session.cookies=requests.utils.cookiejar_from_dict(cookies)
-    level=id_num[9]
-    returnData={}
+
+# 获取分数
+def get_score(Session, id_num, name, capcha, cookies):
+    Session.cookies = requests.utils.cookiejar_from_dict(cookies)
+    level = id_num[9]
+    returnData = {}
 
     headers = {
         'Connection': 'keep - alive',

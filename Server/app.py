@@ -126,8 +126,7 @@ def room():
         return res_json(status=401, msg="Unauthorized")
 
 
-#获取全校课表
-# 空教室查询
+# 获取全校课表
 @app.route("/allcourse", methods=["POST"])
 def allroom():
     username = request.form['username']
@@ -135,7 +134,7 @@ def allroom():
 
     spider = JW(username, password)
     if spider.login():
-        data= spider.get_all_course(request)
+        data = spider.get_all_course(request)
         return res_json(status=200, data=data, msg="request succeed")
     else:
         return res_json(status=401, msg="Unauthorized")

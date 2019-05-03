@@ -80,6 +80,7 @@ def get_course(text):
     course_time = parse('$.kbList[*].jc').find(kb_json)  # 上课时间（节数）
     weeks = parse('$.kbList[*].zcd').find(kb_json)  # 周数
     teacher = parse('$.kbList[*].xm').find(kb_json)  # 教师姓名
+    jgh_id = parse('$.kbList[*].jgh_id').find(kb_json)  # 教工号ID
     check_type = parse('$.kbList[*].khfsmc').find(kb_json)  # 考核类型
     # 实践课程，课表底部
     sjk_course_name = parse('$.sjkList[*].kcmc').find(kb_json)  # 课程名称
@@ -96,6 +97,7 @@ def get_course(text):
         course["course_time"] = course_time[i].value
         course["weeks"] = weeks[i].value
         course["teacher"] = teacher[i].value
+        course["jgh_id"] = jgh_id[i].value
         course["check_type"] = check_type[i].value
         course_list.append(course)
 
@@ -371,7 +373,7 @@ def pow_handle(target):
 
 
 # 读取前端发送的表单并合并处理
-def form_handle(request):
+def empty_room_form_handle(request):
     form_data = {
         'xqh_id': request.form['xqh_id'],  # 校区号
         'xnm': request.form['xnm'],  # 学年名
@@ -430,46 +432,41 @@ def get_empty_room(text):
     room_data = {'total': room_json['totalCount'], "rooms": rooms}
     return room_data
 
-#处理全校课表--提交表单
-def all_course_form_handle(Data,pagenum):
-    #Data=request.form
-    postData={
+
+# 处理全校课表--提交表单
+def all_course_form_handle(request_form, page):
+    post_data = {
         '_search': 'false',
-'nd': '1555995123405',
-'queryModel.showCount': '15',
-'queryModel.currentPage': pagenum,
-'queryModel.sortName': '',
-'queryModel.sortOrder': 'asc'
+        'nd': int(round(time.time() * 1000)),
+        'queryModel.showCount': '15',
+        'queryModel.currentPage': page,
+        'queryModel.sortName': '',
+        'queryModel.sortOrder': 'asc'
     }
-    for key in Data:
-        if Data[key]!='':
-            postData[key]=Data[key]
-    return postData
+    for key in request_form:
+        if request_form[key] != '':
+            post_data[key] = request_form[key]
+    return post_data
 
 
-#处理全校课表--处理数据
-def get_all_room(text):
-    #获取数据的名称,依次为：学年，学期，星期几，上课节次，起始周，课程号，课程名称，教工号，姓名，性别，职称名称，最高学历，教师所属学院，场地编号，场地名称
-    #场地类别名称，场地上课起始周，场地上课节次，校区，教学班人数，教学班组成，选课课号，学分，总学时，开课学院，选课人数，周学时，上课时间，上课地点课程性质
-    #教师联系电话，专业组成
-    itemNameList=['xn','xq','xqj','skjc','qsjsz','kch','kcmc','jgh','xm','xbmc','zcmc','zgxl','jsxy','cdbh','cdmc',
-    'cdlbmc','cdqsjsz','cdskjc','xqmc','jxbrs','jxbzc','jxbmc','xf','rwzxs','kkxy','xkrs','zhxs','sksj','jxdd','kcxzmc',
-    'jslxdh','zyzc']
-    returnData={'items':[]}
-    items=json.loads(text)
-    for each in range(len(items['items'])):
-        returnData['items'].append({})
-        for every in itemNameList:
-            if every in items['items'][each].keys():
-                returnData['items'][each][every]=items['items'][each][every]
+# 处理全校课表--处理数据
+def get_all_course(text):
+    # 获取数据的名称,依次为：学年，学期，星期几，上课节次，起止周，课程号，课程号ID，课程名称，教工号，教工号ID，教工姓名，性别，职称名称，最高学历，教师所属学院，场地编号，场地名称
+    # 场地类别名称，场地上课起始周，场地上课节次，校区，教学班人数，教学班组成，选课课号，学分，总学时，开课学院，选课人数，周学时，上课时间，上课地点，课程性质， 专业组成
+
+    item_name_list = ['xn', 'xq', 'xqj', 'skjc', 'qsjsz', 'kch', 'kch_id', 'kcmc', 'jgh', 'jgh_id', 'xm', 'xbmc',
+                      'zcmc', 'zgxl', 'jsxy', 'cdbh', 'cdmc', 'cdlbmc', 'cdqsjsz', 'cdskjc', 'xqmc', 'jxbrs', 'jxbzc',
+                      'jxbmc', 'xf', 'rwzxs', 'kkxy', 'xkrs', 'zhxs', 'sksj', 'jxdd', 'kcxzmc', 'zyzc']
+    result = {'items': []}
+    course_json = json.loads(text)
+
+    for each in range(len(course_json['items'])):
+        result['items'].append({})
+        for every in item_name_list:
+            if every in course_json['items'][each].keys():
+                result['items'][each][every] = course_json['items'][each][every]
             else:
-                returnData['items'][each][every]=''
-    returnData['totalcount']=items['totalCount']
-    return returnData
+                result['items'][each][every] = ''
+    result['total'] = course_json['totalCount']
 
-
-
-
-#all_course_form_handle({'a':'ddd','b':''})
-
-
+    return result

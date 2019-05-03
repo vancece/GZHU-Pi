@@ -38,18 +38,18 @@ class Exam(object):
         if ('对不起没有查询到相关信息' in res.text):
             return '对不起没有查询到相关信息'
         else:
-            return chTestHandle(res)
-    #四六级获取验证码图片
-    def cetTestQueryGetImg(self,id_num,name):
-        imgCookiesData={}
-        imgCookiesData['img']=get_img(self.client, id_num)
-        imgCookiesData['cookies']=requests.utils.dict_from_cookiejar(self.client.cookies)
-        return imgCookiesData
-    
-    #四六级获取分数
-    def cetTestQueryGetScore(self,id_num,name,capcha,cookies):
-        return get_score(self.client, id_num, name,capcha,cookies)
+            return ch_test_handler(res)
 
+    # 四六级获取验证码图片
+    def cetTestQueryGetImg(self, id_num, name):
+        imgCookiesData = {}
+        imgCookiesData['img'] = get_img(self.client, id_num)
+        imgCookiesData['cookies'] = requests.utils.dict_from_cookiejar(self.client.cookies)
+        return imgCookiesData
+
+    # 四六级获取分数
+    def cetTestQueryGetScore(self, id_num, name, capcha, cookies):
+        return get_score(self.client, id_num, name, capcha, cookies)
 
     # 四六级获取验证码图片
     def cet_get_captcha(self, id_num, name):
@@ -59,27 +59,27 @@ class Exam(object):
     def cet_get_score(self, id_num, name, capcha):
         return get_score(self.client, id_num, name, capcha)
 
-'''# 普通话考试测试
-test = EX()
+
+# 普通话考试测试
+test = Exam()
 testData = {
     'name': '杨泰桦',
     'stuID': '',
     'idCard': '440402199811059055'
 }
-print(test.chTestQuery(testData))
-'''
+print(test.ch_test_query(testData))
+
 # #cet考试测试
 # test=EX()
 # print(test.cetTestQueryGetImg('440070182205601','肖镇'))
 # capcha=input()
-'''
-cookiesTest={'BIGipServercache.neea.edu.cn_pool': '2543896586.39455.0000'}
-test1=EX()
-print(test1.cetTestQueryGetScore('440070182205601','肖镇',,cookiesTest))
-'''
+
+# cookiesTest={'BIGipServercache.neea.edu.cn_pool': '2543896586.39455.0000'}
+# test1=Exam()
+# print(test1.cetTestQueryGetScore('440070182205601','肖镇',cookiesTest))
+
 '''
 #录取查询
 test=EX()
 test.admitQuery('18440981203067','林婳婳')
 '''
-
