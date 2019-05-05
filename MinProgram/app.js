@@ -1,6 +1,7 @@
+const App = require('./utils/sdk/ald-stat.js').App;
 var Config = require("/utils/config.js")
 var Request = require("/utils/request.js")
-
+var startTime = Date.now();//启动时间
 App({
 
   globalData: {
@@ -33,6 +34,13 @@ App({
   onError: function(res) {
     wx.BaaS.ErrorTracker.track(res)
 
+    this.aldstat.sendEvent('小程序启动错误', res)
+  },
+
+  onShow: function () {
+    this.aldstat.sendEvent('小程序启动时长', {
+      time: Date.now() - startTime
+    })
   },
 
   // 获取认证状态

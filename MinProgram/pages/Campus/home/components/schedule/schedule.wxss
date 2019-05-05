@@ -73,7 +73,7 @@
   width: 50rpx;
   justify-content: center;
   align-items: center;
-  line-height: 125rpx;
+  line-height: 126rpx;
   background-color: rgba(221, 221, 221, 0.7);
   color: gray;
 }

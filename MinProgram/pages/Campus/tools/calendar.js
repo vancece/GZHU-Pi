@@ -1,3 +1,4 @@
+const Page = require('../../../utils/sdk/ald-stat.js').Page;
 // pages/Campus/navTools/calendar.js
 Page({
 
@@ -6,13 +7,13 @@ Page({
    */
   data: {
     urls: [
-      ["https://cos.ifeel.vip/gzhu-pi/images/campus/1.jpg"],
+      ["https://cos.ifeel.vip/gzhu-pi/images/campus/12.jpg"],
       ["https://cos.ifeel.vip/gzhu-pi/images/campus/2.jpg"],
-      ["https://cos.ifeel.vip/gzhu-pi/images/campus/calendar_new.png"]
+      ["https://cos.ifeel.vip/gzhu-pi/images/campus/1.jpg"]
     ]
   },
 
-  preview(e) {
+  preview(e) { 
     let id = Number(e.currentTarget.id)
     wx.previewImage({
       urls: this.data.urls[id],

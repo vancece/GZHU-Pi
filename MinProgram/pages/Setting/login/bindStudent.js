@@ -1,3 +1,4 @@
+const Page = require('../../../utils/sdk/ald-stat.js').Page;
 var app = getApp()
 Page({
 
@@ -58,6 +59,12 @@ Page({
       title: '授权中...',
     })
 
+    wx.BaaS.auth.loginWithWechat(data, {
+      createUser: true
+    }).then(user => {
+      console.log(user)
+    })
+
     if (data.detail.errMsg == "getUserInfo:ok") {
       console.log(" 授权", data)
       wx.hideLoading()
@@ -95,11 +102,9 @@ Page({
         that.login()
       }
     }
-  
-    wx.BaaS.auth.loginWithWechat().then(user => {
-    }, err => {
-    })
-    wx.BaaS.auth.loginWithWechat(data).then(res => {}, res => {})
+
+
+
   },
 
   // 提交登录表单

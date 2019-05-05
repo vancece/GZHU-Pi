@@ -51,9 +51,11 @@ Component({
         wx.reLaunch({
           url: '/pages/Campus/home/home',
         })
-      } else(wx.navigateBack({
-        delta: 1
-      }))
+      } else {
+        wx.navigateBack({
+          delta: 1
+        })
+      }
     },
   },
 

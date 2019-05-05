@@ -1,18 +1,16 @@
 <view style='margin-top:{{statusBarHeight+10}}px'></view>
 
-
-
 <view style='text-align:center'>
   <view style='font-weight:bold'>广州大学女生风采大赛</view>
   <view class='title'>人气王投票</view>
-  <view style='margin:20rpx;'>复赛</view>
+  <view bindtap='navToRule' class='rule'>活动规则</view>
 </view>
 
 
 <view wx:for="{{vote_list}}" wx:key="{{index}}" class='vote-list' bindtap='select' data-id="{{index}}" data-record="{{item.id}}" style='background:{{tmp_list[index]?"rgba(102, 240, 0, 0.7)":""}}'>
   <view class='item'>
     <view class='p1'>
-      <view style='flex:1'>{{item.No}}</view>
+      <view style='flex:1'>编号{{item.No}}</view>
       <view style='flex:4;color:brown'>{{item.perform}}</view>
     </view>
 
@@ -36,12 +34,12 @@
     <view style='display:flex;justify-content:space-around;margin:20rpx 0;'>
       <view wx:for="{{selected}}" wx:key="{{index}}" bindtap='keyFor' data-perform="{{item.perform}}">
         <image src='{{item.info[0].img}}' class='avatar' mode='aspectFill'></image>
-        <view style='color:{{key_for==item.perform?"green":"grey"}};font-size:85%;text-align:center;font-weight:{{key_for==item.perform?"bold":"normal"}}'>{{item.No}}</view>
+        <view style='color:{{key_for==item.perform?"green":"grey"}};font-size:85%;text-align:center;font-weight:{{key_for==item.perform?"bold":"normal"}}'>编号{{item.No}}</view>
       </view>
     </view>
 
     <view style='color:grey;font-size:80%;text-align:center'>
-      <view>可再为你喜欢的一位选手加投2票</view>
+      <view>可再为你喜欢的一位选手加投3票</view>
       <view>注：无论投票码是否正确都会提交</view>
     </view>
 
@@ -55,7 +53,7 @@
 
 <form bindsubmit='formSubmit' report-submit='{{true}}' wx:if="{{!end}}">
   <view class='form' wx:if="{{votedToday}}">
-    <button class='vote-btn' style='background:white;color:black'>今天已经投票</button>
+    <button class='vote-btn' style='background:white;color:black' open-type="getUserInfo" bindgetuserinfo="userInfoHandler">今天已经投票</button>
   </view>
 
   <view class='form' wx:if="{{!votedToday}}">

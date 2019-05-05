@@ -1,4 +1,3 @@
-
 page {
   background-attachment: fixed;
   animation: colorswitch 20s infinite;
@@ -29,9 +28,20 @@ page {
   font-size: 180%;
   font-weight: bold;
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
   background-image: linear-gradient(to right, #fc1a5e 0%, #f8d50e 100%);
   text-shadow: 5rpx 5rpx 5rpx rgba(0, 0, 0, 0.2);
+}
+
+.rule {
+  font-size: 85%;
+  margin: 20rpx auto;
+  border-radius: 10rpx;
+  border: 1rpx solid rgb(221, 250, 141);
+  width: 160rpx;
+  padding: 5rpx;
+  color: rgb(1, 128, 85);
 }
 
 /* 投票选项 */

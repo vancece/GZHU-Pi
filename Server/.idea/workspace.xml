@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a5b7c32f-f673-4e8f-b7e9-a051183d78be" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/spider/utlis.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../MinProgram/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/app.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../MinProgram/module/vote/vote.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/module/vote/vote.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../MinProgram/module/vote/vote.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/module/vote/vote.wxml" afterDir="false" />
@@ -14,11 +13,6 @@
       <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/tools/calendar.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/tools/calendar.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../MinProgram/project.config.json" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/project.config.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spider/exam_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/spider/exam_handler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spider/exam_spider.py" beforeDir="false" afterPath="$PROJECT_DIR$/spider/exam_spider.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spider/jw_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/spider/jw_handler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spider/jw_spider.py" beforeDir="false" afterPath="$PROJECT_DIR$/spider/jw_spider.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -39,116 +33,7 @@
     <option name="myElementSize" value="321" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/spider/jw_spider.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2319">
-              <caret line="163" selection-start-line="163" selection-end-line="163" />
-              <folding>
-                <element signature="e#0#15#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/spider/jw_handler.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-7328">
-              <caret line="25" column="25" selection-start-line="25" selection-start-column="25" selection-end-line="25" selection-end-column="25" />
-              <folding>
-                <element signature="e#0#21#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1255">
-              <caret line="142" column="3" selection-start-line="142" selection-start-column="3" selection-end-line="142" selection-end-column="3" />
-              <folding>
-                <element signature="e#0#41#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/spider/utlis.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1557">
-              <caret line="36" column="21" selection-start-line="36" selection-start-column="21" selection-end-line="36" selection-end-column="21" />
-              <folding>
-                <element signature="e#0#15#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/spider/exam_spider.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="42" lean-forward="true" selection-start-line="42" selection-end-line="42" />
-              <folding>
-                <element signature="e#0#33#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/spider/sy_spider.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="17" column="24" lean-forward="true" selection-start-line="17" selection-start-column="24" selection-end-line="17" selection-end-column="24" />
-              <folding>
-                <element signature="e#0#15#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/spider/sy_handler.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="837">
-              <caret line="106" column="45" lean-forward="true" selection-start-line="106" selection-start-column="45" selection-end-line="106" selection-end-column="45" />
-              <folding>
-                <element signature="e#0#21#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/spider/lib_spider.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="494">
-              <caret line="26" column="11" lean-forward="true" selection-start-line="26" selection-start-column="11" selection-end-line="26" selection-end-column="11" />
-              <folding>
-                <element signature="e#0#32#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/spider/lib_handler.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="343">
-              <caret line="96" selection-start-line="96" selection-end-line="96" />
-              <folding>
-                <element signature="e#0#15#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -188,10 +73,10 @@
         <option value="$PROJECT_DIR$/spider/lib_spider.py" />
         <option value="$PROJECT_DIR$/spider/exam_handler.py" />
         <option value="$PROJECT_DIR$/app.py" />
-        <option value="$PROJECT_DIR$/spider/exam_spider.py" />
         <option value="$PROJECT_DIR$/spider/jw_handler.py" />
         <option value="$PROJECT_DIR$/spider/jw_spider.py" />
         <option value="$PROJECT_DIR$/spider/utlis.py" />
+        <option value="$PROJECT_DIR$/spider/exam_spider.py" />
       </list>
     </option>
   </component>
@@ -438,18 +323,17 @@
       <workItem from="1556719270128" duration="5056000" />
       <workItem from="1556782014930" duration="3397000" />
       <workItem from="1556888956673" duration="7414000" />
-      <workItem from="1556896410826" duration="748000" />
+      <workItem from="1556896410826" duration="1209000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="113721000" />
+    <option name="totallyTimeSpent" value="114182000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1721" height="944" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14852676" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14852676" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -463,7 +347,7 @@
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.32951653" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.20737913" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" visible="true" weight="0.36132315" />
       <window_info anchor="bottom" id="Python Console" order="12" weight="0.38295165" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -551,16 +435,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/spider/exam_handler.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="19">
-          <caret line="50" column="62" selection-start-line="50" selection-start-column="62" selection-end-line="50" selection-end-column="62" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1255">
@@ -571,12 +445,52 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/spider/jw_spider.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2319">
+          <caret line="163" selection-start-line="163" selection-end-line="163" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/spider/jw_handler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-7328">
+          <caret line="25" column="25" selection-start-line="25" selection-start-column="25" selection-end-line="25" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#21#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/spider/exam_handler.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="950">
+          <caret line="50" column="62" selection-start-line="50" selection-start-column="62" selection-end-line="50" selection-end-column="62" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/spider/utlis.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1557">
           <caret line="36" column="21" selection-start-line="36" selection-start-column="21" selection-end-line="36" selection-end-column="21" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/spider/exam_spider.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="988">
+          <caret line="52" selection-start-line="52" selection-end-line="52" />
+          <folding>
+            <element signature="e#0#33#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -617,36 +531,6 @@
           <caret line="96" selection-start-line="96" selection-end-line="96" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/spider/jw_spider.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2319">
-          <caret line="163" selection-start-line="163" selection-end-line="163" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/spider/jw_handler.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-7328">
-          <caret line="25" column="25" selection-start-line="25" selection-start-column="25" selection-end-line="25" selection-end-column="25" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/spider/exam_spider.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="42" lean-forward="true" selection-start-line="42" selection-end-line="42" />
-          <folding>
-            <element signature="e#0#33#0" expanded="true" />
           </folding>
         </state>
       </provider>

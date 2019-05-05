@@ -1,3 +1,4 @@
+// const Page = require('../sdk/ald-stat.js').Page;
 var Utils = require("../utils.js")
 
 Page({
@@ -18,7 +19,7 @@ Page({
   // 启动，获取数据，检测投票
   onLoad: function(options) {
     let that = this
-    require('../sdk-v2.0.6-a')
+    require('../sdk/sdk-v2.0.6-a')
     let ClientID = 'd5add948fe00fbdd6cdf'
     wx.BaaS.init(ClientID, {
       autoLogin: true
@@ -29,9 +30,20 @@ Page({
 
   },
 
+  navToRule() {
+    wx.navigateTo({
+      url: '/module/vote/rule',
+    })
+  },
+
   userInfoHandler(data) {
-    wx.BaaS.auth.loginWithWechat().then(user => {}, err => {})
-    wx.BaaS.auth.loginWithWechat(data).then(user => {}, err => {})
+
+    wx.BaaS.auth.loginWithWechat(data, {
+      createUser: true
+    }).then(user=>{
+      console.log(user)
+    })
+
   },
 
   // 提交
@@ -99,7 +111,7 @@ Page({
           } else {
             // 密钥正确
             that.setRecord(that.data.selected, that.data.key_for, that.data.key)
-            that.add(that.data.selected[i].id, 3)
+            that.add(that.data.selected[i].id, 4)
             // 更新密钥状态
             let recordID = res.data.objects[0].id
             let MyRecord = Obj.getWithoutData(recordID)
@@ -306,5 +318,32 @@ Page({
 
   onShareAppMessage: function() {
 
+  },
+
+  create_key() {
+    for (let i = 0; i < 50; i++) {
+      let key = String(Math.random()).slice(2, 8)
+
+      let Obj = new wx.BaaS.TableObject(70508)
+      let query = new wx.BaaS.Query()
+      query.compare('key', '=', key)
+      Obj.setQuery(query).find().then(res => {
+
+        if (res.data.objects.length == 0) {
+          let record = Obj.create()
+          let voteData = {
+            key: key
+          }
+          record.set(voteData).save().then(res => {
+            console.log("创建：", res.data.key)
+          }, err => {
+            console.log(err)
+          })
+        }
+
+      }, err => {
+        console.log(err)
+      })
+    }
   }
 })

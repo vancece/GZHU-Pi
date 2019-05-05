@@ -1,3 +1,4 @@
+const Page = require('../../../utils/sdk/ald-stat.js').Page;
 var app = getApp()
 var Config = require("../../../utils/config.js")
 var Setting = require("../../../utils/setting.js")
@@ -25,16 +26,16 @@ Page({
     this.updateCheck()
   },
 
-  updateCheck(){
-    let version=Config.get("version")
-    if(version <"0.8.7.20190418"){
+  updateCheck() {
+    let version = Config.get("version")
+    if (version < "0.9.2.20190505") {
       this.setData({
-        showUpdate:true
+        showUpdate: true
       })
-      Config.set("version","0.8.7.20190418")
+      Config.set("version", "0.9.2.20190505")
     }
   },
-  
+
   formSubmit(e) {
     console.log(e)
     wx.BaaS.wxReportTicket(e.detail.formId)
@@ -58,7 +59,8 @@ Page({
   // 打开抽屉弹窗
   openDrawer() {
     this.setData({
-      showDrawer: true
+      showDrawer: true,
+      userInfo: wx.getStorageSync("ifx_baas_userinfo")
     })
   },
 

@@ -41,7 +41,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 4,
+			"current": 3,
 			"list": [
 				{
 					"id": 0,
@@ -69,7 +69,7 @@
 					"scene": 1047
 				},
 				{
-					"id": -1,
+					"id": 3,
 					"name": "分包",
 					"pathName": "module/vote/vote",
 					"query": "",
@@ -78,8 +78,8 @@
 				{
 					"id": 4,
 					"name": "子页面",
-					"pathName": "pages/Campus/library/sub/tools",
-					"query": "id=favorite",
+					"pathName": "pages/Campus/course/search",
+					"query": "id=query",
 					"scene": null
 				}
 			]

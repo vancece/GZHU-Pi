@@ -1,3 +1,4 @@
+const Page = require('../../../utils/sdk/ald-stat.js').Page;
 // pages/Campus/gzhu/index.js
 Page({
 

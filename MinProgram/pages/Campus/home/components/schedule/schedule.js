@@ -88,11 +88,11 @@ Component({
       let id = Number(e.currentTarget.id)
       let day = this.data.kbList[id].weekday
       let start = this.data.kbList[id].start
-      let detail = []
+      let detail = [this.data.kbList[id]]
       // 遍历课表，找出星期和开始节相同的课程
-      this.data.kbList.forEach(function(item) {
+      this.data.kbList.forEach(function (item) {
         if (item.weekday == day && item.start == start) {
-          detail.push(item)
+          if (that.data.kbList.indexOf(item) != id) detail.push(item)
         }
       })
       this.setData({

@@ -37,7 +37,7 @@
 
 <!-- 抽屉弹窗 -->
 <drawer-modal show='{{showDrawer}}'>
-  <view  slot="left" catchtap="catchtap" class='dawer'>
+  <view slot="left" catchtap="catchtap" class='dawer'>
     <view class='avator'>
       <open-data type="userAvatarUrl" class='img'></open-data>
       <open-data type="userNickName" class="nickname"></open-data>
@@ -85,7 +85,7 @@
       <view>同步中心</view>
       <image src='{{arrowUrl}}'></image>
     </view>
-    <button open-type="contact">
+    <button open-type="contact" session-from='{"nickName":"{{userInfo.nickName}}","avatarUrl":"{{userInfo.avatarUrl}}"}'>
       <image src='https://cos.ifeel.vip/gzhu-pi/images/icon/kefu.svg'></image>
       <view>意见反馈</view>
       <image src='{{arrowUrl}}'></image>
@@ -109,16 +109,16 @@
     本周更新
   </view>
   <view style='font-size:90%;color:rgb(80,80,80);margin:20rpx;'>
-    <view> * 一键查询期末考试安排</view>
-    <view> * 新增图书馆书籍收藏功能</view>
+    <view> * 新增课程中心，查询全校课程</view>
+    <view> * 一键生成全校班级课表</view>
+    <view> * 方便快捷蹭课查询</view>
   </view>
 
   <view>计划开发</view>
   <view style='font-size:90%;color:rgb(80,80,80);margin:20rpx;'>
-    <view> * 一键查询全校班级课表</view>
+    <view> * 接入失物招领，丢卡不再可怕</view>
+    <view> * 课程评价系统，选课不再迷茫</view>
     <view> * 一键收藏男神女神的课表</view>
-    <view> * 方便快捷蹭课查询</view>
-
   </view>
   <button open-type="contact" class='callme'>
     <image style='width:80rpx;height:80rpx' src='https://cos.ifeel.vip/gzhu-pi/images/icon/kefu.svg'></image>

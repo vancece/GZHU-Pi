@@ -1,5 +1,5 @@
 <wxs src="module.wxs" module="tools" />
-<view wx:if='{{show}}' class='schedule'>
+<view wx:if="{{show}}"  class='schedule'>
   <image mode='widthFix' class='bg' src='{{bg.length>15?bg:""}}' style="filter:blur({{blur}}px);background-image: linear-gradient(to top,{{bg.length<=15?bg:''}})"></image>
 
   <!-- 日期栏 -->

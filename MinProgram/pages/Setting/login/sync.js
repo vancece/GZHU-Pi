@@ -1,3 +1,4 @@
+const Page = require('../../../utils/sdk/ald-stat.js').Page;
 var Request = require("../../../utils/request.js")
 Page({
 
