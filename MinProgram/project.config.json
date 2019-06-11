@@ -4,17 +4,25 @@
 		"ignore": []
 	},
 	"setting": {
-		"urlCheck": true,
+		"urlCheck": false,
 		"es6": true,
+		"enhance": true,
 		"postcss": true,
 		"minified": true,
 		"newFeature": true,
 		"autoAudits": false,
 		"uglifyFileName": true,
-		"checkInvalidKey": true
+		"checkInvalidKey": true,
+		"checkSiteMap": true,
+		"uploadWithSourceMap": true,
+		"babelSetting": {
+			"ignore": [],
+			"disablePlugins": [],
+			"outputPath": ""
+		}
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.4.0",
+	"libVersion": "2.5.0",
 	"appid": "wxe194e8a8d4601dae",
 	"projectname": "GZHU%20Pi",
 	"debugOptions": {
@@ -41,7 +49,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 3,
+			"current": 4,
 			"list": [
 				{
 					"id": 0,
@@ -78,7 +86,7 @@
 				{
 					"id": 4,
 					"name": "子页面",
-					"pathName": "pages/Campus/course/search",
+					"pathName": "pages/Campus/tools/lost",
 					"query": "id=query",
 					"scene": null
 				}

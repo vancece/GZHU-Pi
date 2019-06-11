@@ -216,17 +216,22 @@ def visit():
 
 
 # 高考录取查询
-@app.route("/admit_query", methods=["post"])
+@app.route("/admit_query", methods=["POST", "GET"])
 def admit_query():
     if request.method == "POST":
         id = request.form['stu_id']
         stu_name = request.form['stu_name']
         data = Exam().admit_query(stu_id=id, stu_name=stu_name)
         return res_json(status=200, data=data, msg="ok")
+    else:
+        id = request.args.get('stu_id')
+        stu_name = request.args.get('stu_name')
+        data = Exam().admit_query(stu_id=id, stu_name=stu_name)
+        return res_json(status=200, data=data, msg="ok")
 
 
 # 普通话考试查询
-@app.route("/ch_test", methods=["post"])
+@app.route("/ch_test", methods=["POST"])
 def ch_test():
     if request.method == "POST":
         data = Exam().ch_test_query(request.form)

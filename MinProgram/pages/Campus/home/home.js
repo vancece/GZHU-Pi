@@ -99,6 +99,17 @@ Page({
         wx.navigateTo({
           url: "/pages/Setting/login/sync",
         })
+        break
+      case "navToHelp":
+        wx.navigateTo({
+          url: "/pages/Setting/help/help",
+        })
+        break
+      case "navToBind":
+        wx.navigateTo({
+          url: "/pages/Setting/login/bindStudent",
+        })
+        break
     }
   },
 

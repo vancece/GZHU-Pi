@@ -4,7 +4,7 @@ import time
 import os
 
 url = {
-    "login": "https://cas.gzhu.edu.cn/cas_server/login?service=http%3A%2F%2Fjwxt.gzhu.edu.cn%2Fjwglxt%2Flyiotlogin",
+    "login": "https://cas.gzhu.edu.cn/cas_server/login?service=http%3A%2F%2Fjwxt.gzhu.edu.cn%2Fsso%2Flyiotlogin",
     "info": "http://jwxt.gzhu.edu.cn/jwglxt/xsxxxggl/xsgrxxwh_cxXsgrxx.html?gnmkdm=N100801&layout=default",
     "course": "http://jwxt.gzhu.edu.cn/jwglxt/kbcx/xskbcx_cxXsKb.html?gnmkdm=N2151",
     "grade": "http://jwxt.gzhu.edu.cn/jwglxt/cjcx/cjcx_cxDgXscj.html?doType=query&gnmkdm=N100801",
@@ -39,6 +39,7 @@ class JW(object):
 
         res = self.client.post(
             url["login"], data=form_data, headers=self.headers)
+
         if "账号或密码错误" in res.text:
             return 0
         else:
@@ -160,4 +161,3 @@ def set_log(student_info, api_type="其它"):
     data = json.dumps(student_info)
     res = requests.post(url=api_url, data=data, headers=headers)
     return res.status_code  # 201为写入成功
-

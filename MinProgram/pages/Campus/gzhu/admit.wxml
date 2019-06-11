@@ -1,0 +1,11 @@
+<navBar title="录取查询" navColor="white"></navBar>
+
+<view>
+
+  <view>
+    <view>考号：</view>
+    <input></input>
+
+  </view>
+
+</view>

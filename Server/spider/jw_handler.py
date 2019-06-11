@@ -189,11 +189,11 @@ def get_exam(text):
     exam_room = parse('$.items[*].cdmc').find(exam_json)  # 考试地点
     major_class = parse('$.items[*].bj').find(exam_json)  # 专业班级
     major = parse('$.items[*].zymc').find(exam_json)  # 专业
-    exam_class = parse('$.items[*].jxbzc').find(exam_json)  # 教学班级
+    # exam_class = parse('$.items[*].jxbzc').find(exam_json)  # 教学班级
     year = parse('$.items[*].xnmc').find(exam_json)  # 学年
     sem = parse('$.items[*].xqmmc').find(exam_json)  # 学期
     credit = parse('$.items[*].xf').find(exam_json)  # 学分
-
+    
     exam_list = []
     for idx, item in enumerate(exam_course):
         temp = {}
@@ -202,7 +202,7 @@ def get_exam(text):
         temp["exam_room"] = exam_room[idx].value
         temp["major_class"] = major_class[idx].value
         temp["major"] = major[idx].value
-        temp["exam_class"] = exam_class[idx].value
+        # temp["exam_class"] = exam_class[idx].value
         temp["year"] = year[idx].value
         temp["sem"] = sem[idx].value
         temp["xf"] = credit[idx].value

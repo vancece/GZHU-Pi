@@ -58,8 +58,8 @@
 
   <view class='form' wx:if="{{!votedToday}}">
     <input name="key" placeholder='线下投票码(选填)' type='number'></input>
-    <button class='vote-btn' wx:if="{{selected.length!=3}}" style='background:white;color:black' open-type="getUserInfo" bindgetuserinfo="userInfoHandler">请选择3项</button>
-    <button form-type='submit' class='vote-btn' wx:if="{{selected.length==3}}" open-type="getUserInfo" bindgetuserinfo="userInfoHandler">PICK</button>
+    <button class='vote-btn' wx:if="{{selected.length!=2}}" style='background:white;color:black' open-type="getUserInfo" bindgetuserinfo="userInfoHandler">请选择2项</button>
+    <button form-type='submit' class='vote-btn' wx:if="{{selected.length==2}}" open-type="getUserInfo" bindgetuserinfo="userInfoHandler">PICK</button>
   </view>
 </form>
 

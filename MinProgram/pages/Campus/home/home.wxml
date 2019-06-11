@@ -23,7 +23,9 @@
   <official-account></official-account>
   <!-- 导航模式 -->
   <!-- 应用 -->
+  <tips></tips>
   <app></app>
+
   <view class='divide-line'></view>
   <!-- 日课程 -->
   <day todayCourse="{{todayCourse}}"></day>
@@ -38,7 +40,7 @@
 <!-- 抽屉弹窗 -->
 <drawer-modal show='{{showDrawer}}'>
   <view slot="left" catchtap="catchtap" class='dawer'>
-    <view class='avator'>
+    <view class='avator' bindtap='tapDrawer' id='navToBind' >
       <open-data type="userAvatarUrl" class='img'></open-data>
       <open-data type="userNickName" class="nickname"></open-data>
     </view>

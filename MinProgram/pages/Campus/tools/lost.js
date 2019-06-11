@@ -1,34 +1,20 @@
-// pages/Life/wall/wall.js
+const Page = require('../../../utils/sdk/ald-stat.js').Page
 Page({
 
-  onLoad: function () {
- 
-    wx.showLoading({
-      title: 'Loading...',
-    })
-
-    let tableName = 'temp'
-    let recordID = '5c7224f18bb6cc51daa17a49'
-
-    let Product = new wx.BaaS.TableObject(tableName)
-
-    Product.get(recordID).then(res => {
-      this.setData({
-        url: res.data.data.url
-      })
-      setTimeout(function () {
-        wx.hideLoading()
-      }, 500)
-    }, err => {
-      // err
-    })
+  /**
+   * 页面的初始数据
+   */
+  data: {
 
   },
-view(){
-wx.previewImage({
-  urls:this.data.url,
-})
-},
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+
+  },
+
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

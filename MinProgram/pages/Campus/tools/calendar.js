@@ -1,5 +1,4 @@
-const Page = require('../../../utils/sdk/ald-stat.js').Page;
-// pages/Campus/navTools/calendar.js
+const Page = require('../../../utils/sdk/ald-stat.js').Page
 Page({
 
   /**

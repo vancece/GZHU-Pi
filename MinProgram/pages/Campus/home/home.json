@@ -7,6 +7,7 @@
     "app": "/pages/Campus/home/components/units/appNav",
     "day": "/pages/Campus/home/components/units/dayCourse",
     "grade": "/pages/Campus/home/components/units/grade",
-    "drawer-modal": "/pages/Components/drawer-modal"
+    "drawer-modal": "/pages/Components/drawer-modal",
+    "tips": "/pages/Components/tips"
   }
 }

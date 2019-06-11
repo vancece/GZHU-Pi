@@ -14,6 +14,7 @@ Page({
     key: "", //输入的线下投票码
 
     submit_times: 0, //提交投票次数
+    end: true
   },
 
   // 启动，获取数据，检测投票
@@ -48,9 +49,10 @@ Page({
 
   // 提交
   formSubmit(e) {
-    if (this.data.selected.length != 3) {
+    wx.BaaS.wxReportTicket(e.detail.formId)
+    if (this.data.selected.length != 2) {
       wx.showToast({
-        title: '要选3项喔~',
+        title: '要选2项喔~',
         icon: "none"
       })
       return
@@ -138,9 +140,9 @@ Page({
   select(e) {
     let id = Number(e.currentTarget.dataset.id)
     let record = this.data.vote_list[id]
-    if (this.data.selected.indexOf(record) == -1 && this.data.selected.length >= 3) {
+    if (this.data.selected.indexOf(record) == -1 && this.data.selected.length >= 2) {
       wx.showToast({
-        title: '只能投三位小姐姐喔！',
+        title: '只能投两位小姐姐喔！',
         icon: "none"
       })
       return
@@ -189,15 +191,19 @@ Page({
       wx.BaaS.invokeFunction('getTime').then(e => {
         let serverDate = e.data.timeStr
         console.log("服务器时间", serverDate)
-
+        console.log(e)
         query.compare('created_by', '=', id)
         Obj.setQuery(query).find().then(res => {
+          that.setData({
+            end: e.data.end
+          })
           res.data.objects.forEach(item => {
             let date = new Date(item.created_at * 1000);
             let voteDate = Utils.formatTime(date)
             // 标记今天已经投票
+            
             if (voteDate == serverDate) {
-              console.log("今天已经投票")
+              console.log("今天已经投票",)
               that.setData({
                 votedToday: true,
                 end: e.data.end
@@ -210,6 +216,8 @@ Page({
             }
           })
           wx.hideLoading()
+        },err=>{
+
         })
       })
     }
@@ -250,16 +258,17 @@ Page({
     let record = Obj.create()
 
     let voteData = {
-      vote_ids: [object[0].id, object[1].id, object[2].id],
+      vote_ids: [object[0].id, object[1].id],
       vote0: object[0].perform,
       vote1: object[1].perform,
-      vote2: object[2].perform,
       key_for: key_for,
       key: key
     }
     record.set(voteData).save().then(res => {
       console.log(res)
-    }, err => {})
+    }, err => {
+      console.log(err)
+    })
   },
 
 
@@ -274,10 +283,10 @@ Page({
     record.incrementBy('count', amount)
     record.update().then(res => {
 
-      // 三个选手都提交后，刷新数据
+      // 2个选手都提交后，刷新数据
       that.data.submit_times = that.data.submit_times + 1
 
-      if (that.data.submit_times == 3) {
+      if (that.data.submit_times == 2) {
         wx.showToast({
           title: '投票成功',
           icon: "none"
