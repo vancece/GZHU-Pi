@@ -4,8 +4,8 @@ Page({
 
   data: {
     current: 1,
-    sem_list: ["2018-2019-1", "2018-2019-2"],
-    pickerIndex: 1,
+    sem_list: ["2018-2019-1", "2018-2019-2", "2019-2020-1", "2019-2020-2"],
+    pickerIndex: 2,
     loading: false,
     exp_btn: "同步实验",
     kb_btn: "同步课表",
@@ -72,7 +72,7 @@ Page({
           content: '同步将会覆盖当前课表',
           success: function(res) {
             if (res.confirm) {
-              Request.sync(e.detail.value.username, e.detail.value.password, "course", "account").then(res => {
+              Request.sync(e.detail.value.username, e.detail.value.password, "course", "account", that.data.sem_list[that.data.pickerIndex]).then(res => {
                 wx.showToast({
                   title: res,
                   icon: res == "同步完成" ? "success" : "none"

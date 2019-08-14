@@ -17,12 +17,12 @@
     <image id='4' bindtap='navigate' style='width:90rpx' mode='widthFix' src='https://cloud-minapp-17768.cloud.ifanrusercontent.com/1gEtLYqwE75THYVk.png'></image>
     <image id='5' bindtap='navigate' style='width:90rpx' mode='widthFix' src='https://cloud-minapp-17768.cloud.ifanrusercontent.com/1gEtLYHFBZNatsdj.png'></image>
     <image id='6' bindtap='navigate' style='width:90rpx' mode='widthFix' src='/assets/exp.svg'></image>
-    <image id='7' bindtap='navigate' style='width:90rpx' mode='widthFix' src='https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/icon/vote.svg'></image>
+    <image id='7' bindtap='navigate' style='width:90rpx' mode='widthFix' src='https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/icon/things.svg'></image>
   </view>
   <view class='nav-item'>
     <view id='4' bindtap='navigate' style='flex:1'>考试</view>
     <view id='5' bindtap='navigate' style='flex:1'>蹭课</view>
     <view id='6' bindtap='navigate' style='flex:1'>实验课</view>
-    <view id='7' bindtap='navigate' style='flex:1'>活动</view>
+    <view id='7' bindtap='navigate' style='flex:1'>失物</view>
   </view>
 </view>

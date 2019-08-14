@@ -10,7 +10,8 @@
     </view>
   </view>
 
-  <view hidden='{{hideSyncTip}}' style='color:grey;font-size:70%;margin:20rpx'>24:00后教务系统通道关闭，将无法同步</view>
+  <view hidden='{{hideSyncTip}}' style='color:grey;font-size:70%;margin:10rpx'>24:00后教务系统通道关闭，将无法同步</view>
+  <view hidden='{{!hideSyncTip}}' style='color:grey;font-size:70%;margin:10rpx'>左右滑动切换学期</view>
 
   <!-- 学期循环 -->
   <swiper hidden='{{grade.totalCount==0?true:false}}' indicator-dots="{{true}}" bindchange='swiperChange' style='height:{{height}}rpx'>
@@ -58,3 +59,22 @@
   <view style='color:grey;font-size:70%;margin:20rpx'>成绩数据仅供参考，请以官网为准</view>
   <view style='color:#ddd;font-size:80%'>更新于：{{grade.update_time}}</view>
 </view>
+
+
+<modal show="{{showAgree}}" title="使用提醒" confirmText="同意" cancelText="拒绝" bindconfirm="agree" bindcancel="refuse">
+
+  <view style="margin:20rpx;">
+    <view>将加入【匿名排名】统计功能，需要使用到你的成绩等数据，为避免学校请我喝茶，请阅读并同意
+      <text style="color:#1a93f0" bindtap="navTo">《用户协议》</text>
+    </view>
+
+    <view style="margin:30rpx 0">喜则同，不喜则拒！有问题请骚扰活的客服。</view>
+  </view>
+</modal>
+
+<modal show="{{showTips}}" custom="{{true}}">
+
+  <view style="margin:50rpx;">
+    排名数据来源于用户数据统计，仅方便同学们参考，不保证准确性。广大派目前覆盖了近半广大用户，同班级/专业/学院使用本功能的人越多，对应排名越准确。
+  </view>
+</modal>

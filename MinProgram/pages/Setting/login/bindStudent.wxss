@@ -32,6 +32,13 @@
   margin: 35rpx 0rpx;
 }
 
+.agree{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
 .login-btn {
   display: flex;
   align-items: center;

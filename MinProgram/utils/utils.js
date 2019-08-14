@@ -24,7 +24,7 @@ const formatNumber = n => {
 */
 function getSchoolWeek() {
   let schoolWeek
-  let startMonday = new Date(2019, 1, 25)
+  let startMonday = new Date(2019, 8, 26)
   let today = new Date()
 
   let interval = today - startMonday
@@ -35,7 +35,11 @@ function getSchoolWeek() {
     return -(Math.ceil(schoolWeek))
   } else {
     schoolWeek = Math.ceil(intervalDays) / 7
-    return Math.ceil(schoolWeek)
+    schoolWeek = Math.ceil(schoolWeek)
+    if (schoolWeek > 20) {
+      return 0
+    }
+    return schoolWeek
   }
 }
 

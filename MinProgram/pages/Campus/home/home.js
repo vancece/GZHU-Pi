@@ -2,7 +2,6 @@ const Page = require('../../../utils/sdk/ald-stat.js').Page;
 var app = getApp()
 var Config = require("../../../utils/config.js")
 var Setting = require("../../../utils/setting.js")
-
 Page({
   data: {
     schedule: Config.get("schedule_mode") == "week" ? true : false,
@@ -14,10 +13,9 @@ Page({
   },
 
   onLoad: function(options) {
-    wx.showLoading({
-      title: 'Loading...',
-    })
+ 
   },
+
   onShareAppMessage: function() {
 
   },
@@ -28,11 +26,11 @@ Page({
 
   updateCheck() {
     let version = Config.get("version")
-    if (version < "0.9.2.20190505") {
+    if (version < "0.9.2.20190712") {
       this.setData({
         showUpdate: true
       })
-      Config.set("version", "0.9.2.20190505")
+      Config.set("version", "0.9.2.20190712")
     }
   },
 

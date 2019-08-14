@@ -61,10 +61,6 @@ App({
               wx.login() // 重新登录
             }
           })
-        } else {
-          wx.navigateTo({
-            url: '/pages/Setting/login/bindStudent'
-          })
         }
       },
       // 检测授权状态后 检测绑定状态
@@ -110,7 +106,7 @@ App({
     updateManager.onUpdateReady(function() {
       wx.showModal({
         title: '更新提示',
-        content: '新版本已经准备好，是否重启应用？',
+        content: '新版本已经准备好，是否重启应用？\n如遇缓存丢失，请重启小程序。',
         success(res) {
           if (res.confirm) {
             // 新的版本已经下载好，调用 applyUpdate 应用新版本并重启

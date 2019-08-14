@@ -22,8 +22,12 @@
             <input class='input-content' name="password" password='true' placeholder="Password" cursor-spacing="120" />
           </view>
         </view>
-        <view style='font-size:60%'>使用前请阅读
-          <text bindtap='etrAgreement' style='color:#18b3eb'>《用户协议》</text>
+
+        <view class="agree" bindtap="agree">
+          <radio checked="{{checked}}" />
+          <view style='font-size:60%'>使用前请同意
+            <text bindtap='navToAgreement' style='color:#18b3eb'>《用户协议》</text>
+          </view>
         </view>
         <button class='login-btn' hidden='{{hideLoginBtn1}}' hover-class="btn-hover" formType="submit" open-type="getUserInfo">绑定学号</button>
         <button class='login-btn' hidden='{{hideLoginBtn2}}' style='background-color: #ddd;box-shadow:0rpx 0rpx 0rpx 0rpx #ddd'>登录中...</button>
@@ -44,7 +48,7 @@
 </view>
 
 <!-- 授权设置弹窗 -->
-<modal custom="true" show="{{show}}" >
+<modal custom="true" show="{{show}}">
   <view class='weixin'>
     <image src='/assets/weixin.svg' style='width:100rpx;height:100rpx'></image>
   </view>

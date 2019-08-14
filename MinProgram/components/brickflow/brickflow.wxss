@@ -1,0 +1,85 @@
+/* 瀑布流容器主体 */
+
+.list-container {
+  display: flex;
+  flex-direction: row;
+  padding: 15rpx;
+  /* border: 1rpx solid red; */
+}
+
+/* 左右两列 */
+
+.list-side-box {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  margin-right: 15rpx;
+}
+
+.list-side-box:last-child {
+  margin-right: 0;
+}
+
+/* 每一列 */
+
+.list-item {
+  break-inside: avoid;
+  box-sizing: border-box;
+  padding-bottom: 20rpx;
+}
+
+/* 每一个卡片 */
+
+.list-box {
+  position: relative;
+  /* padding: 8px; */
+  border-radius: 5px;
+  color: rgb(80, 80, 80);
+  border: 1rpx solid #ddd;
+}
+
+.list-box.is-expand .list-box_content {
+  height: auto;
+}
+
+/* 内容主体 */
+
+.list-box_content {
+  height: 71px;
+  min-height: 71px;
+  font-size: 15px;
+  line-height: 24px;
+  overflow: hidden;
+}
+
+/* 图片预览 */
+
+.media-previewer image {
+  margin-top: 8px;
+  width: 100%;
+  border-radius: 4px;
+}
+
+.media-previewer image:first-child {
+  margin-top: 0;
+}
+
+.album-text-area {
+  padding: 0 15rpx;
+}
+
+.user-area {
+  display: flex;
+  /* border: 1rpx solid red; */
+  align-items: center;
+  padding: 10rpx;
+}
+
+.avatar {
+  width: 60rpx;
+  border-radius: 50%;
+}
+
+.price{
+  display: flex;
+}

@@ -11,7 +11,7 @@
 var url = "https://1171058535813521.cn-shanghai.fc.aliyuncs.com/2016-08-15/proxy/GZHU-API/Spider/"
 // var url = "http://127.0.0.1:5000/"
 
-function sync(username, password, type, account_key = "account") {
+function sync(username, password, type, account_key = "account",year_sem="2019-2020-1") {
 
   var time = new Date()
   if (time.getHours() >= 0 && time.getHours() < 7) {
@@ -19,9 +19,9 @@ function sync(username, password, type, account_key = "account") {
       title: '00:00~07:00不可同步',
       icon: "none"
     })
-    return new Promise(function(callback) {
-      callback(0)
-    })
+    // return new Promise(function(callback) {
+    //   callback(0)
+    // })
   }
 
   wx.showLoading({
@@ -35,13 +35,15 @@ function sync(username, password, type, account_key = "account") {
   }
 
   return new Promise(function(callback) {
+    let data = account
+    data["year_sem"] = year_sem
     wx.request({
       url: url + type,
       method: "POST",
       header: {
         'content-type': 'application/x-www-form-urlencoded'
       },
-      data: account,
+      data: data,
 
       success: function(res) {
         if (res.statusCode != 200) {

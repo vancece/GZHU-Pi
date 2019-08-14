@@ -51,16 +51,24 @@ class JW(object):
         return get_student_info(get_res.text)
 
     # 获取课表
-    def get_course(self, year="2018", semester="12"):
+    def get_course(self, year_sem="2019-2020-1"):
         """
         获取课表
-        :param year: 学年段的第一年
-        :param semester: 学期  第一学期：3，第二学期：12
+        :param year_sem: 学年-学期
         :return: 处理后的课表数据
         """
+        # 学年段的第一年
+        year = year_sem.split("-")[0]
+        # 第一学期：3，第二学期：12
+        if year_sem.split("-")[2] == "1":
+            semester = "3"
+        else:
+            semester = "12"
+
         data = {
             "xnm": year,
             "xqm": semester,
+            "queryModel.showCount": 50
         }
         res = self.client.post(url["course"], data=data, headers=self.headers)
         course = get_course(res.text)
@@ -69,7 +77,10 @@ class JW(object):
             url["id-credit"], data=data, headers=self.headers)
         course = add_credit(credit.text, course)
         course["update_time"] = time.strftime(" %Y-%m-%d %H:%M:%S")
-        set_log(self.get_info(), "课表查询")
+        try:
+            set_log(self.get_info(), "课表查询")
+        except:
+            pass
         return course
 
     # 获取成绩
@@ -87,17 +98,25 @@ class JW(object):
             "time": 0,
         }
         res = self.client.post(url["grade"], data=data, headers=self.headers)
+        try:
+            set_log(self.get_info(), "成绩查询")
+        except:
+            pass
+        return get_grade(res.text, self.password)
 
-        set_log(self.get_info(), "成绩查询")
-        return get_grade(res.text)
-
-    def get_exam(self, year="2018", semester="12"):
+    def get_exam(self, year_sem="2018-2019-2"):
         """
         获取考试信息
-        :param year: 学年段的第一年
-        :param semester: 学期  第一学期：3，第二学期：12
+        :param year_sem: 学年-学期
         :return: 处理后的考试数据
         """
+        # 学年段的第一年
+        year = year_sem.split("-")[0]
+        # 第一学期：3，第二学期：12
+        if year_sem.split("-")[2] == "1":
+            semester = "3"
+        else:
+            semester = "12"
 
         data = {
             "xnm": year,
@@ -116,7 +135,10 @@ class JW(object):
         }
         res = self.client.post(url["exam"], data=data, headers=self.headers)
 
-        set_log(self.get_info(), "考试查询")
+        try:
+            set_log(self.get_info(), "考试查询")
+        except:
+            pass
 
         return get_exam(res.text)
 

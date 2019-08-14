@@ -19,7 +19,9 @@
     "pages/Campus/course/tools",
     "pages/Setting/help/help",
     "pages/Campus/gzhu/admit",
-    "pages/Campus/tools/lost"
+    "pages/Campus/tools/lost",
+    "pages/Setting/about/agreement",
+    "pages/Campus/grade/rank"
   ],
   "subpackages": [
     {
@@ -49,7 +51,7 @@
   },
   "plugins": {
     "sdkPlugin": {
-      "version": "2.0.9",
+      "version": "2.2.0",
       "provider": "wxc6b86e382a1e3294"
     },
     "brickLayout": {
@@ -57,7 +59,7 @@
       "provider": "wx3c042630f3cdc175"
     },
     "tencentvideo": {
-      "version": "1.3.2",
+      "version": "1.3.6",
       "provider": "wxa75efa648b60994b"
     }
   },

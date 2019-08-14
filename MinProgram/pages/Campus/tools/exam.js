@@ -6,7 +6,7 @@ Page({
 
   },
 
-  onLoad: function (options) {
+  onLoad: function(options) {
     console.log("page启动：", options)
     if (JSON.stringify(options) != "{}") {
       this.getRecord(options.recordID)
@@ -16,7 +16,7 @@ Page({
 
   },
 
-  onShareAppMessage: function () {
+  onShareAppMessage: function() {
     let recordID = wx.getStorageSync("exam").id
     return {
       title: this.data.exam[0].major_class + " - 考试安排",
@@ -26,9 +26,9 @@ Page({
 
 
   // 下拉刷新
-  onPullDownRefresh: function () {
+  onPullDownRefresh: function() {
     this.getExam()
-    setTimeout(function () {
+    setTimeout(function() {
       wx.stopPullDownRefresh()
     }, 3000)
   },
@@ -100,7 +100,7 @@ Page({
     record.set('exam_list', exam)
     record.update().then(res => {
       wx.setStorageSync("exam", res.data)
-    }, err => { })
+    }, err => {})
   },
 
 
@@ -125,6 +125,8 @@ Page({
     wx.showLoading({
       title: '获取中~',
     })
+    let data = that.data.account
+    data["year_sem"] = "2018-2019-2"
     wx.request({
       url: 'https://1171058535813521.cn-shanghai.fc.aliyuncs.com/2016-08-15/proxy/GZHU-API/Spider/exam',
       method: "POST",
@@ -132,7 +134,7 @@ Page({
       header: {
         'content-type': 'application/x-www-form-urlencoded'
       },
-      success: function (res) {
+      success: function(res) {
         console.log("exam", res)
         if (res.statusCode != 200) {
           wx.showToast({
@@ -157,13 +159,13 @@ Page({
           that.handler(res.data.data)
       },
       // 请求失败
-      fail: function (err) {
+      fail: function(err) {
         wx.showToast({
           title: "访问超时",
           icon: "none"
         })
       },
-      complete: function () {
+      complete: function() {
         wx.hideLoading()
       }
     })

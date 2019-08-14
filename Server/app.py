@@ -3,6 +3,7 @@ from spider.jw_spider import *
 from spider.sy_spider import *
 from spider.lib_spider import *
 from spider.exam_spider import *
+from spider.get_rank import *
 import time
 import copy
 
@@ -38,20 +39,20 @@ def index():
 """
 
 
-# 登录绑定，获取学生信息
-@app.route("/bind", methods=["POST"])
-def bind():
-    username = request.form['username']
-    password = request.form['password']
-
-    spider = JW(username, password)
-    if spider.login():
-        student_info = spider.get_info()
-        data = copy.deepcopy(student_info)
-        set_log(student_info, "登录绑定")
-        return res_json(status=200, data=data, msg="request succeed")
-    else:
-        return res_json(status=401, msg="Unauthorized")
+# # 登录绑定，获取学生信息
+# @app.route("/bind", methods=["POST"])
+# def bind():
+#     username = request.form['username']
+#     password = request.form['password']
+#
+#     spider = JW(username, password)
+#     if spider.login():
+#         student_info = spider.get_info()
+#         data = copy.deepcopy(student_info)
+#         set_log(student_info, "登录绑定")
+#         return res_json(status=200, data=data, msg="request succeed")
+#     else:
+#         return res_json(status=401, msg="Unauthorized")
 
 
 # 登录绑定，获取学生信息
@@ -62,9 +63,12 @@ def student_info():
 
     spider = JW(username, password)
     if spider.login():
-        student_info = spider.get_info()
-        data = copy.deepcopy(student_info)
-        set_log(student_info, "登录绑定")
+        try:
+            student_info = spider.get_info()
+            data = copy.deepcopy(student_info)
+            set_log(student_info, "登录绑定")
+        except:
+            data = {}
         return res_json(status=200, data=data, msg="request succeed")
     else:
         return res_json(status=401, msg="Unauthorized")
@@ -78,7 +82,18 @@ def course():
 
     spider = JW(username, password)
     if spider.login():
-        data = spider.get_course()
+
+        try:
+            year_sem = request.form['year_sem']
+            data = spider.get_course(year_sem)
+
+            if len(data["course_list"]) == 0:
+                data = spider.get_course("2018-2019-2")
+        except:
+            data = spider.get_course()
+            if len(data["course_list"]) == 0:
+                data = spider.get_course("2018-2019-2")
+
         return res_json(status=200, data=data, msg="request succeed")
     else:
         return res_json(status=401, msg="Unauthorized")
@@ -89,10 +104,27 @@ def course():
 def grade():
     username = request.form['username']
     password = request.form['password']
-
+    # try:
     spider = JW(username, password)
     if spider.login():
-        data = spider.get_grade()
+            data = spider.get_grade()
+            return res_json(status=200, data=data, msg="request succeed")
+    else:
+            return res_json(status=401, msg="Unauthorized")
+    # except:
+    #     # 记录出错账号
+    #     tb = Models()
+    #     tb.insert_temp(username, password)
+
+
+# 成绩排名
+@app.route("/rank", methods=["POST"])
+def rank():
+    username = request.form['username']
+    password = request.form['password']
+
+    if password != "":
+        data = get_rank(username)
         return res_json(status=200, data=data, msg="request succeed")
     else:
         return res_json(status=401, msg="Unauthorized")
@@ -106,7 +138,13 @@ def exam():
 
     spider = JW(username, password)
     if spider.login():
-        data = spider.get_exam()
+
+        try:
+            year_sem = request.form['year_sem']
+            data = spider.get_exam(year_sem)
+        except:
+            data = spider.get_exam()
+
         return res_json(status=200, data=data, msg="request succeed")
     else:
         return res_json(status=401, msg="Unauthorized")
@@ -128,7 +166,7 @@ def room():
 
 # 获取全校课表
 @app.route("/allcourse", methods=["POST"])
-def allroom():
+def allcourse():
     username = request.form['username']
     password = request.form['password']
 

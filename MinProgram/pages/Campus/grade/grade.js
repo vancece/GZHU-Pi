@@ -5,11 +5,45 @@ Page({
   data: {
     hideSyncTip: true,
     refleshTimes: 0,
+    showAgree: true,
+    showTips: false,
+    bindStatus: wx.getStorageSync("account") == "" ? false : true
   },
 
-  onLoad: function(options) {
+  agree() {
+    wx.setStorageSync('agree', true)
+    this.setData({
+      showTips: true
+    })
+  },
+  refuse() {
+    if (getCurrentPages().length == 1) {
+      wx.reLaunch({
+        url: '/pages/Campus/home/home',
+      })
+    } else {
+      wx.navigateBack({
+        delta: 1
+      })
+    }
+  },
+  navTo() {
+    wx.navigateTo({
+      url: '/pages/Setting/about/agreement',
+    })
+  },
+
+  onLoad: function (options) {
+
+    let agree = wx.getStorageSync("agree")
+    if (agree == true) {
+      this.setData({
+        showAgree: false
+      })
+    }
+
     let that = this
-    if (!app.globalData.bindStatus) {
+    if (!this.data.bindStatus) {
       wx.navigateTo({
         url: '/pages/Setting/login/bindStudent',
       })
@@ -20,28 +54,28 @@ Page({
       // 从缓存读取成绩
       wx.getStorage({
         key: 'grade',
-        success: function(res) {
+        success: function (res) {
           console.log("成绩", res)
           that.setData({
             grade: res.data,
             height: 350 + res.data.sem_list[0].grade_list.length * 170
           })
         },
-        fail: function(res) {
+        fail: function (res) {
           that.updateGrade()
         }
       })
     }
   },
 
-  onShow: function() {
+  onShow: function () {
     var time = new Date()
     if (time.getHours() >= 0 && time.getHours() < 7) {
       this.setData({
         hideSyncTip: false
       })
     }
-    if (!app.globalData.bindStatus) {
+    if (!this.data.bindStatus) {
       wx.showToast({
         title: '请绑定学号',
         icon: "none",
@@ -60,14 +94,35 @@ Page({
   },
 
   // 下拉刷新
-  onPullDownRefresh: function() {
+  onPullDownRefresh: function () {
     this.updateGrade()
-    setTimeout(function() {
+    setTimeout(function () {
       wx.stopPullDownRefresh()
     }, 3000)
   },
 
-  onShareAppMessage: function() {},
+  onShareAppMessage: function () {
+    return {
+      title: '成绩查询',
+      desc: '',
+      // path: '路径',
+      imageUrl: "https://cos.ifeel.vip/gzhu-pi/images/pic/grade.png", 
+      success: function (res) {
+        // 转发成功
+        wx.showToast({
+          title: '分享成功',
+          icon: "none"
+        });
+      },
+      fail: function (res) {
+        // 转发失败
+        wx.showToast({
+          title: '分享失败',
+          icon: "none"
+        })
+      }
+    }
+  },
 
   // 更新成绩
   updateGrade() {
@@ -79,14 +134,14 @@ Page({
       })
       return
     }
-    
+
     if (!app.globalData.bindStatus) {
       wx.showToast({
         title: '尚未绑定学号',
         icon: "none",
         duration: 1500,
-        success: function() {
-          setTimeout(function() {
+        success: function () {
+          setTimeout(function () {
             wx.navigateTo({
               url: "/pages/Setting/login/bindStudent"
             })
@@ -97,7 +152,7 @@ Page({
     }
     // 防止频繁刷新
     if (this.data.refleshTimes) {
-      setTimeout(function() {
+      setTimeout(function () {
         wx.stopPullDownRefresh()
       }, 2000)
 
@@ -129,18 +184,18 @@ Page({
         'content-type': 'application/x-www-form-urlencoded'
       },
       data: this.data.account,
-      success: function(res) {
+      success: function (res) {
         if (res.statusCode != 200) {
-          wx.showToast({
-            title: "服务器响应错误",
-            icon: "none"
+          wx.showModal({
+            title: '错误提示',
+            content: '服务器响应错误',
           })
           return
         }
         if (res.data.statusCode != 200) {
-          wx.showToast({
-            title: "账号或密码错误",
-            icon: "none"
+          wx.showModal({
+            title: '错误提示',
+            content: '账号或密码错误',
           })
           return
         }
@@ -159,19 +214,23 @@ Page({
           duration: 1500,
         })
       },
-      fail: function(err) {
+      fail: function (err) {
         console.log("err:", err)
         wx.showToast({
-          title: "访问超时",
+          title: "请求失败",
           icon: "none"
         })
       },
-      complete: function(res) {
-        console.log(res.data.data)
+      complete: function (res) {
+        if (res.statusCode == 502) {
+          wx.showToast({
+            title: "访问超时 " + res.statusCode,
+            icon: "none"
+          })
+        }
+        console.log(res)
         clearInterval(that.data.num) // 停止动画
         wx.hideLoading()
-
-       
         wx.stopPullDownRefresh()
       }
     })
@@ -193,7 +252,7 @@ Page({
       })
     }
     this.setData({
-      num: setInterval(function() {
+      num: setInterval(function () {
         ami(n)
         n++
       }, 150)

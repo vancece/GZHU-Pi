@@ -2,7 +2,7 @@ var config = {
   configData: "20190316",
   schedule_mode: "day", //启动模式 day/week
   showExp: false, //是否展示实验课
-  version: "0.9.2.20190505", //版本号
+  version: "0.9.2.20190712", //版本号
   bindStatus: wx.getStorageSync("account") == "" ? false : true, //学号绑定
   schedule_bg: "#a8edea,#fed6e3", //课表背景图片/颜色
   blur: 8, //高斯模糊

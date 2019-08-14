@@ -65,7 +65,7 @@
     </form>
     <view class='tips'>
       <view>*信息仅存在本机缓存，删除应用将消失</view>
-      <view>*小程序后续会加入CET4/6等考试的查询</view>
+      <!-- <view>*小程序后续会加入CET4/6等考试的查询</view> -->
     </view>
   </swiper-item>
 </swiper>

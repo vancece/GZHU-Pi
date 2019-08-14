@@ -6,7 +6,7 @@ Page({
     title: "任意门",
 
     semList: ["2019-2020-2", "2019-2020-1", "2018-2019-2", "2018-2019-1"],
-    semIndex: 2, //默认显示的学期索引
+    semIndex: 1, //默认显示的学期索引
 
     yearIndex: 1,
     collegeIndex: 5,

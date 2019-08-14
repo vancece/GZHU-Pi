@@ -8,6 +8,7 @@ Page({
     hideLoginBtn2: true,
     hideLogin: false,
     hideSuccess: true,
+    checked: false,
     api: "https://1171058535813521.cn-shanghai.fc.aliyuncs.com/2016-08-15/proxy/GZHU-API/Spider/"
   },
 
@@ -21,7 +22,7 @@ Page({
     })
 
     // 用户迁移绑定
-    if (!app.globalData.isAuthorized || 　JSON.stringify(options) == "{}") return
+    if (!app.globalData.isAuthorized || JSON.stringify(options) == "{}") return
     if (!app.globalData.bindStatus && options.username != "undefined") {
       wx.showLoading({
         title: '迁移绑定...',
@@ -50,7 +51,16 @@ Page({
         hideSuccess: !app.globalData.bindStatus,
       })
     }
-
+  },
+  navToAgreement() {
+    wx.navigateTo({
+      url: '/pages/Setting/about/agreement',
+    })
+  },
+  agree() {
+    this.setData({
+      checked: !this.data.checked
+    })
   },
 
   userInfoHandler(data) {
@@ -109,6 +119,13 @@ Page({
 
   // 提交登录表单
   formSubmit(e) {
+    if (!this.data.checked) {
+      wx.showToast({
+        title: '请同意用户协议',
+        icon: 'none'
+      })
+      return
+    }
     // 上报formId
     wx.BaaS.wxReportTicket(e.detail.formId)
     let account = {
@@ -158,6 +175,11 @@ Page({
             title: "账号或密码错误",
             icon: "none"
           })
+          wx.showModal({
+            title: '登录提示',
+            content: '账号或密码错误，如需修改请前往  http://my.gzhu.edu.cn',
+            showCancel: false
+          })
           return
         }
         // 缓存账户信息
@@ -197,13 +219,15 @@ Page({
     wx.showLoading({
       title: '同步课表中...',
     })
+    let data = this.data.account
+    data["year_sem"] = "2019-2020-1"
     wx.request({
       method: "POST",
       url: this.data.api + type,
       header: {
         'content-type': 'application/x-www-form-urlencoded'
       },
-      data: this.data.account,
+      data: data,
       success: function(res) {
         console.log(res)
         if (res.statusCode != 200) {

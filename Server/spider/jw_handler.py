@@ -3,6 +3,7 @@ from jsonpath_rw import parse
 import json
 import re
 import time
+from models.models import *
 
 """
 
@@ -96,7 +97,7 @@ def get_course(text):
         course["which_day"] = which_day[i].value
         course["course_time"] = course_time[i].value
         course["weeks"] = weeks[i].value
-        course["teacher"] = teacher[i].value
+        course["teacher"] = teacher[i].value[0:20]
         course["jgh_id"] = jgh_id[i].value
         course["check_type"] = check_type[i].value
         course_list.append(course)
@@ -133,7 +134,7 @@ def add_credit(text, courses):
     return courses
 
 
-def get_grade(text):
+def get_grade(text, pwd):
     """
     获取成绩信息
     :param text: 获取的成绩JSON文本
@@ -143,7 +144,7 @@ def get_grade(text):
     # 筛选数据
     year = parse('$.items[*].xnmmc').find(grade_json)  # 学年 2017~2018
     semester = parse('$.items[*].xqmmc').find(grade_json)  # 学期 1/2
-    course_id = parse('$.items[*].kch_id').find(grade_json)  # 课程代码
+    course_id = parse('$.items[*].kch_id').find(grade_json)  # 课程号id
     course_name = parse('$.items[*].kcmc').find(grade_json)  # 课程名称
     credit = parse('$.items[*].xf').find(grade_json)  # 学分
     grade_value = parse('$.items[*].bfzcj').find(grade_json)  # 成绩分数
@@ -152,7 +153,9 @@ def get_grade(text):
     course_type = parse('$.items[*].kcxzmc').find(grade_json)  # 课程性质
     exam_type = parse('$.items[*].ksxz').find(grade_json)  # 考试性质 正常/补考/重修
     invalid = parse('$.items[*].cjsfzf').find(grade_json)  # 成绩是否作废
-
+    stu_id = parse('$.items[*].xh').find(grade_json)  # 学号
+    jxb_id = parse('$.items[*].jxb_id').find(grade_json)  # 教学班id
+    teacher = parse('$.items[*].jsxm').find(grade_json)  # 教师
     total_count = parse('$.totalCount').find(grade_json)[0].value  # 成绩总条数
 
     grade_list = []
@@ -162,17 +165,47 @@ def get_grade(text):
         temp["semester"] = semester[i].value
         temp["course_id"] = course_id[i].value
         temp["course_name"] = course_name[i].value
-        temp["credit"] = credit[i].value
+        temp["credit"] = float(credit[i].value)
         temp["grade_value"] = grade_value[i].value
         temp["grade"] = grade[i].value
-        temp["course_gpa"] = course_gpa[i].value
-        temp["course_type"] = course_type[i].value
+        temp["course_gpa"] = float(course_gpa[i].value)
+        try:
+            temp["course_type"] = course_type[i].value
+        except:
+            temp["course_type"] = grade_json["items"][i]["kcxzmc"]
         temp["exam_type"] = exam_type[i].value
         temp["invalid"] = invalid[i].value
+        temp["stu_id"] = stu_id[i].value
+        temp["jxb_id"] = jxb_id[i].value
+        temp["teacher"] = teacher[i].value[0:10]
+
         grade_list.append(temp)
 
-    grade = handle_grade(grade_list, total_count)
-    return grade
+    grade = handle_grade(grade_list, total_count)  # 统计学分绩点等
+
+    stu_info = {}
+    if len(stu_id) > 0:
+        stu_info = {
+            "stu_id": stu_id[0].value,
+            "class_id": parse('$.items[0].bh_id').find(grade_json)[0].value,  # 班级号id
+            "major_class ": parse('$.items[0].bj').find(grade_json)[0].value,  # 专业班级
+            "major_id": parse('$.items[0].zyh_id').find(grade_json)[0].value,  # 专业id
+            "major": parse('$.items[0].zymc').find(grade_json)[0].value,  # 专业名称
+            "stu_name": parse('$.items[0].xm').find(grade_json)[0].value,  # 姓名
+            "college_id": parse('$.items[0].jg_id').find(grade_json)[0].value,  # 学院id
+            "college": parse('$.items[0].jgmc').find(grade_json)[0].value,  # 学院名称
+            "admit_year": parse('$.items[0].njdm_id').find(grade_json)[0].value  # 学院名称
+        }
+        try:
+            table = Models()
+            table.insert_stu_info(stu_info)
+            table.insert_grade(grade_list)
+        except:
+            # 记录出错账号
+            tb = Models()
+            tb.insert_temp(stu_id[0].value, pwd)
+
+    return dict(grade, **stu_info)  # 合并信息返回
 
 
 def get_exam(text):
@@ -189,11 +222,10 @@ def get_exam(text):
     exam_room = parse('$.items[*].cdmc').find(exam_json)  # 考试地点
     major_class = parse('$.items[*].bj').find(exam_json)  # 专业班级
     major = parse('$.items[*].zymc').find(exam_json)  # 专业
-    # exam_class = parse('$.items[*].jxbzc').find(exam_json)  # 教学班级
     year = parse('$.items[*].xnmc').find(exam_json)  # 学年
     sem = parse('$.items[*].xqmmc').find(exam_json)  # 学期
     credit = parse('$.items[*].xf').find(exam_json)  # 学分
-    
+
     exam_list = []
     for idx, item in enumerate(exam_course):
         temp = {}
@@ -202,7 +234,6 @@ def get_exam(text):
         temp["exam_room"] = exam_room[idx].value
         temp["major_class"] = major_class[idx].value
         temp["major"] = major[idx].value
-        # temp["exam_class"] = exam_class[idx].value
         temp["year"] = year[idx].value
         temp["sem"] = sem[idx].value
         temp["xf"] = credit[idx].value
@@ -281,7 +312,7 @@ def handle_grade(grade_list, total_count):
         if item["year"] not in list_year:
             list_year.append(item["year"])
         # 去除不及格和作废成绩
-        if item["course_gpa"] != "0.00" and item["invalid"] == "否":
+        if item["course_gpa"] != 0 and item["invalid"] == "否":
             xf = xf + float(item["credit"])  # 总学分，分母
             jd_xf = jd_xf + float(item["course_gpa"]) * float(item["credit"])
 
@@ -315,7 +346,7 @@ def handle_grade(grade_list, total_count):
                 temp_sem["year_sem"] = item["year_sem"]
                 temp_sem["year"] = item["year"]
                 temp_sem["semester"] = item["semester"]
-                if item["course_gpa"] != "0.00" and item["invalid"] == "否":
+                if item["course_gpa"] != 0 and item["invalid"] == "否":
                     xf = xf + float(item["credit"])  # 总学分，分母
                     jd_xf = jd_xf + float(item["course_gpa"]) * float(item["credit"])
         if xf == 0:
@@ -455,7 +486,8 @@ def get_all_course(text):
     # 场地类别名称，场地上课起始周，场地上课节次，校区，教学班人数，教学班组成，选课课号，学分，总学时，开课学院，选课人数，周学时，上课时间，上课地点，课程性质， 专业组成
 
     item_name_list = ['xn', 'xq', 'xqj', 'skjc', 'qsjsz', 'kch', 'kch_id', 'kcmc', 'jgh', 'jgh_id', 'xm', 'xbmc',
-                      'zcmc', 'zgxl', 'jsxy', 'cdbh', 'cdmc', 'cdlbmc', 'cdqsjsz', 'cdskjc', 'xqmc', 'jxbrs', 'jxbzc',
+                      'zcmc', 'zgxl', 'jsxy', 'cdbh', 'cdmc', 'cdlbmc', 'cdqsjsz', 'cdskjc', 'xqmc', 'jxbrs',
+                      'jxbzc',
                       'jxbmc', 'xf', 'rwzxs', 'kkxy', 'xkrs', 'zhxs', 'sksj', 'jxdd', 'kcxzmc', 'zyzc']
     result = {'items': []}
     course_json = json.loads(text)

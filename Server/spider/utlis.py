@@ -6,7 +6,7 @@ import json
 import pprint
 
 url = {
-    "login": "https://cas.gzhu.edu.cn/cas_server/login?service=http%3A%2F%2Fjwxt.gzhu.edu.cn%2Fjwglxt%2Flyiotlogin",
+    "login": "https://cas.gzhu.edu.cn/cas_server/login?service=http%3A%2F%2Fjwxt.gzhu.edu.cn%2Fsso%2Flyiotlogin",
     "all-course": "http://jwxt.gzhu.edu.cn/jwglxt/design/funcData_cxFuncDataList.html?func_widget_guid=DA1B5BB30E1F4CB99D1F6F526537777B&gnmkdm=N219904"
 }
 
@@ -21,6 +21,7 @@ class JW(object):
             "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 "
                           "(KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
         }
+        self.login()
 
     # 登录
     def login(self):
@@ -48,14 +49,14 @@ class JW(object):
             return 1
 
     # 查询全校课表
-    def get_all_course(self, page='1'):
+    def get_all_course(self, page='1', count="15"):
 
         post_data = {
-            'xnm': '2018',
-            'xqm': '12',
+            'xnm': '2019',
+            'xqm': '3',
             '_search': 'false',
             'nd': int(round(time.time() * 1000)),
-            'queryModel.showCount': '15',
+            'queryModel.showCount': count,
             'queryModel.currentPage': page,
             'queryModel.sortName': '',
             'queryModel.sortOrder': 'asc'
@@ -64,11 +65,14 @@ class JW(object):
         course_json = json.loads(res.text)["items"]
 
         return course_json
-        # 利用pandas导出CSV
-        # import pandas as pd
-        # raw_list = course_data["items"]
-        # table = pd.DataFrame(raw_list)
-        # pd.DataFrame(table).to_csv('tb1.csv')
+
+    # 爬取全校课表，利用pandas导出CSV
+    def export_all_course(self):
+        import pandas as pd
+        raw_list = self.get_all_course(count="10000")
+        table = pd.DataFrame(raw_list)
+        pd.DataFrame(table).to_csv('2019-2020-1.csv')
+        print("文件导出完成")
 
     # 获取全部学院及其编号
     def get_all_college(self):
@@ -153,3 +157,4 @@ def get_college_major_class():
     raw_list = classes
     table = pd.DataFrame(raw_list)
     pd.DataFrame(table).to_csv('class.csv')
+

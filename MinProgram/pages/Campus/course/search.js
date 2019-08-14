@@ -11,7 +11,7 @@ Page({
     zoneList: ["大学城", "桂花岗"],
     zoneIndex: 0, //默认校区
     semList: ["2019-2020-2", "2019-2020-1", "2018-2019-2", "2018-2019-1"],
-    semIndex: 2, //默认显示的学期索引
+    semIndex: 1, //默认显示的学期索引
     typeList: ["专业必修课程", "专业选修课程", "通识类必修课程", "通识类选修课程", "学科基础课程", "教师教育类必修课程"],
     typeIndex: 0, //默认显示的课程类型
     //条件筛选内容
@@ -165,8 +165,8 @@ Page({
     let Obj = new wx.BaaS.TableObject("all_course")
 
     let query = new wx.BaaS.Query()
-    query.compare('xn', '=', "2018-2019") //学年
-    query.compare('xqm', '=', "12") //学期
+    query.compare('xn', '=', "2019-2020") //学年
+    query.compare('xqm', '=', "3") //学期
     if (dayMode) {
       query.compare('xqj', '=', new Date().getDay()) //星期几
     }

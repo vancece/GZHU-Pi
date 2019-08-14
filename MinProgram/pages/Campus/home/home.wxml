@@ -40,7 +40,7 @@
 <!-- 抽屉弹窗 -->
 <drawer-modal show='{{showDrawer}}'>
   <view slot="left" catchtap="catchtap" class='dawer'>
-    <view class='avator' bindtap='tapDrawer' id='navToBind' >
+    <view class='avator' bindtap='tapDrawer' id='navToBind'>
       <open-data type="userAvatarUrl" class='img'></open-data>
       <open-data type="userNickName" class="nickname"></open-data>
     </view>
@@ -89,7 +89,7 @@
     </view>
     <button open-type="contact" session-from='{"nickName":"{{userInfo.nickName}}","avatarUrl":"{{userInfo.avatarUrl}}"}'>
       <image src='https://cos.ifeel.vip/gzhu-pi/images/icon/kefu.svg'></image>
-      <view>意见反馈</view>
+      <view>活的客服</view>
       <image src='{{arrowUrl}}'></image>
     </button>
     <view class='item' bindtap='tapDrawer' id='navToHelp'>
@@ -108,20 +108,15 @@
 
 <modal show="{{showUpdate}}" title="版本更新">
   <view>
-    本周更新
+    更新提醒
   </view>
   <view style='font-size:90%;color:rgb(80,80,80);margin:20rpx;'>
-    <view> * 新增课程中心，查询全校课程</view>
-    <view> * 一键生成全校班级课表</view>
-    <view> * 方便快捷蹭课查询</view>
+    <view> * 更新成绩【匿名排名】功能</view>
+    <view> * 加入学年绩点排名</view>
+    <view> * 完善分享功能</view>
   </view>
+  <!-- <view>考试成绩陆续出来了，赶紧去刷刷刷吧！</view> -->
 
-  <view>计划开发</view>
-  <view style='font-size:90%;color:rgb(80,80,80);margin:20rpx;'>
-    <view> * 接入失物招领，丢卡不再可怕</view>
-    <view> * 课程评价系统，选课不再迷茫</view>
-    <view> * 一键收藏男神女神的课表</view>
-  </view>
   <button open-type="contact" class='callme'>
     <image style='width:80rpx;height:80rpx' src='https://cos.ifeel.vip/gzhu-pi/images/icon/kefu.svg'></image>
     <view style='font-size:90%;margin-left:10rpx'>提供建议</view>
