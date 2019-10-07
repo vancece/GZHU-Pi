@@ -111,8 +111,8 @@ Page({
     if (ISBN == "") {
       return
     }
-    wx.showLoading({
-      title: '...',
+    this.setData({
+      loading: true
     })
     let that = this
     wx.request({
@@ -140,7 +140,9 @@ Page({
       },
       fail: function(res) {},
       complete: function(res) {
-        wx.hideLoading()
+        that.setData({
+          loading: false
+        })
       }
     })
   },

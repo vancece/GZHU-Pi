@@ -24,7 +24,8 @@ const formatNumber = n => {
 */
 function getSchoolWeek() {
   let schoolWeek
-  let startMonday = new Date(2019, 8, 26)
+  // 月份需要减一
+  let startMonday = new Date(2019, 7, 26)
   let today = new Date()
 
   let interval = today - startMonday
@@ -85,9 +86,27 @@ function getTodayCourse() {
   return todayCourse
 }
 
+
+// 将userInfo的头像转换为高清地址
+function headimgHD(imageUrl) {
+  // console.log('原来的头像', imageUrl);
+  imageUrl = imageUrl.split('/'); //把头像的路径切成数组
+
+  //把大小数值为 46 || 64 || 96 || 132 的转换为0
+  if (imageUrl[imageUrl.length - 1] && (imageUrl[imageUrl.length - 1] == 46 ||
+    imageUrl[imageUrl.length - 1] == 64 || imageUrl[imageUrl.length - 1] == 96 ||
+    imageUrl[imageUrl.length - 1] == 132)) {
+    imageUrl[imageUrl.length - 1] = 0;
+  }
+  imageUrl = imageUrl.join('/');  //重新拼接为字符串
+  console.log('高清的头像', imageUrl);
+  return imageUrl;
+}
+
 module.exports = {
   formatTime: formatTime,
   getSchoolWeek: getSchoolWeek,
   setWeekDate: setWeekDate,
-  getTodayCourse: getTodayCourse
+  getTodayCourse: getTodayCourse,
+  headimgHD: headimgHD
 }

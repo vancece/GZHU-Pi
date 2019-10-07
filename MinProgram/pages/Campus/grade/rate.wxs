@@ -1,0 +1,9 @@
+function rate(rank, count) {
+
+  var rate = Math.round((rank / count) * 100)
+  return rate + "%"
+}
+
+module.exports = {
+  rate: rate,
+}

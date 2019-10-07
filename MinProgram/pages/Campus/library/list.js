@@ -64,8 +64,8 @@ Page({
   // 发送GET请求
   getBooks(query, page = 1) {
     let that = this
-    wx.showLoading({
-      title: '...',
+    this.setData({
+      loading:true
     })
 
     let url = "https://1171058535813521.cn-shanghai.fc.aliyuncs.com/2016-08-15/proxy/GZHU-API/Spider/"
@@ -88,7 +88,9 @@ Page({
         })
       },
       complete: function() {
-        wx.hideLoading()
+        that.setData({
+          loading: false
+        })
       }
     })
   },

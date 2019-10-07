@@ -1,10 +1,12 @@
+@import "./oldthings.wxss";
+@import "../wxss/colorui.wxss";
+
 /* 瀑布流容器主体 */
 
 .list-container {
   display: flex;
   flex-direction: row;
   padding: 15rpx;
-  /* border: 1rpx solid red; */
 }
 
 /* 左右两列 */
@@ -32,11 +34,10 @@
 
 .list-box {
   position: relative;
-  /* padding: 8px; */
   border-radius: 5px;
-  color: rgb(80, 80, 80);
-  border: 1rpx solid #ddd;
 }
+
+/* 内容区 不包含用户区 */
 
 .list-box.is-expand .list-box_content {
   height: auto;
@@ -45,7 +46,7 @@
 /* 内容主体 */
 
 .list-box_content {
-  height: 71px;
+  /* height: 71px; */
   min-height: 71px;
   font-size: 15px;
   line-height: 24px;
@@ -54,7 +55,7 @@
 
 /* 图片预览 */
 
-.media-previewer image {
+/* .media-previewer image {
   margin-top: 8px;
   width: 100%;
   border-radius: 4px;
@@ -62,24 +63,16 @@
 
 .media-previewer image:first-child {
   margin-top: 0;
-}
-
-.album-text-area {
-  padding: 0 15rpx;
-}
+} */
 
 .user-area {
   display: flex;
-  /* border: 1rpx solid red; */
   align-items: center;
   padding: 10rpx;
 }
 
 .avatar {
-  width: 60rpx;
+  width: 70rpx;
+  height: 70rpx;
   border-radius: 50%;
-}
-
-.price{
-  display: flex;
 }

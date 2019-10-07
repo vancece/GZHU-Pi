@@ -1,8 +1,8 @@
 <navBar title="广大校历"  navColor="white" ></navBar>
 
-
 <view class='page'>
 
+<ad unit-id="adunit-47f51f326208213f" ad-type="video" ad-theme="white"></ad>
 
   <view wx:for="{{pics}}" wx:key="{{index}}" class='img' bindtap='preview' id="{{index}}">
     <image mode='widthFix' src='{{item.url}}'></image>

@@ -9,6 +9,11 @@
   </form>
 </navBar>
 
+<view class='cu-load load-modal' wx:if="{{loading}}">
+  <view class='cuIcon-emojifill text-orange'></view>
+  <view class='gray-text'>🔍搜索中</view>
+</view>
+
 <view wx:for="{{books}}" wx:key="{{index}}" class='book' bindtap='navToDetail' id='{{index}}'>
   <view class='book-name'>{{index+1}}、{{item.book_name}}</view>
 

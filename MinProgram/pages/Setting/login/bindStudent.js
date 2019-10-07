@@ -8,11 +8,11 @@ Page({
     hideLoginBtn2: true,
     hideLogin: false,
     hideSuccess: true,
-    checked: false,
+    checked: true,
     api: "https://1171058535813521.cn-shanghai.fc.aliyuncs.com/2016-08-15/proxy/GZHU-API/Spider/"
   },
 
-  onLoad: function(options) {
+  onLoad: function (options) {
 
     this.setData({
       show: !app.globalData.isAuthorized,
@@ -23,6 +23,7 @@ Page({
 
     // 用户迁移绑定
     if (!app.globalData.isAuthorized || JSON.stringify(options) == "{}") return
+    console.log(!app.globalData.bindStatus, options.username)
     if (!app.globalData.bindStatus && options.username != "undefined") {
       wx.showLoading({
         title: '迁移绑定...',
@@ -68,9 +69,10 @@ Page({
     wx.showLoading({
       title: '授权中...',
     })
-
+    console.log(data)
     wx.BaaS.auth.loginWithWechat(data, {
-      createUser: true
+      createUser: true,
+      syncUserProfile: "overwrite"
     }).then(user => {
       console.log(user)
     })
@@ -83,7 +85,7 @@ Page({
         show: false
       })
       // 用户迁移绑定
-      if (JSON.stringify(this.data.account) == "{}") return
+      if (JSON.stringify(this.data.account) == "{}") returns
       if (!app.globalData.bindStatus && this.data.account.username != "undefined") {
         wx.showLoading({
           title: '迁移绑定...',
@@ -138,9 +140,6 @@ Page({
         icon: 'none'
       })
     } else {
-      wx.showLoading({
-        title: '绑定中...',
-      })
       this.setData({
         account: account,
         hideLoginBtn1: true,
@@ -155,6 +154,9 @@ Page({
   // 登录绑定学号
   login() {
     let that = this
+    this.setData({
+      loading: true
+    })
     wx.request({
       method: "POST",
       url: this.data.api + "student_info",
@@ -162,7 +164,7 @@ Page({
         'content-type': 'application/x-www-form-urlencoded'
       },
       data: this.data.account,
-      success: function(res) {
+      success: function (res) {
         if (res.statusCode != 200) {
           wx.showToast({
             title: "服务器响应错误",
@@ -197,14 +199,17 @@ Page({
         // 同步课表
         that.syncData("course")
       },
-      fail: function(err) {
+      fail: function (err) {
         console.log("err:", err)
+        that.setData({
+          loading: false
+        })
         wx.showToast({
           title: "访问超时",
           icon: "none"
         })
       },
-      complete: function() {
+      complete: function () {
         wx.hideLoading()
         that.setData({
           hideLoginBtn1: false,
@@ -216,9 +221,7 @@ Page({
 
   // 同步数据
   syncData(type) {
-    wx.showLoading({
-      title: '同步课表中...',
-    })
+    let that =this
     let data = this.data.account
     data["year_sem"] = "2019-2020-1"
     wx.request({
@@ -228,8 +231,8 @@ Page({
         'content-type': 'application/x-www-form-urlencoded'
       },
       data: data,
-      success: function(res) {
-        console.log(res)
+      success: function (res) {
+        console.log("请求结果",res)
         if (res.statusCode != 200) {
           wx.showToast({
             title: "服务器响应错误",
@@ -249,7 +252,7 @@ Page({
         wx.setStorage({
           key: type,
           data: res.data.data,
-          success: function() {
+          success: function () {
             wx.reLaunch({
               url: '/pages/Campus/home/home',
             })
@@ -259,15 +262,17 @@ Page({
           title: "同步完成",
         })
       },
-      fail: function(err) {
+      fail: function (err) {
         console.log("err:", err)
         wx.showToast({
           title: "访问超时",
           icon: "none"
         })
       },
-      complete: function(res) {
-        wx.hideLoading()
+      complete: function (res) {
+        that.setData({
+          loading: false
+        })
       }
     })
   },
@@ -277,16 +282,16 @@ Page({
     wx.showModal({
       title: '警告',
       content: '确认操作将会清除课表、成绩等所有缓存信息!',
-      success: function(res) {
+      success: function (res) {
         if (res.confirm) {
           wx.clearStorage({
-            success: function() {
+            success: function () {
               app.globalData.bindStatus = false
               wx.showToast({
                 title: '清除完成',
                 duration: 1500,
-                success: function() {
-                  setTimeout(function() {
+                success: function () {
+                  setTimeout(function () {
                     wx.reLaunch({
                       url: "/pages/Campus/home/home"
                     })

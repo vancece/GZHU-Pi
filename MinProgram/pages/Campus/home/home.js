@@ -12,11 +12,11 @@ Page({
     arrowUrl: "https://cos.ifeel.vip/gzhu-pi/images/icon/right-arrow.svg",
   },
 
-  onLoad: function(options) {
- 
+  onLoad: function (options) {
+
   },
 
-  onShareAppMessage: function() {
+  onShareAppMessage: function () {
 
   },
   onReady() {
@@ -24,13 +24,24 @@ Page({
     this.updateCheck()
   },
 
+  // 更新用户信息
+  userInfoHandler(data) {
+    wx.BaaS.auth.loginWithWechat(data, {
+      createUser: true,
+      syncUserProfile: "overwrite"
+    }).then(user => {
+      console.log(user)
+    })
+  },
+
   updateCheck() {
     let version = Config.get("version")
-    if (version < "0.9.2.20190712") {
+    if (version < "1.0.6.20190930") {
+      Config.reInit()
       this.setData({
         showUpdate: true
       })
-      Config.set("version", "0.9.2.20190712")
+      Config.set("version", "1.0.6.20190930")
     }
   },
 
@@ -90,7 +101,7 @@ Page({
         break
       case "navToAbout":
         wx.navigateTo({
-          url: '/pages/Setting/about/about',
+          url: '/pages/Setting/about/data',
         })
         break
       case "navToSync":
@@ -127,7 +138,23 @@ Page({
     else this.data.schedule = false
     this.switchModel()
   },
-  catchtap(e) {},
+  catchtap(e) { },
 
+  navTo(e) {
+    let url = ""
+    switch (e.target.id) {
+      case "avatar":
+        url = "/module/gzhu/poster"
+        break
+      case "data":
+        url = "/pages/Setting/about/data"
+        break
+      case "oldthings":
+        url = "/pages/Life/oldthings/index"
+    }
+    wx.navigateTo({
+      url: url,
+    })
+  }
 
 })

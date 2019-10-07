@@ -10,7 +10,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: rgba(100, 100, 100, 0.2);
+  background-color: rgba(100, 100, 100, 0.5);
   z-index: 1005;
   animation: fadein 0.2s;
 }
@@ -30,7 +30,6 @@
   width: 70%;
   min-height: 300rpx;
   max-height: 1000rpx;
-  background-color: #fff;
   border-radius: 30rpx;
   animation: scaleIn 0.2s;
   opacity: 0.95;

@@ -1,5 +1,5 @@
-// const Page = require('../sdk/ald-stat.js').Page;
-var Utils = require("../utils.js")
+import Utils from '../utils.js';
+Utils.initSdk();
 
 Page({
 
@@ -19,12 +19,6 @@ Page({
 
   // 启动，获取数据，检测投票
   onLoad: function(options) {
-    let that = this
-    require('../sdk/sdk-v2.0.6-a')
-    let ClientID = 'd5add948fe00fbdd6cdf'
-    wx.BaaS.init(ClientID, {
-      autoLogin: true
-    })
 
     this.get_vote_items()
     this.checkToday()

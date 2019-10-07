@@ -18,6 +18,30 @@ const formatNumber = n => {
 }
 
 
+// 将userInfo的头像转换为高清地址
+function headimgHD(imageUrl) {
+  imageUrl = imageUrl.split('/'); //把头像的路径切成数组
+  //把大小数值为 46 || 64 || 96 || 132 的转换为0
+  if (imageUrl[imageUrl.length - 1] && (imageUrl[imageUrl.length - 1] == 46 ||
+      imageUrl[imageUrl.length - 1] == 64 || imageUrl[imageUrl.length - 1] == 96 ||
+      imageUrl[imageUrl.length - 1] == 132)) {
+    imageUrl[imageUrl.length - 1] = 0;
+  }
+  imageUrl = imageUrl.join('/');  //重新拼接为字符串
+  return imageUrl;
+}
+
+// 初始化知晓云SDK
+function initSdk() {
+  require('./sdk/sdk-wechat.2.8.0')
+  let ClientID = 'd5add948fe00fbdd6cdf'
+  wx.BaaS.init(ClientID, {
+    autoLogin: true
+  })
+}
+
 module.exports = {
-  formatTime: formatTime
+  formatTime: formatTime,
+  headimgHD: headimgHD,
+  initSdk: initSdk,
 }

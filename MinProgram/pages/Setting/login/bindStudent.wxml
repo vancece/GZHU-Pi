@@ -1,4 +1,11 @@
 <navBar title="绑定学号"></navBar>
+
+<!-- 加载动画 -->
+<view class='cu-load load-modal' wx:if="{{loading}}">
+  <view class='cuIcon-emojifill text-orange'></view>
+  <view class='gray-text'>绑定并同步</view>
+</view>
+
 <!-- 登录教务系统 -->
 <view class='page'>
   <view class='exchange'>
@@ -25,11 +32,11 @@
 
         <view class="agree" bindtap="agree">
           <radio checked="{{checked}}" />
-          <view style='font-size:60%'>使用前请同意
+          <view class="margin-left-sm" style='font-size:75%'>使用前请同意
             <text bindtap='navToAgreement' style='color:#18b3eb'>《用户协议》</text>
           </view>
         </view>
-        <button class='login-btn' hidden='{{hideLoginBtn1}}' hover-class="btn-hover" formType="submit" open-type="getUserInfo">绑定学号</button>
+        <button class='login-btn' hidden='{{hideLoginBtn1}}' hover-class="btn-hover" formType="submit" open-type="getUserInfo" bindgetuserinfo='userInfoHandler' >绑定学号</button>
         <button class='login-btn' hidden='{{hideLoginBtn2}}' style='background-color: #ddd;box-shadow:0rpx 0rpx 0rpx 0rpx #ddd'>登录中...</button>
         <view hidden='{{hideSyncTip}}' style='color:grey;font-size:60%;margin:10rpx'>00:00-07:00教务系统通道关闭，将无绑定</view>
       </form>

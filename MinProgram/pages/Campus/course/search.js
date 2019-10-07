@@ -72,6 +72,7 @@ Page({
 
   // 输入框搜索
   formSubmit(e) {
+    wx.BaaS.wxReportTicket(e.detail.formId)
     if (e.detail.value.query == "") {
       wx.showToast({
         title: '请输入查询内容',
@@ -157,8 +158,8 @@ Page({
 
   // 模糊查询（或）
   getCourse(queryStr = "通识类选修课", dayMode = false, offset = 0) {
-    wx.showLoading({
-      title: 'Loading...',
+    this.setData({
+      loading: true
     })
 
     let that = this
@@ -204,18 +205,20 @@ Page({
     // 获取总条数
     Obj.setQuery(andQuery).count().then(num => {
       that.setData({
-        total: num
+        total: num,
+        loading: false
       })
-      wx.hideLoading()
     }, err => {
-      wx.hideLoading()
+      that.setData({
+        loading: false
+      })
     })
   },
 
   // 条件查询（与）
   getCourseFliter(offset = 0) {
-    wx.showLoading({
-      title: 'Loading...',
+    this.setData({
+      loading: true
     })
 
     let that = this
@@ -243,11 +246,13 @@ Page({
     // 获取总条数
     Obj.setQuery(query).count().then(num => {
       that.setData({
-        total: num
+        total: num,
+        loading: false
       })
-      wx.hideLoading()
     }, err => {
-      wx.hideLoading()
+      that.setData({
+        loading: false
+      })
     })
   }
 

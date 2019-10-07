@@ -1,6 +1,6 @@
 <view class='mask' wx:if='{{show}}' bindtap='clickMask'>
 
-  <view class='modal-content' style='width:{{width}}'>
+  <view class='modal-content' style='width:{{width}};background-color:{{contentBg}}'>
     <view class='{{custom?"":"main-content"}}'>
       <view class='title' hidden='{{custom}}'>{{title}}</view>
       <scroll-view scroll-y>
@@ -15,7 +15,7 @@
   </view>
 
   <view class='cancel' hidden='{{!custom || hideCancel}}'>
-    <image bindtap='cancel' class='cancel-img' src='/assets/cancel.svg'></image>
+    <image bindtap='cancel' class='cancel-img' src='https://cos.ifeel.vip/gzhu-pi/images/icon/cancel.svg'></image>
   </view>
 
 </view>

@@ -2,6 +2,11 @@
 
 <image bindtap='favorite' class='float-icon' mode='aspectFit' src='https://cos.ifeel.vip/gzhu-pi/images/icon/favorite{{favorite?"d":""}}.svg'></image>
 
+<view class='cu-load load-modal' wx:if="{{loading}}">
+  <view class='cuIcon-emojifill text-orange'></view>
+  <view class='gray-text'>Loading...</view>
+</view>
+
 <!-- 传入的数据 -->
 <view class='book'>
   <view class='book-name'>{{exist?douban.title:book.book_name}}

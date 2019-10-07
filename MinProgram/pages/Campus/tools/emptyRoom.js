@@ -20,7 +20,7 @@ Page({
     }, {
       text: "晚 上",
       checked: true
-    }, ],
+    },],
 
     postDate: {
       username: "",
@@ -41,17 +41,17 @@ Page({
 
   },
 
-  onLoad: function(options) {
+  onLoad: function (options) {
     this.initWeekDay(this.data.schoolWeek)
     this.initWeek()
 
     this.getRooms()
   },
 
-  catchtap() {},
-  onShareAppMessage: function() {},
+  catchtap() { },
+  onShareAppMessage: function () { },
 
-  onReachBottom: function() {
+  onReachBottom: function () {
     let page = this.data.postDate["queryModel.currentPage"]
     this.data.postDate["queryModel.currentPage"] = page + 1
     if (page + 1 > this.data.total / 30) {
@@ -83,6 +83,7 @@ Page({
   },
 
   formSubmit(e) {
+    wx.BaaS.wxReportTicket(e.detail.formId)
     console.log(e.detail.value.query)
     if (e.detail.value.query == "") {
       wx.showToast({
@@ -107,10 +108,7 @@ Page({
     if (!this.checkAccount()) return
 
     let that = this
-    wx.showLoading({
-      title: '加载中...',
-      icon: "none"
-    })
+    this.setData({ loading: true })
 
     wx.request({
       // url:"http://127.0.0.1:5000/room",
@@ -149,14 +147,14 @@ Page({
           total: res.data.data.total,
         })
       },
-      fail: function(err) {
+      fail: function (err) {
         wx.showToast({
           title: '服务器响应错误',
           icon: "none"
         })
       },
-      complete: function(res) {
-        wx.hideLoading()
+      complete: function (res) {
+        that.setData({ loading: false })
       }
     })
   },

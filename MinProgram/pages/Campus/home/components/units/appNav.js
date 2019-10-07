@@ -58,7 +58,7 @@ Component({
         case "7":
           wx.navigateTo({
             // url: '/module/vote/vote',
-            url:'/pages/Campus/tools/lost',
+            url:'/pages/Life/oldthings/index',
           })
           break
       }

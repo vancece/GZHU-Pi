@@ -35,9 +35,14 @@ Component({
     occupy: {
       type: Boolean,
       value: true
+    },
+    
+    // 如果当前页面是最顶层，可以自定义返回的页面
+    redirectTo: {
+      type: String,
+      value: '/pages/Campus/home/home'
     }
   },
-
 
   data: {
     titleBarHeight: 40 //标题栏高度
@@ -48,8 +53,9 @@ Component({
     navigateBack() {
       // console.log(getCurrentPages().length)
       if (getCurrentPages().length == 1) {
-        wx.reLaunch({
-          url: '/pages/Campus/home/home',
+        console.log(this)
+        wx.redirectTo({
+          url: this.data.redirectTo,
         })
       } else {
         wx.navigateBack({
@@ -61,12 +67,12 @@ Component({
 
   // 生命周期方法
   lifetimes: {
-    created: function() {},
+    created: function () { },
 
-    attached: function() {
+    attached: function () {
       let that = this
       wx.getSystemInfo({
-        success: function(res) {
+        success: function (res) {
           that.setData({
             statusBarHeight: res.statusBarHeight, //状态栏高度
             navBarHeight: res.statusBarHeight + 45 // 小程序导航栏高度

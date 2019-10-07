@@ -11,7 +11,8 @@ Page({
         account: account
       })
     }
-    let agree = wx.getStorageSync("agree")
+    // let agree = wx.getStorageSync("agree")
+    let agree = true
     if (agree != true) {
       wx.showModal({
         title: '未经授权',
@@ -30,7 +31,7 @@ Page({
       })
     } else {
       this.setData({
-        showAgree:true
+        showAgree: true
       })
       this.syncData()
       // this.setData({
@@ -38,7 +39,7 @@ Page({
       // })
     }
   },
-  onShareAppMessage: function () { 
+  onShareAppMessage: function () {
     return {
       title: '成绩排名统计',
       desc: '',

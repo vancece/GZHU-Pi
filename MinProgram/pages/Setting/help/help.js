@@ -24,9 +24,10 @@ Page({
     })
 
   },
-  view() {
+  view(e) {
     wx.previewImage({
       urls: this.data.url,
+      current: e.currentTarget.dataset.img
     })
   },
 

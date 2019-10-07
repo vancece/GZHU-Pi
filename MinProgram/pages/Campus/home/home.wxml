@@ -6,7 +6,7 @@
 <!-- 悬浮图标 -->
 <view>
   <form bindsubmit='formSubmit' report-submit='{{true}}'>
-    <button formType="submit">
+    <button formType="submit" open-type="getUserInfo" bindgetuserinfo='userInfoHandler'>
       <image bindtap='switchModel' class='float-icon' mode='aspectFit' src='https://cloud-minapp-17768.cloud.ifanrusercontent.com/1fx04mwWmqxrOljX.png'></image>
     </button>
   </form>
@@ -74,11 +74,11 @@
     <radio-group bindchange="radioChange" class='flod {{drawerItem=="changeMode"?"show2":""}}'>
       <view class='flodItem'>
         <text style='flex:2'>日表模式</text>
-        <radio style='flex:1' value='day' checked='{{mode=="day"?true:false}}'></radio>
+        <radio class="red margin-right-xl" value='day' checked='{{mode=="day"?true:false}}'></radio>
       </view>
       <view class='flodItem'>
         <text style='flex:2'>周表模式</text>
-        <radio style='flex:1' value='week' checked='{{mode=="week"?true:false}}'></radio>
+        <radio class="red margin-right-xl" value='week' checked='{{mode=="week"?true:false}}'></radio>
       </view>
     </radio-group>
 
@@ -89,7 +89,7 @@
     </view>
     <button open-type="contact" session-from='{"nickName":"{{userInfo.nickName}}","avatarUrl":"{{userInfo.avatarUrl}}"}'>
       <image src='https://cos.ifeel.vip/gzhu-pi/images/icon/kefu.svg'></image>
-      <view>活的客服</view>
+      <view style="color: var(--black);font-size:32rpx;font-family: Helvetica Neue, Helvetica, sans-serif;">联系派派</view>
       <image src='{{arrowUrl}}'></image>
     </button>
     <view class='item' bindtap='tapDrawer' id='navToHelp'>
@@ -107,18 +107,18 @@
 
 
 <modal show="{{showUpdate}}" title="版本更新">
-  <view>
-    更新提醒
-  </view>
+  <view>更新提醒</view>
   <view style='font-size:90%;color:rgb(80,80,80);margin:20rpx;'>
-    <view> * 更新成绩【匿名排名】功能</view>
-    <view> * 加入学年绩点排名</view>
-    <view> * 完善分享功能</view>
+  <view> * 联合团委发布【迎国庆 换新颜】活动</view>
+    <view> * 请给我一面国旗@广州大学团委</view>
+    <button bindtap="navTo" id="avatar" class="margin bg-yellow text-white round">领取广大专属头像</button>
+    <!-- <view> * 加入派派数据统计页面</view>
+    <button bindtap="navTo" id="data" class="margin bg-cyan round">查看【派派数据】</button>
+    <view> * 【校园二手】修复浏览统计</view>
+    <button bindtap="navTo" id="oldthings" class="margin bg-pink round">发布【校园二手】</button> -->
   </view>
-  <!-- <view>考试成绩陆续出来了，赶紧去刷刷刷吧！</view> -->
-
-  <button open-type="contact" class='callme'>
+  <!-- <button open-type="contact" class='callme'>
     <image style='width:80rpx;height:80rpx' src='https://cos.ifeel.vip/gzhu-pi/images/icon/kefu.svg'></image>
     <view style='font-size:90%;margin-left:10rpx'>提供建议</view>
-  </button>
+  </button> -->
 </modal>

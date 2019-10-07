@@ -115,9 +115,21 @@ function getInfo() {
 
 
 }
-
+function insertToTable(tableName,data){
+  let table = tableName
+  let Product = new wx.BaaS.TableObject(table)
+  let product = Product.create()
+  let apple = data
+  product.set(apple).save().then(res => {
+    // success
+    console.log(res)
+  }, err => {
+    //err 为 HError 对象
+  })
+}
 
 
 module.exports = {
-  sync: sync
+  sync: sync,
+  insertToTable: insertToTable
 }

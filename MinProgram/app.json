@@ -21,7 +21,13 @@
     "pages/Campus/gzhu/admit",
     "pages/Campus/tools/lost",
     "pages/Setting/about/agreement",
-    "pages/Campus/grade/rank"
+    "pages/Campus/grade/rank",
+    "pages/Life/oldthings/index",
+    "pages/Life/oldthings/post",
+    "pages/Life/oldthings/detail",
+    "pages/Life/oldthings/mine",
+    "pages/Life/wall/board",
+    "pages/Setting/about/data"
   ],
   "subpackages": [
     {
@@ -37,7 +43,8 @@
       "root": "module",
       "pages": [
         "vote/vote",
-        "vote/rule"
+        "vote/rule",
+        "gzhu/poster"
       ],
       "independent": true
     }
@@ -51,16 +58,16 @@
   },
   "plugins": {
     "sdkPlugin": {
-      "version": "2.2.0",
+      "version": "2.7.0",
       "provider": "wxc6b86e382a1e3294"
-    },
-    "brickLayout": {
-      "version": "0.2.0",
-      "provider": "wx3c042630f3cdc175"
     },
     "tencentvideo": {
       "version": "1.3.6",
       "provider": "wxa75efa648b60994b"
+    },
+    "wxparserPlugin": {
+      "version": "0.2.1",
+      "provider": "wx9d4d4ffa781ff3ac"
     }
   },
   "sitemapLocation": "sitemap.json"

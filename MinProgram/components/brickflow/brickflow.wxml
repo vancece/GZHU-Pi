@@ -1,7 +1,8 @@
-<!-- plugin/components/brickLayout.wxml -->
-<import src="../tpl/tpl-default.wxml" />
-<import src="../tpl/tpl-album.wxml" />
-<import src="../tpl/tpl-test.wxml" />
+<import src="./tpl/tpl-default.wxml" />
+<import src="./tpl/tpl-album.wxml" />
+<import src="./tpl/tpl-test.wxml" />
+<import src="./tpl/tpl-oldthings.wxml" />
+
 
 <view wx:if="{{renderList.length>0}}" class="list-container">
 

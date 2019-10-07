@@ -11,7 +11,7 @@ Component({
   },
 
   data: {
-    hideTimeLine: true,
+    hideTimeLine: !Config.get("tips").time_line,
     showDetail: false,
     current: 1,
     dis: "none",
@@ -64,11 +64,30 @@ Component({
           week = this.data.week - 1
         }
       }
-      this.setData({
-        weekDate: utils.setWeekDate(week - this.data.schoolWeek),
-        week: week,
-        current: e.detail.current,
-      })
+
+      if (week < 1 && this.data.schoolWeek < 1) {
+        console.log(1)
+        this.setData({
+          // weekDate: utils.setWeekDate(week - this.data.schoolWeek),
+          week: week,
+          current: e.detail.current,
+        })
+      } else if (this.data.schoolWeek < 1) {
+        console.log(2)
+        this.setData({
+          weekDate: utils.setWeekDate(week),
+          week: week,
+          current: e.detail.current,
+        })
+      } else {
+        console.log(3)
+        this.setData({
+          weekDate: utils.setWeekDate(week - this.data.schoolWeek),
+          week: week,
+          current: e.detail.current,
+        })
+      }
+
       wx.showToast({
         title: "第 " + String(week) + " 周",
         icon: "none",
@@ -80,6 +99,11 @@ Component({
       this.setData({
         hideTimeLine: !this.data.hideTimeLine,
       })
+
+      // 修改时间轴不展开
+      let tips = Config.get("tips")
+      tips.time_line = false
+      Config.set("tips", tips)
     },
 
     // 课程详情弹窗
@@ -151,12 +175,12 @@ Component({
       wx.showModal({
         title: '提醒',
         content: '是否删除当前课程?',
-        success: function(e) {
+        success: function (e) {
           if (e.confirm) {
             wx.setStorage({
               key: 'course',
               data: obj,
-              success: function() {
+              success: function () {
                 that.setData({
                   kbList: obj.course_list,
                   showDetail: false,
@@ -192,14 +216,13 @@ Component({
   },
 
   lifetimes: {
-    created: function() {},
+    created: function () { },
 
-    attached: function() {
+    attached: function () {
       this.viewUpdate()
     },
 
-    ready: function() {
-    }
+    ready: function () { }
   },
 
   pageLifetimes: {

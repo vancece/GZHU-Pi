@@ -20,7 +20,6 @@ def get_login_form(text, username, password):
     :param password: 密码
     :return: 用于POST的登录表单
     """
-
     selector = html.fromstring(text)  # 将html文件转换为xpath可以识别的结构
     target = selector.xpath('//div[@class="row btn-row"]/input/@value')
     lt = target[0]

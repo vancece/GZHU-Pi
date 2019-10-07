@@ -2,9 +2,9 @@ import requests
 from spider.sy_handler import *
 
 url = {
-    "login": "http://202.192.67.23",
-    "home": "http://202.192.67.23/Index.aspx",
-    "exp_list": "http://202.192.67.23/_GD002_Teaching_Teaching/Teaching_SYAdvanceStudentInfoList.aspx"
+    "login": "http://cst.gzhu.edu.cn:6626",
+    "home": "http://cst.gzhu.edu.cn:6626/Index.aspx",
+    "exp_list": "http://cst.gzhu.edu.cn:6626/_GD002_Teaching_Teaching/Teaching_SYAdvanceStudentInfoList.aspx"
 }
 
 

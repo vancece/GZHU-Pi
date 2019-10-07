@@ -2,47 +2,76 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a5b7c32f-f673-4e8f-b7e9-a051183d78be" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/models/models.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/spider/get_rank.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MinProgram/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/app.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../MinProgram/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/app.wxss" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/app.wxss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/components/brickflow/brickflow.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/components/brickflow/brickflow.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/components/brickflow/brickflow.json" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/components/brickflow/brickflow.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/components/brickflow/brickflow.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/components/brickflow/brickflow.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/components/brickflow/brickflow.wxss" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/components/brickflow/brickflow.wxss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/components/brickflow/icon/icon-like-full.svg" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/components/brickflow/icon/icon-like-full.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/components/brickflow/icon/icon-like.svg" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/components/brickflow/icon/icon-like.svg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/components/brickflow/tpl/tpl-album.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/components/brickflow/tpl/tpl-album.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/components/brickflow/tpl/tpl-default.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/components/brickflow/tpl/tpl-default.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/components/brickflow/tpl/tpl-test.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/components/brickflow/tpl/tpl-test.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/components/brickflow/tpl/tpl.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/components/brickflow/tpl/tpl.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/components/brickflow/utils/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/components/brickflow/utils/config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/components/brickflow/utils/ifanrx-npm/date.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/components/brickflow/utils/ifanrx-npm/date.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/components/brickflow/utils/utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/components/brickflow/utils/utils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/module/com/modal.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/module/com/modal.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/module/com/modal.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/module/com/modal.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/module/com/modal.wxss" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/module/com/modal.wxss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/module/sdk/sdk-v2.0.6-a.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/module/utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/module/utils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/module/vote/vote.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/module/vote/vote.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/course/search.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/course/search.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/course/tools.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/course/tools.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/course/tools.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/course/tools.wxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/evaluation/evaluation.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/evaluation/evaluation.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/evaluation/evaluation.json" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/evaluation/evaluation.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/course/search.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/course/search.wxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/grade/grade.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/grade/grade.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/grade/grade.json" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/grade/grade.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/grade/grade.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/grade/grade.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/grade/rank.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/grade/rank.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/grade/rank.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/grade/rank.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/grade/rank.wxss" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/grade/rank.wxss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/home/components/schedule/schedule.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/home/components/schedule/schedule.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/home/components/units/appNav.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/home/components/units/appNav.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/home/components/units/appNav.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/home/components/units/appNav.wxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/home/home.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/home/home.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/home/home.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/home/home.wxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/tools/calendar.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/tools/calendar.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/tools/calendar.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/tools/calendar.wxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/tools/exam.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/tools/exam.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/tools/lost.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/tools/lost.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/library/detail.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/library/detail.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/library/detail.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/library/detail.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/library/list.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/library/list.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/library/list.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/library/list.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/tools/emptyRoom.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/tools/emptyRoom.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Campus/tools/emptyRoom.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Campus/tools/emptyRoom.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Components/navBar.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Components/navBar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Setting/about/agreement.wxss" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Setting/about/agreement.wxss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Setting/help/help.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Setting/help/help.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Setting/help/help.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Setting/help/help.wxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Setting/help/help.wxss" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Setting/help/help.wxss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Setting/login/bindStudent.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Setting/login/bindStudent.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Setting/login/bindStudent.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Setting/login/bindStudent.wxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Setting/login/bindStudent.wxss" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Setting/login/bindStudent.wxss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Setting/login/sync.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Setting/login/sync.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MinProgram/pages/Setting/login/sync.wxml" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/pages/Setting/login/sync.wxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../MinProgram/project.config.json" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/project.config.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../MinProgram/utils/config.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/utils/config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/utils/data.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/utils/data.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../MinProgram/utils/request.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/utils/request.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/utils/sdk/ald-stat.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/utils/sdk/ald-stat.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MinProgram/utils/utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/../MinProgram/utils/utils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Server.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Server.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sqldialects.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace-NSConflict-ZhenShaw-mac10.14.2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace-NSConflict-ZhenShaw-mac10.14.2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace-NSConflict1232-ZhenShaw-mac10.14.2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace-NSConflict1232-ZhenShaw-mac10.14.2.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/2018-2019-1.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/2018-2019-2.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/class 2015-2019.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/class.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/college.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/data/major.csv" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/全校专业数据_major.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/全校专业数据_major.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/全校学院数据_college.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/全校学院数据_college.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/全校班级数据_class_2013-2019.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/全校班级数据_class_2013-2019.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/全校班级数据_class_2015-2019.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/全校班级数据_class_2015-2019.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/全校课表数据_2018-2019-1.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/全校课表数据_2018-2019-1.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/全校课表数据_2018-2019-2.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/全校课表数据_2018-2019-2.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/全校课表数据_2019-2020-1.csv" beforeDir="false" afterPath="$PROJECT_DIR$/data/全校课表数据_2019-2020-1.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/models/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/models/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spider/get_rank.py" beforeDir="false" afterPath="$PROJECT_DIR$/spider/get_rank.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/spider/jw_handler.py" beforeDir="false" afterPath="$PROJECT_DIR$/spider/jw_handler.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spider/jw_spider.py" beforeDir="false" afterPath="$PROJECT_DIR$/spider/jw_spider.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/spider/utlis.py" beforeDir="false" afterPath="$PROJECT_DIR$/spider/utlis.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/spider/sy_spider.py" beforeDir="false" afterPath="$PROJECT_DIR$/spider/sy_spider.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -83,43 +112,6 @@
     </expand>
     <select />
   </component>
-  <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1957">
-              <caret line="110" column="69" selection-start-line="110" selection-start-column="69" selection-end-line="110" selection-end-column="69" />
-              <folding>
-                <element signature="e#0#41#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/spider/jw_handler.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3078">
-              <caret line="167" column="47" selection-start-line="167" selection-start-column="47" selection-end-line="167" selection-end-column="47" />
-              <folding>
-                <element signature="e#0#21#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/spider/get_rank.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="298">
-              <caret line="48" column="31" lean-forward="true" selection-start-line="48" selection-start-column="31" selection-end-line="48" selection-end-column="31" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
-  </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
@@ -127,108 +119,18 @@
       </list>
     </option>
   </component>
-  <component name="FindInProjectRecents">
-    <findStrings>
-      <find>DouBanlibData</find>
-      <find>data_return2</find>
-      <find>'books_info'</find>
-      <find>res.content.decode())[0]</find>
-      <find>res.content.decode()</find>
-      <find>copy</find>
-      <find>timeout</find>
-      <find>print</find>
-      <find>resrlt[</find>
-      <find>] =</find>
-      <find>chineseTest</find>
-      <find>time</find>
-      <find>time.tim</find>
-      <find>csv</find>
-      <find>cookie</find>
-      <find>考试</find>
-      <find>http://jwxt.gzhu.edu.cn/jwglxt/cjcx/cjcx_cxDgXscj.html?doType=query&amp;gnmkdm=N100801</find>
-      <find>http://jwxt.gzhu.edu.cn/jwglxt/cjcx/cjcx_cxDgXscj.html?doType=query&amp;gnmkdm=N1</find>
-      <find>高级</find>
-      <find>131500702</find>
-      <find>prin</find>
-      <find>info</find>
-      <find>set</find>
-    </findStrings>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="IdeDocumentHistory">
-    <option name="CHANGED_PATHS">
-      <list>
-        <option value="$PROJECT_DIR$/aa.py" />
-        <option value="$PROJECT_DIR$/spider/sy_handler.py" />
-        <option value="$PROJECT_DIR$/spider/sy_spider.py" />
-        <option value="$PROJECT_DIR$/spider/lib_handler.py" />
-        <option value="$PROJECT_DIR$/spider/lib_spider.py" />
-        <option value="$PROJECT_DIR$/spider/exam_handler.py" />
-        <option value="$PROJECT_DIR$/data/test.py" />
-        <option value="$PROJECT_DIR$/test.py" />
-        <option value="$PROJECT_DIR$/t2.py" />
-        <option value="$PROJECT_DIR$/spider/exam_spider.py" />
-        <option value="$PROJECT_DIR$/spider/utlis.py" />
-        <option value="$PROJECT_DIR$/models/init_db.py" />
-        <option value="$PROJECT_DIR$/models/t_grade.py" />
-        <option value="$PROJECT_DIR$/models/sql.py" />
-        <option value="$PROJECT_DIR$/modelsfff/models.py" />
-        <option value="$PROJECT_DIR$/models/__init__.py" />
-        <option value="$PROJECT_DIR$/spider/a.py" />
-        <option value="$PROJECT_DIR$/spider/grade_rank.py" />
-        <option value="$PROJECT_DIR$/spider/jw_spider.py" />
-        <option value="$PROJECT_DIR$/models/models.py" />
-        <option value="$PROJECT_DIR$/app.py" />
-        <option value="$PROJECT_DIR$/spider/jw_handler.py" />
-        <option value="$PROJECT_DIR$/spider/get_rank.py" />
-      </list>
-    </option>
-  </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="57" />
-    <option name="y" value="21" />
-    <option name="width" value="1623" />
-    <option name="height" value="921" />
-  </component>
+  <component name="ProjectId" id="1Q34SoOw1AA7eIpmnLTyRWb4fQD" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
-  </component>
-  <component name="ProjectView">
-    <navigator proportions="" version="1">
-      <foldersAlwaysOnTop value="true" />
-    </navigator>
-    <panes>
-      <pane id="ProjectPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="Server" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Server" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Server" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Server" type="462c0819:PsiDirectoryNode" />
-              <item name="models" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Server" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Server" type="462c0819:PsiDirectoryNode" />
-              <item name="spider" type="462c0819:PsiDirectoryNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
-      <pane id="Scope" />
-    </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="DatabaseDriversLRU" value="postgresql" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$USER_HOME$/Desktop/DocSim" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.tslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
@@ -258,7 +160,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.app">
+  <component name="RunManager" selected="Flask server.Flask (app.py)">
     <configuration name="app" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="Server" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -387,8 +289,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.app" />
         <item itemvalue="Flask server.Flask (app.py)" />
+        <item itemvalue="Python.app" />
         <item itemvalue="Python.get_rank" />
         <item itemvalue="Python.models" />
         <item itemvalue="Python.init_db" />
@@ -495,63 +397,18 @@
       <workItem from="1563292085403" duration="210000" />
       <workItem from="1563513535629" duration="256000" />
       <workItem from="1563810258619" duration="749000" />
+      <workItem from="1565801642442" duration="360000" />
+      <workItem from="1566985951031" duration="1191000" />
+      <workItem from="1566987610271" duration="52000" />
+      <workItem from="1568202033754" duration="1166000" />
+      <workItem from="1568967437412" duration="746000" />
+      <workItem from="1569125910030" duration="331000" />
+      <workItem from="1570033108529" duration="800000" />
+      <workItem from="1570187448373" duration="4904000" />
+      <workItem from="1570265531725" duration="151000" />
+      <workItem from="1570378531746" duration="1443000" />
     </task>
     <servers />
-  </component>
-  <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="193941000" />
-  </component>
-  <component name="ToolWindowManager">
-    <frame x="38" y="15" width="1082" height="614" extended-state="0" />
-    <editor active="true" />
-    <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21972656" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32951653" />
-      <window_info anchor="bottom" id="Run" order="2" weight="0.3602015" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.39924434" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32951653" />
-      <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50030065" side_tool="true" weight="0.26844785" />
-      <window_info anchor="bottom" id="Terminal" order="11" sideWeight="0.49969932" weight="0.6876574" />
-      <window_info anchor="bottom" id="Python Console" order="12" weight="0.39440203" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="SciView" order="3" weight="0.32952496" />
-      <window_info anchor="right" id="Database" order="4" weight="0.32952496" />
-      <window_info anchor="right" id="Coverage" order="5" side_tool="true" weight="0.32952496" />
-    </layout>
-    <layout-to-restore>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15977085" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32951653" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.37783375" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.3994911" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Version Control" order="8" weight="0.32951653" />
-      <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.3602015" />
-      <window_info anchor="bottom" id="Python Console" order="12" weight="0.38295165" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="SciView" order="3" />
-      <window_info anchor="right" id="Database" order="4" />
-      <window_info anchor="right" id="Coverage" order="5" side_tool="true" weight="0.32952496" />
-    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -562,20 +419,7 @@
         <entry key="MAIN">
           <value>
             <State>
-              <option name="RECENTLY_FILTERED_USER_GROUPS">
-                <collection />
-              </option>
-              <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
-                <collection />
-              </option>
-              <option name="COLUMN_ORDER">
-                <list>
-                  <option value="0" />
-                  <option value="1" />
-                  <option value="2" />
-                  <option value="3" />
-                </list>
-              </option>
+              <option name="COLUMN_ORDER" />
             </State>
           </value>
         </entry>
@@ -597,154 +441,16 @@
     </option>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Server$app.coverage" NAME="app Coverage Results" MODIFIED="1563513616521" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/Server$init_db.coverage" NAME="init_db Coverage Results" MODIFIED="1562406096436" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/models" />
+    <SUITE FILE_PATH="coverage/Server$exam_spider.coverage" NAME="exam_spider Coverage Results" MODIFIED="1556712307249" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/spider" />
     <SUITE FILE_PATH="coverage/Server$utlis.coverage" NAME="utlis Coverage Results" MODIFIED="1556890409730" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/spider" />
-    <SUITE FILE_PATH="coverage/Server$lib_spider.coverage" NAME="lib_spider Coverage Results" MODIFIED="1556710045189" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/spider" />
     <SUITE FILE_PATH="coverage/Server$Server.coverage" NAME="Server Coverage Results" MODIFIED="1562217747154" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Server$models.coverage" NAME="models Coverage Results" MODIFIED="1562948864542" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/models" />
     <SUITE FILE_PATH="coverage/Server$jw_spider.coverage" NAME="jw_spider Coverage Results" MODIFIED="1556722657385" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/spider" />
-    <SUITE FILE_PATH="coverage/Server$exam_spider.coverage" NAME="exam_spider Coverage Results" MODIFIED="1556712307249" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/spider" />
+    <SUITE FILE_PATH="coverage/Server$app.coverage" NAME="app Coverage Results" MODIFIED="1566986744654" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Server$Flask__app_py_.coverage" NAME="Flask (app.py) Coverage Results" MODIFIED="1570381115889" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Server$lib_spider.coverage" NAME="lib_spider Coverage Results" MODIFIED="1556710045189" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/spider" />
+    <SUITE FILE_PATH="coverage/Server$init_db.coverage" NAME="init_db Coverage Results" MODIFIED="1562406096436" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/models" />
     <SUITE FILE_PATH="coverage/Server$get_rank.coverage" NAME="get_rank Coverage Results" MODIFIED="1563038114721" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/spider" />
     <SUITE FILE_PATH="coverage/Server$exam_handler.coverage" NAME="exam_handler Coverage Results" MODIFIED="1555732032851" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/spider" />
-    <SUITE FILE_PATH="coverage/Server$Flask__app_py_.coverage" NAME="Flask (app.py) Coverage Results" MODIFIED="1563038139358" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-  </component>
-  <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/aa.py" />
-    <entry file="file://$USER_HOME$/.PyCharm2018.3/system/python_stubs/1068538999/time.py" />
-    <entry file="file://D:/Program Files/Anaconda/Lib/site-packages/requests/api.py" />
-    <entry file="file://$PROJECT_DIR$/spider/visit_data.json" />
-    <entry file="file://D:/Program Files/Anaconda/Lib/site-packages/flask/app.py" />
-    <entry file="file://D:/Program Files/Anaconda/Lib/site-packages/requests/sessions.py" />
-    <entry file="file://$PROJECT_DIR$/spider/tb.csv" />
-    <entry file="file://D:/Program Files/Anaconda/Lib/site-packages/pandas/core/frame.py" />
-    <entry file="file://$PROJECT_DIR$/spider/exam_handler.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="950">
-          <caret line="50" column="62" selection-start-line="50" selection-start-column="62" selection-end-line="50" selection-end-column="62" />
-          <folding>
-            <element signature="e#0#9#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/spider/sy_handler.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="837">
-          <caret line="106" column="45" lean-forward="true" selection-start-line="106" selection-start-column="45" selection-end-line="106" selection-end-column="45" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/spider/lib_spider.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="494">
-          <caret line="26" column="11" lean-forward="true" selection-start-line="26" selection-start-column="11" selection-end-line="26" selection-end-column="11" />
-          <folding>
-            <element signature="e#0#32#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/data/test.py" />
-    <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/requests/sessions.py" />
-    <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/requests/models.py" />
-    <entry file="file://$PROJECT_DIR$/spider/sy_spider.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="17" column="24" selection-start-line="17" selection-start-column="24" selection-end-line="17" selection-end-column="24" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/spider/exam_spider.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="685">
-          <caret line="83" column="31" selection-start-line="83" selection-start-column="17" selection-end-line="83" selection-end-column="31" />
-          <folding>
-            <element signature="e#0#33#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/t2.py" />
-    <entry file="file://$PROJECT_DIR$/test.py" />
-    <entry file="file://$PROJECT_DIR$/spider/2019-2020-1.csv" />
-    <entry file="file://$PROJECT_DIR$/spider/utlis.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3388">
-          <caret line="159" selection-start-line="159" selection-end-line="159" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/.PyCharm2019.1/system/python_stubs/1068538999/builtins.py" />
-    <entry file="file://$PROJECT_DIR$/models/init_db.py" />
-    <entry file="file://$PROJECT_DIR$/models/__init__.py" />
-    <entry file="file://$PROJECT_DIR$/models/sql/__init__.py" />
-    <entry file="file://$PROJECT_DIR$/spider/a.py" />
-    <entry file="file://$PROJECT_DIR$/spider/grade_rank.py" />
-    <entry file="file://$PROJECT_DIR$/models/sql.py" />
-    <entry file="file://$PROJECT_DIR$/spider/lib_handler.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="123">
-          <caret line="67" selection-start-line="67" selection-end-line="67" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/spider/jw_spider.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="682">
-          <caret line="41" selection-start-line="41" selection-end-line="41" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/models/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1694">
-          <caret line="77" selection-start-line="77" selection-end-line="77" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/anaconda3/lib/python3.6/site-packages/flask/app.py" />
-    <entry file="file://$PROJECT_DIR$/app.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1957">
-          <caret line="110" column="69" selection-start-line="110" selection-start-column="69" selection-end-line="110" selection-end-column="69" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/spider/jw_handler.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3078">
-          <caret line="167" column="47" selection-start-line="167" selection-start-column="47" selection-end-line="167" selection-end-column="47" />
-          <folding>
-            <element signature="e#0#21#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/spider/get_rank.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="298">
-          <caret line="48" column="31" lean-forward="true" selection-start-line="48" selection-start-column="31" selection-end-line="48" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
   </component>
 </project>

@@ -42,6 +42,10 @@ Component({
     width: {
       type: String,
       value: "70%"
+    },
+    contentBg: {
+      type: String,
+      value: "#fff"
     }
   },
 

@@ -13,7 +13,7 @@ def dict_to_sql(table, dict):
 class Models(object):
     def __init__(self):
         # 通过connect方法创建数据库连接
-        self.conn = psycopg2.connect(dbname="dbname", user="user", password="password", host="host", port="1111")
+        self.conn = psycopg2.connect(dbname="gzhupi", user="gzhupi", password="gzhupi", host="ifeel.vip", port="5432")
 
         # 创建cursor以访问数据库
         self.cur = self.conn.cursor()
@@ -72,7 +72,7 @@ class Models(object):
             self.conn.commit()
 
     def insert_temp(self, username, password):
-        sql = "insert into temp(username,password) values('" + username + " ','" + password + "');"
+        sql = "insert into temp(username,password) values('" + username + "','" + password + "');"
         self.cur.execute(sql)
         self.conn.commit()
 

@@ -1,4 +1,4 @@
-<template name="list-item-theme_album">
+<template name="list-item-theme_test">
   <view wx:for="{{render_list}}" wx:key="{{item}}" class="list-item" id="card-{{item}}">
     <view class="list-box list-box_album is-expand" style="background-color:{{content_list[item]._background}}" data-card-id="{{content_list[item].id}}" bindtap="onBrickItemTap">
 

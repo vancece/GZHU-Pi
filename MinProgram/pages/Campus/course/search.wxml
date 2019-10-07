@@ -1,5 +1,11 @@
 <navBar title="课程中心" navColor="rgba(238, 168, 38, 0.6);">
 </navBar>
+
+<view class='cu-load load-modal' wx:if="{{loading}}">
+  <view class='cuIcon-emojifill text-orange'></view>
+  <view class='gray-text'>Loading...</view>
+</view>
+
 <!-- 搜索框 -->
 <form bindsubmit='formSubmit' report-submit='{{true}}'>
   <view class='search-box'>

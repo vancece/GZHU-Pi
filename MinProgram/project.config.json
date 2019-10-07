@@ -6,11 +6,12 @@
 	},
 	"setting": {
 		"urlCheck": false,
-		"es6": true,
+		"es6": false,
 		"enhance": true,
 		"postcss": true,
 		"minified": true,
 		"newFeature": true,
+		"coverView": true,
 		"nodeModules": true,
 		"autoAudits": false,
 		"uglifyFileName": true,
@@ -51,8 +52,12 @@
 			"currentL": -1,
 			"list": []
 		},
+		"gamePlugin": {
+			"current": -1,
+			"list": []
+		},
 		"miniprogram": {
-			"current": 4,
+			"current": 10,
 			"list": [
 				{
 					"id": 0,
@@ -67,30 +72,72 @@
 				},
 				{
 					"id": 1,
-					"name": "update",
-					"pathName": "pages/Campus/home/home",
+					"name": "module/gzhu/poster",
+					"pathName": "module/gzhu/poster",
 					"query": "",
 					"scene": null
 				},
 				{
 					"id": 2,
-					"name": "二维码",
-					"pathName": "pages/Campus/home/home",
+					"name": "留言板",
+					"pathName": "pages/Life/wall/board",
 					"query": "",
 					"scene": 1047
 				},
 				{
 					"id": 3,
-					"name": "分包",
-					"pathName": "module/vote/vote",
+					"name": "排名",
+					"pathName": "pages/Campus/grade/rank",
 					"query": "",
 					"scene": null
 				},
 				{
 					"id": 4,
-					"name": "pages/Campus/grade/rank",
-					"pathName": "pages/Campus/grade/rank",
+					"name": "二手列表",
+					"pathName": "pages/Life/oldthings/index",
 					"query": "",
+					"scene": null
+				},
+				{
+					"id": 5,
+					"name": "二手发布",
+					"pathName": "pages/Life/oldthings/post",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "二手详情",
+					"pathName": "pages/Life/oldthings/detail",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "个人二手",
+					"pathName": "pages/Life/oldthings/mine",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "登录",
+					"pathName": "pages/Setting/login/bindStudent",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "数据",
+					"pathName": "pages/Setting/about/data",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 10,
+					"name": "任意门",
+					"pathName": "pages/Campus/course/tools",
+					"query": "id=query",
 					"scene": null
 				}
 			]
