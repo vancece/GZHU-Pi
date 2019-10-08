@@ -166,9 +166,15 @@ func LibraryBookSearch(query string, searchPage string) ([]Book, error) {
 			logs.Error(err)
 			return nil, err
 		}
+
 		var s interface{}
 		json.Unmarshal(bytes, &s)
-		imgs := s.(map[string]interface{})
+		imgs, ok := s.(map[string]interface{})
+		if !ok {
+			logs.Error(`json解析并赋值给interface发生错误`)
+			BookList = append(BookList, book)
+			return BookList, fmt.Errorf(`json解析并赋值给interface发生错误`)
+		}
 		img := imgs["images"].(map[string]interface{})
 		book.Image = img["small"].(string)
 		//logs.Debug(book.Image)
