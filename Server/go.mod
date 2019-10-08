@@ -10,5 +10,6 @@ require (
 	github.com/lib/pq v1.2.0
 	github.com/shiena/ansicolor v0.0.0-20151119151921-a422bbe96644 // indirect
 	github.com/silenceper/wechat v2.0.0+incompatible
+	github.com/spf13/viper v1.4.0
 	golang.org/x/sys v0.0.0-20191003212358-c178f38b412c // indirect
 )

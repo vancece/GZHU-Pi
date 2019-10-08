@@ -8,6 +8,8 @@
 *debug
 debug
 *main
+tests
+config.yaml
 
 # compiled output
 /dist
