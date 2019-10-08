@@ -1,13 +1,17 @@
 package gzhu_jw
 
-import "net/http"
-
-var (
-	SemCode = []string{"3", "12"} //3是第一学期，12是第二学期
-	Year    = "2018"
+import (
+	"fmt"
+	"net/http"
 )
 
 var (
+	LoginError = fmt.Errorf("认证失败，账号或密码错误")
+	AuthError  = fmt.Errorf("认证失败，可能是缓存过期，请重试")
+
+	SemCode = []string{"3", "12"} //3是第一学期，12是第二学期
+	Year    = "2018"
+
 	jsonHeader       = http.Header{"Content-Type": []string{"application/json"}}
 	urlencodedHeader = http.Header{"Content-Type": []string{"application/x-www-form-urlencoded"}}
 )

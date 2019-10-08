@@ -82,7 +82,7 @@ func BasicAuthClient(username, password string) (client *JWClient, err error) {
 
 	ok, _ := regexp.MatchString("账号或密码错误", string(body))
 	if ok {
-		return nil, fmt.Errorf("账号或密码错误")
+		return nil, LoginError
 	}
 	return c, nil
 }

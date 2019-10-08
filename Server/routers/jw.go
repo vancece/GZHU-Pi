@@ -27,19 +27,24 @@ func Course(w http.ResponseWriter, r *http.Request) {
 		client, err = gzhu_jw.BasicAuthClient(username, password)
 		if err != nil {
 			logs.Error(err)
-			Response(w, r, nil, http.StatusUnauthorized, "Unauthorized")
+			Response(w, r, nil, http.StatusUnauthorized, err.Error())
 			return
 		}
 	}
-	//更新客户端
+	//出错删除，正常更新客户端
 	defer func() {
-		JWClients[username] = client
+		if err != nil {
+			JWClients[username] = nil
+			delete(JWClients, username)
+		} else {
+			JWClients[username] = client
+		}
 	}()
 
 	data, err := client.GetCourse(gzhu_jw.Year, gzhu_jw.SemCode[0])
 	if err != nil {
 		logs.Error(err)
-		Response(w, r, nil, http.StatusInternalServerError, "Unauthorized")
+		Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}
 	Response(w, r, data, http.StatusOK, "request ok")
@@ -64,19 +69,24 @@ func Exam(w http.ResponseWriter, r *http.Request) {
 		client, err = gzhu_jw.BasicAuthClient(username, password)
 		if err != nil {
 			logs.Error(err)
-			Response(w, r, nil, http.StatusUnauthorized, "Unauthorized")
+			Response(w, r, nil, http.StatusUnauthorized, err.Error())
 			return
 		}
 	}
-	//更新客户端
+	//出错删除，正常更新客户端
 	defer func() {
-		JWClients[username] = client
+		if err != nil {
+			JWClients[username] = nil
+			delete(JWClients, username)
+		} else {
+			JWClients[username] = client
+		}
 	}()
 
 	data, err := client.GetExam(gzhu_jw.Year, gzhu_jw.SemCode[0])
 	if err != nil {
 		logs.Error(err)
-		Response(w, r, nil, http.StatusInternalServerError, "Unauthorized")
+		Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}
 	Response(w, r, data, http.StatusOK, "request ok")
@@ -101,19 +111,29 @@ func Grade(w http.ResponseWriter, r *http.Request) {
 		client, err = gzhu_jw.BasicAuthClient(username, password)
 		if err != nil {
 			logs.Error(err)
-			Response(w, r, nil, http.StatusUnauthorized, "Unauthorized")
+			Response(w, r, nil, http.StatusUnauthorized, err.Error())
 			return
 		}
 	}
-	//更新客户端
+	//出错删除，正常更新客户端
 	defer func() {
-		JWClients[username] = client
+		if err != nil {
+			JWClients[username] = nil
+			delete(JWClients, username)
+		} else {
+			JWClients[username] = client
+		}
 	}()
 
 	data, err := client.GetAllGrade("", "")
 	if err != nil {
 		logs.Error(err)
-		Response(w, r, nil, http.StatusInternalServerError, "Unauthorized")
+		if err == gzhu_jw.AuthError {
+			//TODO 重试处理
+			Response(w, r, nil, http.StatusUnauthorized, err.Error())
+			return
+		}
+		Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}
 	Response(w, r, data, http.StatusOK, "request ok")
