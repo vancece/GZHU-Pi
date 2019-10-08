@@ -21,7 +21,8 @@
       <!-- 内容区 -->
       <view class="content">
         <view wx:if="{{content_list[item].content}}" class="desc-text">
-          <wxparser style="width:550rpx" rich-text="{{content_list[item].content}}" />
+          <!-- <wxparser style="width:550rpx" rich-text="{{content_list[item].content}}" /> -->
+          <text>{{content_list[item].content}}</text>
         </view>
 
         <template is="images-viewer" data="{{images:content_list[item].image,_imageFillMode}}"></template>

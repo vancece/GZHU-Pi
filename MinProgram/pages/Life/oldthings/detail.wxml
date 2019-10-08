@@ -42,7 +42,8 @@
   <view class="contont-text">
     <view class="title">{{detail.title}}</view>
     <view style="margin-top:10rpx ">
-      <wxparser rich-text="{{detail.content}} " />
+      <!-- <wxparser rich-text="{{detail.content}} " /> -->
+      <text>{{detail.content}}</text>
     </view>
 
     <view class=" flex flex-wrap" style="margin-top:20rpx;">

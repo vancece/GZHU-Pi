@@ -64,10 +64,6 @@
     "tencentvideo": {
       "version": "1.3.6",
       "provider": "wxa75efa648b60994b"
-    },
-    "wxparserPlugin": {
-      "version": "0.2.1",
-      "provider": "wx9d4d4ffa781ff3ac"
     }
   },
   "sitemapLocation": "sitemap.json"

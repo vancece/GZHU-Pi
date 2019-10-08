@@ -37,7 +37,6 @@ Page({
   updateCheck() {
     let version = Config.get("version")
     if (version < "1.0.6.20190930") {
-      Config.reInit()
       this.setData({
         showUpdate: true
       })
