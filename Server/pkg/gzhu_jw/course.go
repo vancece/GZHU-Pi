@@ -74,6 +74,12 @@ func (c *JWClient) GetCourse(year, semester string) (courseData *CourseData, err
 		wg.Done()
 	}()
 	wg.Wait()
+
+	//检查登录状态
+	if strings.Contains(string(body1), "登录") || strings.Contains(string(body2), "登录") {
+		return nil, AuthError
+	}
+	//匹配课程号和学分
 	creditMatcher := MatchCredit(body2)
 	courseData = &CourseData{
 		CourseList:    ParseCourse(body1, creditMatcher),
@@ -104,10 +110,11 @@ func MatchCredit(body []byte) (matcher map[string]string) {
 //解析提取课程信息
 func ParseCourse(body []byte, matcher map[string]string) (courses []*Course) {
 
-	var idSet = make(map[string]int)
+	courses = []*Course{}
 	json := jsoniter.ConfigCompatibleWithStandardLibrary
 	kbList := json.Get(body, "kbList")
 
+	var idSet = make(map[string]int) //课程id集合，去重
 	//遍历所有课程
 	for i := 0; true; i++ {
 		c := &Course{}
@@ -123,9 +130,9 @@ func ParseCourse(body []byte, matcher map[string]string) (courses []*Course) {
 		c.Weeks = kbList.Get(i).Get("zcd").ToString()
 		c.WhichDay = kbList.Get(i).Get("xqjmc").ToString()
 		c.Teacher = kbList.Get(i).Get("xm").ToString()
-		//处理过长教师姓名
-		if len(c.Teacher) > 20 {
-			c.Teacher = c.Teacher[:17] + "..."
+		//处理过长的多个教师姓名
+		if len(c.Teacher) > 13 {
+			c.Teacher = c.Teacher[:10] + "..."
 		}
 		//星期匹配为对应的数字
 		c.Weekday = WeekdayMatcher[c.WhichDay]

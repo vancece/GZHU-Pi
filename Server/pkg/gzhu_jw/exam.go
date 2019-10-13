@@ -48,6 +48,10 @@ func (c *JWClient) GetExam(year, sem string) (exams []*Exam, err error) {
 	}
 	body, _ := ioutil.ReadAll(resp.Body)
 	defer resp.Body.Close()
+	//检查登录状态
+	if strings.Contains(string(body), "登录") {
+		return nil, AuthError
+	}
 
 	exams = ParseExam(body)
 
@@ -56,7 +60,8 @@ func (c *JWClient) GetExam(year, sem string) (exams []*Exam, err error) {
 
 //解析提取考试信息
 func ParseExam(body []byte) (exams []*Exam) {
-	//exams = []Exam{}
+
+	exams = []*Exam{}
 	json := jsoniter.ConfigCompatibleWithStandardLibrary
 	examList := json.Get(body, "items")
 	//遍历所有事件课程

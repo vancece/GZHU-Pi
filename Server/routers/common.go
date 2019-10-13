@@ -14,7 +14,7 @@ import (
 
 //后端响应数据通信协议
 type ResponseProto struct {
-	Status      int         `json:"status"`       //状态 0正常，小于0出错，大于0可能有问题
+	Status      int         `json:"status"`       //接口状态码
 	Msg         string      `json:"msg"`          //状态信息
 	Data        interface{} `json:"data"`         //响应数据
 	Api         string      `json:"api"`          //api接口
@@ -89,6 +89,7 @@ func ErrorHandler(h http.HandlerFunc) http.HandlerFunc {
 			}
 		}()
 		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
 		//请求开始时间
 		startTime := time.Now()
 		ctx := context.WithValue(r.Context(), "startTime", startTime)

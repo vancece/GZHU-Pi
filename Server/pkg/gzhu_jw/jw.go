@@ -2,18 +2,38 @@ package gzhu_jw
 
 import (
 	"fmt"
+	"github.com/astaxie/beego/logs"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
 	"regexp"
 	"strings"
+	"time"
 )
 
 type JWClient struct {
-	Username string
-	Password string
-	Client   *http.Client
+	Username  string
+	Password  string
+	ExpiresAt time.Time //客户端过期时间
+	Client    *http.Client
+}
+
+func (c *JWClient) doRequest(method, url string, header http.Header, body io.Reader) (*http.Response, error) {
+	t1 := time.Now().UnixNano() / 1000000
+
+	req, err := http.NewRequest(method, url, body)
+	if err != nil {
+		return nil, err
+	}
+	for k, v := range header {
+		req.Header[k] = v
+	}
+	resp, err := c.Client.Do(req)
+
+	logs.Debug("请求耗时：", time.Now().UnixNano()/1000000-t1, "ms", url)
+	return resp, err
 }
 
 func newClient(username, password string) *JWClient {
@@ -24,7 +44,9 @@ func newClient(username, password string) *JWClient {
 		Username: username,
 		Password: password,
 	}
-	// When initializing the http.Client, copy default values from http.DefaultClient
+	//设置客户端20分钟后过期
+	c.ExpiresAt = time.Now().Add(20 * time.Minute)
+	// Whn initializing the http.Client, copy default values from http.DefaultClient
 	// Pass a pointer to the cookie jar that was created earlier:
 	c.Client = &http.Client{
 		Transport:     http.DefaultTransport,
@@ -86,6 +108,3 @@ func BasicAuthClient(username, password string) (client *JWClient, err error) {
 	}
 	return c, nil
 }
-
-
-

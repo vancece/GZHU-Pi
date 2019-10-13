@@ -32,9 +32,15 @@ func main() {
 	//r.HandleFunc("/wx/check", routers.ErrorHandler(routers.WeChatCheck))
 	//r.HandleFunc("/wx/check", routers.ErrorHandler(routers.Hello))
 
-	r.HandleFunc("/course", routers.ErrorHandler(routers.Course))
-	r.HandleFunc("/exam", routers.ErrorHandler(routers.Exam))
-	r.HandleFunc("/grade", routers.ErrorHandler(routers.Grade)).Methods("POST")
+	//教务系统
+	r.HandleFunc("/course", routers.ErrorHandler(routers.JWMiddleWare(routers.Course))).Methods("POST")
+	r.HandleFunc("/exam", routers.ErrorHandler(routers.JWMiddleWare(routers.Exam))).Methods("POST")
+	r.HandleFunc("/grade", routers.ErrorHandler(routers.JWMiddleWare(routers.Grade))).Methods("POST")
+	r.HandleFunc("/room", routers.ErrorHandler(routers.JWMiddleWare(routers.EmptyRoom))).Methods("POST")
+
+	//图书馆
+	r.HandleFunc("/library/search", routers.ErrorHandler(routers.BookSearch)).Methods("GET")
+	r.HandleFunc("/library/holdings", routers.ErrorHandler(routers.BookHoldings)).Methods("GET")
 
 	//r.HandleFunc("/empty-room", test).Methods("POST")
 	//r.HandleFunc("/exp", test).Methods("POST")
@@ -42,8 +48,6 @@ func main() {
 	//r.HandleFunc("/exam/cet", test).Methods("POST")
 	//r.HandleFunc("/exam/chinese", test).Methods("POST")
 	//
-	//r.HandleFunc("/library/search/{query}", test).Methods("GET")
-	//r.HandleFunc("/library/detail/{ISBN}", test).Methods("GET")
 
 	http.Handle("/", r)
 	//获取阿里云函数计算容器端口

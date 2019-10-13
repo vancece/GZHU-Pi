@@ -17,6 +17,7 @@ var (
 )
 
 var Urls = map[string]string{
+	"second":     "https://cas.gzhu.edu.cn/cas_server/login?service=http://172.17.1.123/Login.aspx",
 	"login":      "https://cas.gzhu.edu.cn/cas_server/login?service=http%3A%2F%2Fjwxt.gzhu.edu.cn%2Fsso%2Flyiotlogin",
 	"info":       "http://jwxt.gzhu.edu.cn/jwglxt/xsxxxggl/xsgrxxwh_cxXsgrxx.html?gnmkdm=N100801&layout=default",
 	"course":     "http://jwxt.gzhu.edu.cn/jwglxt/kbcx/xskbcx_cxXsKb.html?gnmkdm=N2151",

@@ -84,6 +84,7 @@ func (c *JWClient) GetAllGrade(year, sem string) (gradeData *GradeData, err erro
 	}
 	body, _ := ioutil.ReadAll(resp.Body)
 	defer resp.Body.Close()
+	//检查登录状态
 	if strings.Contains(string(body), "登录") {
 		return nil, AuthError
 	}
@@ -112,8 +113,8 @@ func CountGpa(grades []*Grade, gradeData *GradeData) {
 
 	for k, v := range grades {
 
-		if v.Invalid == "是" || v.GradeValue == 0 || v.Credit == 0 {
-			logs.Info("作废或者不及格成绩，跳过统计", k, v)
+		if v.Invalid == "是" || v.CourseGpa == 0 || v.Credit == 0 {
+			logs.Debug("作废或者不及格成绩，跳过统计", k, v)
 			semData[v.YearSem] = SemGrade{
 				GradeList: append(semData[v.YearSem].GradeList, v),
 				Semester:  v.Semester,
@@ -166,6 +167,8 @@ func CountGpa(grades []*Grade, gradeData *GradeData) {
 
 //解析提取成绩信息，同时填充学生基本信息
 func ParseGrade(body []byte) (grades []*Grade, info *BaseInfo) {
+
+	grades = []*Grade{}
 	json := jsoniter.ConfigCompatibleWithStandardLibrary
 	gradeList := json.Get(body, "items")
 	//遍历所有事件课程
