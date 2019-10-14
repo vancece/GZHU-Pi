@@ -3,6 +3,7 @@ module GZHU-Pi
 go 1.13
 
 require (
+	github.com/PuerkitoBio/goquery v1.5.0
 	github.com/astaxie/beego v1.12.0
 	github.com/boltdb/bolt v1.3.1
 	github.com/gorilla/mux v1.7.3
