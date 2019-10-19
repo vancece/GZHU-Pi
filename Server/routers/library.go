@@ -14,7 +14,7 @@ func BookSearch(w http.ResponseWriter, r *http.Request) {
 	page, _ := p.(string)
 
 	if query == "" || page == "" {
-		Response(w, r, nil, http.StatusBadRequest, "illegal request form")
+		Response(w, r, nil, http.StatusBadRequest, "illegal request query")
 		return
 	}
 
@@ -35,7 +35,7 @@ func BookHoldings(w http.ResponseWriter, r *http.Request) {
 	page, _ := p.(string)
 
 	if query == "" || page == "" {
-		Response(w, r, nil, http.StatusBadRequest, "illegal request form")
+		Response(w, r, nil, http.StatusBadRequest, "illegal request query")
 		return
 	}
 

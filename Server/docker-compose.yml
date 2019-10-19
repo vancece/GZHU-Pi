@@ -1,0 +1,13 @@
+version: '3.6'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gzhu-pi
+    restart: always
+    ports:
+      - 9000:9000
+    volumes:
+      - /tmp/log:/tmp/log

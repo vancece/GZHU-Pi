@@ -1,8 +1,8 @@
 /**
-广州大学教务系统客户端接口
+广州大学第二课堂学分系统客户端接口
 */
 
-package gzhu_jw
+package gzhu_second
 
 import (
 	"crypto/tls"
@@ -18,14 +18,34 @@ import (
 	"time"
 )
 
-type JWClient struct {
+var (
+	LoginError       = fmt.Errorf("认证失败，账号或密码错误")
+	AuthError        = fmt.Errorf("认证失败，可能是缓存过期，请重试")
+	urlencodedHeader = http.Header{"Content-Type": []string{"application/x-www-form-urlencoded"}}
+)
+
+const baseUrl = "http://172.17.1.123"
+
+var Urls = map[string]string{
+	"second-login":  "https://cas.gzhu.edu.cn/cas_server/login?service=" + baseUrl + "/Login.aspx",
+	"second-my":     baseUrl + "/XS/XMSB.aspx",
+	"second-search": baseUrl + "/JWC/view.aspx",
+	"second-detail": baseUrl + "/XS/XMSB_Detail_view.aspx?action=show&id=%s",
+}
+
+type SecondClient struct {
 	Username  string
 	Password  string
 	ExpiresAt time.Time //客户端过期时间
 	Client    *http.Client
+
+	//记录查询页面的一些便当参数，下一次请求需要使用到
+	VIEWSTATE          string
+	VIEWSTATEGENERATOR string
+	EVENTVALIDATION    string
 }
 
-func (c *JWClient) doRequest(method, url string, header http.Header, body io.Reader) (*http.Response, error) {
+func (c *SecondClient) doRequest(method, url string, header http.Header, body io.Reader) (*http.Response, error) {
 	t1 := time.Now().UnixNano() / 1000000
 
 	req, err := http.NewRequest(method, url, body)
@@ -41,11 +61,11 @@ func (c *JWClient) doRequest(method, url string, header http.Header, body io.Rea
 	return resp, err
 }
 
-func newClient(username, password string) *JWClient {
+func newClient(username, password string) *SecondClient {
 	// Allocate a new cookie jar to mimic the browser behavior:
 	cookieJar, _ := cookiejar.New(nil)
 	// Fill up basic data:
-	c := &JWClient{
+	c := &SecondClient{
 		Username: username,
 		Password: password,
 	}
@@ -64,13 +84,13 @@ func newClient(username, password string) *JWClient {
 	return c
 }
 
-func BasicAuthClient(username, password string) (client *JWClient, err error) {
+func BasicAuthClient(username, password string) (client *SecondClient, err error) {
 	if username == "" {
 		return nil, fmt.Errorf("not init username or password")
 	}
 	c := newClient(username, password)
 	//发送get请求，获取登录页面信息
-	resp, err := c.doRequest("GET", Urls["jw-login"], nil, nil)
+	resp, err := c.doRequest("GET", Urls["second-login"], nil, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -101,7 +121,7 @@ func BasicAuthClient(username, password string) (client *JWClient, err error) {
 	//编码表单
 	postString := postValue.Encode()
 
-	resp, err = c.doRequest("POST", Urls["jw-login"], urlencodedHeader, strings.NewReader(postString))
+	resp, err = c.doRequest("POST", Urls["second-login"], urlencodedHeader, strings.NewReader(postString))
 	if err != nil {
 		return nil, err
 	}

@@ -109,9 +109,9 @@
 <modal show="{{showUpdate}}" title="版本更新">
   <view>更新提醒</view>
   <view style='font-size:90%;color:rgb(80,80,80);margin:20rpx;'>
-  <view> * 联合团委发布【迎国庆 换新颜】活动</view>
-    <view> * 请给我一面国旗@广州大学团委</view>
-    <button bindtap="navTo" id="avatar" class="margin bg-yellow text-white round">领取广大专属头像</button>
+  <view> * 增加第二课堂学分查询</view>
+    <!-- <view> * 第二课堂学分查询</view> -->
+    <button bindtap="navTo" id="second" class="margin bg-yellow text-white round">第二课堂学分查询</button>
     <!-- <view> * 加入派派数据统计页面</view>
     <button bindtap="navTo" id="data" class="margin bg-cyan round">查看【派派数据】</button>
     <view> * 【校园二手】修复浏览统计</view>

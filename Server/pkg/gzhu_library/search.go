@@ -1,3 +1,7 @@
+/**
+广州大学图书馆网站搜索查询接口
+*/
+
 package gzhu_library
 
 import (

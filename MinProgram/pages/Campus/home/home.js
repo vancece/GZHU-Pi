@@ -36,11 +36,11 @@ Page({
 
   updateCheck() {
     let version = Config.get("version")
-    if (version < "1.0.6.20190930") {
+    if (version < "1.1.0.20191018") {
       this.setData({
         showUpdate: true
       })
-      Config.set("version", "1.0.6.20190930")
+      Config.set("version", "1.1.0.20191018")
     }
   },
 
@@ -142,8 +142,8 @@ Page({
   navTo(e) {
     let url = ""
     switch (e.target.id) {
-      case "avatar":
-        url = "/module/gzhu/poster"
+      case "second":
+        url = "/pages/Campus/second/second"
         break
       case "data":
         url = "/pages/Setting/about/data"

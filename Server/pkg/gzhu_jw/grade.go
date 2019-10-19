@@ -25,7 +25,7 @@ type BaseInfo struct {
 	ClassID    string `json:"class_id" remark:"班级id"`
 	College    string `json:"college" remark:"学院"`
 	CollegeID  string `json:"college_id" remark:"学院id"`
-	Major      string `json:"major" remark:"专业id"`
+	Major      string `json:"major" remark:"专业"`
 	MajorClass string `json:"major_class" remark:"专业班级"`
 	MajorID    string `json:"major_id" remark:"专业id"`
 	StuID      string `json:"stu_id" remark:"学号"`

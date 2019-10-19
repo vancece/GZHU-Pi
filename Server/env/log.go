@@ -10,7 +10,7 @@ import (
 func InitLogger() error {
 
 	//在运行目录下创建日志目录
-	err := os.MkdirAll("./log/", os.ModePerm)
+	err := os.MkdirAll("/tmp/log/", os.ModePerm)
 	if err != nil {
 		log.Fatal("创建日志目录失败 ", err)
 		return err
@@ -28,7 +28,7 @@ func InitLogger() error {
 	//logs.Async()                   //提升性能, 可以设置异步输出
 
 	config := make(map[string]interface{})
-	config["filename"] = `./log/log.log`
+	config["filename"] = `/tmp/log/gzhupi.log`
 
 	logs.SetLevel(logs.LevelDebug)
 

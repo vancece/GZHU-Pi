@@ -30,6 +30,7 @@
   width: 70%;
   min-height: 300rpx;
   max-height: 1000rpx;
+  overflow: scroll;
   background-color: #fff;
   border-radius: 30rpx;
   animation: scaleIn 0.2s;

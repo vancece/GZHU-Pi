@@ -57,7 +57,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 10,
+			"current": 11,
 			"list": [
 				{
 					"id": 0,
@@ -138,6 +138,13 @@
 					"name": "任意门",
 					"pathName": "pages/Campus/course/tools",
 					"query": "id=query",
+					"scene": null
+				},
+				{
+					"id": 11,
+					"name": "pages/Campus/second/s",
+					"pathName": "pages/Campus/second/second",
+					"query": "",
 					"scene": null
 				}
 			]
