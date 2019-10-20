@@ -4,7 +4,6 @@
 *.log
 /tmp/*
 *tmp
-*temp*
 *debug
 debug
 *main
