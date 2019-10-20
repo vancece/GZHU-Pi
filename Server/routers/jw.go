@@ -50,7 +50,7 @@ func JWMiddleWare(next http.HandlerFunc) http.HandlerFunc {
 				client.ExpiresAt = time.Now().Add(20 * time.Minute)
 			}
 		}()
-
+		logs.Info("用户：%s 接口：%s",username, r.URL.Path)
 		//把客户端通过context传递给下一级
 		ctx := context.WithValue(r.Context(), "client", client)
 		// 创建新的请求

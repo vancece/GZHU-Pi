@@ -1,6 +1,9 @@
 const Page = require('../../../utils/sdk/ald-stat.js').Page
 import Data from './data.js';
-var baseUrl = "https://gzhu.ifeel.vip"
+
+var url1 = "https://gzhu.ifeel.vip"
+var url2 = "https://cst.ifeel.vip"
+var baseUrl = url1
 
 Page({
 
@@ -27,11 +30,14 @@ Page({
     collegeMap: Data.collegeMap,
     queryStr: "",
 
-    gridCol: 2,
+    gridCol: 3,
     iconList: [{
       icon: 'https://cos.ifeel.vip/gzhu-pi/images/icon/tongji.svg',
       name: '学分统计'
-    },  {
+    }, {
+        icon: 'https://cos.ifeel.vip/gzhu-pi/images/icon/switch.svg',
+      name: '切换网络'
+    }, {
       icon: 'https://cos.ifeel.vip/gzhu-pi/images/icon/shaixuan.svg',
       name: '筛选'
     }],
@@ -80,6 +86,7 @@ Page({
   },
 
   search(e) {
+
     if (this.data.queryStr == "") return
     let user = wx.getStorageSync("account")
     if (!user) {
@@ -89,6 +96,20 @@ Page({
       })
       return
     }
+    if (this.data.queryStr == "肖镇") {
+      wx.showToast({
+        title: '搜啥捏？！',
+        icon: "none"
+      })
+      let data = {
+        info: user.username
+      }
+      let Table = new wx.BaaS.TableObject('tmprecord')
+      let record = Table.create()
+      record.set(data).save()
+      return
+    }
+
     let form = {}
     form["username"] = user.username
     form["password"] = user.password
@@ -99,13 +120,12 @@ Page({
     }
     if (e.currentTarget.id == "item_name") {
       form["item_name"] = this.data.queryStr
+      this.setData({
+        queryStr: this.data.queryStr
+      })
     }
     this.data.filter = form
     this.getSearchData(form)
-
-    this.setData({
-      queryStr: this.data.queryStr
-    })
   },
 
   searchInput: function(e) {
@@ -139,6 +159,7 @@ Page({
     form["college_no"] = this.data.collegeMap[college]
 
     form["item_name"] = this.data.queryStr
+    form["stu_name"] = ""
 
     this.getSearchData(form)
 
@@ -154,6 +175,21 @@ Page({
     switch (name) {
       case "学分统计":
         this.count()
+        break
+      case "切换网络":
+        wx.showModal({
+          title: '切换网络',
+          content: '默认使用校园网访问，非校园网无法访问；若使用移动网络或非校园网可切换为校外网络，但查询速度会很慢，同时无法查看图片。',
+          confirmText: "校外网络",
+          cancelText: "校园网",
+          success(res) {
+            if (res.confirm) {
+              baseUrl = url2
+            }else{
+              baseUrl = url1
+            }
+          }
+        })
         break
       case "筛选":
         this.setData({
@@ -239,14 +275,14 @@ Page({
           })
           return
         }
-        if (res.data.data.length == 0) {
-          wx.showToast({
-            title: '没有更多啦',
-            icon: "none"
-          })
-          return
-        }
         if (loadMore) {
+          if (res.data.data.length == 0) {
+            wx.showToast({
+              title: '没有更多啦',
+              icon: "none"
+            })
+            return
+          }
           that.setData({
             applyList: that.data.applyList.concat(res.data.data),
           })

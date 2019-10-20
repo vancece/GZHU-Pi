@@ -1,5 +1,8 @@
 version: '3.6'
 
+networks:
+  gzhupi-net:
+
 services:
   backend:
     build:
@@ -7,6 +10,8 @@ services:
       dockerfile: Dockerfile
     container_name: gzhu-pi
     restart: always
+    networks:
+      - gzhupi-net
     ports:
       - 9000:9000
     volumes:

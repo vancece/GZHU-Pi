@@ -15,7 +15,7 @@ func InitLogger() error {
 		log.Fatal("创建日志目录失败 ", err)
 		return err
 	}
-	fileName := "./log/log.log"
+	fileName := "/tmp/log/gzhupi.log"
 	f, err := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
 	if err != nil {
 		log.Fatal("创建日志文件失败 ", err)
@@ -28,7 +28,7 @@ func InitLogger() error {
 	//logs.Async()                   //提升性能, 可以设置异步输出
 
 	config := make(map[string]interface{})
-	config["filename"] = `/tmp/log/gzhupi.log`
+	config["filename"] = fileName
 
 	logs.SetLevel(logs.LevelDebug)
 

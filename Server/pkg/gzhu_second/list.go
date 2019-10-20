@@ -144,9 +144,6 @@ func (c *SecondClient) Search(r *http.Request) (items []*SecondItem, err error) 
 	c.EVENTVALIDATION, _ = doc.Find("#__EVENTVALIDATION").Attr("value")
 
 	items = []*SecondItem{}
-	doc.Find("#MainContent_labPage").Each(func(i int, selection *goquery.Selection) {
-		logs.Info(selection.Text())
-	})
 	//记录最大页数
 	maxPage := 1
 	doc.Find("#MainContent_LabCountPage").Each(func(i int, selection *goquery.Selection) {
@@ -260,7 +257,7 @@ func (c *SecondClient) updateFormInfo() (err error) {
 }
 
 func (c *SecondClient) getForm(r *http.Request) (form *url.Values, err error) {
-	logs.Debug(r.PostForm)
+
 	year := r.PostForm["year"]
 	status_no := r.PostForm["status_no"]
 	grade := r.PostForm["grade"]
