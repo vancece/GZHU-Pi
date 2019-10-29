@@ -195,6 +195,7 @@ def get_grade(text, pwd):
             "college": parse('$.items[0].jgmc').find(grade_json)[0].value,  # 学院名称
             "admit_year": parse('$.items[0].njdm_id').find(grade_json)[0].value  # 学院名称
         }
+
         try:
             table = Models()
             table.insert_stu_info(stu_info)

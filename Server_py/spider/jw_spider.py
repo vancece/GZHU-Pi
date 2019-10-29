@@ -104,7 +104,7 @@ class JW(object):
             pass
         return get_grade(res.text, self.password)
 
-    def get_exam(self, year_sem="2018-2019-2"):
+    def get_exam(self, year_sem="2019-2020-1"):
         """
         获取考试信息
         :param year_sem: 学年-学期

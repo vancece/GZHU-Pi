@@ -69,7 +69,7 @@ class SQL(object):
                                                      from v_grade 
                                                      where college_id = (select college_id from t_stu_info where stu_id = '%s')
                                                        and admit_year = (select admit_year from t_stu_info where stu_id = '%s'))
-                                        and course_gpa != 0
+                                        and invalid != '是'
                                     group by year_sem, major_id, class_id, stu_id) as v) as a
                         where major_id = (select major_id from t_stu_info where stu_id = '%s')) as b
                   where class_id = (select class_id from t_stu_info where stu_id = '%s')
