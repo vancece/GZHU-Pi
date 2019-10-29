@@ -50,7 +50,7 @@ func JWMiddleWare(next http.HandlerFunc) http.HandlerFunc {
 				client.ExpiresAt = time.Now().Add(20 * time.Minute)
 			}
 		}()
-		logs.Info("用户：%s 接口：%s",username, r.URL.Path)
+		logs.Info("用户：%s 接口：%s", username, r.URL.Path)
 		//把客户端通过context传递给下一级
 		ctx := context.WithValue(r.Context(), "client", client)
 		// 创建新的请求
@@ -137,7 +137,6 @@ func Grade(w http.ResponseWriter, r *http.Request) {
 	Response(w, r, data, http.StatusOK, "request ok")
 }
 
-
 func EmptyRoom(w http.ResponseWriter, r *http.Request) {
 	//从context提取客户端
 	c := r.Context().Value("client")
@@ -152,6 +151,29 @@ func EmptyRoom(w http.ResponseWriter, r *http.Request) {
 	}
 
 	data, err := client.GetEmptyRoom(r)
+	if err != nil {
+		logs.Error(err)
+		delete(JWClients, client.Username)
+		Response(w, r, nil, http.StatusInternalServerError, err.Error())
+		return
+	}
+	Response(w, r, data, http.StatusOK, "request ok")
+}
+
+func Achieve(w http.ResponseWriter, r *http.Request) {
+	//从context提取客户端
+	c := r.Context().Value("client")
+	if c == nil {
+		Response(w, r, nil, http.StatusInternalServerError, "get nil client from context")
+		return
+	}
+	client, ok := c.(*gzhu_jw.JWClient)
+	if !ok {
+		Response(w, r, nil, http.StatusInternalServerError, "get a wrong client from context")
+		return
+	}
+
+	data, err := client.GetAchieve()
 	if err != nil {
 		logs.Error(err)
 		delete(JWClients, client.Username)

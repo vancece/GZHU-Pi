@@ -26,7 +26,7 @@ type JWClient struct {
 }
 
 func (c *JWClient) doRequest(method, url string, header http.Header, body io.Reader) (*http.Response, error) {
-	t1 := time.Now().UnixNano() / 1000000
+	t1 := time.Now()
 
 	req, err := http.NewRequest(method, url, body)
 	if err != nil {
@@ -37,7 +37,7 @@ func (c *JWClient) doRequest(method, url string, header http.Header, body io.Rea
 	}
 	resp, err := c.Client.Do(req)
 
-	logs.Debug("请求耗时：", time.Now().UnixNano()/1000000-t1, "ms", url)
+	logs.Debug("请求耗时：", time.Since(t1), url)
 	return resp, err
 }
 
