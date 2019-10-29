@@ -171,7 +171,7 @@ func ParseGrade(body []byte) (grades []*Grade, info *BaseInfo) {
 	grades = []*Grade{}
 	json := jsoniter.ConfigCompatibleWithStandardLibrary
 	gradeList := json.Get(body, "items")
-	//遍历所有事件课程
+
 	for i := 0; true; i++ {
 		g := &Grade{}
 		g.CourseID = gradeList.Get(i).Get("kch_id").ToString()

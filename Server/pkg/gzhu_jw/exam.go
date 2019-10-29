@@ -64,7 +64,7 @@ func ParseExam(body []byte) (exams []*Exam) {
 	exams = []*Exam{}
 	json := jsoniter.ConfigCompatibleWithStandardLibrary
 	examList := json.Get(body, "items")
-	//遍历所有事件课程
+
 	for i := 0; true; i++ {
 		e := &Exam{}
 		e.CourseID = examList.Get(i).Get("kch").ToString()

@@ -96,7 +96,6 @@ func ParseRoom(body []byte) (rooms []*Room) {
 	json := jsoniter.ConfigCompatibleWithStandardLibrary
 	roomList := json.Get(body, "items")
 
-	//遍历所有事件课程
 	for i := 0; true; i++ {
 		r := &Room{}
 		r.Cdbh = roomList.Get(i).Get("cdbh").ToString()

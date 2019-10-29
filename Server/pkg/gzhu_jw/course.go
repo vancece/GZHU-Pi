@@ -172,7 +172,6 @@ func ParseSjk(body []byte) (courses []*SjkCourse) {
 	json := jsoniter.ConfigCompatibleWithStandardLibrary
 	kbList := json.Get(body, "sjkList")
 
-	//遍历所有事件课程
 	for i := 0; true; i++ {
 		c := &SjkCourse{}
 		c.SjkCourseName = kbList.Get(i).Get("kcmc").ToString()

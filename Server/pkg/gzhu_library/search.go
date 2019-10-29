@@ -178,29 +178,40 @@ func BookSearch(query string, searchPage string) (books []*Book, err error) {
 				book.CallNo = bookCallNumber[0][1]
 			}
 		}
-
 		//异步请求豆瓣接口获取图书封面
 		wg.Add(1)
 		go func() {
-			resp, err := http.Get(`https://douban.uieee.com/v2/book/isbn/` + book.ISBN)
-			if err != nil {
-				logs.Error(err)
-				wg.Done()
-				return
-			}
-			defer resp.Body.Close()
-			body, err := ioutil.ReadAll(resp.Body)
-			if err != nil {
-				logs.Error(err)
-				wg.Done()
-				return
-			}
-			json0 := jsoniter.ConfigCompatibleWithStandardLibrary
-			book.Image = json0.Get(body, "image").ToString()
+			book.Image = GetCover(book.ISBN)
 			wg.Done()
 		}()
 		books = append(books, book)
 	}
 	wg.Wait()
 	return books, nil
+}
+
+//提取豆瓣图书封面
+func GetCover(ISBN string) (image string) {
+	if ISBN == "" {
+		return
+	}
+	var URL = "https://douban.uieee.com/v2/book/isbn/" + ISBN
+	client := http.Client{}
+	request, err := http.NewRequest("GET", URL, nil)
+	if err != nil {
+		logs.Error(err)
+		return
+	}
+	const UA = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36"
+	request.Header.Set("User-Agent", UA)
+	resp, err := client.Do(request)
+	if err != nil {
+		logs.Error(err)
+		return
+	}
+	defer resp.Body.Close()
+	body, _ := ioutil.ReadAll(resp.Body)
+
+	image = jsoniter.Get(body, "image").ToString()
+	return image
 }

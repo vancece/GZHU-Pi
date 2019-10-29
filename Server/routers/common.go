@@ -79,7 +79,7 @@ func Response(w http.ResponseWriter, r *http.Request, data interface{}, statusCo
 	}
 }
 
-func ErrorHandler(h http.HandlerFunc) http.HandlerFunc {
+func PanicMV(h http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		defer func() {
 			if err := recover(); err != nil {
