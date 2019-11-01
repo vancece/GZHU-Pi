@@ -10,12 +10,12 @@ import (
 func InitLogger() error {
 
 	//在运行目录下创建日志目录
-	err := os.MkdirAll("/tmp/log/", os.ModePerm)
+	err := os.MkdirAll("./log/", os.ModePerm)
 	if err != nil {
 		log.Fatal("创建日志目录失败 ", err)
 		return err
 	}
-	fileName := "/tmp/log/gzhupi.log"
+	fileName := "./log/gzhupi.log"
 	f, err := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
 	if err != nil {
 		log.Fatal("创建日志文件失败 ", err)

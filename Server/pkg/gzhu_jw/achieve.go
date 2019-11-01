@@ -28,15 +28,15 @@ type Item struct {
 	CJ string  `json:"CJ" remark:"成绩"`
 	JD float64 `json:"JD" remark:"绩点"`
 
-	//JYXDXNM  string `json:"JYXDXNM" remark:"学年"`
-	//JYXDXNMC string `json:"JYXDXNMC" remark:"学年度"`
-	//JYXDXQM  string `json:"JYXDXQM" remark:"学期代码"`
-	//JYXDXQMC string `json:"JYXDXQMC" remark:"学期"`
+	//JYXDXNM  string `json:"JYXDXNM" remark:"建议修读学年"`
+	//JYXDXNMC string `json:"JYXDXNMC" remark:"建议修读学年度"`
+	//JYXDXQM  string `json:"JYXDXQM" remark:"建议修读学期代码"`
+	//JYXDXQMC string `json:"JYXDXQMC" remark:"建议修读学期"`
 
 	KCH    string  `json:"KCH" remark:"课程号"`
 	KCHID  string  `json:"KCH_ID" remark:"课程号id"`
 	KCLBDM string  `json:"KCLBDM" remark:"课程类别代码"`
-	KCLBMC string  `json:"KCLBMC" remark:"课程类别名称"`
+	KCLBMC string  `json:"KCLBMC" remark:"课程类别"`
 	KCMC   string  `json:"KCMC" remark:"课程名称"`
 	KCXZMC string  `json:"KCXZMC" remark:"课程性质"`
 	KCYWMC string  `json:"KCYWMC" remark:"课程英文名称"`
@@ -49,7 +49,7 @@ type Item struct {
 	XNMC   string  `json:"XNMC" remark:"学年度"`
 	XQM    string  `json:"XQM" remark:"学期代码"`
 	XQMMC  string  `json:"XQMMC" remark:"学期"`
-	XSXXXX string  `json:"XSXXXX" remark:"学时说明"`
+	XSXXXX string  `json:"XSXXXX" remark:"学时备注"`
 }
 
 //学业情况查询
