@@ -68,7 +68,7 @@ App({
         wx.getStorage({
           key: 'account',
           success: function(res) {
-            console.log("已绑定学号", res.data.username)
+            console.log("已绑定学号", res.data)
             that.globalData.bindStatus = true
             that.globalData.account = res.data
 

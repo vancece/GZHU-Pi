@@ -1,6 +1,6 @@
 <template name="list-item-theme_oldthings">
 
-  <view wx:for="{{render_list}}" wx:key="{{item}}" class="list-item oldthings" id="card-{{item}}">
+  <view wx:for="{{render_list}}" wx:key="index" class="list-item oldthings" id="card-{{item}}">
     <view class="list-box list-box_album is-expand" style="background-color:{{content_list[item]._background}}" data-card-id="{{content_list[item].id}}" bindtap="onBrickItemTap">
 
       <!-- 信息区 -->
@@ -30,7 +30,7 @@
         <view class="footer">
           <!-- 标签 -->
           <view class=" flex flex-wrap">
-            <view class="padding-xs" wx:for="{{content_list[item].label}}" wx:key>
+            <view class="padding-xs" wx:for="{{content_list[item].label}}" wx:key="index">
               <view class="cu-tag radius line-red">{{item}}</view>
             </view>
           </view>
@@ -49,6 +49,6 @@
 
 <template name="images-viewer">
   <view wx:if="{{ !!images && !!images.length}}" class="media-previewer">
-    <image wx:for="{{ images }}" wx:key="{{images}}" class="pics size_{{images.length}}" src="{{item}}" mode="{{_imageFillMode}}" data-images="{{images}}" data-current-image="{{item}}"></image>
+    <image wx:if="{{index<3}}" wx:for="{{images}}" wx:key="index" class="pics size_{{images.length}}" src="{{item}}" mode="{{_imageFillMode}}" data-images="{{images}}" data-current-image="{{item}}"></image>
   </view>
 </template>

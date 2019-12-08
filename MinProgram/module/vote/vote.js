@@ -73,7 +73,7 @@ Page({
     // 检测、校验、提交
     if (this.data.key_for == "") {
       wx.showToast({
-        title: '请选择一位选手',
+        title: '请选择一项',
         icon: "none"
       })
       return
@@ -136,7 +136,7 @@ Page({
     let record = this.data.vote_list[id]
     if (this.data.selected.indexOf(record) == -1 && this.data.selected.length >= 2) {
       wx.showToast({
-        title: '只能投两位小姐姐喔！',
+        title: '选项数量够啦！',
         icon: "none"
       })
       return

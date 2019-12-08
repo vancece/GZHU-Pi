@@ -7,7 +7,7 @@
       <view style='color:grey;padding:10rpx'>{{exam[0].major}}</view>
     </view>
 
-    <view wx:for="{{exam}}" wx:key="{{index}}" class='exam-list'>
+    <view wx:for="{{exam}}" wx:key="index" class='exam-list'>
       <view class='course'>{{item.exam_course}}</view>
       <view class='exam-room'>{{item.exam_room}}</view>
       <view>{{item.exam_time}}</view>

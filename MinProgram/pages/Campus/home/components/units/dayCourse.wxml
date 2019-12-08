@@ -11,7 +11,7 @@
     </view>
   </view>
 
-  <view wx:for="{{todayCourse}}" wx:key="{{index}}">
+  <view wx:for="{{todayCourse}}" wx:key="index">
     <view class='today-course' hidden='{{tools.judegShow(item,schoolWeek,true)}}'>
       <view class='class-time'>{{item.course_time}}</view>
       <view class='courst-detail' style='flex: 5;border-bottom:{{index+1==todayCourse.length?0:1}}'>

@@ -45,7 +45,7 @@
     <view class="item">
       <view class='item-name'>颜色</view>
       <radio-group name='color' bindchange="radioChange" class='color-list context'>
-        <view wx:for="{{colorArrays}}" wx:key="{{index}}">
+        <view wx:for="{{colorArrays}}" wx:key="index">
           <radio id="{{index}}" hidden value="{{index}}" checked="{{index==4?true:false}}"></radio>
           <label for="{{index}}">
             <view class='{{index==colorValue?"actived":"deactived"}}' style='background-color:{{item}}'></view>

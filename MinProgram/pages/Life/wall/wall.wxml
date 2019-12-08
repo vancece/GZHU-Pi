@@ -1,5 +1,5 @@
 <navBar title="广大墙" titleColor="" navColor="" hideBackBtn=""></navBar>
 
 <view class='body'>
-  <image bindtap='view' wx:for="{{url}}" wx:key="{{index}}" style='width:100%' mode='widthFix' src='{{item}}'></image>
+  <image bindtap='view' wx:for="{{url}}" wx:key="index" style='width:100%' mode='widthFix' src='{{item}}'></image>
 </view>

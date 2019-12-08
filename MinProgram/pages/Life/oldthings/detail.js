@@ -13,19 +13,19 @@ Page({
   },
 
   onLoad: async function (options) {
-
     // 获取当前用户
     await wx.BaaS.auth.getCurrentUser().then(user => {
       this.data.uid = user.id
     })
-
     let id = options.id
-    if (id == undefined) return
     // 测试id
-    // id = "5d55ac4f72d5f426018ed317"
+    // id = "5d73435057da6e383b57f752"
+    if (id == undefined) return
     this.getDetail(id)
-    this.data.id = id
     this.updateCounter(id)
+    this.setData({
+      id: id
+    })
   },
 
   onShow(options) {

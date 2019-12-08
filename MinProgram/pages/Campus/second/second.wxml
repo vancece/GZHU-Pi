@@ -38,7 +38,7 @@
 
 <!-- 工具栏 -->
 <view class="cu-list grid col-{{gridCol}} no-border" style="padding:0 10rpx">
-  <view bindtap="tapTools" id="{{index}}" class="cu-item align-center " wx:for="{{iconList}}" wx:key wx:if="{{index<gridCol*2}}">
+  <view bindtap="tapTools" id="{{index}}" class="cu-item align-center " wx:for="{{iconList}}" wx:key="index" wx:if="{{index<gridCol*2}}">
     <image src="{{item.icon}}" style="width:50rpx;height:50rpx"></image>
     <text style="color:{{categoryIndex==index?'var(--orange)':''}}">{{item.name}}</text>
   </view>
@@ -129,7 +129,7 @@
 
 <view wx:if="{{applyList.length==0}}" class="margin-top-xl text-center text-grey">暂无数据...</view>
 <!-- 列表 -->
-<view wx:for="{{applyList}}" wx:key="{{index}}" class="cu-card article" style="overflow:visible">
+<view wx:for="{{applyList}}" wx:key="index" class="cu-card article" style="overflow:visible">
 
   <view class="cu-item shadow bg-gray" bindtap="tapItem" id="{{index}}" style="background:rgb(245, 245, 245)">
     <view class="title flex align-center">
@@ -228,7 +228,7 @@
   </view>
 
   <!-- 证明材料 -->
-  <view wx:if="{{detail.images}}" wx:for="{{detail.images}}" wx:key="{{index}}">
+  <view wx:if="{{detail.images}}" wx:for="{{detail.images}}" wx:key="index">
     <image mode="widthFix" src="{{item}}" bindtap="viewImage" data-url="{{item}}"></image>
   </view>
 

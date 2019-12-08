@@ -20,7 +20,7 @@
       <view>
         <text>著者：</text>
         <text style='color:rgb(44, 43, 43)' wx:if="{{douban.author==''}}">{{book.author}}</text>
-        <text style='color:rgb(44, 43, 43)' wx:if="{{exist&&douban.author!=''}}" wx:for="{{douban.author}}" wx:key="{{index}}">{{item}} </text>
+        <text style='color:rgb(44, 43, 43)' wx:if="{{exist&&douban.author!=''}}" wx:for="{{douban.author}}" wx:key="index">{{item}} </text>
       </view>
       <view>
         <text>出版：</text>{{exist?douban.publisher:book.publisher}}</view>
@@ -42,7 +42,7 @@
 
 <!-- 标签 -->
 <view class='tags'>
-  <view wx:for="{{exist?douban.tags:''}}" wx:key="{{index}}">{{item.name}}</view>
+  <view wx:for="{{exist?douban.tags:''}}" wx:key="index">{{item.name}}</view>
 </view>
 
 
@@ -61,7 +61,7 @@
       <view style='flex:2'>应还</view>
       <view style='flex:1'>更多</view>
     </view>
-    <view class='item' wx:if="{{holdings.length}}" wx:for="{{holdings}}" wx:key="{{index}}" style='color:{{item.status=="在馆"?"#0b8457":"#283148"}}'>
+    <view class='item' wx:if="{{holdings.length}}" wx:for="{{holdings}}" wx:key="index" style='color:{{item.status=="在馆"?"#0b8457":"#283148"}}'>
       <view style='flex:1'>{{item.status}}</view>
       <view style='flex:4.5'>{{item.location}}</view>
       <view style='flex:2'>{{item.loandate}}</view>

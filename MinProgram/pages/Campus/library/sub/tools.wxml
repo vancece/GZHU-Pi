@@ -30,7 +30,7 @@
       <view style='flex:1'>人次</view>
       <view style='flex:1'>平均</view>
     </view>
-    <view class='table-body' wx:for="{{lib.college_list}}" wx:key="{{index}}">
+    <view class='table-body' wx:for="{{lib.college_list}}" wx:key="index">
       <view style='flex:4'>{{item[0]}}</view>
       <view style='flex:1'>{{item[1]}}</view>
       <view style='flex:1'>{{item[2]}}</view>
@@ -57,7 +57,7 @@
 <!-- 书籍收藏 -->
 <view wx:if="{{id=='favorite'}}">
 
-  <view wx:for="{{fav}}" wx:key="{{index}}" class='book' bindtap='navToDetail' id='{{index}}'>
+  <view wx:for="{{fav}}" wx:key="index" class='book' bindtap='navToDetail' id='{{index}}'>
   <view class='book-name'>{{index+1}}、{{item.book_name}}</view>
 
   <view class='book-info'>

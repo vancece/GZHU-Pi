@@ -69,14 +69,12 @@ Page({
     wx.showLoading({
       title: '授权中...',
     })
-    console.log(data)
     wx.BaaS.auth.loginWithWechat(data, {
       createUser: true,
       syncUserProfile: "overwrite"
     }).then(user => {
       console.log(user)
     })
-
     if (data.detail.errMsg == "getUserInfo:ok") {
       console.log(" 授权", data)
       wx.hideLoading()
@@ -84,14 +82,6 @@ Page({
       that.setData({
         show: false
       })
-      // 用户迁移绑定
-      if (JSON.stringify(this.data.account) == "{}") returns
-      if (!app.globalData.bindStatus && this.data.account.username != "undefined") {
-        wx.showLoading({
-          title: '迁移绑定...',
-        })
-        that.login()
-      }
     } else {
       console.log("拒绝授权", data)
       wx.hideLoading()
@@ -105,18 +95,7 @@ Page({
         show: false,
         showGuide: true
       })
-
-      if (JSON.stringify(this.data.account) == "{}") return
-      if (!app.globalData.bindStatus && this.data.account.username != "undefined") {
-        wx.showLoading({
-          title: '迁移绑定...',
-        })
-        that.login()
-      }
     }
-
-
-
   },
 
   // 提交登录表单

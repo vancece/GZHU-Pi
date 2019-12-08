@@ -12,12 +12,13 @@ var JWClients = make(map[string]*gzhu_jw.JWClient)
 
 //教务系统统一中间件，做一些准备客户端的公共操作
 func JWMiddleWare(next http.HandlerFunc) http.HandlerFunc {
+
 	return func(w http.ResponseWriter, r *http.Request) {
 		u, err := ReadRequestArg(r, "username")
 		p, err0 := ReadRequestArg(r, "password")
 		if err != nil || err0 != nil {
 			logs.Error(err, err0)
-			Response(w, r, nil, http.StatusBadRequest, "illegal request form")
+			Response(w, r, nil, http.StatusBadRequest, err.Error())
 			return
 		}
 		username, _ := u.(string)
@@ -55,7 +56,6 @@ func JWMiddleWare(next http.HandlerFunc) http.HandlerFunc {
 		ctx := context.WithValue(r.Context(), "client", client)
 		// 创建新的请求
 		r = r.WithContext(ctx)
-
 		next(w, r)
 
 	}

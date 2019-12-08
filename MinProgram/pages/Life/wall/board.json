@@ -1,5 +1,5 @@
 {
   "usingComponents": {
-    "msg-board":"/components/msg-board/msg-board"
+    "comment":"/components/comment/comment"
   }
 }

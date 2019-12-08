@@ -1,6 +1,6 @@
-<msg-board></msg-board>
+<comment table="comment" object_id="5dec862c6f290b5b5f2a437d"></comment>
 
- <!-- <view class="cu-bar input">
+<!-- <view class="cu-bar input">
     <view class="cu-avatar round" style="background-image:url(https://image.weilanwl.com/img/square-3.jpg);"></view>
     <view class="action">
       <text class="cuIcon-roundaddfill text-grey"></text>
@@ -12,6 +12,6 @@
     <button class="cu-btn bg-green shadow-blur">发送</button>
   </view> -->
 
-  <view class="canvasBox">
+<!-- <view class="canvasBox">
   <canvas canvas-id="shareCanvas" style="width:300px;height:300px"></canvas>
-</view>
+</view> -->

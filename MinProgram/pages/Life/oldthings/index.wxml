@@ -24,7 +24,7 @@
 
 <!-- 分类导航 -->
 <view class="cu-list grid col-{{gridCol}} {{gridBorder?'':'no-border'}}">
-  <view bindtap="switchCategory" id="{{index}}" class="cu-item align-center " wx:for="{{iconList}}" wx:key wx:if="{{index<gridCol*2}}">
+  <view bindtap="switchCategory" id="{{index}}" class="cu-item align-center " wx:for="{{iconList}}" wx:key="index" wx:if="{{index<gridCol*2}}">
     <image src="{{item.icon}}" style="width:70rpx;height:70rpx"></image>
     <text style="color:{{categoryIndex==index?'var(--orange)':''}}">{{item.name}}</text>
   </view>

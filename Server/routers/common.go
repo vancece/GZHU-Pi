@@ -125,11 +125,12 @@ func ReadRequestArg(r *http.Request, key string) (value interface{}, err error) 
 		}
 		return data[key], nil
 	}
+
 	//get请求参数或者application/x-www-form-urlencoded
 	if r.Method == "GET" || reflect.DeepEqual(r.Header["Content-Type"], []string{"application/x-www-form-urlencoded"}) {
 		_ = r.ParseForm()
 		value = r.Form.Get(key)
 		return value, nil
 	}
-	return nil, fmt.Errorf("unsupported method: %s or content type: %v", r.Method, r.Header["Content-Type"])
+	return nil, fmt.Errorf("unsupported method: %s with content type: %v", r.Method, r.Header["Content-Type"])
 }

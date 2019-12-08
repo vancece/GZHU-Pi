@@ -16,7 +16,7 @@
 
 
 <!-- 实验列表 -->
-<view class='exp' wx:for="{{exp}}" wx:key="{{index}}">
+<view class='exp' wx:for="{{exp}}" wx:key="index">
 
   <view class='left' style='background:{{item.color==0?"lightgrey":colors[index]}}'>
     <view>{{item.weeks}}</view>

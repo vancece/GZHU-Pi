@@ -1,0 +1,24 @@
+<view style="background:rgba(255, 255, 255, 0.7)">
+  <view style="padding:20rpx">评论区</view>
+
+  <view bindtap="atSomebody" data-id="{{item.id}}" data-nickname="{{item.created_by.nickname}}" wx:for="{{comments}}" wx:key="index" class="comment">
+    <view style="flex:1">
+      <image class="avatar" src="{{item.created_by.avatar}}"></image>
+    </view>
+    <view style="flex:6">
+      <view class="c-info">
+        <view style="color:gray">{{item.created_by.nickname}}</view>
+        <view style="color:gray">
+          <text bindtap="deleteComment" data-id="{{item.id}}" wx:if="{{item.created_by.id==uid}}" style="color:red;margin:0 20rpx">删除</text> {{item.created_at}}</view>
+      </view>
+      <view style="margin:5rpx">{{item.content}}</view>
+    </view>
+  </view>
+
+
+  <view class="send">
+    <open-data type="userAvatarUrl" class='avatar'></open-data>
+    <input bindinput="commentInput" value="{{content}}" class="solid-bottom" maxlength="300" cursor-spacing="10"></input>
+    <button bindtap="addComment" class="cu-btn shadow-blur bg-green">发送</button>
+  </view>
+</view>

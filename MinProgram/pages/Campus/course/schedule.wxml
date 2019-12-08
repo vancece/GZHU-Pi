@@ -14,11 +14,11 @@
     <view class="week-days">
       <!-- 星期 -->
       <view class="weekday date-item">
-        <view wx:for="{{weekDays}}" wx:key="{{index}}" style="width:100rpx;color:{{week==schoolWeek && today==weekDate[index]?'#3da7b3':''}}">周{{item}} </view>
+        <view wx:for="{{weekDays}}" wx:key="index" style="width:100rpx;color:{{week==schoolWeek && today==weekDate[index]?'#3da7b3':''}}">周{{item}} </view>
       </view>
       <!-- 日期 -->
       <view class="date date-item" bindtap='courseSetting'>
-        <view wx:for="{{weekDate}}" wx:key="{{index}}" style="width:100rpx;color:{{week==schoolWeek && today==weekDate[index]?'#3da7b3':''}}">{{item}}</view>
+        <view wx:for="{{weekDate}}" wx:key="index" style="width:100rpx;color:{{week==schoolWeek && today==weekDate[index]?'#3da7b3':''}}">{{item}}</view>
       </view>
     </view>
   </view>
@@ -31,20 +31,20 @@
     <!-- 侧栏 -->
     <view bindtap='tapSlideBar' style='display:flex;flex-direction:row'>
       <view class='slide-bar' hidden='{{hideTimeLine}}'>
-        <view style='width:180rpx;font-size:80%;font-weight:bold;' wx:for="{{timeLine}}" wx:key="{{index}}" class="slide-bar-item">{{item}}</view>
+        <view style='width:180rpx;font-size:80%;font-weight:bold;' wx:for="{{timeLine}}" wx:key="index" class="slide-bar-item">{{item}}</view>
       </view>
 
       <view class='slide-bar'>
-        <view wx:for="{{11}}" wx:key="{{index}}" class="slide-bar-item">{{item+1}}</view>
+        <view wx:for="{{11}}" wx:key="index" class="slide-bar-item">{{item+1}}</view>
       </view>
     </view>
 
 
     <swiper indicator-dots="{{true}}" current="{{current}}" circular="{{true}}" bindchange="switchWeek" style='height:1430rpx;width:700rpx'>
-      <view wx:for="{{[week-1,week,week+1]}}" wx:key="{{index}}" wx:for-item="swiper">
+      <view wx:for="{{[week-1,week,week+1]}}" wx:key="index" wx:for-item="swiper">
         <swiper-item>
           <!-- 课表 -->
-          <view wx:for="{{kbList}}" wx:key="{{index}}">
+          <view wx:for="{{kbList}}" wx:key="index">
             <view hidden='{{tools.judegShow(item,week)}}'>
               <cell bindtap="showDetail" id="{{index}}" course="{{item}}"></cell>
             </view>
@@ -59,7 +59,7 @@
   <!-- 实践课表 -->
   <view hidden='{{sjkList.length==0?true:false}}'>
     <view class='other-title'>实践课程：</view>
-    <view class="other-course" wx:for="{{sjkList}}" wx:key="{{index}}">
+    <view class="other-course" wx:for="{{sjkList}}" wx:key="index">
       <view style='flex:3'>{{item.sjk_course_name}}</view>
       <view style='flex:1;text-align:center'>{{item.sjk_teacher}}</view>
       <view style='flex:1;text-align:center'>{{item.sjk_weeks}}</view>
@@ -70,7 +70,7 @@
   <!-- 课程详情弹窗 -->
   <modal custom="true" show="{{showDetail}}" bind:cancel="cancelModal">
     <swiper bindchange="switchCourse" indicator-dots="{{detail.length>1?true:false}}" current="{{currentIndex}}" style='height:580rpx'>
-      <swiper-item wx:for="{{detail}}" wx:key="{{index}}">
+      <swiper-item wx:for="{{detail}}" wx:key="index">
         <view class='course' style='background-color:{{colors[item.color]}}'>
           <view>{{item.course_name}}</view>
         </view>

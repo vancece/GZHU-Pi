@@ -23,7 +23,7 @@
   </view>
   <view class="cu-form-group">
     <view class="grid col-4 grid-square flex-sub">
-      <view class="bg-img" wx:for="{{imgList}}" wx:key="{{index}}" bindtap="viewImage" data-url="{{imgList[index]}}">
+      <view class="bg-img" wx:for="{{imgList}}" wx:key="index" bindtap="viewImage" data-url="{{imgList[index]}}">
         <image src='{{imgList[index]}}' mode='aspectFill'></image>
         <view class="cu-tag bg-red" catchtap="deleteImg" data-index="{{index}}">
           <text class="cuIcon-close"></text>

@@ -1,5 +1,5 @@
-// const Page = require('../sdk/ald-stat.js').Page;
-// module/vote/rule.js
+import Utils from '../utils.js';
+Utils.initSdk();
 Page({
 
   /**
@@ -13,13 +13,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function(options) {
-    let that = this
-    require('../sdk/sdk-v2.0.6-a')
-    let ClientID = 'd5add948fe00fbdd6cdf'
-    wx.BaaS.init(ClientID, {
-      autoLogin: true
-    })
-
+ 
     wx.showLoading({
       title: 'Loading...',
     })

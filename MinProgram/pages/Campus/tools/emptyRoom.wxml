@@ -22,7 +22,7 @@
 </view>
 
 
-<view wx:for="{{rooms}}" wx:key="{{index}}" class='room'>
+<view wx:for="{{rooms}}" wx:key="index" class='room'>
 
   <view class='title'>{{index+1}}. {{item.cdmc}}</view>
 
@@ -58,7 +58,7 @@
     <!-- 周次 -->
     <view class='title'>周次</view>
     <view class='selection'>
-      <view wx:for="{{weeks}}" wx:key="{{index}}" wx:if="{{index!=0}}" bindtap='check' id='week' data-index="{{index}}">
+      <view wx:for="{{weeks}}" wx:key="index" wx:if="{{index!=0}}" bindtap='check' id='week' data-index="{{index}}">
         <view class='week' style='background:{{item.forbid?"#ddd":item.checked?"orange":""}};color:{{item.checked?"white":""}}'>
           <text>{{index}}</text>
         </view>
@@ -68,7 +68,7 @@
     <!-- 星期几 -->
     <view class='title'>星期</view>
     <view class='selection' style='justify-content:center'>
-      <view wx:for="{{weekdays}}" wx:key="{{index}}" bindtap='check' id='weekday' data-index="{{index}}">
+      <view wx:for="{{weekdays}}" wx:key="index" bindtap='check' id='weekday' data-index="{{index}}">
         <view class='weekday' style='background:{{item.forbid?"#ddd":item.checked?"orange":""}};color:{{item.checked?"white":""}}'>
           {{item.text}}
         </view>
@@ -78,7 +78,7 @@
     <!-- 时间段 -->
     <view class='title'>时间段</view>
     <view class='selection' style='justify-content:space-around'>
-      <view wx:for="{{times}}" wx:key="{{index}}" bindtap='check' id='time' data-index="{{index}}">
+      <view wx:for="{{times}}" wx:key="index" bindtap='check' id='time' data-index="{{index}}">
         <view class='time' style='background:{{item.checked?"orange":""}};color:{{item.checked?"white":""}}'>
           {{item.text}}
         </view>

@@ -29,7 +29,7 @@
 </view>
 
 
-<view wx:for="{{courses}}" wx:key="{{index}}" class='room' bindtap='flod' id="{{index}}">
+<view wx:for="{{courses}}" wx:key="index" class='room' bindtap='flod' id="{{index}}">
 
   <view class='title'>{{index+1}}. {{item.kcmc}}</view>
   <view class='p1'>

@@ -7,7 +7,7 @@
 
   <view>用户协议</view>
 
-  <view class='content' wx:for="{{section}}" wx:key="{{index}}">
+  <view class='content' wx:for="{{section}}" wx:key="index">
     <view class="title">{{item.title}}</view>
     <view class='item'>{{item.content}}</view>
   </view>

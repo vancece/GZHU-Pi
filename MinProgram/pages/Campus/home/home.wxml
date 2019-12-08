@@ -60,7 +60,7 @@
         <switch checked='{{checkedBlur}}' bindchange='switchChange' style='flex:1'></switch>
       </view>
       <view class='flodItem'>
-        <view wx:for="{{['white,white','#ddd,#ddd','#d299c2,#fef9d7','#a8edea,#fed6e3']}}" wx:key="{{index}}">
+        <view wx:for="{{['white,white','#ddd,#ddd','#d299c2,#fef9d7','#a8edea,#fed6e3']}}" wx:key="index">
           <view bindtap='tapDrawer' id="{{item}}" class='color' style='background-image: linear-gradient(to top, {{item}})'></view>
         </view>
       </view>

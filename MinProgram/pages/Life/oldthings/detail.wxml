@@ -47,14 +47,14 @@
     </view>
 
     <view class=" flex flex-wrap" style="margin-top:20rpx;">
-      <view class="padding-xs" wx:for="{{detail.label}}" wx:key>
+      <view class="padding-xs" wx:for="{{detail.label}}" wx:key="index">
         <view class="cu-tag radius line-red">{{item}}</view>
       </view>
     </view>
   </view>
 
   <!-- 图片信息 -->
-  <image bindtap="viewImage" data-url="{{detail.image[index]}}" class="imgs" wx:for="{{detail.image}}" wx:key src="{{item}}" mode="widthFix" style='border-radius:{{detail.image.length==index+1?"0 0 20rpx 20rpx":""}}'></image>
+  <image bindtap="viewImage" data-url="{{detail.image[index]}}" class="imgs" wx:for="{{detail.image}}" wx:key="index" src="{{item}}" mode="widthFix" style='border-radius:{{detail.image.length==index+1?"0 0 20rpx 20rpx":""}}'></image>
 
 </view>
 
@@ -117,3 +117,6 @@
     </view>
   </view>
 </view>
+
+
+<comment table="comment" object_id="{{id}}"></comment>

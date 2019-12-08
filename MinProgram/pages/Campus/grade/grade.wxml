@@ -21,7 +21,7 @@
 
   <!-- 学期循环 -->
   <swiper hidden='{{grade.totalCount==0?true:false}}' indicator-dots="{{true}}" bindchange='swiperChange' style='height:{{height}}rpx'>
-    <view wx:for="{{grade.sem_list}}" wx:for-item="sem_item" wx:for-index="sem_index" wx:key="{{index}}">
+    <view wx:for="{{grade.sem_list}}" wx:for-item="sem_item" wx:for-index="sem_index" wx:key="index">
       <swiper-item>
         <view class='sem-cell'>
           <view style='height:250rpx'>
@@ -37,7 +37,7 @@
           </view>
 
           <!-- 课程成绩循环 -->
-          <view wx:for="{{sem_item.grade_list}}" wx:key="{{index}}">
+          <view wx:for="{{sem_item.grade_list}}" wx:key="index">
             <view class='grade-cell'>
               <view class='son-part part1'>
                 <view style='flex:2.2'>{{item.course_name}}</view>

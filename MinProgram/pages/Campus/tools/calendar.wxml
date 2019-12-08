@@ -2,7 +2,7 @@
 
 <view class='page'>
 
-  <view wx:for="{{pics}}" wx:key="{{index}}" class='img' bindtap='preview' id="{{index}}">
+  <view wx:for="{{pics}}" wx:key="index" class='img' bindtap='preview' id="{{index}}">
     <image mode='widthFix' src='{{item.url}}'></image>
     <view class='text'>{{item.text}}</view>
 

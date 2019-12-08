@@ -8,7 +8,7 @@
       <view style='color:#18b3eb'>GPA：{{grade.GPA}}</view>
     </view>
   </view>
-  <view wx:for="{{grade.sem_list}}" wx:key="{{index}}" hidden='{{grade.totalCount==0?true:false}}'>
+  <view wx:for="{{grade.sem_list}}" wx:key="index" hidden='{{grade.totalCount==0?true:false}}'>
     <view class='sem-cell' style='border-bottom:{{index+1==grade.sem_list.length?0:2}}'>
       <view style='color:gray;padding:10rpx;'>{{item.year}}学年 第{{item.semester}}学期</view>
       <view class='sem-grade'>

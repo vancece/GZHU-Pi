@@ -81,7 +81,7 @@
       <view>班级</view>
     </view>
   </view>
-  <view class="content" wx:for="{{rank.year_rank}}" wx:key="{{index}}">
+  <view class="content" wx:for="{{rank.year_rank}}" wx:key="index">
     <view style="flex:1">
       <view class="value" style="color:#e28800">{{item.gpa}}</view>
     </view>
@@ -114,7 +114,7 @@
       <view>班级</view>
     </view>
   </view>
-  <view class="content" wx:for="{{rank.sem_rank}}" wx:key="{{index}}">
+  <view class="content" wx:for="{{rank.sem_rank}}" wx:key="index">
     <view style="flex:1">
       <view class="value" style="color:#e28800">{{item.gpa}}</view>
     </view>
@@ -134,7 +134,7 @@
 
 <view class="part">
   <view class="title">各科目排名比</view>
-  <view wx:for="{{rank.course_rank}}" wx:key="{{index}}">
+  <view wx:for="{{rank.course_rank}}" wx:key="index">
     <view class='grade-cell'>
 
       <view class='son-part part1'>
