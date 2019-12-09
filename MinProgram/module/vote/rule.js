@@ -14,24 +14,10 @@ Page({
    */
   onLoad: function(options) {
  
-    wx.showLoading({
-      title: 'Loading...',
+    console.log(options)
+    this.setData({
+      url: options.url
     })
-    let tableName = 'temp'
-    let recordID = '5cc98999574c645dd667fcb2'
-
-    let Product = new wx.BaaS.TableObject(tableName)
-
-    Product.get(recordID).then(res => {
-      console.log(res)
-      this.setData({
-        url: res.data.data.url
-      })
-      wx.hideLoading()
-    }, err => {
-      wx.hideLoading()
-    })
-
   },
 
   navBack() {

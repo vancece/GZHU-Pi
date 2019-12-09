@@ -6,5 +6,5 @@
 
 
 <view class='body'>
-  <image wx:for="{{url}}" wx:key="index" style='width:100%' mode='widthFix' src='{{item}}'></image>
+  <image style='width:100%' mode='widthFix' src='{{url}}'></image>
 </view>

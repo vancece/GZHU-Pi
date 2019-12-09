@@ -109,9 +109,9 @@
 <modal show="{{showUpdate}}" title="版本更新">
   <view>更新提醒</view>
   <view style='font-size:90%;color:rgb(80,80,80);margin:20rpx;'>
-  <view> * 增加第二课堂学分查询</view>
+  <view> * 为完成某作业增加二手市场留言功能</view>
     <!-- <view> * 第二课堂学分查询</view> -->
-    <button bindtap="navTo" id="second" class="margin bg-yellow text-white round">第二课堂学分查询</button>
+    <button bindtap="navTo" id="market" class="margin bg-yellow text-white round">校园二手市场</button>
     <!-- <view> * 加入派派数据统计页面</view>
     <button bindtap="navTo" id="data" class="margin bg-cyan round">查看【派派数据】</button>
     <view> * 【校园二手】修复浏览统计</view>

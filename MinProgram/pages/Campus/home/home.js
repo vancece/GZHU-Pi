@@ -36,11 +36,11 @@ Page({
 
   updateCheck() {
     let version = Config.get("version")
-    if (version < "1.1.0.20191018") {
+    if (version < "1.1.1.20191108") {
       this.setData({
         showUpdate: true
       })
-      Config.set("version", "1.1.0.20191018")
+      Config.set("version", "1.1.1.20191108")
     }
   },
 
@@ -148,7 +148,7 @@ Page({
       case "data":
         url = "/pages/Setting/about/data"
         break
-      case "oldthings":
+      case "market":
         url = "/pages/Life/oldthings/index"
     }
     wx.navigateTo({

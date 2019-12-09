@@ -23,7 +23,7 @@ page {
   }
 }
 
-.title {
+.sub-title {
   margin-top: 20rpx;
   font-size: 180%;
   font-weight: bold;
