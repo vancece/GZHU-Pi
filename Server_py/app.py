@@ -88,11 +88,11 @@ def course():
             data = spider.get_course(year_sem)
 
             if len(data["course_list"]) == 0:
-                data = spider.get_course("2018-2019-2")
+                data = spider.get_course("2019-2020-1")
         except:
             data = spider.get_course()
             if len(data["course_list"]) == 0:
-                data = spider.get_course("2018-2019-2")
+                data = spider.get_course("2019-2020-1")
 
         return res_json(status=200, data=data, msg="request succeed")
     else:
@@ -141,9 +141,9 @@ def exam():
 
         try:
             year_sem = request.form['year_sem']
-            data = spider.get_exam(year_sem)
+            data = spider.get_exam("2019-2020-1")
         except:
-            data = spider.get_exam()
+            data = spider.get_exam("2019-2020-1")
 
         return res_json(status=200, data=data, msg="request succeed")
     else:

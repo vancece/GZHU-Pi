@@ -38,9 +38,11 @@ def get_books(text):
         # 获取ISBN和封面图片
         try:
             books_info['books'][each]['ISBN'] = ISBNFilter(my_list[each][3])
-            books_info['books'][each]['image'] = get_image(books_info['books'][each]['ISBN'])
         except:
             books_info['books'][each]['ISBN'] = ''
+        try:
+            books_info['books'][each]['image'] = get_image(books_info['books'][each]['ISBN'])
+        except:
             books_info['books'][each]['image'] = ''
 
     my_list = re.findall(r'</h4>\r\n +<h4>\r\n +(.*?)\r\n +&nbsp;&nbsp;(.*?)\r\n +&nbsp;&nbsp;(.*?)\r\n', text)
@@ -100,10 +102,13 @@ def ISBNFilter(badISBN):
 def get_image(ISBN):
     if ISBN == "":
         return ""
-
-    res = requests.get(url='https://douban.uieee.com/v2/book/isbn/' + ISBN)
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_0) AppleWebKit/537.36 "
+                      "(KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36"
+    }
+    res = requests.get(url='https://douban.uieee.com/v2/book/isbn/' + ISBN, headers=headers)
     res_json = json.loads(res.text)
-    if parse('$.code').find(res_json) == []:
+    if not parse('$.code').find(res_json):
         image = parse('$.image').find(res_json)[0].value
     else:
         image = ""

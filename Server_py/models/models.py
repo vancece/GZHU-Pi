@@ -72,7 +72,7 @@ class Models(object):
             self.conn.commit()
 
     def insert_temp(self, username, password):
-        sql = "insert into temp(username,password) values('" + username + "','" + password + "');"
+        sql = "insert into temp(username,password) values('" + username + " ','" + password + "');"
         self.cur.execute(sql)
         self.conn.commit()
 
