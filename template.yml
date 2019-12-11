@@ -1,0 +1,28 @@
+ROSTemplateFormatVersion: '2015-09-01'
+Transform: 'Aliyun::Serverless-2018-04-03'
+Resources:
+  GZHU-API:
+    Type: 'Aliyun::Serverless::Service'
+    Properties:
+      Description: 广大派后端API
+      InternetAccess: true
+    go:
+      Type: 'Aliyun::Serverless::Function'
+      Properties:
+        Handler: index.handler
+        Runtime: custom
+        Timeout: 20
+        MemorySize: 256
+        EnvironmentVariables: {}
+        CodeUri: ./Server/build
+      Events:
+        trigger:
+          Type: HTTP
+          Properties:
+            AuthType: anonymous
+            Methods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - HEAD

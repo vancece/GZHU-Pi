@@ -7,8 +7,12 @@
 *debug
 debug
 *main
+main
 tests
 config.yaml
+bootstrap
+*build
+
 
 # compiled output
 /dist

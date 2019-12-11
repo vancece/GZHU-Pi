@@ -7,15 +7,17 @@ import (
 	"os"
 )
 
-func InitLogger() error {
-
+func InitLogger(path string) error {
+	if path == "" {
+		path = "/tmp/log/"
+	}
 	//在运行目录下创建日志目录
-	err := os.MkdirAll("./log/", os.ModePerm)
+	err := os.MkdirAll(path, os.ModePerm)
 	if err != nil {
 		log.Fatal("创建日志目录失败 ", err)
 		return err
 	}
-	fileName := "./log/gzhupi.log"
+	fileName := path + "gzhupi.log"
 	f, err := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
 	if err != nil {
 		log.Fatal("创建日志文件失败 ", err)

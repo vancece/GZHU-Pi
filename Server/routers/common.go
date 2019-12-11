@@ -88,6 +88,7 @@ func PanicMV(h http.HandlerFunc) http.HandlerFunc {
 				Response(w, r, nil, http.StatusInternalServerError, err.Error())
 			}
 		}()
+		logs.Info(r.URL)
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
 		//请求开始时间
