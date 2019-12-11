@@ -1,4 +1,4 @@
-const App = require('../sdk/ald-stat.js').App
+const Page = require('../sdk/ald-stat.js').Page
 import Utils from '../utils.js';
 import Config from './config.js';
 Utils.initSdk();

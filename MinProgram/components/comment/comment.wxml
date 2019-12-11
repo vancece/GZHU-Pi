@@ -18,6 +18,6 @@
   <view class="send">
     <open-data type="userAvatarUrl" class='avatar'></open-data>
     <input bindinput="commentInput" value="{{content}}" class="solid-bottom" maxlength="300" cursor-spacing="30"></input>
-    <button bindtap="addComment" class="cu-btn shadow-blur bg-green">发送</button>
+    <button bindtap="checkComment" class="cu-btn shadow-blur bg-green">发送</button>
   </view>
 </view>

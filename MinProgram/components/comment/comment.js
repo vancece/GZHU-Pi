@@ -84,8 +84,25 @@ Component({
         })
     },
 
+    // 违规检测
+    checkComment() {
+      wx.BaaS.wxCensorText(this.data.content).then(res => {
+        console.log(res.data.risky)
+        if (res.data.risky) {
+          wx.showModal({
+            title: '警告',
+            content: '您的发布内容包含违规词语',
+          })
+          return
+        }
+        this.addComment()
+      }, err => {
+        console.log(err)
+      })
+    },
     // 发布评论
     addComment() {
+
       let table = this.data.table
       let object_id = this.data.object_id
       let content = this.data.content

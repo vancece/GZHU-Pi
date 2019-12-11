@@ -3,7 +3,7 @@ let app = getApp()
 Page({
 
   data: {
-    success: false,//用于发布超时检测
+    success: false, //用于发布超时检测
     loading: false,
     imgList: [], //临时图片地址
     imgUrls: [], //上传后的图片地址
@@ -13,10 +13,10 @@ Page({
     categoryIndex: 5,
     isBuy: false, //是否求购
     hasPhone: false, //是否绑定手机号码
-    debounce: false,//防抖
+    debounce: false, //防抖
   },
 
-  onLoad: function (options) {
+  onLoad: function(options) {
     wx.BaaS.auth.getCurrentUser().then(user => {
       console.log(user)
       if (user._phone) {
@@ -54,7 +54,7 @@ Page({
   },
 
   // 添加标签
-  labelAdd: function () {
+  labelAdd: function() {
     if (this.data.inputValue == "" || this.data.inputValue == undefined) return
     if (this.data.label.length == 3) {
       wx.showToast({
@@ -77,7 +77,7 @@ Page({
     })
   },
   // 读取标签内容
-  labelInput: function (e) {
+  labelInput: function(e) {
     this.data.inputValue = e.detail.value
   },
 
@@ -101,7 +101,7 @@ Page({
       })
 
       // 删除求购标签
-      Array.prototype.remove = function (val) {
+      Array.prototype.remove = function(val) {
         var index = this.indexOf(val);
         if (index > -1) {
           this.splice(index, 1);
@@ -126,19 +126,8 @@ Page({
       }
     })
   },
-
-  // 表单校验提交
-  formSubmit: function (e) {
-    wx.BaaS.wxReportTicket(e.detail.formId)
-    if (!app.globalData.bindStatus) {
-      wx.showToast({
-        title: '未绑定学号',
-        icon: "none"
-      })
-      return
-    }
-
-    var that = this
+  // 违规检测
+  formSubmit(e) {
     let v = e.detail.value
     if (v.title == "" || v.content == "" || v.price == "" || v.phone == "" || v.wechat == "") {
       wx.showToast({
@@ -163,6 +152,36 @@ Page({
       })
       return
     }
+    let text = v.title + v.content + v.price + v.phone + v.wechat
+    wx.BaaS.wxCensorText(text).then(res => {
+      console.log(res.data.risky)
+      if (res.data.risky) {
+        wx.showModal({
+          title: '警告',
+          content: '您的发布内容包含违规词语',
+        })
+        return
+      }
+      // 通过校验
+      this.submit(e)
+    }, err => {
+      console.log(err)
+    })
+  },
+
+  // 表单校验提交
+  submit: function(e) {
+    wx.BaaS.wxReportTicket(e.detail.formId)
+    if (!app.globalData.bindStatus) {
+      wx.showToast({
+        title: '未绑定学号',
+        icon: "none"
+      })
+      return
+    }
+
+    var that = this
+    let v = e.detail.value
 
     wx.showModal({
       title: '提示',
@@ -203,7 +222,7 @@ Page({
   },
 
   // 上传图片并保存记录到数据库
-  saveRecord: function (data) {
+  saveRecord: function(data) {
     let that = this
     this.setData({
       loading: true
@@ -253,13 +272,13 @@ Page({
   },
 
   // 异步上传单个文件
-  uploadFile: function (categoryName, filePath) {
+  uploadFile: function(categoryName, filePath) {
     let MyFile = new wx.BaaS.File()
     let metaData = {
       categoryName: categoryName
     }
     //返回上传文件后的信息
-    return new Promise(function (callback) {
+    return new Promise(function(callback) {
       let fileParams = {
         filePath: filePath
       }
@@ -280,12 +299,32 @@ Page({
       sizeType: ['compressed'],
       sourceType: ['album', "camera"],
       success: (res) => {
-
+        this.checkImage(res.tempFilePaths)
         this.setData({
           imgList: this.data.imgList.concat(res.tempFilePaths)
         })
       }
     });
+  },
+
+  checkImage(tempFilePaths = []) {
+    for (let i = 0; i < tempFilePaths.length; i++) {
+      wx.BaaS.wxCensorImage(tempFilePaths[i]).then(res => {
+        console.log("图片检测",res.risky)
+        if (res.risky) {
+          wx.showModal({
+            title: '警告',
+            content: '您的发布图片包含违规内容',
+          })
+          this.setData({
+            imgList: []
+          })
+        }
+      }, err => {
+        // HError 对象
+      })
+    }
+
   },
 
   viewImage(e) {
@@ -315,7 +354,7 @@ Page({
 
   checkTimeout(files) {
     let that = this
-    setTimeout(function () {
+    setTimeout(function() {
       if (!that.data.success) {
         that.delFile(files)
         that.setData({
