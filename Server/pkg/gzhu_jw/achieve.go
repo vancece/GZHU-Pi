@@ -19,6 +19,7 @@ type Achieve struct {
 	Required string  `json:"required" remark:"要求学分"`
 	Acquired string  `json:"acquired" remark:"获得学分"`
 	Remained string  `json:"remained" remark:"未获得学分"`
+	Node     bool    `json:"node" remark:"是否中间节点"`
 	Items    []*Item `json:"items" remark:"课程列表"`
 
 	FormID string `json:"-"` //请求表单id
@@ -134,13 +135,13 @@ func GetOverViewInfo(body []byte) (achieves []*Achieve) {
 
 	bodyStr := string(body)
 	for _, v := range indexes {
-		if v[0] < 400 {
+		if v[0] < 500 {
 			return
 		}
 		//提取正则r匹配出来的索引前几百个字符作为一个片段
 		//正常是12个段落对应12g蓝色方块
 		index := v[0]
-		section := bodyStr[index-400 : index]
+		section := bodyStr[index-500 : index]
 
 		var ov = &Achieve{}
 
@@ -163,6 +164,10 @@ func GetOverViewInfo(body []byte) (achieves []*Achieve) {
 		res5 := r5.FindStringSubmatch(section)
 		if len(res5) >= 2 {
 			ov.Remained = res5[1]
+		}
+		//包含该字符串，认定为可以展开的中间节点
+		if strings.Contains(section, "xfyqzjdgx='1'") {
+			ov.Node = true
 		}
 		achieves = append(achieves, ov)
 	}
