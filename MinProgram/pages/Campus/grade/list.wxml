@@ -34,6 +34,14 @@
 
 <navBar navColor="#ffffffc2" title="{{title}}"></navBar>
 
+<view class='nav-list'>
+    <view  class="nav-li bg-grey summary" >
+      <view class="">要求: {{obj.required}}</view>
+      <view class="">获得: {{obj.acquired}}</view>
+      <view class="">已选: {{obj.chosen}}</view>
+    </view>
+</view>
+
 <view wx:if="{{list.length==0}}" class="margin-top-xl text-center text-grey">暂无数据...</view>
 
 <!-- 列表 -->

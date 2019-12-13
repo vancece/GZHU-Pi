@@ -1,11 +1,9 @@
 <wxs module="tool">
-  var isHidden = function(str) {
-    if (str == "主修" || str == "必修类" || str == "选修类")
-      return false
-    return true
+  var add = function(str1, str2) {
+    return Number(str1) + Number(str2)
   }
   module.exports = {
-    isHidden: isHidden
+    add: add
   }
 </wxs>
 
@@ -14,19 +12,27 @@
 <view class='nav-list'>
   <view class="nav-li bg-{{colors[0]}}" style="width:90%">
     <view class="nav-title">学业概览</view>
-    <view class="nav-name">要求：{{achieve[1].required +" + "+ achieve[7].required}}</view>
-    <view class="nav-name">已修：{{achieve[1].acquired +" + "+ achieve[7].acquired}}</view>
+    <view class="nav-name">要求学分：{{tool.add(achieve[1].required,achieve[7].required)}}</view>
+    <view class="nav-name">有效学分：{{tool.add(achieve[1].acquired,achieve[7].acquired)}}</view>
     <text class='cuIcon-myfill'></text>
   </view>
 </view>
 
 <view class='nav-list'>
   <block wx:for="{{achieve}}" wx:key="index">
-    <view bindtap="navTo" data-type="{{item.type}}" wx:if="{{tool.isHidden(item.type)}}" class="nav-li bg-{{colors[index%10]}}">
+    <!-- 中间节点 -->
+    <view bindtap="navTo" data-type="" wx:if="{{item.node && item.type!='主修'}}" class="nav-li bg-grey">
       <view class="nav-title text-cut">{{item.type}}</view>
       <view class="nav-name">要求：{{item.required}}</view>
       <view class="nav-name">获得：{{item.acquired}}</view>
-      <view class="nav-name">已选：{{item.acquired}}</view>
+      <!-- <view class="nav-name">已选：{{item.acquired}}</view> -->
+    </view>
+    <!-- 叶子节点 -->
+    <view bindtap="navTo" data-type="{{item.type}}" wx:if="{{!item.node && item.type!='主修'}}" class="nav-li bg-{{colors[index%10]}}">
+      <view class="nav-title text-cut">{{item.type}}</view>
+      <view class="nav-name">要求：{{item.required}}</view>
+      <view class="nav-name">获得：{{item.acquired}}</view>
+      <!-- <view class="nav-name">已选：{{item.acquired}}</view> -->
     </view>
   </block>
 </view>

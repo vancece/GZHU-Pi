@@ -17,12 +17,13 @@ Page({
       if (obj.type == options.type)
         return obj
     })
-    if (obj==undefined || obj.items == undefined) return
+    if (obj == undefined || obj.items == undefined) return
 
     this.setData({
       list: obj.items,
       title: obj.type
     })
+    this.countChosen(obj)
   },
 
   // 点击列表
@@ -33,5 +34,24 @@ Page({
       showDetail: true
     })
   },
+
+  // 计算已选课程
+  countChosen(obj = {}) {
+    console.log(obj)
+    if (obj == undefined || obj.items == undefined) return
+    let chosen = 0
+    let list = obj.items
+    for (let i = 0, len = list.length; i < len; i++) {
+      // 1 在修 4 已修
+      if (list[i]["XDZT"] == "1" || list[i]["XDZT"] == "4") {
+        chosen = chosen + Number(list[i]["XF"])
+      }
+    }
+    // console.log(chosen)
+    obj["chosen"] = chosen
+    this.setData({
+      obj: obj
+    })
+  }
 
 })
