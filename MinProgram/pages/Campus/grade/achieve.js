@@ -8,11 +8,26 @@ Page({
   },
   onLoad: function(options) {
 
+    if (this.data.archieve == "") {
+      let form = wx.getStorageSync("account")
+      // let form = {
+      //   username: "1916160044",
+      //   password: "171611"
+      // }
+      if (form == "") {
+        wx.showToast({
+          title: '未绑定学号',
+          icon: "none"
+        })
+        return
+      }
+      this.getData(form)
+    }
+  },
+
+  // 下拉刷新
+  onPullDownRefresh: function() {
     let form = wx.getStorageSync("account")
-    // let form = {
-    //   username: "1916160044",
-    //   password: "171611"
-    // }
     if (form == "") {
       wx.showToast({
         title: '未绑定学号',
@@ -21,9 +36,10 @@ Page({
       return
     }
     this.getData(form)
+    setTimeout(function() {
+      wx.stopPullDownRefresh()
+    }, 3000)
   },
-
-
   onShareAppMessage: function() {},
 
   navTo(e) {

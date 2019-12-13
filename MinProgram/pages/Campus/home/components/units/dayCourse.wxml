@@ -2,7 +2,7 @@
 <view class="module">
   <view class="module-bar">
     <view class="module-icon">
-      <image style='width:75rpx' mode='widthFix' src='https://cloud-minapp-17768.cloud.ifanrusercontent.com/1g0eqSKmmJTTWudB.png'></image>
+      <image style='width:75rpx;height:75rpx' mode='widthFix' src='https://cloud-minapp-17768.cloud.ifanrusercontent.com/1g0eqSKmmJTTWudB.png'></image>
     </view>
     <view class='module-text'>
       <text>第 {{schoolWeek}} 周</text>
@@ -18,7 +18,7 @@
         <view style='font-weight:bold'>{{tool.cutter(item.course_name)}}</view>
         <view style='display:flex;flex-direction:row;justify-content:center;padding:10rpx 0rpx;'>
           <view class="location-icon">
-            <image style='width:35rpx;' mode='widthFix' src='https://cloud-minapp-17768.cloud.ifanrusercontent.com/1g0k5kogdXHqPDmx.png'></image>
+            <image style='width:35rpx;height:35rpx' mode='widthFix' src='https://cloud-minapp-17768.cloud.ifanrusercontent.com/1g0k5kogdXHqPDmx.png'></image>
           </view>
           <view class='classroom'>{{item.class_place}}</view>
         </view>

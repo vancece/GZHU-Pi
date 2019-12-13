@@ -13,7 +13,7 @@
   <view class="nav-li bg-{{colors[0]}}" style="width:90%">
     <view class="nav-title">学业概览</view>
     <view class="nav-name">要求学分：{{tool.add(achieve[1].required,achieve[7].required)}}</view>
-    <view class="nav-name">有效学分：{{tool.add(achieve[1].acquired,achieve[7].acquired)}}</view>
+    <view class="nav-name">学位学分：{{tool.add(achieve[1].acquired,achieve[7].acquired)}}</view>
     <text class='cuIcon-myfill'></text>
   </view>
 </view>
@@ -37,4 +37,5 @@
   </block>
 </view>
 
-<view class='cu-tabbar-height'></view>
+
+<view class="margin-xl text-center text-sm text-grey">页面信息仅供参考，不保证准确性，请以教务系统为准</view>

@@ -9,6 +9,7 @@ page {
 
 .updateIcon {
   width: 60rpx;
+  height: 60rpx;
   position: absolute;
   right: 30rpx;
 }
