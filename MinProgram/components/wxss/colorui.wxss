@@ -1,3 +1,11 @@
+.cuIcon-likefill:before {
+	content: "\e668";
+}
+
+.cuIcon-like:before {
+	content: "\e669";
+}
+
 .cuIcon-attentionfill:before {
   content: "\e73c";
 }

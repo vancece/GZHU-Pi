@@ -7,13 +7,9 @@ Page({
 
   },
   onLoad: function(options) {
-
-    if (this.data.archieve == "") {
+    
+    if (this.data.achieve == "") {
       let form = wx.getStorageSync("account")
-      // let form = {
-      //   username: "1916160044",
-      //   password: "171611"
-      // }
       if (form == "") {
         wx.showToast({
           title: '未绑定学号',

@@ -37,6 +37,7 @@
           <!-- 统计信息 -->
           <view class="text-gray text-sm text-right padding-right">
             <text class="cuIcon-attentionfill margin-xs"></text> {{content_list[item].viewed}}
+            <!-- <text class="cuIcon-likefill margin-xs"></text> {{content_list[item].liked}} -->
           </view>
         </view>
 

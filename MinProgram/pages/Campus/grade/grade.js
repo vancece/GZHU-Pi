@@ -7,7 +7,6 @@ Page({
     refleshTimes: 0,
     // showAgree: true,
     showTips: false,
-    bindStatus: wx.getStorageSync("account") == "" ? false : true
   },
 
   agree() {
@@ -34,7 +33,7 @@ Page({
   },
 
   onLoad: function(options) {
-
+    this.data.bindStatus=wx.getStorageSync("account") == "" ? false : true
     // let agree = wx.getStorageSync("agree")
     // if (agree == true) {
     //   this.setData({
@@ -51,7 +50,8 @@ Page({
       })
     } else {
       this.setData({
-        account: app.globalData.account
+        account: app.globalData.account,
+        bindStatus: this.data.bindStatus
       })
       // 从缓存读取成绩
       wx.getStorage({
