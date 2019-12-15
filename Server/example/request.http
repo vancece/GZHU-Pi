@@ -1,0 +1,28 @@
+# VS Code REST Client 参数
+#@baseUrl=http://localhost:9000/api/v1
+#@username=123
+#@password=123
+
+# 学业情况
+POST {{baseUrl}}/jwxt/achieve
+Content-Type: application/x-www-form-urlencoded
+
+username={{username}}&password={{password}}
+
+
+###
+
+# 图书查询
+GET {{baseUrl}}/library/search?query=python&page=1
+Content-Type: application/x-www-form-urlencoded
+
+###
+
+# 馆藏查询
+GET {{baseUrl}}/library/holdings?id=1000024660&source=bibliosus
+Content-Type: application/x-www-form-urlencoded
+
+###
+
+
+
