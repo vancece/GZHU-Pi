@@ -1,7 +1,9 @@
 const App = require('./utils/sdk/ald-stat.js').App;
 var Config = require("/utils/config.js")
 var Request = require("/utils/request.js")
-var startTime = Date.now();//启动时间
+var startTime = Date.now(); //启动时间
+require("/utils/wx.js")
+
 App({
 
   globalData: {
@@ -9,7 +11,7 @@ App({
     bindStatus: false //学号绑定
   },
 
-  onLaunch: function(options) {
+  onLaunch: function (options) {
     Config.init() //初始化配置文件
     this.updata() //更新小程序
 
@@ -31,7 +33,7 @@ App({
 
   },
 
-  onError: function(res) {
+  onError: function (res) {
     wx.BaaS.ErrorTracker.track(res)
 
     this.aldstat.sendEvent('小程序启动错误', res)
@@ -67,7 +69,7 @@ App({
       complete(res) {
         wx.getStorage({
           key: 'account',
-          success: function(res) {
+          success: function (res) {
             console.log("已绑定学号", res.data)
             that.globalData.bindStatus = true
             that.globalData.account = res.data
@@ -76,7 +78,7 @@ App({
             if (wx.getStorageSync("student_info") == "")
               Request.sync(res.data.username, res.data.password, "student_info")
           },
-          fail: function(res) {
+          fail: function (res) {
             // 来自迁移
             if (JSON.stringify(data) != "{}") {
               that.migrate(data)
@@ -98,12 +100,12 @@ App({
   updata() {
     const updateManager = wx.getUpdateManager()
 
-    updateManager.onCheckForUpdate(function(res) {
+    updateManager.onCheckForUpdate(function (res) {
       // 请求完新版本信息的回调
       console.log("新版本：", res.hasUpdate)
     })
 
-    updateManager.onUpdateReady(function() {
+    updateManager.onUpdateReady(function () {
       wx.showModal({
         title: '更新提示',
         content: '新版本已经准备好，是否重启应用？\n如遇缓存丢失，请重启小程序。',
@@ -116,10 +118,12 @@ App({
       })
     })
 
-    updateManager.onUpdateFailed(function() {
+    updateManager.onUpdateFailed(function () {
       // 新版本下载失败
     })
-  }
+  },
+
+
 
 })
 

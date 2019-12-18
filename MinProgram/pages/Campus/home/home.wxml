@@ -24,7 +24,7 @@
   <!-- 导航模式 -->
   <!-- 应用 -->
   <tips></tips>
-  <app></app>
+  <nav></nav>
 
   <view class='divide-line'></view>
   <!-- 日课程 -->

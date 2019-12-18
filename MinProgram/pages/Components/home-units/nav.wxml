@@ -1,0 +1,8 @@
+<!-- 首页功能导航 -->
+<view class="cu-list grid col-{{gridCol}} {{gridBorder?'':'no-border'}}">
+  <view bindtap="navTo" data-url="{{item.url}}" class="cu-item align-center" 
+  wx:for="{{iconList}}" wx:key="index" wx:if="{{index<gridCol*3 && item.show}}">
+    <image src="{{item.icon}}" style="width:90rpx;height:90rpx"></image>
+    <text>{{item.name}}</text>
+  </view>
+</view>
