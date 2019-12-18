@@ -5,7 +5,7 @@ Page({
     limit: 10, //每页数量
     offset: 0, //偏移量
     loadDone: false, //加载完毕
-    queryStr: "",//搜索的字符串
+    queryStr: "", //搜索的字符串
     loading: false,
     category: ["全部", "图书文具", "生活用品", "电子产品", "化妆用品", "服装鞋包", "其它"],
     categoryIndex: 0,
@@ -51,42 +51,54 @@ Page({
       name: '其它'
     }, {
       icon: 'https://cos.ifeel.vip/gzhu-pi/images/icon/wode.svg',
-        name: '我的发布'
+      name: '我的发布'
     }],
 
   },
 
 
-  onLoad: function (options) {
+  onLoad: function(options) {
+
+    if (wx.$param["mode"] != "prod") {
+      this.setData({
+        normal: false
+      })
+      return
+    } else {
+      this.setData({
+        normal: true
+      })
+    }
+
     this.getGoods()
   },
 
-  onShareAppMessage: function () {
+  onShareAppMessage: function() {
 
   },
 
   // 下拉刷新
-  onPullDownRefresh: function () {
+  onPullDownRefresh: function() {
     this.setData({
       offset: 0, //恢复偏移量
       loadDone: false, //加载完毕
       queryStr: ""
     })
     this.getGoods()
-    setTimeout(function () {
+    setTimeout(function() {
       wx.stopPullDownRefresh()
     }, 3000)
   },
 
   // 点击卡片，获取商品id，转跳详情页面
-  tapCard: function (event) {
+  tapCard: function(event) {
     console.log("商品ID：", event.detail.card_id)
     wx.navigateTo({
       url: '/pages/Life/oldthings/detail?id=' + event.detail.card_id,
     })
   },
   // 点击头像
-  tapUser: function (e) {
+  tapUser: function(e) {
     console.log("用户id:", e.detail.user_id)
     wx.navigateTo({
       url: '/pages/Life/oldthings/mine?id=' + e.detail.user_id,
@@ -100,7 +112,7 @@ Page({
   },
 
   // 读取搜索内容
-  searchInput: function (e) {
+  searchInput: function(e) {
     this.data.queryStr = e.detail.value
   },
 
@@ -112,7 +124,7 @@ Page({
   },
 
   // 触底加载更多，需改变offset，判断有无更多
-  onReachBottom: function () {
+  onReachBottom: function() {
     if (this.data.loadDone) return
     console.log('加载更多')
     this.data.offset = this.data.offset + this.data.limit
@@ -161,13 +173,13 @@ Page({
     if (queryStr != "") {
 
       let query1 = new wx.BaaS.Query()
-      query1.contains('title', queryStr)// 标题
+      query1.contains('title', queryStr) // 标题
 
       let query2 = new wx.BaaS.Query()
-      query2.contains('content', queryStr)// 描述
+      query2.contains('content', queryStr) // 描述
 
       let query3 = new wx.BaaS.Query()
-      query3.in('label', [queryStr])// 标签数组包含
+      query3.in('label', [queryStr]) // 标签数组包含
 
       query = wx.BaaS.Query.or(query1, query2, query3)
     }

@@ -12,7 +12,8 @@ Page({
     refreshable: false, //是否可以刷新
   },
 
-  onLoad: async function (options) {
+  onLoad: async function(options) {
+
     // 获取当前用户
     await wx.BaaS.auth.getCurrentUser().then(user => {
       this.data.uid = user.id
@@ -20,7 +21,16 @@ Page({
     let id = options.id
     // 测试id
     // id = "5d73435057da6e383b57f752"
-    if (id == undefined) return
+    if (id == undefined) {
+      wx.showModal({
+        title: '提示',
+        content: '页面维护中...',
+        success(){
+          wx.$navTo("/pages/Campus/home/home")
+        }
+      })
+      return
+    }
     this.getDetail(id)
     this.updateCounter(id)
     this.setData({
@@ -30,7 +40,7 @@ Page({
 
   onShow(options) {
     let that = this
-    setTimeout(function () {
+    setTimeout(function() {
       that.setData({
         bindStatus: app.globalData.bindStatus
       })
@@ -38,7 +48,7 @@ Page({
   },
 
   // 点击头像
-  tapUser: function () {
+  tapUser: function() {
     if (!this.data.detail.created_by.id) return
     wx.navigateTo({
       url: '/pages/Life/oldthings/mine?id=' + this.data.detail.created_by.id,
@@ -122,7 +132,7 @@ Page({
   },
 
   // 分享页面带上商品id
-  onShareAppMessage: function () {
+  onShareAppMessage: function() {
     this.setData({
       shareModal: false
     })
@@ -131,7 +141,7 @@ Page({
       desc: '',
       path: '/pages/Life/oldthings/detail?id=' + this.data.id,
       imageUrl: "",
-      success: function (res) {
+      success: function(res) {
         wx.showToast({
           title: '分享成功',
           icon: "none"
@@ -211,7 +221,7 @@ Page({
       wx.showToast({
         title: '删除成功！',
       })
-      setTimeout(function () {
+      setTimeout(function() {
         wx.redirectTo({
           url: '/pages/Life/oldthings/index',
         })

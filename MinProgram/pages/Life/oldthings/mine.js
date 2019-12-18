@@ -27,6 +27,17 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    if (wx.$param["mode"] != "prod") {
+      this.setData({
+        normal: false
+      })
+      return
+    } else {
+      this.setData({
+        normal: true
+      })
+    }
+    
     let id = options.id
     console.log("用户id:", id)
     if (id == undefined) {

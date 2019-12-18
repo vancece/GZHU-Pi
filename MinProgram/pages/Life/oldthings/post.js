@@ -17,6 +17,16 @@ Page({
   },
 
   onLoad: function(options) {
+    if (wx.$param["mode"] != "prod") {
+      this.setData({
+        normal: false
+      })
+      return
+    } else {
+      this.setData({
+        normal: true
+      })
+    }
     wx.BaaS.auth.getCurrentUser().then(user => {
       console.log(user)
       if (user._phone) {
