@@ -1,5 +1,5 @@
 var config = {
-  configData: "20190316",
+  config_data: "20190316",
   schedule_mode: "day", //启动模式 day/week
   showExp: false, //是否展示实验课
   version: "1.1.1.20191108", //版本号
@@ -32,11 +32,10 @@ function reInit() {
 
 
 // 获取缓存项
-function get(name = "") {
+function get(propString = "") {
   let config = wx.getStorageSync("config")
   if (config == "") init()
-  if (name == "") return config
-  return config[name]
+  return getPropByString(config, propString)
 }
 
 
@@ -46,6 +45,26 @@ function set(name, value) {
   if (config == "") init()
   config[name] = value
   wx.setStorageSync("config", config)
+}
+
+// 获取多级对象属性
+function getPropByString(obj, propString) {
+  if (!propString)
+    return obj;
+
+  var prop, props = propString.split('.');
+
+  for (var i = 0, iLen = props.length - 1; i < iLen; i++) {
+    prop = props[i];
+
+    var candidate = obj[prop];
+    if (candidate !== undefined) {
+      obj = candidate;
+    } else {
+      break;
+    }
+  }
+  return obj[props[i]];
 }
 
 
