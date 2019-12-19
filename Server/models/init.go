@@ -1,33 +1,33 @@
 package models
 
 import (
-	"database/sql"
+	"GZHU-Pi/env"
 	"fmt"
-	_ "github.com/lib/pq"
+	"github.com/astaxie/beego/logs"
+	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/postgres"
+
 	"log"
 )
 
-var db *sql.DB
-var (
-	host     = "localhost"
-	port     = "5432"
-	user     = "postgres"
-	password = "postgres"
-	dbname   = "postgres"
-	sslmode  = "disable"
-)
+var db *gorm.DB
 
-func init() {
+func InitDb() error {
+	d := env.Conf.Db
+	logs.Info("数据库主机：", d.Host)
 	dbInfo := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
-		host, port, user, password, dbname, sslmode)
-	db, err := sql.Open("postgres", dbInfo)
+		d.Host, d.Port, d.User, d.Password, d.Dbname, d.Sslmode)
+
+	var err error
+	db, err = gorm.Open("postgres", dbInfo)
 	if err != nil {
 		log.Print(err)
-		return
+		return err
 	}
-	err = db.Ping()
-	if err != nil {
-		log.Print(err)
-		return
-	}
+	//关闭复数表名
+	db.SingularTable(true)
+
+	//自动迁移 只会 创建表、缺失的列、缺失的索引，不会 更改现有列的类型或删除未使用的列
+	db.AutoMigrate(&TStuInfo{}, &TGrade{}, &TApiRecord{})
+	return nil
 }

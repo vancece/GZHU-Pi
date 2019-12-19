@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"GZHU-Pi/models"
 	"bytes"
 	"context"
 	"encoding/json"
@@ -59,14 +60,24 @@ func Response(w http.ResponseWriter, r *http.Request, data interface{}, statusCo
 	resp.Time = last.Nanoseconds() / 1000000
 	resp.UpdatedTime = time.Now().Format("2006-01-02 15:04:05")
 
+	//保存请求记录
+	u, _ := ReadRequestArg(r, "username")
+	username, _ := u.(string)
+	models.SaveApiRecord(&models.TApiRecord{
+		Username: username,
+		Uri:      r.RequestURI,
+		Duration: resp.Time,
+	})
+
 	//统计数组/切片长度
-	//if data != nil {
-	//	k := reflect.TypeOf(data)
-	//	//if k.Kind() == reflect.Slice || k.Kind() == reflect.Array {
-	//	if  k.Kind() == reflect.Array {
-	//		resp.Count = k.Len()
-	//	}
-	//}
+	if data != nil {
+		k := reflect.TypeOf(data)
+		if k.Kind() == reflect.Array {
+			resp.Count = k.Len()
+		} else if k.Kind() == reflect.Slice {
+			resp.Count = int(k.Size())
+		}
+	}
 	response, err := json.Marshal(resp)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

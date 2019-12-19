@@ -2,6 +2,7 @@ package main
 
 import (
 	"GZHU-Pi/env"
+	"GZHU-Pi/models"
 	"GZHU-Pi/routers"
 	"fmt"
 	"github.com/gorilla/mux"
@@ -22,6 +23,12 @@ func (app *App) InitApp() error {
 }
 
 func main() {
+
+	err := env.InitConfigure()
+	if err != nil {
+		panic(err)
+	}
+	models.InitDb()
 
 	r := mux.NewRouter()
 

@@ -1,6 +1,7 @@
 package gzhu_jw
 
 import (
+	"GZHU-Pi/models"
 	"bytes"
 	"fmt"
 	"github.com/astaxie/beego/logs"
@@ -13,53 +14,25 @@ import (
 )
 
 type GradeData struct {
-	BaseInfo    *BaseInfo   `json:"base_info" remark:"基本信息"`
-	GPA         float64     `json:"GPA" remark:"平均绩点"`
-	SemList     []*SemGrade `json:"sem_list" remark:"学期列表"`
-	TotalCredit float64     `json:"total_credit" remark:"总学分"`
-	UpdateTime  string      `json:"update_time" remark:"更新时间"`
-}
-
-type BaseInfo struct {
-	AdmitYear  string `json:"admit_year" remark:"年级"`
-	ClassID    string `json:"class_id" remark:"班级id"`
-	College    string `json:"college" remark:"学院"`
-	CollegeID  string `json:"college_id" remark:"学院id"`
-	Major      string `json:"major" remark:"专业"`
-	MajorClass string `json:"major_class" remark:"专业班级"`
-	MajorID    string `json:"major_id" remark:"专业id"`
-	StuID      string `json:"stu_id" remark:"学号"`
-	StuName    string `json:"stu_name" remark:"姓名"`
+	StuInfo     *models.TStuInfo `json:"stu_info" remark:"基本信息"`
+	GPA         float64          `json:"GPA" remark:"平均绩点"`
+	SemList     []*SemGrade      `json:"sem_list" remark:"学期列表"`
+	TotalCredit float64          `json:"total_credit" remark:"总学分"`
+	UpdateTime  string           `json:"update_time" remark:"更新时间"`
 }
 
 type SemGrade struct {
-	GradeList []*Grade `json:"grade_list"  remark:"学期成绩列表"`
-	SemCredit float64  `json:"sem_credit" remark:"学期学分"`
-	SemGpa    float64  `json:"sem_gpa" remark:"学期绩点"`
-	Semester  string   `json:"semester" remark:"学期"`
-	Year      string   `json:"year" remark:"学年2018-2019"`
-	YearSem   string   `json:"year_sem" remark:"学年学期"`
+	GradeList []*models.TGrade `json:"grade_list"  remark:"学期成绩列表"`
+	SemCredit float64          `json:"sem_credit" remark:"学期学分"`
+	SemGpa    float64          `json:"sem_gpa" remark:"学期绩点"`
+	Semester  string           `json:"semester" remark:"学期"`
+	Year      string           `json:"year" remark:"学年2018-2019"`
+	YearSem   string           `json:"year_sem" remark:"学年学期"`
 
 	GpaCredit float64 `json:"-" remark:"学分*绩点 忽略字段"`
 }
 
-type Grade struct {
-	CourseGpa  float64 `json:"course_gpa" remark:"课程绩点"`
-	CourseID   string  `json:"course_id" remark:"课程ID"`
-	CourseName string  `json:"course_name" remark:"课程名称"`
-	CourseType string  `json:"course_type" remark:"课程类型"`
-	Credit     float64 `json:"credit" remark:"学分"`
-	ExamType   string  `json:"exam_type" remark:"考试类型"`
-	Grade      string  `json:"grade" remark:"成绩"`
-	GradeValue float64 `json:"grade_value" remark:"成绩分数"`
-	Invalid    string  `json:"invalid" remark:"是否作废"`
-	JxbID      string  `json:"jxb_id" remark:"教学班ID"`
-	Semester   string  `json:"semester" remark:"学期"`
-	StuID      string  `json:"stu_id" remark:"学号"`
-	Teacher    string  `json:"teacher" remark:"教师"`
-	Year       string  `json:"year" remark:"学年2018-2019"`
-	YearSem    string  `json:"year_sem" remark:"学年学期"`
-}
+//type Grade models.TGrade
 
 func (c *JWClient) GetAllGrade(year, sem string) (gradeData *GradeData, err error) {
 
@@ -91,8 +64,11 @@ func (c *JWClient) GetAllGrade(year, sem string) (gradeData *GradeData, err erro
 
 	gradeData = &GradeData{}
 	//提取成绩列表及基本信息
-	grades, baseInfo := ParseGrade(body)
-	gradeData.BaseInfo = baseInfo
+	grades, stuInfo := ParseGrade(body)
+	gradeData.StuInfo = stuInfo
+
+	go models.SaveStuInfo(stuInfo)
+	go models.SaveOrUpdateGrade(grades)
 
 	//根基成绩列表统计所有成绩信息，传址
 	CountGpa(grades, gradeData)
@@ -103,7 +79,7 @@ func (c *JWClient) GetAllGrade(year, sem string) (gradeData *GradeData, err erro
 }
 
 //统计GPA信息，指针传递
-func CountGpa(grades []*Grade, gradeData *GradeData) {
+func CountGpa(grades []*models.TGrade, gradeData *GradeData) {
 
 	var (
 		sumCredit    float64 = 0                         //大学总学分绩点
@@ -166,20 +142,20 @@ func CountGpa(grades []*Grade, gradeData *GradeData) {
 }
 
 //解析提取成绩信息，同时填充学生基本信息
-func ParseGrade(body []byte) (grades []*Grade, info *BaseInfo) {
+func ParseGrade(body []byte) (grades []*models.TGrade, info *models.TStuInfo) {
 
-	grades = []*Grade{}
+	grades = []*models.TGrade{}
 	json := jsoniter.ConfigCompatibleWithStandardLibrary
 	gradeList := json.Get(body, "items")
 
 	for i := 0; true; i++ {
-		g := &Grade{}
+		g := &models.TGrade{}
 		g.CourseID = gradeList.Get(i).Get("kch_id").ToString()
 		if g.CourseID == "" {
 			break
 		}
 		if i == 0 {
-			info = &BaseInfo{
+			info = &models.TStuInfo{
 				AdmitYear:  gradeList.Get(i).Get("njdm_id").ToString(),
 				ClassID:    gradeList.Get(i).Get("bh_id").ToString(),
 				College:    gradeList.Get(i).Get("jgmc").ToString(),
