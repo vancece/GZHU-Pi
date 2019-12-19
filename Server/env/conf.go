@@ -2,12 +2,15 @@ package env
 
 import (
 	"fmt"
+	"github.com/astaxie/beego/logs"
 	"github.com/spf13/viper"
 	"log"
 	"os"
+	"reflect"
+	"strings"
 )
 
-func InitConfig() {
+func InitViper() {
 
 	viper.SetConfigName("config") //指定配置文件的文件名称(不需要制定配置文件的扩展名)
 	viper.AddConfigPath(".")      // 设置配置文件和可执行二进制文件在用一个目录
@@ -18,7 +21,8 @@ func InitConfig() {
 	_ = viper.BindEnv("db.port", "GZHUPI_DB_PORT")
 	_ = viper.BindEnv("db.user", "GZHUPI_DB_USER")
 	_ = viper.BindEnv("db.password", "GZHUPI_DB_PASSWORD")
-	_ = viper.BindEnv("db.dbname", "GZHUPI_DB_PASSWORD")
+	_ = viper.BindEnv("db.dbname", "GZHUPI_DB_DBNAME")
+	_ = viper.BindEnv("db.sslmode", "GZHUPI_DB_SSLMODE")
 
 	_ = viper.BindEnv("redis.host", "GZHUPI_REDIS_USER")
 	_ = viper.BindEnv("redis.port", "GZHUPI_REDIS_PORT")
@@ -44,10 +48,76 @@ func InitConfig() {
 }
 
 func main() {
-
-	fmt.Println("获取配置文件的string", viper.GetString(`app.name`))
-	fmt.Println("获取配置文件的string", viper.GetInt(`app.foo`))
+	InitViper()
+	fmt.Println("获取配置文件的string", viper.GetString(`db.user`))
+	fmt.Println("获取配置文件的string", viper.GetInt(`db.user`))
 	fmt.Println("获取配置文件的string", viper.GetBool(`app.bar`))
-	fmt.Println("获取配置文件的map[string]string", viper.GetStringMapString(`app`))
+	fmt.Println("获取配置文件的string", viper.Sub(`app`).GetString("logfile"))
+	fmt.Println("获取配置文件的map[string]string", viper.GetStringMapString(`db`))
+	_ = InitConfigure()
+	logs.Info(Conf)
+}
 
+//配置文件结构体，配置文件上的内容需要一一对应，可多不可少
+type Configure struct {
+	App struct {
+		Name    string `json:"name" remark:"应用名称"`
+		Version string `json:"version" remark:"软件发布版本，对应仓库tag版本"`
+		Mode    string `json:"mode" remark:"开发模式develop/test/product"`
+	}
+	Db struct {
+		Type     string `json:"type" remark:"数据库类型"`
+		Host     string `json:"host" remark:"数据库主机"`
+		Port     string `json:"port" remark:"数据库端口"`
+		User     string `json:"user" remark:"数据库用户"`
+		Password string `json:"password" remark:"数据库密码"`
+		Dbname   string `json:"dbname" remark:"数据库名"`
+		Sslmode  string `json:"sslmode" remark:"ssl模式"`
+	}
+	Redis struct {
+		Host     string `json:"host" remark:"redis主机"`
+		Port     string `json:"port" remark:"redis端口"`
+		Password string `json:"password" remark:"redis密码"`
+	}
+}
+
+var Conf = &Configure{}
+
+//初始化配置信息，测试需要修改配置文件
+func InitConfigure() (err error) {
+	InitViper()
+
+	confValue := reflect.ValueOf(Conf).Elem()
+	confType := reflect.TypeOf(*Conf)
+
+	for i := 0; i < confType.NumField(); i++ {
+		section := confType.Field(i)
+		sectionValue := confValue.Field(i)
+
+		//读取节类型信息
+		for j := 0; j < section.Type.NumField(); j++ {
+			key := section.Type.Field(j)
+			keyValue := sectionValue.Field(j)
+
+			sec := strings.ToLower(section.Name) //配置文件节名
+			remark := key.Tag.Get("remark")      //配置备注
+			tag := key.Tag.Get("json")           //配置键节名
+			if tag == "" {
+				err = fmt.Errorf("can not found a tag name `json` in struct of [%s].%s", sec, tag)
+				logs.Error(err)
+				return err
+			}
+
+			//读取配置文件初始化结构体
+			value := viper.GetString(sec + "." + tag)
+			if value == "" {
+				err = fmt.Errorf("get a blank value of [%s].%s %s", sec, tag, remark)
+				logs.Error(err)
+				return err
+			}
+			keyValue.SetString(value)
+
+		}
+	}
+	return
 }

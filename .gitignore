@@ -10,7 +10,6 @@ debug
 *main
 main
 tests
-config.yaml
 bootstrap
 *build
 
