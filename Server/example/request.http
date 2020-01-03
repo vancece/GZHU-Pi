@@ -3,8 +3,47 @@
 #@username=123
 #@password=123
 
+# 课表查询
+POST {{baseUrl}}/jwxt/course
+Content-Type: application/x-www-form-urlencoded
+
+username={{username}}&password={{password}}&year_sem=2019-2020-2
+
+
+###
+
+# 成绩查询
+POST {{baseUrl}}/jwxt/grade
+Content-Type: application/json
+
+{
+  "username": "{{username}}",
+  "password": "{{password}}"
+}
+
+
+###
+
+# 空教室查询
+POST {{baseUrl}}/jwxt/classroom
+Content-Type: application/x-www-form-urlencoded
+
+username={{username}}&password={{password}}&xqh_id=1&xnm=2019&xqm=3&cdlb_id=&qszws=&jszws=&lh=&cdmc=&zcd=17&xqj=6&jcd=1&queryModel.currentPage=1
+
+
+###
+
 # 学业情况
 POST {{baseUrl}}/jwxt/achieve
+Content-Type: application/x-www-form-urlencoded
+
+username={{username}}&password={{password}}
+
+
+###
+
+# 考试查询
+POST {{baseUrl}}/jwxt/exam
 Content-Type: application/x-www-form-urlencoded
 
 username={{username}}&password={{password}}
@@ -23,6 +62,8 @@ GET {{baseUrl}}/library/holdings?id=1000024660&source=bibliosus
 Content-Type: application/x-www-form-urlencoded
 
 ###
+
+
 
 
 

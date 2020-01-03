@@ -1,6 +1,7 @@
 package gzhu_jw
 
 import (
+	"fmt"
 	"github.com/astaxie/beego/logs"
 	jsoniter "github.com/json-iterator/go"
 	"io/ioutil"
@@ -26,13 +27,30 @@ type Room struct {
 	Zws    string `json:"zws" remark:"座位数"`
 }
 
-func (c *JWClient) GetEmptyRoom(r *http.Request) (rooms []*Room, err error) {
+type RoomData struct {
+	Items []*Room `json:"items"`
+	Count int     `json:"count"`
+}
+
+func (c *JWClient) GetEmptyRoom(r *http.Request) (data *RoomData, err error) {
+
+	if len(r.PostForm["jcd"]) < 1 || len(r.PostForm["zcd"]) < 1 || len(r.PostForm["xqm"]) < 1 {
+		return nil, fmt.Errorf("illegal argument")
+	}
+	var xqm string
+	if r.PostForm["xqm"][0] == "1" {
+		xqm = "3"
+	} else if r.PostForm["xqm"][0] == "2" {
+		xqm = "12"
+	} else {
+		xqm = r.PostForm["xqm"][0]
+	}
 
 	nd := time.Now().Unix() * 1000 //时间戳
 	form := url.Values{
 		"xqh_id":                 r.PostForm["xqh_id"],                 // 校区号
 		"xnm":                    r.PostForm["xnm"],                    // 学年名
-		"xqm":                    r.PostForm["xqm"],                    // 学期名
+		"xqm":                    {xqm},                                // 学期名
 		"cdlb_id":                r.PostForm["cdlb_id"],                // 场地类别
 		"qszws":                  r.PostForm["qszws"],                  // 最小座位号
 		"jszws":                  r.PostForm["jszws"],                  // 最大座位号
@@ -71,7 +89,11 @@ func (c *JWClient) GetEmptyRoom(r *http.Request) (rooms []*Room, err error) {
 	if strings.Contains(string(body), "登录") {
 		return nil, AuthError
 	}
-	rooms = ParseRoom(body)
+	rooms, total := ParseRoom(body)
+	data = &RoomData{
+		Items: rooms,
+		Count: total,
+	}
 	return
 }
 
@@ -90,11 +112,12 @@ func powHandler(target string) string {
 	return res
 }
 
-func ParseRoom(body []byte) (rooms []*Room) {
+func ParseRoom(body []byte) (rooms []*Room, total int) {
 
 	rooms = []*Room{}
 	json := jsoniter.ConfigCompatibleWithStandardLibrary
 	roomList := json.Get(body, "items")
+	total = json.Get(body, "totalCount").ToInt()
 
 	for i := 0; true; i++ {
 		r := &Room{}
@@ -109,7 +132,7 @@ func ParseRoom(body []byte) (rooms []*Room) {
 		r.Cdmc = roomList.Get(i).Get("cdmc").ToString()
 		r.Jxlmc = roomList.Get(i).Get("jxlmc").ToString()
 		r.Kszws1 = roomList.Get(i).Get("kszws1").ToString()
-		r.Sydxmc = roomList.Get(i).Get("sydxmc").ToString()
+		//r.Sydxmc = roomList.Get(i).Get("sydxmc").ToString()
 		r.Xqmc = roomList.Get(i).Get("xqmc").ToString()
 		r.Zws = roomList.Get(i).Get("zws").ToString()
 

@@ -75,7 +75,7 @@ func Course(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data, err := client.GetCourse(gzhu_jw.Year, gzhu_jw.SemCode[0])
+	data, err := client.GetCourse(gzhu_jw.Year, gzhu_jw.SemCode[1])
 	if err != nil {
 		logs.Error(err)
 		delete(JWClients, client.Username) //发生错误，从缓存中删除

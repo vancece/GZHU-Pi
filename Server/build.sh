@@ -3,3 +3,5 @@
 
 docker run -it -v "$PWD":/tmp/code -w /tmp/code golang:1.12.9-stretch \
         bash -c "go build -mod=vendor -o /tmp/code/build/bootstrap /tmp/code/main.go"
+
+cp config.yaml ./build

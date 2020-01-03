@@ -51,6 +51,11 @@ func Response(w http.ResponseWriter, r *http.Request, data interface{}, statusCo
 			last = time.Since(startTime.(time.Time))
 		}
 	}
+	//if statusCode != 0 && statusCode != 200 {
+	//	statusCode = -1
+	//} else {
+	//	statusCode = 0
+	//}
 	resp := ResponseProto{}
 	resp.Api = r.URL.Path
 	resp.Status = statusCode
