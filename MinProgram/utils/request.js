@@ -19,9 +19,9 @@ function sync(username, password, type, account_key = "account",year_sem="2019-2
       title: '00:00~07:00不可同步',
       icon: "none"
     })
-    // return new Promise(function(callback) {
-    //   callback(0)
-    // })
+    return new Promise(function(callback) {
+      callback(0)
+    })
   }
 
   wx.showLoading({
@@ -66,6 +66,7 @@ function sync(username, password, type, account_key = "account",year_sem="2019-2
       },
 
       complete: function(res) {
+        console.log(res)
         callback(res)
       }
     })

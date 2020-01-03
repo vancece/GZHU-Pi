@@ -1,83 +1,50 @@
 const Page = require('../../../utils/sdk/ald-stat.js').Page;
-var app = getApp()
 Page({
 
   data: {
     hideSyncTip: true,
     refleshTimes: 0,
-    // showAgree: true,
     showTips: false,
   },
 
-  agree() {
-    wx.setStorageSync('agree', true)
-    this.setData({
-      showTips: true
-    })
-  },
-  refuse() {
-    if (getCurrentPages().length == 1) {
-      wx.reLaunch({
-        url: '/pages/Campus/home/home',
-      })
-    } else {
-      wx.navigateBack({
-        delta: 1
-      })
-    }
-  },
-  navTo() {
-    wx.navigateTo({
-      url: '/pages/Setting/about/agreement',
-    })
-  },
-
-  onLoad: function(options) {
-    this.data.bindStatus=wx.getStorageSync("account") == "" ? false : true
-    // let agree = wx.getStorageSync("agree")
-    // if (agree == true) {
-    //   this.setData({
-    //     showAgree: false
-    //   })
-    // } else {
-    //   return
-    // }
-
+  onLoad: function (options) {
+    this.data.account = wx.getStorageSync("account")
     let that = this
-    if (!this.data.bindStatus) {
+    if (!this.data.account) {
       wx.navigateTo({
         url: '/pages/Setting/login/bindStudent',
       })
-    } else {
-      this.setData({
-        account: app.globalData.account,
-        bindStatus: this.data.bindStatus
-      })
-      // 从缓存读取成绩
-      wx.getStorage({
-        key: 'grade',
-        success: function(res) {
-          console.log("成绩", res)
-          that.setData({
-            grade: res.data,
-            height: 350 + res.data.sem_list[0].grade_list.length * 170
-          })
-        },
-        fail: function(res) {
-          that.updateGrade()
-        }
-      })
+      return
     }
+    // 从缓存读取成绩
+    wx.getStorage({
+      key: 'grade',
+      success: function (res) {
+        console.log("成绩", res)
+        let height = 350
+        if (res.data.sem_list[0].grade_list.length) {
+          height = height + res.data.sem_list[0].grade_list.length * 170
+        }
+        that.setData({
+          grade: res.data,
+          height: height
+        })
+      },
+      fail: function (res) {
+        that.updateGrade()
+      }
+    })
   },
 
-  onShow: function() {
+  onShow: function () {
+    this.data.account = wx.getStorageSync("account")
     var time = new Date()
     if (time.getHours() >= 0 && time.getHours() < 7) {
       this.setData({
         hideSyncTip: false
       })
     }
-    if (!this.data.bindStatus) {
+    if (!this.data.account) {
       wx.showToast({
         title: '请绑定学号',
         icon: "none",
@@ -96,27 +63,27 @@ Page({
   },
 
   // 下拉刷新
-  onPullDownRefresh: function() {
+  onPullDownRefresh: function () {
     this.updateGrade()
-    setTimeout(function() {
+    setTimeout(function () {
       wx.stopPullDownRefresh()
     }, 3000)
   },
 
-  onShareAppMessage: function() {
+  onShareAppMessage: function () {
     return {
       title: '成绩查询',
       desc: '',
       // path: '路径',
       imageUrl: "https://cos.ifeel.vip/gzhu-pi/images/pic/grade.png",
-      success: function(res) {
+      success: function (res) {
         // 转发成功
         wx.showToast({
           title: '分享成功',
           icon: "none"
         });
       },
-      fail: function(res) {
+      fail: function (res) {
         // 转发失败
         wx.showToast({
           title: '分享失败',
@@ -137,13 +104,13 @@ Page({
       return
     }
 
-    if (!app.globalData.bindStatus) {
+    if (!this.data.account) {
       wx.showToast({
         title: '尚未绑定学号',
         icon: "none",
         duration: 1500,
-        success: function() {
-          setTimeout(function() {
+        success: function () {
+          setTimeout(function () {
             wx.navigateTo({
               url: "/pages/Setting/login/bindStudent"
             })
@@ -154,7 +121,7 @@ Page({
     }
     // 防止频繁刷新
     if (this.data.refleshTimes) {
-      setTimeout(function() {
+      setTimeout(function () {
         wx.stopPullDownRefresh()
       }, 2000)
 
@@ -179,65 +146,47 @@ Page({
     this.setData({
       loading: true
     })
-    wx.request({
-      method: "POST",
-      url: "https://1171058535813521.cn-shanghai.fc.aliyuncs.com/2016-08-15/proxy/GZHU-API/Spider/grade",
-      header: {
-        'content-type': 'application/x-www-form-urlencoded'
-      },
+
+    wx.$ajax({
+      url: "/jwxt/grade",
       data: this.data.account,
-      success: function(res) {
-        if (res.statusCode != 200) {
-          wx.showModal({
-            title: '错误提示',
-            content: '服务器响应错\n' + res.data.errorMessage,
+    })
+      .then(res => {
+        if (res.data.sem_list) {
+          // 缓存成绩信息
+          wx.setStorage({
+            key: "grade",
+            data: res.data,
           })
-          return
-        }
-        if (res.data.statusCode != 200) {
-          wx.showModal({
-            title: '错误提示',
-            content: '账号或密码错误',
+          let height = 350
+          if (res.data.sem_list[0].grade_list.length) {
+            height = height + res.data.sem_list[0].grade_list.length * 170
+          }
+          that.setData({
+            loading: false,
+            grade: res.data,
+            height: height
           })
-          return
+        } else {
+          that.setData({
+            loading: false
+          })
         }
-        // 缓存信息
-        wx.setStorage({
-          key: "grade",
-          data: res.data.data,
-        })
-        that.setData({
-          grade: res.data.data,
-          height: 350 + res.data.data.sem_list[0].grade_list.length * 170
-        })
         wx.showToast({
           title: '更新完成 ~~ ',
           icon: "success",
           duration: 1500,
         })
-      },
-      fail: function(err) {
-        console.log("err:", err)
-        wx.showToast({
-          title: "请求失败",
-          icon: "none"
-        })
-      },
-      complete: function(res) {
-        that.setData({
-          loading: false
-        })
-        if (res.statusCode == 502) {
-          wx.showToast({
-            title: "访问超时 " + res.statusCode,
-            icon: "none"
-          })
-        }
-        console.log(res)
         clearInterval(that.data.num) // 停止动画
         wx.stopPullDownRefresh()
-      }
-    })
+      })
+      .catch((e) => {
+        clearInterval(that.data.num) // 停止动画
+        wx.stopPullDownRefresh()
+        this.setData({
+          loading: false
+        })
+      })
   },
 
   // 图标旋转动画
@@ -256,7 +205,7 @@ Page({
       })
     }
     this.setData({
-      num: setInterval(function() {
+      num: setInterval(function () {
         ami(n)
         n++
       }, 150)

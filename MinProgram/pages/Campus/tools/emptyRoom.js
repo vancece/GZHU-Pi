@@ -3,7 +3,7 @@ var Utils = require("../../../utils/utils.js")
 Page({
 
   data: {
-    total: 0,
+    count: 0,
     rooms: [],
     showFilter: false,
     schoolWeek: Utils.getSchoolWeek(), //校历周
@@ -20,14 +20,14 @@ Page({
     }, {
       text: "晚 上",
       checked: true
-    },],
+    }],
 
     postDate: {
       username: "",
       password: "",
       xqh_id: 1, //校区号 大学城1，桂花岗2
-      xnm: 2018, //学年 *
-      xqm: 12, //学期 *
+      xnm: 2019, //学年 *
+      xqm: 3, //学期 *
       cdlb_id: "", //场地类别 *
       qszws: "", //最小座位数 *
       jszws: "", //最大座位数 *
@@ -54,7 +54,7 @@ Page({
   onReachBottom: function () {
     let page = this.data.postDate["queryModel.currentPage"]
     this.data.postDate["queryModel.currentPage"] = page + 1
-    if (page + 1 > this.data.total / 30) {
+    if (page + 1 > this.data.count / 30) {
       wx.showToast({
         title: '没有更多啦！',
         icon: "none"
@@ -110,53 +110,78 @@ Page({
     let that = this
     this.setData({ loading: true })
 
-    wx.request({
-      // url:"http://127.0.0.1:5000/room",
-      url: 'https://1171058535813521.cn-shanghai.fc.aliyuncs.com/2016-08-15/proxy/GZHU-API/Spider/room',
-      data: this.data.postDate,
-      method: "post",
-      header: {
-        'content-type': 'application/x-www-form-urlencoded'
-      },
-      success(res) {
-        if (res.statusCode != 200) {
-          wx.showToast({
-            title: '请求超时',
-            icon: "none"
-          })
-          return
-        }
-        if (res.data.statusCode != 200) {
-          wx.showToast({
-            title: '账号或密码错误',
-            icon: "none"
-          })
-          return
-        }
+    wx.$ajax({
+      url: "/jwxt/classroom",
+      data: this.data.postDate
+    })
+      .then(res => {
         wx.showToast({
-          title: '找到 ' + res.data.data.total + " 间教室",
+          title: '找到 ' + res.data.count + " 间教室",
           icon: "none"
         })
-
-        let rooms = res.data.data.rooms
+        let rooms = res.data.items
         if (load) { //加载更多，拼接
-          rooms = that.data.rooms.concat(res.data.data.rooms)
+          rooms = that.data.rooms.concat(res.data.items)
         }
         that.setData({
           rooms: rooms,
-          total: res.data.data.total,
+          count: res.data.count,
+          loading: false
         })
-      },
-      fail: function (err) {
-        wx.showToast({
-          title: '服务器响应错误',
-          icon: "none"
+      }).catch(err => {
+        that.setData({
+          loading: false
         })
-      },
-      complete: function (res) {
-        that.setData({ loading: false })
-      }
-    })
+      })
+
+
+    // wx.request({
+    //   // url:"http://127.0.0.1:5000/room",
+    //   url: 'https://1171058535813521.cn-shanghai.fc.aliyuncs.com/2016-08-15/proxy/GZHU-API/Spider/room',
+    //   data: this.data.postDate,
+    //   method: "post",
+    //   header: {
+    //     'content-type': 'application/x-www-form-urlencoded'
+    //   },
+    //   success(res) {
+    //     if (res.statusCode != 200) {
+    //       wx.showToast({
+    //         title: '请求超时',
+    //         icon: "none"
+    //       })
+    //       return
+    //     }
+    //     if (res.data.statusCode != 200) {
+    //       wx.showToast({
+    //         title: '账号或密码错误',
+    //         icon: "none"
+    //       })
+    //       return
+    //     }
+    //     wx.showToast({
+    //       title: '找到 ' + res.data.data.count + " 间教室",
+    //       icon: "none"
+    //     })
+
+    //     let rooms = res.data.data.rooms
+    //     if (load) { //加载更多，拼接
+    //       rooms = that.data.rooms.concat(res.data.data.rooms)
+    //     }
+    //     that.setData({
+    //       rooms: rooms,
+    //       count: res.data.data.count,
+    //     })
+    //   },
+    //   fail: function (err) {
+    //     wx.showToast({
+    //       title: '服务器响应错误',
+    //       icon: "none"
+    //     })
+    //   },
+    //   complete: function (res) {
+    //     that.setData({ loading: false })
+    //   }
+    // })
   },
 
   // 打开弹窗

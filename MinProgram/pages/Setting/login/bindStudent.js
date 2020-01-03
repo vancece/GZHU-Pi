@@ -200,60 +200,39 @@ Page({
 
   // 同步数据
   syncData(type) {
-    let that =this
-    let data = this.data.account
-    data["year_sem"] = "2019-2020-1"
-    wx.request({
-      method: "POST",
-      url: this.data.api + type,
-      header: {
-        'content-type': 'application/x-www-form-urlencoded'
-      },
-      data: data,
-      success: function (res) {
-        console.log("请求结果",res)
-        if (res.statusCode != 200) {
-          wx.showToast({
-            title: "服务器响应错误",
-            icon: "none"
-          })
-          return
-        }
-        if (res.data.statusCode != 200) {
-          wx.showToast({
-            title: "账号或密码错误",
-            icon: "none"
-          })
-          return
-        }
+    let that = this
+    let form = this.data.account
+    form["year_sem"] = wx.$param.school["year_sem"]
 
-        // 缓存信息
-        wx.setStorage({
-          key: type,
-          data: res.data.data,
-          success: function () {
-            wx.reLaunch({
-              url: '/pages/Campus/home/home',
-            })
-          }
-        })
+    wx.$ajax({
+      url: "/jwxt/course",
+      data: form
+    })
+      .then(res => {
         wx.showToast({
           title: "同步完成",
         })
-      },
-      fail: function (err) {
-        console.log("err:", err)
-        wx.showToast({
-          title: "访问超时",
-          icon: "none"
+        that.setData({
+          loading: false,
         })
-      },
-      complete: function (res) {
+        // 缓存账户信息
+        delete form["year_sem"]
+        wx.setStorageSync("account", form)
+        // 缓存结果数据
+        res.data["update_time"] = res.update_time
+        wx.setStorageSync("course", res.data)
+
+        setTimeout(function () {
+          wx.reLaunch({
+            url: '/pages/Campus/home/home',
+          })
+        }, 300)
+
+      }).catch(err => {
         that.setData({
           loading: false
         })
-      }
-    })
+      })
   },
 
   // 清除本地缓存

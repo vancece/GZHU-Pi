@@ -107,18 +107,18 @@
 
 
 <modal show="{{showUpdate}}" title="版本更新">
-  <view>更新提醒</view>
+  <view>What's New</view>
   <view style='font-size:90%;color:rgb(80,80,80);margin:20rpx;'>
-  <view> * 为完成某作业增加二手市场留言功能</view>
-    <!-- <view> * 第二课堂学分查询</view> -->
-    <button bindtap="navTo" id="market" class="margin bg-yellow text-white round">校园二手市场</button>
-    <!-- <view> * 加入派派数据统计页面</view>
-    <button bindtap="navTo" id="data" class="margin bg-cyan round">查看【派派数据】</button>
-    <view> * 【校园二手】修复浏览统计</view>
-    <button bindtap="navTo" id="oldthings" class="margin bg-pink round">发布【校园二手】</button> -->
+    <view> * 重构大部分后端接口，性能翻倍</view>
+    <view> * 启用新API接口，请求响应加速</view>
+    <button bindtap="navTo" data-url="/pages/Campus/grade/grade" class="margin bg-yellow text-white round">成绩查询</button>
+    <button bindtap="navTo" data-url="/pages/Campus/tools/exam" class="margin bg-olive text-white round">考试查询</button>
+    <button bindtap="navTo" data-url="/pages/Setting/login/sync?id=1" class="margin bg-blue text-white round">课表同步</button>
+    <button bindtap="navTo" data-url="/pages/Campus/tools/emptyRoom" class="margin bg-cyan text-white round">空教室查询</button>
+
   </view>
   <!-- <button open-type="contact" class='callme'>
     <image style='width:80rpx;height:80rpx' src='https://cos.ifeel.vip/gzhu-pi/images/icon/kefu.svg'></image>
-    <view style='font-size:90%;margin-left:10rpx'>提供建议</view>
+    <view style='font-size:90%;margin-left:10rpx'>意见反馈</view>
   </button> -->
 </modal>

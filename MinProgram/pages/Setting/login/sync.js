@@ -5,19 +5,24 @@ Page({
   data: {
     current: 1,
     sem_list: ["2018-2019-1", "2018-2019-2", "2019-2020-1", "2019-2020-2"],
-    pickerIndex: 2,
+    pickerIndex: 3,
     loading: false,
     exp_btn: "同步实验",
     kb_btn: "同步课表",
 
-    update_time: wx.getStorageSync("course").update_time + " +8h",
-    cet: wx.getStorageSync("cet"),
-    account: wx.getStorageSync("account"),
-    exp_account: wx.getStorageSync("exp_account"),
+    // update_time: wx.getStorageSync("course").update_time,
+    // cet: wx.getStorageSync("cet"),
+    // account: wx.getStorageSync("account"),
+    // exp_account: wx.getStorageSync("exp_account"),
   },
 
-
-  onLoad: function(options) {
+  onLoad: function (options) {
+    this.setData({
+      update_time: wx.getStorageSync("course").update_time,
+      cet: wx.getStorageSync("cet"),
+      account: wx.getStorageSync("account"),
+      exp_account: wx.getStorageSync("exp_account"),
+    })
     // 根据来源的不同显示不同界面
     if (JSON.stringify(options) != "{}") {
       this.setData({
@@ -26,7 +31,7 @@ Page({
     }
   },
 
-  switch (e) {
+  switch(e) {
     this.setData({
       current: Number(e.target.id)
     })
@@ -63,28 +68,48 @@ Page({
       loading: true
     })
 
-    switch (id) {
+    let account = {
+      username: e.detail.value.username,
+      password: e.detail.value.password,
+      year_sem: that.data.sem_list[that.data.pickerIndex]
+    }
 
+    switch (id) {
       // 课表
       case "kb":
         wx.showModal({
           title: '提示',
           content: '同步将会覆盖当前课表',
-          success: function(res) {
+          success: function (res) {
             if (res.confirm) {
-              Request.sync(e.detail.value.username, e.detail.value.password, "course", "account", that.data.sem_list[that.data.pickerIndex]).then(res => {
-                wx.showToast({
-                  title: res,
-                  icon: res == "同步完成" ? "success" : "none"
-                })
-                that.setData({
-                  loading: false,
-                  update_time: wx.getStorageSync("course").update_time + " +8h",
-                  kb_btn: res == "同步完成" ? "已同步" : "同步课表",
-                })
+              wx.$ajax({
+                url: "/jwxt/course",
+                data: account,
+                loading: true
               })
+                .then(res => {
+                  wx.showToast({
+                    title: "同步完成",
+                    icon: "none"
+                  })
+                  that.setData({
+                    loading: false,
+                    update_time: res.update_time,
+                    kb_btn: "已同步",
+                  })
+                  // 缓存账户信息
+                  delete account["year_sem"]
+                  wx.setStorageSync("account", account)
+                  // 缓存结果数据
+                  res.data["update_time"] = res.update_time
+                  wx.setStorageSync("course", res.data)
+                }).catch(err => {
+                  that.setData({
+                    loading: false
+                  })
+                })
             } else {
-              that.setData({
+              this.setData({
                 loading: false
               })
             }
@@ -93,7 +118,7 @@ Page({
         break
 
 
-        // 实验
+      // 实验
       case "exp":
         Request.sync(e.detail.value.username, e.detail.value.password, "exp", "exp_account").then(res => {
           wx.showToast({
@@ -108,7 +133,7 @@ Page({
         break
 
 
-        // 四六级
+      // 四六级
       case "cet":
         wx.setStorageSync("cet", e.detail.value.cet)
         wx.showToast({

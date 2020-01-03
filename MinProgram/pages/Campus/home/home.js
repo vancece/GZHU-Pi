@@ -36,11 +36,11 @@ Page({
 
   updateCheck() {
     let version = Config.get("version")
-    if (version < "1.1.1.20191108") {
+    if (version < Config.config['version']) {
       this.setData({
         showUpdate: true
       })
-      Config.set("version", "1.1.1.20191108")
+      Config.set("version", Config.config['version'])
     }
   },
 
@@ -137,23 +137,10 @@ Page({
     else this.data.schedule = false
     this.switchModel()
   },
-  catchtap(e) { },
+  catchtap(e) {},
 
   navTo(e) {
-    let url = ""
-    switch (e.target.id) {
-      case "second":
-        url = "/pages/Campus/second/second"
-        break
-      case "data":
-        url = "/pages/Setting/about/data"
-        break
-      case "market":
-        url = "/pages/Life/oldthings/index"
-    }
-    wx.navigateTo({
-      url: url,
-    })
+    wx.$navTo(e)
   }
 
 })

@@ -6,8 +6,8 @@ Page({
     colors: ['cyan', 'blue', 'purple', 'mauve', 'pink', 'brown', 'red', 'orange', 'olive', 'green'],
 
   },
-  onLoad: function(options) {
-    
+  onLoad: function (options) {
+
     if (this.data.achieve == "") {
       let form = wx.getStorageSync("account")
       if (form == "") {
@@ -22,7 +22,7 @@ Page({
   },
 
   // 下拉刷新
-  onPullDownRefresh: function() {
+  onPullDownRefresh: function () {
     let form = wx.getStorageSync("account")
     if (form == "") {
       wx.showToast({
@@ -32,11 +32,11 @@ Page({
       return
     }
     this.getData(form)
-    setTimeout(function() {
+    setTimeout(function () {
       wx.stopPullDownRefresh()
     }, 3000)
   },
-  onShareAppMessage: function() {},
+  onShareAppMessage: function () { },
 
   navTo(e) {
     let type = e.currentTarget.dataset.type
@@ -54,41 +54,27 @@ Page({
   },
 
   getData(form) {
-    wx.showLoading({
-      title: '加载中...',
-    })
+    var time = new Date()
+    if (time.getHours() >= 0 && time.getHours() < 7) {
+      wx.showToast({
+        title: '00:00~07:00不可同步',
+        icon: "none"
+      })
+      return
+    }
     let that = this
-    wx.request({
-      url: "https://1171058535813521.cn-shenzhen.fc.aliyuncs.com/2016-08-15/proxy/GZHU-API/go/api/v1/jwxt/achieve",
-      method: "POST",
-      header: {
-        'content-type': 'application/x-www-form-urlencoded'
-      },
+    wx.$ajax({
+      url: "/jwxt/achieve",
       data: form,
-      success: function(res) {
-        if (res.data.status != 200) {
-          wx.showToast({
-            title: res.data.msg,
-            icon: "none"
-          })
-          return
-        }
-        wx.setStorageSync("achieve", res.data.data)
-        that.setData({
-          achieve: res.data.data
-        })
-      },
-      fail: function(err) {
-        wx.showModal({
-          title: '请求失败',
-          content: "错误信息:" + err.errMsg,
-        })
-      },
-      complete(res) {
-        console.log(res.data)
-        wx.hideLoading()
-      }
+      loading: true
     })
+      .then(res => {
+        wx.setStorageSync("achieve", res.data)
+        that.setData({
+          achieve: res.data
+        })
+      })
+      .catch((e) => {})
   }
 
 })

@@ -2,7 +2,6 @@
   "backgroundTextStyle": "dark",
   "enablePullDownRefresh": true,
   "usingComponents": {
-    "navBar": "/pages/Components/navBar",
-    "brickLayout": "plugin://brickLayout/brickLayout"
+    "navBar": "/pages/Components/navBar"
   }
 }

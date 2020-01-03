@@ -46,6 +46,8 @@
 .oldthings .pics {
   border-radius: 10rpx;
   margin-right: 20rpx;
+  width: 200rpx;
+  height: 200rpx;
 }
 
 .oldthings .pics.size_1 {

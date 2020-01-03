@@ -17,7 +17,7 @@
 </form>
 
 <view class='total'>
-  <view>找到 {{total}} 间</view>
+  <view>找到 {{count}} 间</view>
   <view class='filter' bindtap='openFilter'>筛选</view>
 </view>
 
@@ -44,7 +44,7 @@
     <view wx:if="{{item.sydxmc}}" style='flex:2'>使用：{{item.sydxmc}}</view>
   </view>
 </view>
-<view wx:if="{{total!=0}}" style='color:grey;font-size:85%;text-align:center;margin:20rpx'>上拉加载更多...</view>
+<view wx:if="{{count!=0}}" style='color:grey;font-size:85%;text-align:center;margin:20rpx'>上拉加载更多...</view>
 
 
 
