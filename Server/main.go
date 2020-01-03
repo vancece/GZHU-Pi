@@ -28,7 +28,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	models.InitDb()
+	_ = models.InitDb()
 
 	r := mux.NewRouter()
 
@@ -62,7 +62,7 @@ func muxRouter(prefix string) *mux.Router {
 	r.HandleFunc("/jwxt/course", routers.PanicMV(routers.JWMiddleWare(routers.Course))).Methods("POST")
 	r.HandleFunc("/jwxt/exam", routers.PanicMV(routers.JWMiddleWare(routers.Exam))).Methods("POST")
 	r.HandleFunc("/jwxt/grade", routers.PanicMV(routers.JWMiddleWare(routers.Grade))).Methods("POST")
-	r.HandleFunc("/jwxt/room", routers.PanicMV(routers.JWMiddleWare(routers.EmptyRoom))).Methods("POST")
+	r.HandleFunc("/jwxt/classroom", routers.PanicMV(routers.JWMiddleWare(routers.EmptyRoom))).Methods("POST")
 	r.HandleFunc("/jwxt/achieve", routers.PanicMV(routers.JWMiddleWare(routers.Achieve))).Methods("POST")
 
 	//图书馆

@@ -5,6 +5,7 @@ import (
 	"context"
 	"github.com/astaxie/beego/logs"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -75,7 +76,22 @@ func Course(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data, err := client.GetCourse(gzhu_jw.Year, gzhu_jw.SemCode[1])
+	year, sem := gzhu_jw.Year, gzhu_jw.SemCode[1]
+	s, _ := ReadRequestArg(r, "year_sem")
+	ys, _ := s.(string)
+	yearSem := strings.Split(ys, "-")
+	if len(yearSem) == 3 {
+		year = yearSem[0]
+		sem = yearSem[2]
+		if sem == "1" {
+			sem = "3"
+		}
+		if sem == "2" {
+			sem = "12"
+		}
+	}
+
+	data, err := client.GetCourse(year, sem)
 	if err != nil {
 		logs.Error(err)
 		delete(JWClients, client.Username) //发生错误，从缓存中删除
@@ -98,7 +114,22 @@ func Exam(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data, err := client.GetExam(gzhu_jw.Year, gzhu_jw.SemCode[0])
+	year, sem := gzhu_jw.Year, gzhu_jw.SemCode[1]
+	s, _ := ReadRequestArg(r, "year_sem")
+	ys, _ := s.(string)
+	yearSem := strings.Split(ys, "-")
+	if len(yearSem) == 3 {
+		year = yearSem[0]
+		sem = yearSem[2]
+		if sem == "1" {
+			sem = "3"
+		}
+		if sem == "2" {
+			sem = "12"
+		}
+	}
+
+	data, err := client.GetExam(year, sem)
 	if err != nil {
 		logs.Error(err)
 		delete(JWClients, client.Username)

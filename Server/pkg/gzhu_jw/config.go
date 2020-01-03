@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	LoginError = fmt.Errorf("认证失败，账号或密码错误")
+	LoginError = fmt.Errorf("账号或密码错误，如需修改请前往 http://my.gzhu.edu.cn")
 	AuthError  = fmt.Errorf("认证失败，可能是缓存失效，请重试")
 
 	SemCode = []string{"3", "12"} //3是第一学期，12是第二学期

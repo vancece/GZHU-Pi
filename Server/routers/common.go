@@ -15,14 +15,14 @@ import (
 
 //后端响应数据通信协议
 type ResponseProto struct {
-	Status      int         `json:"status"`       //接口状态码
-	Msg         string      `json:"msg"`          //状态信息
-	Data        interface{} `json:"data"`         //响应数据
-	Api         string      `json:"api"`          //api接口
-	Method      string      `json:"method"`       //post,put,get,delete
-	Count       int         `json:"count"`        //Data若是数组，算其长度
-	Time        int64       `json:"time"`         //请求响应时间，毫秒
-	UpdatedTime string      `json:"updated_time"` //响应处理时间
+	Status     int         `json:"status"`      //接口状态码
+	Msg        string      `json:"msg"`         //状态信息
+	Data       interface{} `json:"data"`        //响应数据
+	Api        string      `json:"api"`         //api接口
+	Method     string      `json:"method"`      //post,put,get,delete
+	Count      int         `json:"count"`       //Data若是数组，算其长度
+	Time       int64       `json:"time"`        //请求响应时间，毫秒
+	UpdateTime string      `json:"update_time"` //响应处理时间
 }
 
 //前端请求数据通讯协议
@@ -63,7 +63,7 @@ func Response(w http.ResponseWriter, r *http.Request, data interface{}, statusCo
 	resp.Data = data
 	resp.Method = r.Method
 	resp.Time = last.Nanoseconds() / 1000000
-	resp.UpdatedTime = time.Now().Format("2006-01-02 15:04:05")
+	resp.UpdateTime = time.Now().Format("2006-01-02 15:04:05")
 
 	//保存请求记录
 	u, _ := ReadRequestArg(r, "username")

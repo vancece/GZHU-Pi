@@ -46,7 +46,7 @@ username={{username}}&password={{password}}
 POST {{baseUrl}}/jwxt/exam
 Content-Type: application/x-www-form-urlencoded
 
-username={{username}}&password={{password}}
+username={{username}}&password={{password}}&year_sem=2019-2020-1
 
 
 ###
