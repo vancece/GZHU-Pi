@@ -126,7 +126,7 @@ func GetOverViewInfo(body []byte) (achieves []*Achieve) {
 	//学分要求
 	r3 := regexp.MustCompile(`要求学分:([\d.]+)&nbsp;`)
 	//获得学分
-	r4 := regexp.MustCompile(`获得学分:([\d.]+)&nbsp;`)
+	r4 := regexp.MustCompile(`获得计划学分:([\d.]+)&nbsp;`)
 	//未获得学分
 	r5 := regexp.MustCompile(`未获得学分:([\d.]+)&nbsp;`)
 
@@ -142,7 +142,6 @@ func GetOverViewInfo(body []byte) (achieves []*Achieve) {
 		//正常是12个段落对应12g蓝色方块
 		index := v[0]
 		section := bodyStr[index-500 : index]
-
 		var ov = &Achieve{}
 
 		res1 := r1.FindStringSubmatch(section)
