@@ -14,7 +14,6 @@ var db *gorm.DB
 
 func InitDb() error {
 	d := env.Conf.Db
-	logs.Info("数据库主机：", d.Host)
 	dbInfo := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
 		d.Host, d.Port, d.User, d.Password, d.Dbname, d.Sslmode)
 
@@ -24,6 +23,7 @@ func InitDb() error {
 		log.Print(err)
 		return err
 	}
+	logs.Info("数据库：%s:%s", d.Host, d.Port)
 	//关闭复数表名
 	db.SingularTable(true)
 

@@ -13,6 +13,10 @@ import (
 	"time"
 )
 
+type Zfjw interface {
+	GetAllGrade(year, sem string) (gradeData *GradeData, err error)
+}
+
 type GradeData struct {
 	StuInfo     *models.TStuInfo `json:"stu_info" remark:"基本信息"`
 	GPA         float64          `json:"GPA" remark:"平均绩点"`
@@ -88,7 +92,6 @@ func CountGpa(grades []*models.TGrade, gradeData *GradeData) {
 	)
 
 	for k, v := range grades {
-
 		if v.Invalid == "是" || v.CourseGpa == 0 || v.Credit == 0 {
 			logs.Debug("作废或者不及格成绩，跳过统计", k, v)
 			semData[v.YearSem] = SemGrade{
@@ -96,13 +99,16 @@ func CountGpa(grades []*models.TGrade, gradeData *GradeData) {
 				Semester:  v.Semester,
 				Year:      v.Year,
 				YearSem:   v.YearSem,
+				//不及格不计算学分
+				SemCredit: semData[v.YearSem].SemCredit,
+				GpaCredit: semData[v.YearSem].GpaCredit,
 			}
 			continue
 		}
 		//累计学分绩点
 		sumCredit = sumCredit + v.Credit
 		sumGpaCredit = sumGpaCredit + v.Credit*v.CourseGpa
-
+		logs.Info(semData[v.YearSem].SemCredit, "+", v.Credit)
 		//计算各个学期的学分绩点
 		semData[v.YearSem] = SemGrade{
 			SemCredit: semData[v.YearSem].SemCredit + v.Credit,
@@ -118,6 +124,7 @@ func CountGpa(grades []*models.TGrade, gradeData *GradeData) {
 			tmp.SemGpa, _ = strconv.ParseFloat(fmt.Sprintf("%.2f", semData[v.YearSem].GpaCredit/semData[v.YearSem].SemCredit), 2)
 		}
 		semData[v.YearSem] = tmp
+
 	}
 	//大学总学分绩点
 	gradeData.TotalCredit = sumCredit

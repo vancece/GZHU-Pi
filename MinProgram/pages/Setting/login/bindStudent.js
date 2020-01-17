@@ -152,6 +152,9 @@ Page({
           return
         }
         if (res.data.statusCode != 200) {
+          that.setData({
+            loading: false
+          })
           wx.showToast({
             title: "账号或密码错误",
             icon: "none"

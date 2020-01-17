@@ -28,7 +28,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	_ = models.InitDb()
+	go models.InitDb()
 
 	r := mux.NewRouter()
 

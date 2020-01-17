@@ -8,11 +8,13 @@ import (
 	"crypto/tls"
 	"fmt"
 	"github.com/astaxie/beego/logs"
+	"github.com/otiai10/gosseract"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
+	"os"
 	"regexp"
 	"strings"
 	"time"
@@ -88,10 +90,15 @@ func BasicAuthClient(username, password string) (client *JWClient, err error) {
 		return nil, fmt.Errorf("get login form failed")
 	}
 
+	captcha := c.GetCaptcha()
+	if captcha == "" {
+		logs.Debug("验证码识别为空")
+	}
+
 	postValue := url.Values{
 		"username":  {c.Username},
 		"password":  {c.Password},
-		"captcha":   {""},
+		"captcha":   {captcha},
 		"warn":      {"true"},
 		"lt":        {lt[1]},
 		"execution": {execution[1]},
@@ -109,9 +116,60 @@ func BasicAuthClient(username, password string) (client *JWClient, err error) {
 	defer resp.Body.Close()
 	//判断是否登录成功
 
-	ok, _ := regexp.MatchString("账号或密码错误", string(body))
+	ok, _ := regexp.MatchString("验证码不正确", string(body))
+	if ok {
+		return nil, fmt.Errorf("验证码识别不正确，请重试")
+	}
+	ok, _ = regexp.MatchString("必须输入验证码", string(body))
+	if ok {
+		return nil, fmt.Errorf("验证码识别失败，请重试")
+	}
+	ok, _ = regexp.MatchString("账号或密码错误", string(body))
 	if ok {
 		return nil, LoginError
 	}
 	return c, nil
+}
+
+func (c *JWClient) GetCaptcha() (text string) {
+
+	resp, err := c.doRequest("GET", "https://cas.gzhu.edu.cn/cas_server/captcha.jsp", nil, nil)
+	if err != nil {
+		logs.Info(err)
+		return
+	}
+
+	filename := "/tmp/" + c.Username + fmt.Sprintf("_%d", time.Now().Nanosecond()) + ".jpg"
+
+	file, err := os.Create(filename)
+	if err != nil {
+		logs.Info(err)
+		return
+	}
+	defer file.Close()
+
+	_, err = io.Copy(file, resp.Body)
+	if err != nil {
+		logs.Info(err)
+		return
+	}
+
+	client := gosseract.NewClient()
+	defer client.Close()
+
+	err = client.SetImage(filename)
+	if err != nil {
+		logs.Info(err)
+		return
+	}
+	text, err = client.Text()
+	if err != nil {
+		logs.Info(err)
+		return
+	}
+	//logs.Debug("请输入验证码：", text)
+	//_, _ = fmt.Scan(&text)
+	logs.Debug("验证码：", text)
+
+	return
 }
