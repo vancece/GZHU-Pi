@@ -14,7 +14,7 @@ func main() {
 	if err != nil {
 		log.Fatal("RegisterName error:", err)
 	}
-	var port = ":1234"
+	var port = ":7201"
 	listener, err := net.Listen("tcp", port)
 	if err != nil {
 		log.Fatal("ListenTCP error:", err)

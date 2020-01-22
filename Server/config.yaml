@@ -6,6 +6,11 @@ app:
   logfile: /tmp/gzhupi/log.log
 
 
+rpc:
+  addr: ifeel.vip:7201
+  tocken: 1234
+
+
 db:
   type: postgre
   host: 127.0.0.1

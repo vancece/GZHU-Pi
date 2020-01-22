@@ -8,13 +8,12 @@ import (
 	"crypto/tls"
 	"fmt"
 	"github.com/astaxie/beego/logs"
-	"github.com/otiai10/gosseract"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"net/http/cookiejar"
+	"net/rpc"
 	"net/url"
-	"os"
 	"regexp"
 	"strings"
 	"time"
@@ -131,45 +130,45 @@ func BasicAuthClient(username, password string) (client *JWClient, err error) {
 	return c, nil
 }
 
-func (c *JWClient) GetCaptcha() (text string) {
+func (c *JWClient) GetCaptcha() (capture string) {
 
-	resp, err := c.doRequest("GET", "https://cas.gzhu.edu.cn/cas_server/captcha.jsp", nil, nil)
+	return ""
+
+	client, err := rpc.Dial("tcp", "ifeel.vip:7201")
 	if err != nil {
-		logs.Info(err)
+		logs.Error(err)
 		return
 	}
 
-	filename := "/tmp/" + c.Username + fmt.Sprintf("_%d", time.Now().Nanosecond()) + ".jpg"
+	const maxTry = 3
+	for range [maxTry]int{} {
 
-	file, err := os.Create(filename)
-	if err != nil {
-		logs.Info(err)
-		return
+		resp, err := c.doRequest("GET", "https://cas.gzhu.edu.cn/cas_server/captcha.jsp", nil, nil)
+		if err != nil {
+			logs.Error(err)
+			return
+		}
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			logs.Error(err)
+			return
+		}
+
+		err = client.Call("OcrService.Capture", body, &capture)
+		if err != nil {
+			logs.Error(err)
+			return
+		}
+
+		reg := regexp.MustCompile(`\d+`)
+		res := reg.FindStringSubmatch(capture)
+		if len(res) == 0 || len(res[0]) != 4 {
+			logs.Debug("capture ocr failed: ", res)
+			continue
+		}
+		capture = res[0]
+		break
 	}
-	defer file.Close()
-
-	_, err = io.Copy(file, resp.Body)
-	if err != nil {
-		logs.Info(err)
-		return
-	}
-
-	client := gosseract.NewClient()
-	defer client.Close()
-
-	err = client.SetImage(filename)
-	if err != nil {
-		logs.Info(err)
-		return
-	}
-	text, err = client.Text()
-	if err != nil {
-		logs.Info(err)
-		return
-	}
-	//logs.Debug("请输入验证码：", text)
-	//_, _ = fmt.Scan(&text)
-	logs.Debug("验证码：", text)
-
+	logs.Info("验证码：", capture)
 	return
 }

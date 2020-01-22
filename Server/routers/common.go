@@ -104,8 +104,15 @@ func PanicMV(h http.HandlerFunc) http.HandlerFunc {
 				Response(w, r, nil, http.StatusInternalServerError, err.Error())
 			}
 		}()
-		logs.Info(r.URL)
+		w.Header().Add("Access-Control-Allow-Origin", r.Header.Get("Origin"))
+		w.Header().Add("Access-Control-Allow-Credentials", "true")
+		w.Header().Add("Access-Control-Allow-Headers", "Content-Type,AccessToken,X-CSRF-Token, Authorization, Token")
+		w.Header().Add("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
 		w.Header().Set("Content-Type", "application/json")
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusNoContent)
+			return
+		}
 		w.WriteHeader(http.StatusOK)
 		//请求开始时间
 		startTime := time.Now()
