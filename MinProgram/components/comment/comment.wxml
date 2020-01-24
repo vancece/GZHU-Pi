@@ -18,6 +18,7 @@
   <view class="send">
     <open-data type="userAvatarUrl" class='avatar'></open-data>
     <input bindinput="commentInput" value="{{content}}" class="solid-bottom" maxlength="300" cursor-spacing="30"></input>
-    <button bindtap="checkComment" class="cu-btn shadow-blur bg-green">发送</button>
+    <button wx:if="{{authorized}}" bindtap="checkComment" class="cu-btn shadow-blur bg-green">发送</button>
+    <button wx:if="{{!authorized}}" class="cu-btn shadow-blur bg-green" open-type="getUserInfo" bindgetuserinfo='userInfoHandler'>授权</button>
   </view>
 </view>

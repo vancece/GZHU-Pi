@@ -39,7 +39,21 @@ Page({
     }],
   },
 
-  onLoad: function (e) {
+  onLoad: function(e) {
+    wx.cloud.callFunction({
+      // 需调用的云函数名
+      name: 'analysis',
+      // 传给云函数的参数
+      // data: {
+      //   a: 12,
+      //   b: 19,
+      // },
+      // 成功回调
+      complete: function (res) {
+
+        console.log(res.result)
+      }
+    })
     this.drawCover()
     this.data.chart1 = this.draw("canvas1", "ring", this.data.canvas1)
     this.data.chart2 = this.draw("canvas2", "ring", this.data.canvas2)
@@ -72,7 +86,7 @@ Page({
         data: [5650, 5610, 4388, 3177, 0]
       }],
       yAxis: {
-        format: function (val) {
+        format: function(val) {
           var ret = Math.ceil((val / 7700) * 100)
           return ret + '%';
         },
@@ -82,7 +96,7 @@ Page({
     });
   },
 
-  touchHandler: function (e) {
+  touchHandler: function(e) {
     let id = 0
     let data
     switch (e.target.id) {
@@ -103,13 +117,14 @@ Page({
       default:
         break
     }
+    if (data == undefined) return
     let msg = data.name + "：" + data.data
     wx.showToast({
       title: msg,
       icon: "none"
     })
   },
-  
+
   preview() {
     let imgurl = "https://cos.ifeel.vip/gzhu-pi/images/resource/qrcode.jpg"
     wx.previewImage({

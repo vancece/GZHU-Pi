@@ -12,6 +12,8 @@ App({
   },
 
   onLaunch: function (options) {
+
+    wx.cloud.init()
     Config.init() //初始化配置文件
     this.updata() //更新小程序
 

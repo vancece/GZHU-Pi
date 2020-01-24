@@ -33,12 +33,23 @@ Page({
     countHeight: 11, //统计文字距离底部的高度
   },
 
-  onLoad: function (options) {
+  onLoad: function(options) {
     that = this;
     wx.showLoading({
       title: '加载中...',
     })
-    setTimeout(function () {
+    if (options.id == undefined) {
+      wx.showToast({
+        title: '参数非法',
+        icon: "none"
+      })
+      return
+    }
+
+    this.data.id = options.id
+
+console.log(this.data.id)
+    setTimeout(function() {
       wx.hideLoading()
     }, 2000)
     this.getAuthStatus()
@@ -46,16 +57,16 @@ Page({
     this.getConfigTpl()
   },
 
-  onShareAppMessage: function () {
+  onShareAppMessage: function() {
 
     let title = this.data.config.shareTitle
     let imageUrl = this.data.config.shareCover
 
     return {
       title: title ? title : "",
-      path: '/module/gzhu/poster?id=gzhu_tw_poster',
+      path: '/module/gzhu/poster?id=' + this.data.id,
       imageUrl: imageUrl ? imageUrl : "",
-      success: function (res) {
+      success: function(res) {
         wx.showToast({
           title: '分享成功',
           icon: "none"
@@ -235,7 +246,8 @@ Page({
     let that = this
     let Table = new wx.BaaS.TableObject("config")
     let query = new wx.BaaS.Query()
-    query.compare('name', '=', "gzhu_tw_poster")
+    
+    query.compare('name', '=', this.data.id)
     Table.setQuery(query).limit(1).find().then(res => {
       if (res.data.objects.length == 0) {
         console.log("获取在线配置出错，使用本地配置")
@@ -277,7 +289,7 @@ Page({
     wx.showLoading({
       title: '授权中...',
     })
-    setTimeout(function () {
+    setTimeout(function() {
       wx.hideLoading()
     }, 3000)
 
@@ -287,7 +299,7 @@ Page({
     }).then(user => {
       console.log(user)
       this.getAuthStatus()
-      setTimeout(function () {
+      setTimeout(function() {
         wx.hideLoading()
       }, 1000)
     }, err => {
@@ -376,7 +388,7 @@ Page({
 
 
   //保存相册
-  saveToAlbum: function (filePath) {
+  saveToAlbum: function(filePath) {
     //查看授权状态；
     if (wx.getSetting) { //判断是否存在函数wx.getSetting在版本库1.2以上才能用
       wx.getSetting({
@@ -387,12 +399,12 @@ Page({
               success(res) {
                 wx.saveImageToPhotosAlbum({
                   filePath: filePath,
-                  success: function (res) {
+                  success: function(res) {
                     wx.showToast({
                       title: '图片保存成功',
                     });
                   },
-                  fail: function (res) {
+                  fail: function(res) {
                     wx.showToast({
                       title: '图片保存失败',
                       icon: 'none',
@@ -400,15 +412,15 @@ Page({
                   }
                 })
               },
-              fail: function (res) {
+              fail: function(res) {
                 //拒绝授权时会弹出提示框，提醒用户需要授权
                 wx.showModal({
                   title: '提示',
                   content: '保存图片需要授权，是否去授权',
-                  success: function (res) {
+                  success: function(res) {
                     if (res.confirm) {
                       wx.openSetting({
-                        success: function (res) { }
+                        success: function(res) {}
                       })
                     }
                   }
@@ -418,12 +430,12 @@ Page({
           } else { //已经授权
             wx.saveImageToPhotosAlbum({
               filePath: filePath,
-              success: function (res) {
+              success: function(res) {
                 wx.showToast({
                   title: '图片保存成功',
                 });
               },
-              fail: function (res) {
+              fail: function(res) {
                 wx.showToast({
                   title: '图片保存失败',
                   icon: 'none',
@@ -438,7 +450,7 @@ Page({
         title: '提示',
         content: '因当前微信版本过低导致无法保存，请更新至最新版本',
         showCancel: false,
-        complete: function () { }
+        complete: function() {}
       })
     }
   },

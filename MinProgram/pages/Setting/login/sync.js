@@ -109,7 +109,7 @@ Page({
                   })
                 })
             } else {
-              this.setData({
+              that.setData({
                 loading: false
               })
             }

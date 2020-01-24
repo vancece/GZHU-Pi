@@ -20,6 +20,7 @@ Component({
 
   data: {
     content: "",
+    authorized: true
   },
 
   lifetimes: {
@@ -28,11 +29,34 @@ Component({
         this.setData({
           uid: user.id
         })
+      }).catch(err => {
+        this.setData({
+          authorized: false
+        })
       })
     }
   },
 
   methods: {
+
+    userInfoHandler(data) {
+      let that = this
+      wx.showLoading({
+        title: '授权中...',
+      })
+      wx.BaaS.auth.loginWithWechat(data, {
+        createUser: true,
+        syncUserProfile: "overwrite"
+      }).then(user => {
+        console.log(user)
+        this.setData({
+          authorized: true
+        })
+        wx.hideLoading()
+      }).catch(err => {
+        wx.hideLoading()
+      })
+    },
 
     refresh() {
       this.getComment(this.data.table, this.data.object_id)
@@ -86,6 +110,7 @@ Component({
 
     // 违规检测
     checkComment() {
+      if (this.data.content == "" || this.data.content == undefined) return
       wx.BaaS.wxCensorText(this.data.content).then(res => {
         console.log(res.data.risky)
         if (res.data.risky) {

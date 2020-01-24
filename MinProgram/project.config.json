@@ -57,24 +57,13 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 15,
+			"current": -1,
 			"list": [
 				{
 					"id": 0,
-					"name": "课表迁移",
-					"pathName": "pages/Campus/home/home",
-					"query": "",
-					"scene": 1037,
-					"referrerInfo": {
-						"appId": "wxefbf441f2537051b",
-						"extraData": "{\"username\":\"1706300039\",\"password\":\"025453\"}"
-					}
-				},
-				{
-					"id": 1,
 					"name": "module/gzhu/poster",
 					"pathName": "module/gzhu/poster",
-					"query": "",
+					"query": "id=gzhu_tw_poster",
 					"scene": null
 				},
 				{
@@ -172,6 +161,7 @@
 					"id": -1,
 					"name": "投票",
 					"pathName": "module/vote/vote",
+					"query": "",
 					"scene": null
 				}
 			]
