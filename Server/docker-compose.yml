@@ -15,4 +15,13 @@ services:
     ports:
       - 9000:9000
     volumes:
-      - /tmp/log:/tmp/log
+      - /tmp/gzhupi:/tmp/gzhupi
+
+    environment:
+      - GZHUPI_DB_HOST=ifeel.vip
+      - GZHUPI_DB_PORT=5432
+      - GZHUPI_DB_USER=gzhupi
+      - GZHUPI_DB_PASSWORD=gzhupi
+      - GZHUPI_DB_DBNAME=gzhupi
+      - GZHUPI_DB_SSLMODE=require
+      - TZ=Asia/Shanghai

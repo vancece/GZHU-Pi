@@ -127,17 +127,24 @@ func BasicAuthClient(username, password string) (client *JWClient, err error) {
 	if ok {
 		return nil, LoginError
 	}
+	ok, _ = regexp.MatchString(`用户名[\s\S]*密码`, string(body))
+	if ok {
+		return nil, fmt.Errorf("不知为啥，就是没有登录进去，请告知开发者")
+	}
 	return c, nil
 }
 
+var rpcClient *rpc.Client
+
 func (c *JWClient) GetCaptcha() (capture string) {
 
-	return ""
-
-	client, err := rpc.Dial("tcp", "ifeel.vip:7201")
-	if err != nil {
-		logs.Error(err)
-		return
+	var err error
+	if rpcClient == nil {
+		rpcClient, err = rpc.Dial("tcp", "ifeel.vip:7201")
+		if err != nil {
+			logs.Error(err)
+			return
+		}
 	}
 
 	const maxTry = 3
@@ -154,7 +161,7 @@ func (c *JWClient) GetCaptcha() (capture string) {
 			return
 		}
 
-		err = client.Call("OcrService.Capture", body, &capture)
+		err = rpcClient.Call("OcrService.Capture", body, &capture)
 		if err != nil {
 			logs.Error(err)
 			return

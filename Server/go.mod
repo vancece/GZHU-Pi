@@ -10,8 +10,6 @@ require (
 	github.com/jinzhu/gorm v1.9.11
 	github.com/json-iterator/go v1.1.7
 	github.com/lib/pq v1.2.0 // indirect
-	github.com/otiai10/gosseract v2.2.1+incompatible
-	github.com/otiai10/mint v1.3.0 // indirect
 	github.com/shiena/ansicolor v0.0.0-20151119151921-a422bbe96644 // indirect
 	github.com/silenceper/wechat v2.0.0+incompatible
 	github.com/spf13/viper v1.4.0
