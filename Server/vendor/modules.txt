@@ -4,10 +4,19 @@ github.com/PuerkitoBio/goquery
 github.com/andybalholm/cascadia
 # github.com/astaxie/beego v1.12.0
 github.com/astaxie/beego/logs
+# github.com/auth0/go-jwt-middleware v0.0.0-20190805220309-36081240882b
+github.com/auth0/go-jwt-middleware
 # github.com/boltdb/bolt v1.3.1
 github.com/boltdb/bolt
 # github.com/bradfitz/gomemcache v0.0.0-20180710155616-bc664df96737
 github.com/bradfitz/gomemcache/memcache
+# github.com/clbanning/mxj v1.8.4
+github.com/clbanning/mxj
+github.com/clbanning/mxj/j2x
+# github.com/dgrijalva/jwt-go v3.2.0+incompatible
+github.com/dgrijalva/jwt-go
+# github.com/fatih/color v1.9.0
+github.com/fatih/color
 # github.com/fsnotify/fsnotify v1.4.7
 github.com/fsnotify/fsnotify
 # github.com/gomodule/redigo v2.0.0+incompatible
@@ -26,11 +35,17 @@ github.com/hashicorp/hcl/hcl/token
 github.com/hashicorp/hcl/json/parser
 github.com/hashicorp/hcl/json/scanner
 github.com/hashicorp/hcl/json/token
+# github.com/inconshreveable/mousetrap v1.0.0
+github.com/inconshreveable/mousetrap
 # github.com/jinzhu/gorm v1.9.11
 github.com/jinzhu/gorm
 github.com/jinzhu/gorm/dialects/postgres
 # github.com/jinzhu/inflection v1.0.0
 github.com/jinzhu/inflection
+# github.com/jmoiron/sqlx v1.2.0
+github.com/jmoiron/sqlx
+github.com/jmoiron/sqlx/reflectx
+github.com/jmoiron/sqlx/types
 # github.com/json-iterator/go v1.1.7
 github.com/json-iterator/go
 # github.com/lib/pq v1.2.0
@@ -40,14 +55,43 @@ github.com/lib/pq/oid
 github.com/lib/pq/scram
 # github.com/magiconair/properties v1.8.0
 github.com/magiconair/properties
+# github.com/mattn/go-colorable v0.1.4
+github.com/mattn/go-colorable
+# github.com/mattn/go-isatty v0.0.11
+github.com/mattn/go-isatty
+# github.com/mitchellh/go-homedir v1.1.0
+github.com/mitchellh/go-homedir
 # github.com/mitchellh/mapstructure v1.1.2
 github.com/mitchellh/mapstructure
 # github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421
 github.com/modern-go/concurrent
 # github.com/modern-go/reflect2 v0.0.0-20180701023420-4b7aa43c6742
 github.com/modern-go/reflect2
+# github.com/nuveo/log v0.0.0-20190430190217-44d02db6bdf8
+github.com/nuveo/log
 # github.com/pelletier/go-toml v1.2.0
 github.com/pelletier/go-toml
+# github.com/prest/adapters v0.0.0-20190405151647-53750aa8ac63
+github.com/prest/adapters
+github.com/prest/adapters/postgres
+github.com/prest/adapters/postgres/formatters
+github.com/prest/adapters/postgres/internal/connection
+github.com/prest/adapters/postgres/statements
+github.com/prest/adapters/scanner
+# github.com/prest/cmd v0.0.0-20190320205342-75b2d0c5d4a2
+github.com/prest/cmd
+# github.com/prest/config v0.0.0-20190409232338-8a78beea4d99
+github.com/prest/config
+github.com/prest/config/router
+# github.com/prest/controllers v0.0.0-20190714165742-7200b74ea33a
+github.com/prest/controllers
+# github.com/prest/helpers v0.0.0-20180627002842-07dcf603c9a1
+github.com/prest/helpers
+# github.com/prest/middlewares v0.0.0-20190501210230-25fb4a665793
+github.com/prest/middlewares
+github.com/prest/middlewares/statements
+# github.com/prest/template v0.0.0-20190409192546-ae0e5431a9b5
+github.com/prest/template
 # github.com/shiena/ansicolor v0.0.0-20151119151921-a422bbe96644
 github.com/shiena/ansicolor
 # github.com/silenceper/wechat v2.0.0+incompatible
@@ -71,22 +115,33 @@ github.com/spf13/afero
 github.com/spf13/afero/mem
 # github.com/spf13/cast v1.3.0
 github.com/spf13/cast
+# github.com/spf13/cobra v0.0.5
+github.com/spf13/cobra
 # github.com/spf13/jwalterweatherman v1.0.0
 github.com/spf13/jwalterweatherman
 # github.com/spf13/pflag v1.0.3
 github.com/spf13/pflag
 # github.com/spf13/viper v1.4.0
 github.com/spf13/viper
+# github.com/urfave/negroni v1.0.0
+github.com/urfave/negroni
 # golang.org/x/crypto v0.0.0-20190325154230-a5d413f7728c
 golang.org/x/crypto/pkcs12
 golang.org/x/crypto/pkcs12/internal/rc2
 # golang.org/x/net v0.0.0-20190522155817-f3200d17e092
 golang.org/x/net/html
 golang.org/x/net/html/atom
-# golang.org/x/sys v0.0.0-20191003212358-c178f38b412c
+# golang.org/x/sys v0.0.0-20191026070338-33540a1f6037
 golang.org/x/sys/unix
 # golang.org/x/text v0.3.1-0.20180807135948-17ff2d5776d2
 golang.org/x/text/transform
 golang.org/x/text/unicode/norm
+# gopkg.in/mattes/migrate.v1 v1.3.2
+gopkg.in/mattes/migrate.v1/driver
+gopkg.in/mattes/migrate.v1/driver/postgres
+gopkg.in/mattes/migrate.v1/file
+gopkg.in/mattes/migrate.v1/migrate
+gopkg.in/mattes/migrate.v1/migrate/direction
+gopkg.in/mattes/migrate.v1/pipe
 # gopkg.in/yaml.v2 v2.2.2
 gopkg.in/yaml.v2
