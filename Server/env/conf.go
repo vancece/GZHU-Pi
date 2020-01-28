@@ -64,15 +64,16 @@ type Configure struct {
 		Name    string `json:"name" remark:"应用名称"`
 		Version string `json:"version" remark:"软件发布版本，对应仓库tag版本"`
 		Mode    string `json:"mode" remark:"开发模式develop/test/product"`
+		PRest   bool   `json:"prest" remark:"" remark:"是否开启pRest接口服务"`
 	}
 	Db struct {
 		Type     string `json:"type" remark:"数据库类型"`
 		Host     string `json:"host" remark:"数据库主机"`
-		Port     string `json:"port" remark:"数据库端口"`
+		Port     int64  `json:"port" remark:"数据库端口"`
 		User     string `json:"user" remark:"数据库用户"`
 		Password string `json:"password" remark:"数据库密码"`
 		Dbname   string `json:"dbname" remark:"数据库名"`
-		Sslmode  string `json:"sslmode" remark:"ssl模式"`
+		SslMode  string `json:"sslmode" remark:"ssl模式"`
 	}
 	Redis struct {
 		Host     string `json:"host" remark:"redis主机"`
@@ -108,14 +109,31 @@ func InitConfigure() (err error) {
 				return err
 			}
 
-			//读取配置文件初始化结构体
-			value := viper.GetString(sec + "." + tag)
-			if value == "" {
-				err = fmt.Errorf("get a blank value of [%s].%s %s", sec, tag, remark)
-				logs.Error(err)
-				return err
+			if key.Type.Kind() == reflect.String {
+
 			}
-			keyValue.SetString(value)
+			//根据类型识别配置字段
+			switch key.Type.Kind() {
+			case reflect.String:
+				value := viper.GetString(sec + "." + tag)
+				if value == "" {
+					err = fmt.Errorf("get a blank value of [%s].%s %s", sec, tag, remark)
+					logs.Error(err)
+					return err
+				}
+				keyValue.SetString(value)
+			case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
+				value := viper.GetInt64(sec + "." + tag)
+				keyValue.SetInt(value)
+			case reflect.Bool:
+				value := viper.GetBool(sec + "." + tag)
+				keyValue.SetBool(value)
+
+			default:
+				logs.Warn("unsupported config struct key type")
+			}
+
+			//读取配置文件初始化结构体
 
 		}
 	}

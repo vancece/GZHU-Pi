@@ -1,0 +1,80 @@
+# 开启后，pRest不使用jwt认证
+debug = true
+
+[app]
+name = "GZHU-Pi"
+version = "1.1"
+mode = "debug"
+prest = true
+log_level = "debug"
+logfile = "/tmp/gzhupi/log.log"
+
+[rpc]
+addr = "ifeel.vip:7201"
+token = "1234"
+
+[db]
+type = "postgres"
+host = "gzhu-pi-db"
+port = "5432"
+user = "postgres"
+password = "postgres"
+dbname = "postgres"
+sslmode = "disable"
+
+[redis]
+host = "127.0.0.1"
+port = "6379"
+password = "foobar"
+
+[weixin]
+path = "/"
+token = "foobar"
+app_id = "12345678"
+secret = "12345678"
+
+
+# ================================================
+# 以下是pRest的配置 Documents https://postgres.rest/
+# ================================================
+
+# enabling debug mode will disable JWT authorization
+debug = true
+
+[http]
+port = 9000
+
+[jwt]
+key = "secret"
+algo = "HS256"
+
+[pg]
+host = "ifeel.vip"
+user = "ards"
+pass = "ards"
+port = 5432
+database = "ards"
+## or used cloud factor
+# URL = "postgresql://user:pass@localhost/mydatabase/?sslmode=disable"
+
+[ssl]
+mode = "disable"
+sslcert = "./PATH"
+sslkey = "./PATH"
+sslrootcert = "./PATH"
+
+[cors]
+alloworigin = ["*"]
+
+[access]
+restrict = false # can access only the tables listed below
+
+[[access.tables]]
+name = "v_user"
+permissions = ["read"]
+fields = ["*"]
+
+[[access.tables]]
+name = "t_user"
+permissions = ["write"]
+fields = ["id"]

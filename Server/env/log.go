@@ -11,7 +11,7 @@ func InitLogger(path string) error {
 	if path == "" {
 		path = "/tmp/log/"
 	}
-	//在运行目录下创建日志目录
+	//创建日志目录
 	err := os.MkdirAll(path, os.ModePerm)
 	if err != nil {
 		log.Fatal("创建日志目录失败 ", err)

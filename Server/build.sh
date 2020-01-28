@@ -7,4 +7,4 @@ docker run -it -v "$PWD":/tmp/code -w /tmp/code golang:1.12.9-stretch \
 # docker run -it -v "$PWD":/tmp/code -w /tmp/code zhenshaw/gzhupi:builder \
 #         bash -c CGO_ENABLED=1 go build  -a -ldflags '-extldflags "-static"' -mod=vendor -o /tmp/code/build/bootstrap /tmp/code/main.go
 
-cp config.yaml ./build
+cp config.toml ./build

@@ -4,55 +4,103 @@ import (
 	"GZHU-Pi/env"
 	"GZHU-Pi/models"
 	"GZHU-Pi/routers"
-	"fmt"
+	"github.com/astaxie/beego/logs"
 	"github.com/gorilla/mux"
+	"github.com/prest/adapters/postgres"
+	"github.com/prest/cmd"
+	"github.com/prest/config"
+	"github.com/prest/config/router"
+	"github.com/prest/middlewares"
+	"github.com/spf13/viper"
 	"log"
 	"net/http"
 	"os"
+	"strings"
 )
-
-type App struct {
-	Client *http.Client
-	Config []string
-	Router []http.Handler
-}
-
-func (app *App) InitApp() error {
-
-	return nil
-}
 
 func main() {
 
 	err := env.InitConfigure()
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
+
+	// init db without handling errors
 	go models.InitDb()
 
 	r := mux.NewRouter()
 
-	//获取阿里云函数计算容器端口
+	//获取阿里云函数计算容器内部端口
 	port := os.Getenv("FC_SERVER_PORT")
 	if port == "" {
 		port = "9000"
-		fmt.Println("自主部署 Server on port: " + port)
+		logs.Info("自主部署 Server on port: " + port)
 		_ = env.InitLogger("./log/")
-		r = muxRouter("")
+		r = r.PathPrefix("/api/v1").Subrouter()
 	} else {
-		fmt.Println("阿里云云函数部署 Server on port: " + port)
+		logs.Info("阿里云云函数部署 Server on port: " + port)
 		_ = env.InitLogger("/tmp/log/")
-		r = muxRouter("/2016-08-15/proxy/GZHU-API/go")
+		r = r.PathPrefix("/2016-08-15/proxy/GZHU-API/go/api/v1").Subrouter()
 	}
 
-	if err := http.ListenAndServe(":"+port, r); err != nil {
-		log.Fatal(err)
+	if env.Conf.App.PRest == true {
+
+		logs.Info("启用pRest接口服务")
+		runWithPRest(r)
+
+	} else {
+
+		customRouter(r)
+		if err := http.ListenAndServe(":"+port, r); err != nil {
+			log.Fatal(err)
+		}
 	}
 }
 
-func muxRouter(prefix string) *mux.Router {
-	r := mux.NewRouter()
-	r = r.PathPrefix(prefix + "/api/v1").Subrouter()
+func runWithPRest(r *mux.Router) {
+
+	//同步应用配置 覆盖pRest部分配置
+	viper.Set("pg.host", viper.GetString("db.host"))
+	viper.Set("pg.user", viper.GetString("db.user"))
+	viper.Set("pg.pass", viper.GetString("db.password"))
+	viper.Set("pg.port", viper.GetInt("db.port"))
+	viper.Set("pg.database", viper.GetString("db.dbname"))
+	viper.Set("ssl.mode", viper.GetString("db.sslmode"))
+
+	// load config for pREST
+	config.Load()
+
+	// Load Postgres Adapter
+	postgres.Load()
+
+	// Get pREST app
+	n := middlewares.GetApp()
+
+	// Register custom middleware
+	n.UseFunc(func(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
+		//该中间件用于消除路由前缀对pRest内部路由的影响
+		logs.Info(r.URL.Path)
+		r.URL.Path = strings.ReplaceAll(r.URL.Path, "/api/v1", "")
+		r.URL.Path = strings.ReplaceAll(r.URL.Path, "/2016-08-15/proxy/GZHU-API/go", "")
+		next(w, r)
+	})
+
+	// Get pREST router
+	r = router.Get()
+
+	// just for test
+	r.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) {
+		_, _ = w.Write([]byte("Pong!"))
+	})
+
+	// Register custom routes
+	customRouter(r)
+
+	// Call pREST cmd
+	cmd.Execute()
+}
+
+func customRouter(r *mux.Router) *mux.Router {
 
 	//微信公众号接口
 	//r.HandleFunc("/wx/check", routers.PanicMV(routers.WeChatCheck))

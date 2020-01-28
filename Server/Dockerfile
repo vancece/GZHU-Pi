@@ -6,7 +6,7 @@ RUN go build --mod=vendor main.go
 
 FROM alpine
 COPY --from=0 /home/main /home
-COPY --from=0 /home/config.yaml /home
+COPY --from=0 /home/config.toml /home
 WORKDIR /home
 
 CMD ["/home/main"]
