@@ -48,6 +48,15 @@
 <view wx:if="{{showCount}}" class="count-text text-gray text-center text-sm" style="bottom:{{hw*countHeight}}px">累计合成 {{count}} 张</view>
 
 <!-- 朋友圈海报 -->
-<modal show="{{showPost}}" custom="{{true}}" contentBg="">
+<modal show="{{showPost}}" custom="{{true}}">
   <image catchtap="preview" data-src="{{postPath}}" src="{{postPath}}" mode="widthFix" style="width:525rpx;border-radius:30rpx"></image>
+</modal>
+
+<!-- 头像活动选择 -->
+<modal show="{{showChoice}}" custom="{{true}}" bind:cancel="navBack">
+  <view class="text-center text-bold margin">头像类型</view>
+  <view style='font-size:90%;color:rgb(80,80,80);margin:20rpx;'>
+    <button bindtap="chooseType" id="gzhu_gw_2020_newyear_avatar" class="margin bg-yellow text-white round">新年版</button>
+    <button bindtap="chooseType" id="gzhu_tw_poster" class="margin bg-olive text-white round">国庆版</button>
+  </view>
 </modal>

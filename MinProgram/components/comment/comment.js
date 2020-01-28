@@ -3,7 +3,8 @@ Component({
 
   properties: {
     table: {
-      type: String
+      type: String,
+      value: "comment"
     },
     object_id: {
       type: String,
@@ -20,7 +21,8 @@ Component({
 
   data: {
     content: "",
-    authorized: true
+    authorized: true,
+    debounce: false,
   },
 
   lifetimes: {
@@ -110,23 +112,35 @@ Component({
 
     // 违规检测
     checkComment() {
-      if (this.data.content == "" || this.data.content == undefined) return
-      wx.BaaS.wxCensorText(this.data.content).then(res => {
-        console.log(res.data.risky)
-        if (res.data.risky) {
-          wx.showModal({
-            title: '警告',
-            content: '您的发布内容包含违规词语',
-          })
-          return
-        }
-        this.addComment()
-      }, err => {
-        console.log(err)
-      })
+      // if (this.data.content == "" || this.data.content == undefined) return
+      // wx.BaaS.wxCensorText(this.data.content).then(res => {
+      //   console.log(res.data.risky)
+      //   if (res.data.risky) {
+      //     wx.showModal({
+      //       title: '警告',
+      //       content: '您的发布内容包含违规词语',
+      //     })
+      //     return
+      //   }
+      this.addComment()
+      // }, err => {
+      //   console.log(err)
+      // })
     },
     // 发布评论
     addComment() {
+      let that = this
+      // 防抖处理
+      if (this.data.debounce) return
+      this.data.debounce = true
+      setTimeout(() => {
+        that.data.debounce = false
+      }, 2000)
+
+      if (this.data.table == "" || this.data.object_id == "") {
+        console.log("illegal argument")
+        return
+      }
 
       let table = this.data.table
       let object_id = this.data.object_id

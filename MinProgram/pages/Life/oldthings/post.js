@@ -48,7 +48,7 @@ Page({
 
   // 不同意，返回上一页
   navBack() {
-    wx.navigateBack({})
+    wx.navigateBack()
   },
 
   // 获取用户信息

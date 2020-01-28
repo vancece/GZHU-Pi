@@ -37,9 +37,9 @@
     </view>
 
     <!-- 标签，最多三个 -->
-    <view class="cu-form-group margin-top" wx:key>
+    <view class="cu-form-group margin-top">
       <view class=" flex flex-wrap">
-        <view class="padding-xs" wx:for="{{label}}" wx:key>
+        <view class="padding-xs" wx:for="{{label}}" wx:key="index">
           <view bindtap="labelDel" id="{{index}}" class="cu-tag radius line-red">{{item}}</view>
         </view>
       </view>

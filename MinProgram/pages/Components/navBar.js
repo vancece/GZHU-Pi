@@ -36,7 +36,7 @@ Component({
       type: Boolean,
       value: true
     },
-    
+
     // 如果当前页面是最顶层，可以自定义返回的页面
     redirectTo: {
       type: String,
@@ -51,11 +51,14 @@ Component({
   methods: {
     // 返回上一页
     navigateBack() {
-      // console.log(getCurrentPages().length)
       if (getCurrentPages().length == 1) {
-        console.log(this)
-        wx.redirectTo({
+        wx.navigateTo({
           url: this.data.redirectTo,
+          fail: err => {
+            wx.switchTab({
+              url: this.data.redirectTo,
+            })
+          }
         })
       } else {
         wx.navigateBack({
@@ -67,12 +70,12 @@ Component({
 
   // 生命周期方法
   lifetimes: {
-    created: function () { },
+    created: function() {},
 
-    attached: function () {
+    attached: function() {
       let that = this
       wx.getSystemInfo({
-        success: function (res) {
+        success: function(res) {
           that.setData({
             statusBarHeight: res.statusBarHeight, //状态栏高度
             navBarHeight: res.statusBarHeight + 45 // 小程序导航栏高度

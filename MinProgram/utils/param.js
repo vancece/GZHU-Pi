@@ -1,6 +1,6 @@
 var param = {
   //启动模式 debug verify prod
-  "mode": "debug",
+  "mode": "prod",
   // 服务器地址列表
   "server": {
     "aliyun_go": "https://1171058535813521.cn-shenzhen.fc.aliyuncs.com/2016-08-15/proxy/GZHU-API/go/api/v1",

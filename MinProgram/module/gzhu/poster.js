@@ -8,6 +8,7 @@ let that;
 Page({
 
   data: {
+    showChoice: false,
     // 屏幕比例
     ratio: wx.getSystemInfoSync().screenHeight / wx.getSystemInfoSync().screenWidth,
     //单位高度
@@ -34,26 +35,45 @@ Page({
   },
 
   onLoad: function(options) {
-    that = this;
-    wx.showLoading({
-      title: '加载中...',
-    })
+    
+    this.getAuthStatus()
+
     if (options.id == undefined) {
-      wx.showToast({
-        title: '参数非法',
-        icon: "none"
+      this.setData({
+        showChoice: true,
       })
       return
     }
-
+    wx.showLoading({
+      title: '加载中...',
+    })
     this.data.id = options.id
+    this.getConfigTpl()
 
-console.log(this.data.id)
     setTimeout(function() {
       wx.hideLoading()
-    }, 2000)
-    this.getAuthStatus()
+    }, 1000)
+  },
 
+  navBack() {
+    wx.navigateBack()
+    this.setData({
+      showChoice: false,
+    })
+  },
+
+  chooseType(e) {
+    this.data.id = e.currentTarget.id
+    wx.showLoading({
+      title: '加载中...',
+    })
+    this.setData({
+      showChoice: false,
+    })
+    setTimeout(function() {
+      wx.hideLoading()
+    }, 1000)
+    this.getAuthStatus()
     this.getConfigTpl()
   },
 
@@ -246,7 +266,7 @@ console.log(this.data.id)
     let that = this
     let Table = new wx.BaaS.TableObject("config")
     let query = new wx.BaaS.Query()
-    
+
     query.compare('name', '=', this.data.id)
     Table.setQuery(query).limit(1).find().then(res => {
       if (res.data.objects.length == 0) {

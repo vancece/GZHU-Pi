@@ -25,7 +25,7 @@
 		}
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.6.0",
+	"libVersion": "2.8.3",
 	"appid": "wxe194e8a8d4601dae",
 	"projectname": "GZHU%20Pi",
 	"debugOptions": {
@@ -61,15 +61,15 @@
 			"list": [
 				{
 					"id": 0,
-					"name": "module/gzhu/poster",
+					"name": "头像",
 					"pathName": "module/gzhu/poster",
 					"query": "id=gzhu_tw_poster",
 					"scene": null
 				},
 				{
-					"id": 2,
-					"name": "留言板",
-					"pathName": "pages/Life/wall/board",
+					"id": 1,
+					"name": "发布",
+					"pathName": "pages/Life/wall/post",
 					"query": "",
 					"scene": 1047
 				},
@@ -161,6 +161,13 @@
 					"id": -1,
 					"name": "投票",
 					"pathName": "module/vote/vote",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "广大墙详情",
+					"pathName": "pages/Life/wall/detail",
 					"query": "",
 					"scene": null
 				}
