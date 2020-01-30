@@ -1,4 +1,6 @@
-import { utils } from './utils/utils.js'
+import {
+  utils
+} from './utils/utils.js'
 import config from './utils/config.js'
 import tpl from './tpl/tpl.js'
 
@@ -8,6 +10,10 @@ let init = true
 let _columns = 2
 let _defaultExpandStatus = false
 Component({
+  options: {
+    addGlobalClass: true,
+    multipleSlots: true
+  },
   data: {
     list: [],
     rawData: {}, // 源数据
@@ -26,21 +32,32 @@ Component({
 
   // properties list
   properties: {
+
+    _tplName: {
+      type: String,
+      value: "oldthings"
+    },
+
     // optional
     // optional | default: { }
     option: {
       type: Object,
       value: {},
-      observer: function (newVal) {
+      observer: function(newVal) {
         if (!newVal) {
           return
         }
 
         let defaultExpandStatus = !!newVal.defaultExpandStatus ? newVal.defaultExpandStatus : false
-        let { _tplName, _likeIcon } = this.data
+        let {
+          _tplName,
+          _likeIcon
+        } = this.data
 
         if (!!newVal.imageFillMode) {
-          this.setData({ _imageFillMode: newVal.imageFillMode })
+          this.setData({
+            _imageFillMode: newVal.imageFillMode
+          })
         }
 
         if (!!newVal.columns && !isNaN(newVal.columns)) {
@@ -58,18 +75,24 @@ Component({
               _defaultExpandStatus = !!defaultExpandStatus
               break
           }
-          this.setData({ _tplName })
+          this.setData({
+            _tplName
+          })
         }
 
         if (!!newVal.icon) {
-          let { icon } = newVal
+          let {
+            icon
+          } = newVal
           if (!!icon.fill) {
             _likeIcon.like = icon.fill
           }
           if (!!icon.default) {
             _likeIcon.default = icon.default
           }
-          this.setData({ _likeIcon })
+          this.setData({
+            _likeIcon
+          })
         }
       }
     },
@@ -78,12 +101,16 @@ Component({
     dataSet: {
       type: Array,
       value: [],
-      observer: function (newVal) {
-        let { rawData } = this.data
+      observer: function(newVal) {
+        let {
+          rawData
+        } = this.data
         let dataSet = {}
         let orderArr = []
 
-        let { option } = this.properties
+        let {
+          option
+        } = this.properties
         let backgroundColor = ''
         let defaultExpandStatus = false
         let forceRepaint = false
@@ -129,8 +156,11 @@ Component({
           orderArr.push(item['id'])
         })
 
-        this.setData(
-          { rawData: dataSet, orderArr, _defaultExpandStatus: defaultExpandStatus },
+        this.setData({
+            rawData: dataSet,
+            orderArr,
+            _defaultExpandStatus: defaultExpandStatus
+          },
           this._getRenderList.bind(this, true)
         )
 
@@ -148,7 +178,10 @@ Component({
       return new Promise((resolve, reject) => {
         let query = wx.createSelectorQuery().in(this)
         query.select('#card-' + card_id).boundingClientRect(res => {
-          resolve({ card_id, height: res.height })
+          resolve({
+            card_id,
+            height: res.height,
+          })
         })
         query.exec()
       })
@@ -160,7 +193,10 @@ Component({
      */
     _computeCardHeight(opt) {
       // 默认展开
-      let { rawData, orderArr } = this.data
+      let {
+        rawData,
+        orderArr
+      } = this.data
 
       let height = []
       height.length = 0
@@ -181,7 +217,9 @@ Component({
             rawData[item.card_id]['_height'] = item.height
             rawData[item.card_id]['_rendered'] = true
           })
-          this.setData({ rawData }, this._getRenderList)
+          this.setData({
+            rawData
+          }, this._getRenderList)
         })
       } else {
         let card_id = opt && opt.id ? opt.id : 0
@@ -191,7 +229,9 @@ Component({
             let currentHeight = res.height
             if (currentHeight !== rawData[card_id]['_height']) {
               rawData[card_id]['_height'] = res.height
-              this.setData({ rawData }, this._getRenderList)
+              this.setData({
+                rawData
+              }, this._getRenderList)
             }
           })
         } else {
@@ -206,7 +246,9 @@ Component({
               rawData[item.card_id]['_height'] = item.height
               rawData[item.card_id]['_rendered'] = true
             })
-            this.setData({ rawData }, this._getRenderList)
+            this.setData({
+              rawData
+            }, this._getRenderList)
           })
         }
       }
@@ -229,18 +271,30 @@ Component({
      */
     _toggleExpand(event) {
       const card_id = event.currentTarget.dataset.cardId
-      const { rawData } = this.data
+      const {
+        rawData
+      } = this.data
       rawData[card_id]['_expandStatus'] = !rawData[card_id]['_expandStatus']
 
-      this.setData({ rawData }, this._computeCardHeight.bind(this, { id: card_id }))
-      this.triggerEvent('onCardExpanded', { card_id, expand_status: rawData[card_id]['_expandStatus'] })
+      this.setData({
+        rawData
+      }, this._computeCardHeight.bind(this, {
+        id: card_id
+      }))
+      this.triggerEvent('onCardExpanded', {
+        card_id,
+        expand_status: rawData[card_id]['_expandStatus']
+      })
     },
 
     _getRenderList(shouleRecomputeHeight = false) {
       let renderList = []
       let heightArr = []
       const arrLength = _columns
-      const { orderArr, rawData } = this.data
+      const {
+        orderArr,
+        rawData
+      } = this.data
       heightArr = Array(arrLength).fill(0)
 
       // initial render Arr
@@ -256,10 +310,14 @@ Component({
 
       // 由于需要 renderList 先去前台渲染完已有 dom 节点之后再来这边计算每个卡片的高度
       if (shouleRecomputeHeight) {
-        this.setData({ renderList }, this._computeCardHeight)
+        this.setData({
+          renderList
+        }, this._computeCardHeight)
         return
       } else {
-        this.setData({ renderList })
+        this.setData({
+          renderList
+        })
       }
     },
 
@@ -275,8 +333,8 @@ Component({
 
   // 生命周期方法
   lifetimes: {
-    attached: function () {
-      // console.log(this.data)
+    attached: function() {
+      console.log(this.data)
     }
   },
 })

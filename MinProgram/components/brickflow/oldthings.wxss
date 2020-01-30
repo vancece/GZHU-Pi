@@ -18,7 +18,7 @@
 }
 
 .oldthings .base-info .price {
-  flex: 1;
+  /* flex: 1; */
   font-size: 150%;
   color: var(--olive);
   margin-right: 10rpx;

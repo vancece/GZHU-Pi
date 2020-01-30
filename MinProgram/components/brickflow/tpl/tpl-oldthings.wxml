@@ -31,11 +31,11 @@
           <!-- 标签 -->
           <view class=" flex flex-wrap">
             <view class="padding-xs" wx:for="{{content_list[item].label}}" wx:key="index">
-              <view class="cu-tag radius line-red">{{item}}</view>
+              <view class="cu-tag radius line-red" style="height:35rpx">{{item}}</view>
             </view>
           </view>
           <!-- 统计信息 -->
-          <view class="text-gray text-sm text-right padding-right">
+          <view class="text-gray text-right padding-right">
             <text class="cuIcon-attentionfill margin-xs"></text> {{content_list[item].viewed}}
             <!-- <text class="cuIcon-likefill margin-xs"></text> {{content_list[item].liked}} -->
           </view>
@@ -50,6 +50,6 @@
 
 <template name="images-viewer">
   <view wx:if="{{ !!images && !!images.length}}" class="media-previewer">
-    <image wx:if="{{index<3}}" wx:for="{{images}}" wx:key="index" class="pics size_{{images.length}}" src="{{item}}" mode="{{_imageFillMode}}" data-images="{{images}}" data-current-image="{{item}}"></image>
+    <image lazy-load wx:if="{{index<3}}" wx:for="{{images}}" wx:key="index" class="pics size_{{images.length}}" src="{{item}}" mode="{{_imageFillMode}}" data-images="{{images}}" data-current-image="{{item}}"></image>
   </view>
 </template>

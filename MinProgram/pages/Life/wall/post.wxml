@@ -15,7 +15,7 @@
 
     <image wx:if="{{imgList.length==0}}" bindtap="chooseImage" mode="widthFix" style="heigth:120rpx;width:120rpx" src="{{iconCamera}}"></image>
     <block wx:if="{{imgList.length!=0}}">
-      <image mode="widthFix" src="{{item}}" bindtap="viewImage" data-url="{{item}}"></image>
+      <image mode="widthFix" src="{{item}}" bindtap="viewImage" data-url="{{item}}" style="width:100%"></image>
       <view class="opration">
         <text wx:if="{{!hideAddBtn}}" bindtap="chooseImage" class="cuIcon-add text-red" style="font-size:130%"></text>
         <text bindtap="deleteImage" data-index="{{index}}" class="cuIcon-move text-red" style="font-size:130%"></text>

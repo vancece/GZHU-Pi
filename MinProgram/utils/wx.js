@@ -40,7 +40,7 @@ wx.$ajax = function(option) {
       header: option.header,
       success: (res) => {
         if (option.checkStatus == false) {
-          resolve(res.data)
+          resolve(res)
           return
         }
         if (res && (res.data.status == 0 || res.data.status == 200)) {
@@ -102,8 +102,12 @@ wx.$navTo = function(e, args) {
       wx.navigateTo({
         url: e.target.dataset.url + args_str,
         fail: err => {
+          console.warn(err)
           wx.switchTab({
             url: e.target.dataset.url + args_str,
+            fail: err => {
+              console.err(err)
+            }
           })
         }
       })
@@ -111,15 +115,28 @@ wx.$navTo = function(e, args) {
       wx.navigateTo({
         url: e.currentTarget.dataset.url + args_str,
         fail: err => {
+          console.warn(err)
           wx.switchTab({
             url: e.currentTarget.dataset.url + args_str,
+            fail: err => {
+              console.err(err)
+            }
           })
         }
       })
     }
   } else {
     wx.navigateTo({
-      url: e + args_str
+      url: e + args_str,
+      fail: err => {
+        console.warn(err)
+        wx.switchTab({
+          url: e + args_str,
+          fail: err => {
+            console.err(err)
+          }
+        })
+      }
     })
   }
 }

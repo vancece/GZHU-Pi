@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "navBar": "/pages/Components/navBar",
+    "swiper-page": "/components/swiper-page/swiper-page",
+    "comment": "/components/comment/comment"
+  }
+}

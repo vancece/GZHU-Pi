@@ -35,7 +35,7 @@ Page({
   },
 
   onLoad: function(options) {
-    
+    that = this
     this.getAuthStatus()
 
     if (options.id == undefined) {
@@ -282,9 +282,13 @@ Page({
       that.setData({
         count: res.data.objects[0].addition_num
       })
-      wx.hideLoading()
+      setTimeout(function() {
+        wx.hideLoading()
+      }, 1000)
     }, err => {
-      wx.hideLoading()
+      setTimeout(function() {
+        wx.hideLoading()
+      }, 1000)
       console.log("获取在线配置出错，使用本地配置")
       that.data.config = PostConfig.config
       that.initConfig(PostConfig.config)

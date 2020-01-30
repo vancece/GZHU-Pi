@@ -11,7 +11,7 @@ App({
     bindStatus: false //学号绑定
   },
 
-  onLaunch: function (options) {
+  onLaunch: function(options) {
 
     wx.cloud.init()
     Config.init() //初始化配置文件
@@ -27,21 +27,25 @@ App({
     })
     wx.BaaS.ErrorTracker.enable()
 
+    this.getAppParam()
+
     if (options.scene == 1037 && JSON.stringify(options.referrerInfo) != "{}") {
       this.getAuthStatus(options.referrerInfo.extraData)
     } else {
       this.getAuthStatus()
     }
 
+
+    setTimeout(this.updateUserInfo, 1000)
   },
 
-  onError: function (res) {
+  onError: function(res) {
     wx.BaaS.ErrorTracker.track(res)
 
     this.aldstat.sendEvent('小程序启动错误', res)
   },
 
-  onShow: function () {
+  onShow: function() {
     this.aldstat.sendEvent('小程序启动时长', {
       time: Date.now() - startTime
     })
@@ -71,7 +75,7 @@ App({
       complete(res) {
         wx.getStorage({
           key: 'account',
-          success: function (res) {
+          success: function(res) {
             console.log("已绑定学号", res.data)
             that.globalData.bindStatus = true
             that.globalData.account = res.data
@@ -80,7 +84,7 @@ App({
             if (wx.getStorageSync("student_info") == "")
               Request.sync(res.data.username, res.data.password, "student_info")
           },
-          fail: function (res) {
+          fail: function(res) {
             // 来自迁移
             if (JSON.stringify(data) != "{}") {
               that.migrate(data)
@@ -102,12 +106,12 @@ App({
   updata() {
     const updateManager = wx.getUpdateManager()
 
-    updateManager.onCheckForUpdate(function (res) {
+    updateManager.onCheckForUpdate(function(res) {
       // 请求完新版本信息的回调
       console.log("新版本：", res.hasUpdate)
     })
 
-    updateManager.onUpdateReady(function () {
+    updateManager.onUpdateReady(function() {
       wx.showModal({
         title: '更新提示',
         content: '新版本已经准备好，是否重启应用？\n如遇缓存丢失，请重启小程序。',
@@ -120,11 +124,65 @@ App({
       })
     })
 
-    updateManager.onUpdateFailed(function () {
+    updateManager.onUpdateFailed(function() {
       // 新版本下载失败
     })
   },
 
+  updateUserInfo() {
+    return
+    wx.BaaS.auth.getCurrentUser().then(user => {
+      console.log(user)
+      let form = {
+        // stu_id:"",
+        minapp_id: user.user_id,
+        openid: user.openid,
+        unionid: user.unionid,
+        avatar: user.avatar,
+        nickname: user.nickname,
+        city: user.city,
+        country: user.country,
+        gender: user.gender,
+        language: user.language,
+        phone: user._phone,
+        // created_at: 
+      }
+      wx.$ajax({
+          url: "http://1171058535813521.cn-shenzhen.fc.aliyuncs.com/2016-08-15/proxy/GZHU-API/trail/api/v1/postgres/public/t_user",
+          data: form,
+          // loading: true,
+          checkStatus: false,
+          header: {
+            "content-type": "application/json"
+          }
+        })
+        .then(res => {
+          console.log(res)
+        })
+
+    }).catch(err => {
+      if (err.code === 604) {
+        console.log('用户未登录')
+      }
+    })
+  },
+
+  getAppParam() {
+    let tableName = 'config'
+    let recordID = '5d4daa727b9e3c65e7983f54'
+
+    let Product = new wx.BaaS.TableObject(tableName)
+    Product.get(recordID).then(res => {
+      console.log("在线配置：", res.data.data)
+      wx.$param = res.data.data
+    }, err => {
+      wx.showToast({
+        title: '请求出错',
+        icon: "none"
+      })
+    })
+
+  },
 
 
 })

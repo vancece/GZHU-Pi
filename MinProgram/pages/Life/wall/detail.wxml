@@ -1,0 +1,63 @@
+<block wx:if="{{detail.type=='情墙'}}">
+  <navBar title="广大情墙"></navBar>
+  <swiper-page></swiper-page>
+</block>
+
+<block wx:if="{{detail.type=='日常' || detail.type=='悄悄话'}}">
+  <navBar title="日常百事" titleColor="var(--darkGray)" occupy="{{(detail.image!=null && detail.image.length>0)?false:true}}"></navBar>
+
+  <swiper wx:if="{{detail.image.length>0}}" style="height:750rpx" class="square-dot animation-slide-top" autoplay indicator-dots="true" circular="true" indicator-color="#8799a3" indicator-active-color="var(--yellow)">
+    <swiper-item wx:for="{{detail.image}}" wx:key="index" class="flex justify-center {{cardCur==index?'cur':''}}">
+      <image bindtap="viewImage" data-url="{{item}}" src="{{item}}" mode="widthFix" style="width:100%"></image>
+    </swiper-item>
+  </swiper>
+
+  <view class="cu-card dynamic">
+    <view class="cu-item">
+      <view class="cu-list menu-avatar shadow -grey">
+        <!-- 头像等 -->
+        <view class="cu-item">
+          <view class="cu-avatar round sub" style="background-image:url({{detail.avatar}});"></view>
+          <view class="content flex-sub">
+            <view>{{detail.nickname}}</view>
+            <view class="text-gray text-sm flex justify-between">{{detail.created_at}}</view>
+          </view>
+          <view class="text-xxl" style="position:absolute;right:30rpx;top:30rpx">
+            <button class="blank-btn" open-type='share'>
+              <text class="cuIcon-share text-green margin-left-sm"></text>
+            </button>
+            <text bindtap="operate" data-op="delete" class="cuIcon-delete text-red margin-left-sm"></text>
+          </view>
+        </view>
+        <!-- 内容 -->
+        <view class="margin-lr">
+          <view class="text-lg text-orange"># {{detail.title}} #</view>
+          <view class="text-content">{{detail.content}}</view>
+        </view>
+        <!-- 标签、统计 -->
+        <view class="flex align-center margin-xs">
+          <view class="flex flex-wrap" style="flex:1">
+            <view class="padding-xs" wx:for="{{detail.label}}" wx:key="index">
+              <view class="cu-tag radius line-red">{{item}}</view>
+            </view>
+          </view>
+          <view class="text-gray text-lg text-right padding-sm" style="flex:1">
+            <text class="cuIcon-attentionfill margin-lr-xs"></text>10
+            <text class="cuIcon-appreciatefill margin-lr-xs"></text>20
+            <text class="cuIcon-messagefill margin-lr-xs"></text>30
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <comment table="comment" object_id="5e0fdc219fa74b397ef1758c"></comment>
+</block>
+
+<!-- 错误 -->
+<block wx:else>
+  <navBar title="广大墙"></navBar>
+  <view class="flex flex-direction align-center margin-xl">
+    <image style="width:150rpx;height:150rpx" src="https://cos.ifeel.vip/gzhu-pi/images/icon/empty.svg"></image>
+    <text class="text-gray">跑错地方了？！</text>
+  </view>
+</block>

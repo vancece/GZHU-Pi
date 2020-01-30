@@ -95,6 +95,7 @@ Page({
       label: this.data.label,
       anonymous: this.data.anonymous,
       addi: this.data.addi,
+      created_by: 1
     }
 
     if (form.anonymous) {
@@ -147,7 +148,7 @@ Page({
     console.log("表单数据", form)
     // 保存数据
     wx.$ajax({
-        url: "http://localhost:9000/api/v1/postgres/public/t_topic",
+        url: wx.$param.server["prest"] + "/postgres/public/t_topic",
         data: form,
         loading: true,
         checkStatus: false,
@@ -156,7 +157,7 @@ Page({
         }
       })
       .then(res => {
-        console.log(res)
+        console.log(res.data)
         this.setData({
           loading: false
         })
@@ -170,8 +171,11 @@ Page({
         wx.showToast({
           title: '发布成功',
         })
-        // TODO
-
+        setTimeout(function() {
+          wx.redirectTo({
+            url: '/pages/Life/wall/detail?id=' + res.data.id,
+          })
+        }, 1000)
       }).catch(err => {
         console.log(err)
         this.setData({

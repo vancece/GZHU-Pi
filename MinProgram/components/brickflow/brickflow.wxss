@@ -1,5 +1,4 @@
 @import "./oldthings.wxss";
-@import "../wxss/colorui.wxss";
 
 /* 瀑布流容器主体 */
 
@@ -7,6 +6,7 @@
   display: flex;
   flex-direction: row;
   padding: 15rpx;
+  word-break: break-all; /* 解决长英文不换号问题*/
 }
 
 /* 左右两列 */
@@ -27,14 +27,15 @@
 .list-item {
   break-inside: avoid;
   box-sizing: border-box;
-  padding-bottom: 20rpx;
+  margin-bottom: 20rpx;
 }
 
 /* 每一个卡片 */
 
 .list-box {
   position: relative;
-  border-radius: 5px;
+  border-radius: 15rpx;
+  overflow: hidden;
 }
 
 /* 内容区 不包含用户区 */
@@ -46,24 +47,22 @@
 /* 内容主体 */
 
 .list-box_content {
-  /* height: 71px; */
   min-height: 71px;
   font-size: 15px;
   line-height: 24px;
-  overflow: hidden;
 }
 
 /* 图片预览 */
 
-/* .media-previewer image {
-  margin-top: 8px;
+.media-previewer image {
+  margin-top: 4px;
   width: 100%;
   border-radius: 4px;
 }
 
 .media-previewer image:first-child {
   margin-top: 0;
-} */
+}
 
 .user-area {
   display: flex;
@@ -75,4 +74,12 @@
   width: 70rpx;
   height: 70rpx;
   border-radius: 50%;
+}
+
+.long-text {
+  overflow: hidden; /* 超出的文本隐藏 */
+  text-overflow: ellipsis; /* 溢出用省略号显示*/
+  display: -webkit-box; /* 作为弹性伸缩盒子模型显示。 */
+  -webkit-box-orient: vertical; /* 设置伸缩盒子的子元素排列方式--从上到下垂直排列 */
+  -webkit-line-clamp: 4; /* 显示的行 */
 }

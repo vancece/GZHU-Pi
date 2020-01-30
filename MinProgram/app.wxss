@@ -2,6 +2,10 @@
 @import "colorui/icon.wxss";
 @import "colorui/animation.wxss";
 
+Page {
+  word-break: break-all; /* 解决长英文不换号问题*/
+}
+
 .container {
   height: 100%;
   display: flex;
@@ -24,3 +28,16 @@
   justify-content: center;
 }
 
+/* 去除按键默认样式 */
+
+.blank-btn {
+  background-color: rgba(0, 0, 0, 0);
+  line-height: inherit;
+  display: inline;
+  padding: 0;
+  font-size: inherit;
+}
+
+.blank-btn::after {
+  border: 0;
+}

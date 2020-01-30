@@ -33,7 +33,7 @@ function headimgHD(imageUrl) {
 
 // 初始化知晓云SDK
 function initSdk() {
-  require('./sdk/sdk-wechat.2.8.0')
+  require('./sdk/sdk-wechat.3.6.0')
   let ClientID = 'd5add948fe00fbdd6cdf'
   wx.BaaS.init(ClientID, {
     autoLogin: true

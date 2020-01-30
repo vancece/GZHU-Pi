@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/Life/wall/wall",
     "pages/Campus/home/home",
     "pages/Campus/tools/emptyRoom",
     "pages/Setting/login/sync",
@@ -9,7 +10,6 @@
     "pages/Campus/home/addCourse/addCourse",
     "pages/Campus/grade/grade",
     "pages/Campus/tools/calendar",
-    "pages/Life/wall/wall",
     "pages/Setting/mine/mine",
     "pages/Campus/evaluation/evaluation",
     "pages/Campus/gzhu/index",
@@ -30,7 +30,9 @@
     "pages/Setting/about/data",
     "pages/Campus/second/second",
     "pages/Campus/grade/achieve",
-    "pages/Campus/grade/list"
+    "pages/Campus/grade/list",
+    "pages/Life/wall/post",
+    "pages/Life/wall/detail"
   ],
   "subpackages": [
     {
@@ -59,9 +61,25 @@
     "navigationBarTextStyle": "black",
     "navigationStyle": "custom"
   },
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/Campus/home/home",
+        "text": "Campus",
+        "iconPath": "assets/tabbar/kb.png",
+        "selectedIconPath": "assets/tabbar/kb-selected.png"
+      },
+      {
+        "pagePath": "pages/Life/wall/wall",
+        "text": "Life",
+        "iconPath": "assets/tabbar/wall.png",
+        "selectedIconPath": "assets/tabbar/wall-selected.png"
+      }
+    ]
+  },
   "plugins": {
     "sdkPlugin": {
-      "version": "3.4.0",
+      "version": "3.6.0",
       "provider": "wxc6b86e382a1e3294"
     },
     "tencentvideo": {

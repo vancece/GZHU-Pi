@@ -9,7 +9,7 @@
 		"es6": false,
 		"enhance": true,
 		"postcss": true,
-		"minified": true,
+		"minified": false,
 		"newFeature": true,
 		"coverView": true,
 		"nodeModules": true,
@@ -68,7 +68,7 @@
 				},
 				{
 					"id": 1,
-					"name": "发布",
+					"name": "广大墙发布",
 					"pathName": "pages/Life/wall/post",
 					"query": "",
 					"scene": 1047
@@ -161,6 +161,13 @@
 					"id": -1,
 					"name": "投票",
 					"pathName": "module/vote/vote",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 15,
+					"name": "广大墙",
+					"pathName": "pages/Life/wall/wall",
 					"query": "",
 					"scene": null
 				},

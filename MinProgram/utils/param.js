@@ -3,6 +3,7 @@ var param = {
   "mode": "prod",
   // 服务器地址列表
   "server": {
+    "prest": "https://1171058535813521.cn-shenzhen.fc.aliyuncs.com/2016-08-15/proxy/GZHU-API/trail/api/v1",
     "aliyun_go": "https://1171058535813521.cn-shenzhen.fc.aliyuncs.com/2016-08-15/proxy/GZHU-API/go/api/v1",
     "aliyun_py": "https://1171058535813521.cn-shanghai.fc.aliyuncs.com/2016-08-15/proxy/GZHU-API/Spider/",
     "tx": "https://ifeel.vip/api/v1",

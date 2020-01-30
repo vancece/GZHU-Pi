@@ -1,41 +1,35 @@
 <template name="list-item-theme_test">
+
   <view wx:for="{{render_list}}" wx:key="{{item}}" class="list-item" id="card-{{item}}">
-    <view class="list-box list-box_album is-expand" style="background-color:{{content_list[item]._background}}" data-card-id="{{content_list[item].id}}" bindtap="onBrickItemTap">
+    <view class="list-box is-expand shadow -grey" style="background-color:{{content_list[item]._background}};{{!!_fontColor?'color:'+_fontColor:''}}" data-card-id="{{content_list[item].id}}" bindtap="onBrickItemTap">
 
-      <view class="list-box_content">
 
-        <template is="images-viewer" data="{{images:content_list[item].images,_imageFillMode}}"></template>
+      <!-- 内容区 -->
+      <template is="images-viewer" data="{{images:content_list[item].image,_imageFillMode}}"></template>
 
-        <view class="album-text-area">
-          <view wx:if="{{content_list[item].title}}" class="album-text-area_title">
-            {{content_list[item].title}}
+      <view class="list-box_content margin-lr-xs">
+        <view class="long-text text-lg .text-orange"># {{content_list[item].title}}</view>
+        <view class="long-text text-black">{{content_list[item].content}}</view>
+
+        <!-- 用户信息等 -->
+        <view class="flex align-center justify-between margin-tb-xs" wx:if="{{content_list[item].avatar}}">
+          <view class="flex align-center">
+            <image class="cu-avatar round sm margin-lr-xs" src="{{content_list[item].avatar}}" mode="widthFix" catchtap="{{content_list[item].uid?'onUserAreaTap':''}}" data-user-id="{{content_list[item].uid}}"></image>
+            <view class="text-sm">{{content_list[item].nickname}}</view>
           </view>
-          <view class="price">
-            <view style="color:green;font-weight:bold">￥ {{content_list[item].price}}</view>
-            <view style="color:grey;font-size:85%;margin-left:20rpx">￥ {{content_list[item].ori_price}}</view>
+          <view class="text-gray">
+            <text class="cuIcon-attentionfill margin-xs"></text>{{content_list[item].viewed}}
           </view>
         </view>
-      </view>
-
-      <view class="user-area" catchtap="{{content_list[item].user.userId ? 'onUserAreaTap' : ''}}" data-user-id="{{content_list[item].user.userId}}">
-
-        <image class="avatar" src="{{content_list[item].user.avatar}}" mode="widthFix"></image>
-
-        <view style="margin:0 10rpx;color:wheat;font-size:85%"> {{content_list[item].city}} </view>
-
-        <view wx:if="{{content_list[item].user.username}}" class="user-name">
-          {{content_list[item].user.username}}
-        </view>
-
       </view>
 
     </view>
   </view>
 </template>
 
-<!-- 图片展示模板 -->
+<!-- 只显示第一张图片 -->
 <template name="images-viewer">
   <view wx:if="{{ !!images && !!images.length}}" class="media-previewer">
-    <image src="{{images[0]}}" mode="{{_imageFillMode}}" data-images="{{images}}" data-current-image="{{images[0]}}" catchtap='_imagePreview'></image>
+    <image lazy-load wx:if="{{index<1}}" wx:for="{{ images }}" wx:key="{{images}}" src="{{item}}" mode="{{_imageFillMode}}" data-images="{{images}}" data-current-image="{{item}}" catchtap='_imagePreview' style="max-height:400rpx"></image>
   </view>
 </template>

@@ -2,6 +2,7 @@
   "backgroundTextStyle": "dark",
   "enablePullDownRefresh": true,
   "usingComponents": {
-    "navBar": "/pages/Components/navBar"
+    "navBar": "/pages/Components/navBar",
+    "brickflow": "/components/brickflow/brickflow"
   }
 }

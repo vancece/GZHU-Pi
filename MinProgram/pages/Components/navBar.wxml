@@ -13,7 +13,7 @@
 
     <view hidden='{{hideTitle}}' class='title'>
       <!-- titleColor：传入标题 -->
-      <view style='color:{{titleColor}};opacity:1'>{{title}}</view>
+      <view class="text-cut" style='color:{{titleColor}};opacity:1;max-width:550rpx'>{{title}}</view>
     </view>
 
     <!-- 对称布局占位，透明 -->

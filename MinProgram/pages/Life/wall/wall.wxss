@@ -1,7 +1,27 @@
-.body {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+page {
+  background: white;
+}
+
+/* 悬浮图标 */
+
+.post-icon {
+  height: 100rpx;
+  width: 100rpx;
+  position: fixed;
+  bottom: 50rpx;
+  right: 50rpx;
+  z-index: 1;
+  background-color: var(--yellowShadow);
+  border-radius: 50%;
+}
+
+.cu-item {
+  padding-bottom: 10rpx;
+}
+
+.nav-func {
+  width: 340rpx;
+  max-height: 170rpx;
+  overflow: hidden;
+  border-radius: 30rpx;
 }
