@@ -15,6 +15,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"regexp"
 	"strings"
 )
 
@@ -80,8 +81,18 @@ func runWithPRest(r *mux.Router) {
 	n.UseFunc(func(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 		//该中间件用于消除路由前缀对pRest内部路由的影响
 		logs.Info(r.URL.Path)
-		r.URL.Path = strings.ReplaceAll(r.URL.Path, "/api/v1", "")
-		r.URL.Path = strings.ReplaceAll(r.URL.Path, "/2016-08-15/proxy/GZHU-API/go", "")
+		if !strings.Contains(r.URL.Path, "/api/v") {
+			_, _ = w.Write([]byte("path must contains /api/v\\d"))
+			return
+		}
+		reg := regexp.MustCompile(`[\s\S]*/api/v\d`)
+		match := reg.FindStringSubmatch(r.URL.Path)
+		if len(match) > 0 {
+			r.URL.Path = strings.ReplaceAll(r.URL.Path, match[0], "")
+		}
+		if r.URL.Path == "" {
+			r.URL.Path = "/"
+		}
 		next(w, r)
 	})
 
@@ -101,6 +112,10 @@ func runWithPRest(r *mux.Router) {
 }
 
 func customRouter(r *mux.Router) *mux.Router {
+
+	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		_, _ = w.Write([]byte("Hello!"))
+	})
 
 	//微信公众号接口
 	//r.HandleFunc("/wx/check", routers.PanicMV(routers.WeChatCheck))

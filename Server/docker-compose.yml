@@ -41,25 +41,25 @@ services:
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=postgres
 
-  prest:
-    image: prest/prest
-    container_name: gzhu-pi-prest
-    restart: always
-    networks:
-      - gzhupi-net
-    ports:
-      - 3010:3010
-    volumes:
-      - $PWD/config.toml:/prest.toml
-    environment:
-      # docker环境变量会覆盖prest配置文件对应值
-      - PREST_HTTP_PORT=3010
-      - PREST_PG_HOST=gzhu-pi-db
-      - PREST_PG_USER=postgres
-      - PREST_PG_PASS=postgres
-      - PREST_PG_DATABASE=postgres
-      - PREST_PG_PORT=5432
-      # - PREST_JWT_KEY
-      # - PREST_JWT_ALGO
-    depends_on:
-      - pgdb
+#  prest:
+#    image: prest/prest
+#    container_name: gzhu-pi-prest
+#    restart: always
+#    networks:
+#      - gzhupi-net
+#    ports:
+#      - 3010:3010
+#    volumes:
+#      - $PWD/config.toml:/prest.toml
+#    environment:
+#      # docker环境变量会覆盖prest配置文件对应值
+#      - PREST_HTTP_PORT=3010
+#      - PREST_PG_HOST=gzhu-pi-db
+#      - PREST_PG_USER=postgres
+#      - PREST_PG_PASS=postgres
+#      - PREST_PG_DATABASE=postgres
+#      - PREST_PG_PORT=5432
+#      # - PREST_JWT_KEY
+#      # - PREST_JWT_ALGO
+#    depends_on:
+#      - pgdb

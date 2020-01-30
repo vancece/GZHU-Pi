@@ -28,6 +28,7 @@ func InitDb() error {
 	db.SingularTable(true)
 
 	//自动迁移 只会 创建表、缺失的列、缺失的索引，不会 更改现有列的类型或删除未使用的列
-	db.AutoMigrate(&TStuInfo{}, &TGrade{}, &TApiRecord{}, &TUser{}, &TTopic{})
+	db.AutoMigrate(&TStuInfo{}, &TGrade{}, &TApiRecord{}, &TUser{},
+		&TTopic{}, &TComment{}, &TRelation{})
 	return nil
 }
