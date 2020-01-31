@@ -32,3 +32,8 @@ func InitDb() error {
 		&TTopic{}, &TComment{}, &TRelation{})
 	return nil
 }
+
+
+func GetGorm()*gorm.DB{
+	return db
+}

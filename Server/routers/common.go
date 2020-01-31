@@ -135,7 +135,7 @@ func ReadRequestArg(r *http.Request, key string) (value interface{}, err error) 
 			logs.Error(err)
 			return "", err
 		}
-		_ = r.Body.Close()
+		defer r.Body.Close()
 		r.Body = ioutil.NopCloser(bytes.NewBuffer(body))
 
 		if len(body) == 0 {

@@ -96,6 +96,8 @@ func runWithPRest(r *mux.Router) {
 		next(w, r)
 	})
 
+	n.UseFunc(routers.TableAccessHandle)
+
 	// Get pREST router
 	r = router.Get()
 
