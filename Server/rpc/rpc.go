@@ -5,6 +5,7 @@ import (
 	"github.com/otiai10/gosseract"
 	"log"
 	"net"
+	"net/http"
 	"net/rpc"
 )
 
@@ -12,8 +13,11 @@ func main() {
 
 	err := rpc.RegisterName("OcrService", new(OcrService))
 	if err != nil {
-		log.Fatal("RegisterName error:", err)
+		log.Fatal("Register error:", err)
 	}
+	//将Rpc绑定到HTTP协议上
+	rpc.HandleHTTP()
+
 	var port = ":7201"
 	listener, err := net.Listen("tcp", port)
 	if err != nil {
@@ -21,12 +25,10 @@ func main() {
 	}
 
 	logs.Info("RPC Server listening on port", port)
-	for {
-		conn, err := listener.Accept()
-		if err != nil {
-			log.Fatal("Accept error:", err)
-		}
-		rpc.ServeConn(conn)
+	//启动http服务，处理连接请求
+	err = http.Serve(listener, nil)
+	if err != nil {
+		log.Fatal("Error serving: ", err)
 	}
 }
 

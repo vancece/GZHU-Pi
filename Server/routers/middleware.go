@@ -33,7 +33,7 @@ func TableAccessHandle(w http.ResponseWriter, r *http.Request, next http.Handler
 	case "PUT", "PATCH":
 	case "DELETE":
 		p := getCtxValue(ctx)
-		qry := p.r.URL.Query().Get("id")
+		qry := strings.ReplaceAll(p.r.URL.Query().Get("id"), "$eq.", "")
 		id, err := strconv.ParseInt(qry, 10, 64)
 		if err != nil {
 			logs.Error(err)

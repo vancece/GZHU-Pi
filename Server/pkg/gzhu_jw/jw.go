@@ -140,7 +140,7 @@ func (c *JWClient) GetCaptcha() (capture string) {
 
 	var err error
 	if rpcClient == nil {
-		rpcClient, err = rpc.Dial("tcp", "ifeel.vip:7201")
+		rpcClient, err = rpc.DialHTTP("tcp", "ifeel.vip:7201")
 		if err != nil {
 			logs.Error(err)
 			return

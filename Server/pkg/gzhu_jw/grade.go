@@ -108,7 +108,7 @@ func CountGpa(grades []*models.TGrade, gradeData *GradeData) {
 		//累计学分绩点
 		sumCredit = sumCredit + v.Credit
 		sumGpaCredit = sumGpaCredit + v.Credit*v.CourseGpa
-		logs.Info(semData[v.YearSem].SemCredit, "+", v.Credit)
+		//logs.Info(semData[v.YearSem].SemCredit, "+", v.Credit)
 		//计算各个学期的学分绩点
 		semData[v.YearSem] = SemGrade{
 			SemCredit: semData[v.YearSem].SemCredit + v.Credit,
