@@ -2,6 +2,7 @@ const Page = require('../../../utils/sdk/ald-stat.js').Page;
 Page({
 
   data: {
+    navTitle: "广大墙",
     limit: 10, //每页数量
     offset: 0, //偏移量
     loadDone: false, //加载完毕
@@ -12,13 +13,10 @@ Page({
 
     dataSet: [],
     brick_option: {
-      showFullContent: true,
       backgroundColor: "rgb(245, 245, 245)",
       forceRepaint: true,
-      defaultExpandStatus: false,
       imageFillMode: 'aspectFill',
       columns: 2,
-      fontColor: 'black'
     },
 
     gridCol: 2,
@@ -117,13 +115,28 @@ Page({
   switchCategory(e) {
     let id = Number(e.currentTarget.id)
 
-    if (this.data.iconList[id].name == "我的发布") {
-      wx.navigateTo({
-        url: '/pages/Life/oldthings/mine'
-      })
-      return
+    switch (this.data.iconList[id].name) {
+      case "广大水墙":
+        this.setData({
+          "brick_option.columns": 2,
+          navTitle:"广大墙"
+        })
+        break
+      case "广大情墙":
+        break
+      case "悄悄话":
+        this.setData({
+          "brick_option.columns": 1,
+          navTitle: "悄悄话"
+        })
+        break
+      case "校园市场":
+        wx.$navTo("/pages/Life/oldthings/index")
+        break
+      default:
+        console.error("unknown type")
+        return
     }
-    if (id == this.data.categoryIndex) return
 
     this.setData({
       offset: 0, //恢复偏移量
@@ -131,7 +144,7 @@ Page({
       queryStr: "",
       categoryIndex: id
     })
-    this.getTopics()
+    // this.getTopics()
   },
 
   // 获取商品

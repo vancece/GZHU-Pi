@@ -10,7 +10,7 @@ Component({
     // 标题颜色
     titleColor: {
       type: String,
-      value: "black"
+      value: "#333"
     },
 
     // 顶栏背景颜色，支持rgba

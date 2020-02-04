@@ -1,7 +1,10 @@
-<navBar title="广大课表" titleColor="" hideTitle="{{true}}" navColor="{{navColor}}" hideBackBtn="{{true}}">
-  <image bindtap="openDrawer" class='menu {{showDrawer==true?"show":""}}' src='/assets/setting.svg'></image>
+<navBar hideTitle navColor="{{navColor}}" hideTitle hideBackBtn>
+  <view class="flex justify-between align-center" style="width:100%">
+    <image bindtap="openDrawer" class='menu {{showDrawer==true?"show":""}}' src='/assets/setting.svg'></image>
+    <view class="text-bold text-lg">广大派</view>
+    <image class='menu' src='/assets/setting.svg' style="opacity:0"></image>
+  </view>
 </navBar>
-
 
 <!-- 悬浮图标 -->
 <view>

@@ -5,7 +5,7 @@ var Setting = require("../../../utils/setting.js")
 Page({
   data: {
     schedule: Config.get("schedule_mode") == "week" ? true : false,
-    navColor: Config.get("schedule_mode") == "week" ? "rgba(221, 221, 221, 0.7)" : "",
+    navColor: Config.get("schedule_mode") == "week" ? "rgba(221, 221, 221, 0.7)" : "rgba(255, 255, 255, 0.8)",
     out: "ami",
     showUpdate: false,
     showDrawer: false,

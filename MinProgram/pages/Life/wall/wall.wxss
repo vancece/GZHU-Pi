@@ -2,6 +2,15 @@ page {
   background: white;
 }
 
+.avatar {
+  display: block;
+  border-radius: 50%;
+  width: 70rpx;
+  height: 70rpx;
+  overflow: hidden;
+  margin: 0 10rpx;
+}
+
 /* 悬浮图标 */
 
 .post-icon {

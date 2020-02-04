@@ -19,7 +19,7 @@ Component({
     rawData: {}, // 源数据
     orderArr: [], // 记录原始数值
     renderList: [], // 记录用于渲染的数组排序
-    _tplName: 'oldthings',
+    _tplName: 'default',
     _defaultExpandStatus: false,
     _imageFillMode: 'widthFix', // 图片适配 mode
     _fontColor: 'black',
@@ -35,7 +35,7 @@ Component({
 
     _tplName: {
       type: String,
-      value: "oldthings"
+      value: ""
     },
 
     // optional
@@ -124,9 +124,8 @@ Component({
         if (!Array.isArray(newVal)) {
           throw new Error('BrickLayout : dataSet is expecting a Array.')
         }
-
         newVal.forEach(item => {
-          if (!item['id']) {
+          if (!item['id'] && item['id'] != 0) {
             throw new Error('BrickLayout : 错误的唯一索引。请检查数组中是否含有 id 作为唯一记录标识。')
           }
 

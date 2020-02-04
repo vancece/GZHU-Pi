@@ -33,12 +33,19 @@ wx.$ajax = function(option) {
         mask: true,
       })
     }
+    option.header["Authorization"] = wx.getStorageSync("ifx_baas_openid")
+    // 携带cookie
+    option.header["Cookie"] = wx.getStorageSync("sessionid")
     wx.request({
       url: option.url,
       data: option.data,
       method: option.method.toUpperCase(),
       header: option.header,
       success: (res) => {
+        // 缓存cookies
+        if (res.header["Set-Cookie"] != undefined) {
+          wx.setStorageSync("sessionid", res.header["Set-Cookie"]);
+        }
         if (option.checkStatus == false) {
           resolve(res)
           return

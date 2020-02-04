@@ -45,7 +45,6 @@ Page({
 
   },
   onLoad: function(options) {
-
     // 切换Tab
     let name = options.id
     let e = {
@@ -79,7 +78,57 @@ Page({
 
   },
 
+
   post() {
+
+    wx.cloud.callFunction({
+      // 需调用的云函数名
+      name: 'sendMsg',
+      // 传给云函数的参数
+      // data: {
+      //   a: 12,
+      //   b: 19,
+      // },
+      // 成功回调
+      complete: function (res) {
+
+        console.log(res.result)
+      }
+    })
+
+    let that = this
+    let tmplIds = ["qXh2oaTKaNEBF1UJCjYkTovi44fWJqBEocyvNvex58w", "mzClt2VmH5tlVqVpbaKaeMtPX2UOW2FgbQU2Sxq3ydk"]
+    wx.requestSubscribeMessage({
+      tmplIds: tmplIds,
+      success: (res) => {
+        console.log(res)
+        let subscription = []
+        for (let i in tmplIds) {
+          if (res[tmplIds[i]] === 'accept') {
+            subscription.push({
+              template_id: tmplIds[i],
+              subscription_type: 'once',
+            })
+          }
+        }
+        if (subscription.length > 0) {
+          wx.BaaS.subscribeMessage({
+            subscription
+          }).then(res => {
+            console.log(res)
+          }, err => {
+            console.error(err)
+          })
+        }
+        that.checkAndSave()
+      },
+      fail: (err) => {
+        console.error(err)
+      }
+    })
+  },
+
+  checkAndSave() {
     let that = this
     if (this.data.debounce) return
     this.data.debounce = true
@@ -95,7 +144,7 @@ Page({
       label: this.data.label,
       anonymous: this.data.anonymous,
       addi: this.data.addi,
-      created_by: 1
+      // created_by: 1
     }
 
     if (form.anonymous) {
@@ -149,6 +198,7 @@ Page({
     // 保存数据
     wx.$ajax({
         url: wx.$param.server["prest"] + "/postgres/public/t_topic",
+        // url: "http://localhost:9000/api/v1/postgres/public/t_topic",
         data: form,
         loading: true,
         checkStatus: false,
@@ -157,10 +207,17 @@ Page({
         }
       })
       .then(res => {
-        console.log(res.data)
         this.setData({
           loading: false
         })
+        console.log("发布结果：", res.data)
+        if (res.statusCode >= 400) {
+          wx.showModal({
+            title: '发布失败',
+            content: res.errMsg + res.data ? res.data.msg : "",
+          })
+          return
+        }
         if (typeof res.error != "undefined") {
           wx.showModal({
             title: '发布失败',
@@ -168,6 +225,7 @@ Page({
           })
           return
         }
+        // TODO 错误判断
         wx.showToast({
           title: '发布成功',
         })

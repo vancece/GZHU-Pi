@@ -5,7 +5,7 @@ Page({
   },
 
   onLoad: function(options) {
-    if (!!!options.id) options.id = 4
+    if (!options.id) options.id = 4
     this.data.id = options.id
     this.getDetail(options.id)
   },
