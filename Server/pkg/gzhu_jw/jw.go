@@ -113,21 +113,21 @@ func BasicAuthClient(username, password string) (client *JWClient, err error) {
 	}
 	body, err = ioutil.ReadAll(resp.Body)
 	defer resp.Body.Close()
-	//判断是否登录成功
 
-	ok, _ := regexp.MatchString("验证码不正确", string(body))
-	if ok {
+	//判断是否登录成功
+	if strings.Contains(string(body), "验证码不正确") {
 		return nil, fmt.Errorf("验证码识别不正确，请重试")
 	}
-	ok, _ = regexp.MatchString("必须输入验证码", string(body))
-	if ok {
+	if strings.Contains(string(body), "必须输入验证码") {
 		return nil, fmt.Errorf("验证码识别失败，请重试")
 	}
-	ok, _ = regexp.MatchString("账号或密码错误", string(body))
-	if ok {
+	if strings.Contains(string(body), "重新设置密码") {
+		return nil, fmt.Errorf("温馨提示: 该账号需重置密码，且不能与初始密码相同，请登录 my.gzhu.edu.cn 操作！")
+	}
+	if strings.Contains(string(body), "账号或密码错误") {
 		return nil, LoginError
 	}
-	ok, _ = regexp.MatchString(`用户名[\s\S]*密码`, string(body))
+	ok, _ := regexp.MatchString(`用户名[\s\S]*密码`, string(body))
 	if ok {
 		return nil, fmt.Errorf("不知为啥，就是没有登录进去，请告知开发者")
 	}
