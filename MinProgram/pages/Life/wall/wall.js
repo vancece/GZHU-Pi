@@ -3,8 +3,8 @@ Page({
 
   data: {
     navTitle: "广大墙",
-    limit: 10, //每页数量
-    offset: 0, //偏移量
+    pageSize: 20, //每页数量
+    page: 1, //页数
     loadDone: false, //加载完毕
     queryStr: "", //搜索的字符串
     loading: false,
@@ -60,7 +60,7 @@ Page({
   // 下拉刷新
   onPullDownRefresh: function() {
     this.setData({
-      offset: 0, //恢复偏移量
+      page: 1, //恢复页数
       loadDone: false, //加载完毕
       queryStr: ""
     })
@@ -70,25 +70,25 @@ Page({
     }, 3000)
   },
 
-  // 点击卡片，获取商品id，转跳详情页面
+  // 点击卡片，获取id，转跳详情页面
   tapCard: function(event) {
-    console.log("商品ID：", event.detail.card_id)
-    wx.navigateTo({
-      url: '/pages/Life/wall/detail?id=' + event.detail.card_id,
-    })
+    console.log("ID：", event.detail.card_id)
+    let args = {
+      id: event.detail.card_id
+    }
+    wx.$navTo('/pages/Life/wall/detail', args)
   },
   // 点击头像
   tapUser: function(e) {
-    console.log("用户id:", e.detail.user_id)
-    wx.navigateTo({
-      url: '/pages/Life/oldthings/mine?id=' + e.detail.user_id,
-    })
+    // console.log("用户id:", e.detail.user_id)
+    // let args = {
+    //   id: e.detail.user_id,
+    // }
+    // wx.$navTo('/pages/Life/oldthings/mine', args)
   },
 
   navToPost() {
-    wx.navigateTo({
-      url: '/pages/Life/wall/post',
-    })
+    wx.$navTo('/pages/Life/wall/post')
   },
 
   // 读取搜索内容
@@ -107,8 +107,8 @@ Page({
   onReachBottom: function() {
     if (this.data.loadDone) return
     console.log('加载更多')
-    this.data.offset = this.data.offset + this.data.limit
-    // this.getTopics(true)
+    this.data.page = this.data.page + 1
+    this.getTopics(true)
   },
 
   // 切换分类
@@ -119,8 +119,9 @@ Page({
       case "广大水墙":
         this.setData({
           "brick_option.columns": 2,
-          navTitle:"广大墙"
+          navTitle: "广大墙"
         })
+        this.data.fliter = "$eq.日常"
         break
       case "广大情墙":
         break
@@ -129,45 +130,60 @@ Page({
           "brick_option.columns": 1,
           navTitle: "悄悄话"
         })
+        this.data.fliter = "$eq.悄悄话"
         break
       case "校园市场":
         wx.$navTo("/pages/Life/oldthings/index")
-        break
+        return
       default:
         console.error("unknown type")
         return
     }
 
     this.setData({
-      offset: 0, //恢复偏移量
+      page: 0, //恢复页数
       loadDone: false, //加载完毕
       queryStr: "",
-      categoryIndex: id
+      categoryIndex: id,
+      dataSet: []
     })
-    // this.getTopics()
+
+    this.getTopics()
+
   },
 
-  // 获取商品
+  // 获取列表
   getTopics(loadMore = false) {
-    // return
+
+    let query = {
+      _page: this.data.page,
+      _page_size: this.data.pageSize,
+      type: this.data.fliter ? this.data.fliter : "",
+      _order: "-created_at"
+    }
+    query = wx.$objectToQuery(query)
+
     wx.$ajax({
-        url: wx.$param.server["prest"] + "/postgres/public/v_topic",
+        url: wx.$param.server["prest"] + "/postgres/public/v_topic" + query,
         method: "get",
         loading: true,
         checkStatus: false,
       })
       .then(res => {
         console.log(res)
+        if (loadMore) {
+          this.data.dataSet = this.data.dataSet.concat(res.data)
+        } else {
+          this.data.dataSet = res.data
+        }
         this.setData({
-          dataSet: res.data,
+          dataSet: this.data.dataSet,
           loading: false,
+          loadDone: res.data.length < this.data.pageSize ? true : false //加载完毕
         })
+
       }).catch(err => {
         console.log(err)
       })
-
-
   },
-
-
 })

@@ -33,40 +33,65 @@ wx.$ajax = function(option) {
         mask: true,
       })
     }
-    option.header["Authorization"] = wx.getStorageSync("ifx_baas_openid")
     // 携带cookie
-    option.header["Cookie"] = wx.getStorageSync("sessionid")
+    option.header["Cookie"] = wx.getStorageSync("gzhupi_cookie")
     wx.request({
       url: option.url,
       data: option.data,
       method: option.method.toUpperCase(),
       header: option.header,
       success: (res) => {
-        // 缓存cookies
-        if (res.header["Set-Cookie"] != undefined) {
-          wx.setStorageSync("sessionid", res.header["Set-Cookie"]);
-        }
-        if (option.checkStatus == false) {
-          resolve(res)
-          return
-        }
-        if (res && (res.data.status == 0 || res.data.status == 200)) {
-          resolve(res.data)
-          // } else if (res.data.status == -1) {
-        } else {
-          let msg = "请求响应失败"
-          if (res.data.msg != undefined) msg = res.data.msg
+
+        // http响应错误
+        if (res.statusCode >= 400) {
+          let msg = res.data.error
+          msg = msg ? msg : res.errMsg
           reject({
-            when: "status_error",
+            when: "http_status_error",
             error: msg,
-            detail: res.data,
+            detail: msg,
           })
+          if (option.showErr == false) return
           wx.showModal({
             title: '提示',
-            content: JSON.stringify(msg),
+            content: msg,
             showCancel: false
           })
+          return
         }
+
+        // 缓存cookies
+        if (res.header["Set-Cookie"] != undefined) {
+          wx.setStorageSync("gzhupi_cookie", res.header["Set-Cookie"]);
+        }
+
+        // 自定义响应协议
+        if (res.data && res.data.status) {
+          if (res.data.status == 0 || res.data.status == 200) {
+            resolve(res.data)
+            return
+            // } else if (res.data.status == -1) {
+          } else {
+            let msg = "请求响应失败"
+            if (res.data.msg != undefined) msg = res.data.msg
+            reject({
+              when: "status_error",
+              error: msg,
+              detail: res.data,
+            })
+            if (option.showErr == false) return
+            wx.showModal({
+              title: '提示',
+              content: msg,
+              showCancel: false
+            })
+            return
+          }
+        }
+
+        // 没有使用自定义响应协议
+        resolve(res)
+        return
       },
       fail: (err) => {
         reject({
@@ -146,4 +171,28 @@ wx.$navTo = function(e, args) {
       }
     })
   }
+}
+
+
+/**
+ * 对象转url参数
+ * @method wx.$objectToQuery
+ * @param {object}  obj
+ * @return {string} query
+ */
+wx.$objectToQuery = function(obj = {}) {
+
+  if (typeof obj != 'object') {
+    console.error("not object")
+    return
+  }
+  let args_str = []
+  for (let i in obj) {
+
+    if (!obj[i]) continue
+
+    args_str.push(i + '=' + encodeURIComponent(obj[i]))
+  }
+  let query = '?' + args_str.join("&")
+  return query
 }

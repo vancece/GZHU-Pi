@@ -1,7 +1,7 @@
 <view class="module">
   <view class="module-bar">
     <view class="module-icon">
-      <image style='width:75rpx;height:75rpx' mode='widthFix' src='https://cloud-minapp-17768.cloud.ifanrusercontent.com/1g0lGeFliOqPloZT.png'></image>
+      <image style='width:75rpx;height:75rpx' mode='widthFix' src='https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/icon/grade-a%2B.png'></image>
     </view>
     <view class='module-text'>
       <view>我的成绩</view>

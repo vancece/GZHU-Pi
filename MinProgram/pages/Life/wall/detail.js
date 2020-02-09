@@ -29,6 +29,20 @@ Page({
     let that = this
     switch (e.target.dataset.op) {
       case "star":
+        wx.cloud.callFunction({
+          // 需调用的云函数名
+          name: 'sendMsg',
+          // 传给云函数的参数
+          // data: {
+          //   a: 12,
+          //   b: 19,
+          // },
+          // 成功回调
+          complete: function(res) {
+
+            console.log(res.result)
+          }
+        })
         break
       case "delete":
         wx.showModal({
@@ -36,7 +50,7 @@ Page({
           content: '确定删除该主题吗？',
           success(res) {
             if (res.confirm) {
-              if (!!that.data.detail.addi.file_ids) {
+              if (that.data.detail.addi.file_ids) {
                 that.delFile(that.data.detail.addi.file_ids)
               }
               that.delByPk(that.data.id)
@@ -120,7 +134,9 @@ Page({
   delFile(fileIDs = []) {
     if (!fileIDs) return
     let MyFile = new wx.BaaS.File()
-    MyFile.delete(fileIDs).then()
+    MyFile.delete(fileIDs).then(res => {
+      console.log("delFile ", res)
+    })
   },
 
 })

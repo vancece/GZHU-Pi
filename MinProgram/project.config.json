@@ -177,6 +177,13 @@
 					"pathName": "pages/Life/wall/detail",
 					"query": "",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "board",
+					"pathName": "pages/Life/wall/board",
+					"query": "",
+					"scene": null
 				}
 			]
 		}

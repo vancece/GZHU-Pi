@@ -4,7 +4,7 @@
 </block>
 
 <block wx:if="{{detail.type=='日常' || detail.type=='悄悄话'}}">
-  <navBar title="日常百事" titleColor="var(--darkGray)" occupy="{{(detail.image!=null && detail.image.length>0)?false:true}}"></navBar>
+  <navBar title="{{detail.type}}" titleColor="var(--black)" occupy="{{(detail.image!=null && detail.image.length>0)?false:true}}"></navBar>
 
   <swiper wx:if="{{detail.image.length>0}}" style="height:750rpx" class="square-dot animation-slide-top" autoplay indicator-dots="true" circular="true" indicator-color="#8799a3" indicator-active-color="var(--yellow)">
     <swiper-item wx:for="{{detail.image}}" wx:key="index" class="flex justify-center {{cardCur==index?'cur':''}}">
@@ -43,7 +43,7 @@
           </view>
           <view class="text-gray text-lg text-right padding-sm" style="flex:1">
             <text class="cuIcon-attentionfill margin-lr-xs"></text>10
-            <text class="cuIcon-appreciatefill margin-lr-xs"></text>20
+            <text bindtap="operate" data-op="star" class="cuIcon-appreciatefill margin-lr-xs"></text>20
             <text class="cuIcon-messagefill margin-lr-xs"></text>30
           </view>
         </view>

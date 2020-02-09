@@ -19,7 +19,7 @@
 <view wx:if="{{id=='eval'}}">
 
   <view style='margin-top:300rpx;display:flex;justify-content:center;align-item:center'>
-    <image style='width:250rpx' mode='widthFix' src='https://cloud-minapp-17768.cloud.ifanrusercontent.com/1gEtLYHFBZNatsdj.png'></image>
+    <image style='width:250rpx' mode='widthFix' src='https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/icon/rili.png'></image>
   </view>
 
   <view style='text-align:center;margin:50rpx'>

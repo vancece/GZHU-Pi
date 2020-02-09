@@ -8,7 +8,7 @@
 
 <block wx:if="{{normal}}">
   <!-- 发布悬浮图标 -->
-  <image bindtap='navToPost' class='post-icon' mode='widthFix' src='https://cloud-minapp-17768.cloud.ifanrusercontent.com/1gDpwIqjka8B9w5v.png'></image>
+  <image bindtap='navToPost' class='post-icon' mode='widthFix' src='https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/icon/plane-pink.png'></image>
 
   <!-- 加载动画 -->
   <view class='cu-load load-modal' wx:if="{{loading}}">

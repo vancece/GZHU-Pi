@@ -10,11 +10,11 @@
 <view>
   <form bindsubmit='formSubmit' report-submit='{{true}}'>
     <button formType="submit" open-type="getUserInfo" bindgetuserinfo='userInfoHandler'>
-      <image bindtap='switchModel' class='float-icon' mode='aspectFit' src='https://cloud-minapp-17768.cloud.ifanrusercontent.com/1fx04mwWmqxrOljX.png'></image>
+      <image bindtap='switchModel' class='float-icon' mode='aspectFit' src='https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/icon/gzhu-classtable.png'></image>
     </button>
   </form>
   <button open-type="share">
-    <image class='share-icon' mode='aspectFit' src='https://cloud-minapp-17768.cloud.ifanrusercontent.com/1g3viOkNmZOlcqSF.png'></image>
+    <image class='share-icon' mode='aspectFit' src='https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/icon/plane.png'></image>
   </button>
 </view>
 

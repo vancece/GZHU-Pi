@@ -13,39 +13,39 @@ var param = {
   // 教务系统位置
   "school": {
     "year_sem": "2019-2020-2", //当前学期
-    "first_monday": "2019-08-26", //学期第一周周一
-    "sem_list": ["2018-2019-1", "2018-2019-2", "2019-2020-1", "2019-2020-2"]
+    "first_monday": "2020-02-17", //学期第一周周一
+    "sem_list": ["2018-2019-1", "2018-2019-2", "2019-2020-1", "2019-2020-2", "2020-2021-1", "2020-2021-2"]
   },
   // 首页功能导航
   "nav": [{
     "show": true,
     "name": "校历",
-    "icon": "https://cloud-minapp-17768.cloud.ifanrusercontent.com/1g7bLteUNRcIFOHE.png",
+    "icon": "https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/icon/xiaoli-red.png",
     "url": "/pages/Campus/tools/calendar"
   }, {
     "show": true,
     "name": "空教室",
-    "icon": "https://cloud-minapp-17768.cloud.ifanrusercontent.com/1g7bLtJbWheBlxCk.png",
+    "icon": "https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/icon/building1.png",
     "url": "/pages/Campus/tools/emptyRoom"
   }, {
     "show": true,
     "name": "查成绩",
-    "icon": "https://cloud-minapp-17768.cloud.ifanrusercontent.com/1g0lGeFliOqPloZT.png",
+    "icon": "https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/icon/grade-a%2B.png",
     "url": "/pages/Campus/grade/grade"
   }, {
     "show": true,
     "name": "图书馆",
-    "icon": "https://cloud-minapp-17768.cloud.ifanrusercontent.com/1g0eqSYWkdJOBqfD.png",
+    "icon": "https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/icon/library.png",
     "url": "/pages/Campus/library/search"
   }, {
     "show": true,
     "name": "考试",
-    "icon": "https://cloud-minapp-17768.cloud.ifanrusercontent.com/1gEtLYqwE75THYVk.png",
+    "icon": "https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/icon/exam-green.png",
     "url": "/pages/Campus/tools/exam"
   }, {
     "show": true,
     "name": "蹭课",
-    "icon": "https://cloud-minapp-17768.cloud.ifanrusercontent.com/1gEtLYHFBZNatsdj.png",
+    "icon": "https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/icon/rili.png",
     "url": "/pages/Campus/course/search"
   }, {
     "show": true,

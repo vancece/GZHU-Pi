@@ -25,7 +25,7 @@ const formatNumber = n => {
 function getSchoolWeek() {
   let schoolWeek
   // 月份需要减一
-  let startMonday = new Date(2019, 7, 26)
+  let startMonday = new Date(wx.$param.school["first_monday"])
   let today = new Date()
 
   let interval = today - startMonday

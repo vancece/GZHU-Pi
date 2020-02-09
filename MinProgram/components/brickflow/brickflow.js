@@ -177,6 +177,7 @@ Component({
       return new Promise((resolve, reject) => {
         let query = wx.createSelectorQuery().in(this)
         query.select('#card-' + card_id).boundingClientRect(res => {
+          if (!res) return
           resolve({
             card_id,
             height: res.height,
@@ -236,6 +237,7 @@ Component({
         } else {
           // 非初始化情况下
           orderArr.forEach((item, index) => {
+            if (rawData[item] == undefined) return
             if (!rawData[item]['_rendered']) {
               height.push(this._computeSingleCardHeight(item))
             }
@@ -268,7 +270,7 @@ Component({
      * @description 监听展开缩起状态
      * @param {*} event
      */
-    _toggleExpand(event) {
+    _toggleExpand0(event) {
       const card_id = event.currentTarget.dataset.cardId
       const {
         rawData
@@ -300,10 +302,10 @@ Component({
       for (let i = 0; i < arrLength; i++) {
         renderList[i] = []
       }
-
       orderArr.forEach(item => {
         let willPushIndex = heightArr.indexOf(Math.min.apply(null, heightArr))
         renderList[willPushIndex].push(item)
+        if (rawData[item] == undefined) return
         heightArr[willPushIndex] += rawData[item]['_height']
       })
 

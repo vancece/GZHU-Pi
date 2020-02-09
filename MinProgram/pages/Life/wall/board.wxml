@@ -15,3 +15,5 @@
 <!-- <view class="canvasBox">
   <canvas canvas-id="shareCanvas" style="width:300px;height:300px"></canvas>
 </view> -->
+
+<web-view src='https://mp.weixin.qq.com/s/NbVEBpvlPgpfbAf_tRh09w'></web-view>

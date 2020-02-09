@@ -4,6 +4,9 @@ var Request = require("/utils/request.js")
 var startTime = Date.now(); //启动时间
 require("/utils/wx.js")
 
+import UserService from "/services/user.js"
+var userService = new UserService()
+
 App({
 
   globalData: {
@@ -12,7 +15,6 @@ App({
   },
 
   onLaunch: function(options) {
-
     wx.cloud.init()
     Config.init() //初始化配置文件
     this.updata() //更新小程序
@@ -35,8 +37,9 @@ App({
       this.getAuthStatus()
     }
 
+    userService.auth()
+    userService.update_create()
 
-    setTimeout(this.updateUserInfo, 1000)
   },
 
   onError: function(res) {
@@ -129,59 +132,27 @@ App({
     })
   },
 
-  updateUserInfo() {
-    return
-    wx.BaaS.auth.getCurrentUser().then(user => {
-      console.log(user)
-      let form = {
-        // stu_id:"",
-        minapp_id: user.user_id,
-        openid: user.openid,
-        unionid: user.unionid,
-        avatar: user.avatar,
-        nickname: user.nickname,
-        city: user.city,
-        country: user.country,
-        gender: user.gender,
-        language: user.language,
-        phone: user._phone,
-        // created_at: 
-      }
-      wx.$ajax({
-          url: "http://1171058535813521.cn-shenzhen.fc.aliyuncs.com/2016-08-15/proxy/GZHU-API/trail/api/v1/postgres/public/t_user",
-          data: form,
-          // loading: true,
-          checkStatus: false,
-          header: {
-            "content-type": "application/json"
-          }
-        })
-        .then(res => {
-          console.log(res)
-        })
-
-    }).catch(err => {
-      if (err.code === 604) {
-        console.log('用户未登录')
-      }
-    })
-  },
-
   getAppParam() {
+
+    let param = wx.getStorageSync("app_param")
+    if (param != "") wx.$param = param
+
     let tableName = 'config'
     let recordID = '5d4daa727b9e3c65e7983f54'
 
     let Product = new wx.BaaS.TableObject(tableName)
     Product.get(recordID).then(res => {
       console.log("在线配置：", res.data.data)
-      wx.$param = res.data.data
+      if (res.data.data && res.data.data.mode) {
+        wx.$param = res.data.data
+        wx.setStorageSync("app_param", res.data.data)
+      }
     }, err => {
       wx.showToast({
         title: '请求出错',
         icon: "none"
       })
     })
-
   },
 
 

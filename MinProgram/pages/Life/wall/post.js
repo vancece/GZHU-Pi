@@ -81,22 +81,10 @@ Page({
 
   post() {
 
-    wx.cloud.callFunction({
-      // 需调用的云函数名
-      name: 'sendMsg',
-      // 传给云函数的参数
-      // data: {
-      //   a: 12,
-      //   b: 19,
-      // },
-      // 成功回调
-      complete: function (res) {
-
-        console.log(res.result)
-      }
-    })
-
     let that = this
+    that.checkAndSave()
+    return
+
     let tmplIds = ["qXh2oaTKaNEBF1UJCjYkTovi44fWJqBEocyvNvex58w", "mzClt2VmH5tlVqVpbaKaeMtPX2UOW2FgbQU2Sxq3ydk"]
     wx.requestSubscribeMessage({
       tmplIds: tmplIds,
@@ -171,20 +159,20 @@ Page({
     }
 
     // 批量上传图片
+    let uploadTask = []
     for (let i = 0; i < this.data.imgList.length; i++) {
-      this.uploadFile('', this.data.imgList[i]).then(res => {
-        console.log("文件上传", res)
-
-        this.checkTimeout(res.file.id)
-        form.image.push(res.path)
-        form.addi.file_ids.push(res.file.id)
-
-        // 图片上传完
-        if (i + 1 == this.data.imgList.length) {
-          this.saveRecord(form)
-        }
-      })
+      uploadTask.push(this.uploadFile('', this.data.imgList[i]))
     }
+    Promise.all(uploadTask).then((result) => {
+      console.log("上传结果",result)
+      for (let i in result) {
+        form.image.push(result[i].path)
+        form.addi.file_ids.push(result[i].file.id)
+      }
+      this.saveRecord(form)
+    }).catch(err=>{
+      console.error(err)
+    })
   },
 
   saveRecord(form = {}) {
@@ -413,28 +401,4 @@ Page({
     })
   },
 
-  checkTimeout(files) {
-    let that = this
-    setTimeout(function() {
-      if (!that.data.success) {
-        that.delFile(files)
-        that.setData({
-          loading: false,
-          debounce: false
-        })
-        wx.showToast({
-          title: '响应超时，请检查网络',
-          icon: "none"
-        })
-      } else {
-        console.log("发布未超时")
-      }
-    }, 60 * 1000)
-  },
-
-  delFile(fileIDs = []) {
-    if (!fileIDs) return
-    let MyFile = new wx.BaaS.File()
-    MyFile.delete(fileIDs).then()
-  },
 })

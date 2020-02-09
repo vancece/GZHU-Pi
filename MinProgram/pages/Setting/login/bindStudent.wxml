@@ -9,9 +9,9 @@
 <!-- 登录教务系统 -->
 <view class='page'>
   <view class='exchange'>
-    <image mode='widthFix' class='icon' src='https://cloud-minapp-17768.cloud.ifanrusercontent.com/1g0eSyIiSqFIBEZe.png!/fw/150'></image>
-    <image mode='widthFix' style='width:80rpx;height:80rpx' src='https://cloud-minapp-17768.cloud.ifanrusercontent.com/1g3BtwlkzLFxmpCY.png'></image>
-    <image mode='widthFix' class='icon' src='https://cloud-minapp-17768.cloud.ifanrusercontent.com/1fx04mwWmqxrOljX.png!/fw/150'></image>
+    <image mode='widthFix' class='icon' src='https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/icon/gzhu-icon-red.png'></image>
+    <image mode='widthFix' style='width:80rpx;height:80rpx' src='https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/icon/exchange1.png'></image>
+    <image mode='widthFix' class='icon' src='https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/icon/gzhu-classtable.png'></image>
   </view>
 
   <!-- 登录绑定 -->
@@ -46,7 +46,7 @@
 
   <!-- 绑定成功 -->
   <view class='bind-success' hidden='{{hideSuccess}}'>
-    <image mode='widthFix' style='width:150rpx;height:150rpx;margin:80rpx;' src='https://cloud-minapp-17768.cloud.ifanrusercontent.com/1g3l0zWfzjlLfjHN.png'></image>
+    <image mode='widthFix' style='width:150rpx;height:150rpx;margin:80rpx;' src='https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/icon/ok-green.png'></image>
     <view style='font-weight:bold; text-shadow: 5rpx 25rpx 10rpx #ddd;font-size:150%'>绑定成功</view>
 
     <view style='margin:50rpx;color:grey;font-size:80%'>若绑定后改过密码，请重新绑定</view>
