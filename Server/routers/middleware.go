@@ -15,22 +15,50 @@ import (
 
 func TableAccessHandle(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 
-	ctx := InitCtx(w, r)
+	//====== 无需校验token的接口 =======
 
+	if strings.Contains(r.URL.Path, "auth") ||
+		strings.Contains(r.URL.Path, "jwxt") ||
+		strings.Contains(r.URL.Path, "library") ||
+		strings.Contains(r.URL.Path, "second") {
+		next(w, r)
+		return
+	}
+	if strings.ToUpper(r.Method) == "POST" && strings.Contains(r.URL.Path, "t_user") {
+		if err := userCheck(w, r); err != nil {
+			Response(w, r, nil, http.StatusBadRequest, err.Error())
+			return
+		}
+		next(w, r)
+		return
+	}
+
+	//======= 数据库可以找到对应用户、需要检查token =========
+
+	ctx, err := InitCtx(w, r)
+	if err != nil {
+		logs.Error(err)
+		Response(w, r, nil, http.StatusBadRequest, err.Error())
+		return
+	}
 	switch strings.ToUpper(r.Method) {
 
 	case "GET":
 	case "POST":
 		if strings.Contains(r.URL.Path, "t_topic") {
-
-			if err := TopicCheck(ctx); err != nil {
+			if err := topicCheck(ctx); err != nil {
 				Response(w, r, nil, http.StatusBadRequest, err.Error())
 				return
 			}
-
 		}
 
 	case "PUT", "PATCH":
+		p := getCtxValue(ctx)
+		if strings.Contains(r.URL.Path, "t_user") {
+			logs.Info(r.URL.RawQuery)
+			r.URL.RawQuery = fmt.Sprintf("id=%d", p.user.ID)
+		}
+
 	case "DELETE":
 		p := getCtxValue(ctx)
 		qry := strings.ReplaceAll(p.r.URL.Query().Get("id"), "$eq.", "")
@@ -58,7 +86,7 @@ func TableAccessHandle(w http.ResponseWriter, r *http.Request, next http.Handler
 	next(w, r)
 }
 
-func TopicCheck(ctx context.Context) (err error) {
+func topicCheck(ctx context.Context) (err error) {
 	p := getCtxValue(ctx)
 
 	body, err := ioutil.ReadAll(p.r.Body)
@@ -99,5 +127,35 @@ func TopicCheck(ctx context.Context) (err error) {
 	body = []byte(newBodyStr)
 	p.r.Body = ioutil.NopCloser(bytes.NewBuffer(body))
 
+	return
+}
+
+func userCheck(w http.ResponseWriter, r *http.Request) (err error) {
+
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		logs.Error(err)
+		return
+	}
+	r.Body = ioutil.NopCloser(bytes.NewBuffer(body))
+	defer r.Body.Close()
+
+	if len(body) == 0 {
+		err = fmt.Errorf("Call api by post with empty body ")
+		logs.Error(err)
+		return
+	}
+	var u models.TUser
+	err = json.Unmarshal(body, &u)
+	if err != nil {
+		logs.Error(err)
+		return
+	}
+	logs.Info("%+v", u)
+	if u.MinappID.Int64 <= 0 || u.OpenID.String == "" {
+		err = fmt.Errorf("必要字段咋能为空")
+		logs.Error(err)
+		return
+	}
 	return
 }

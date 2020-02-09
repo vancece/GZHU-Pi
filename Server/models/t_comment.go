@@ -8,10 +8,10 @@ import (
 
 type TComment struct {
 	ID       int64    `json:"id,omitempty" remark:"自增id" gorm:"primary_key"`
-	ObjectID int64       `json:"object_id,omitempty" remark:"主题对象记录ID" gorm:"type:real;not null"`
+	ObjectID int64       `json:"object_id,omitempty" remark:"主题对象记录ID" gorm:"type:bigint;not null"`
 	Content  null.String `json:"content,omitempty" remark:"主体内容" gorm:"type:varchar"`
 	//Mention  null.String `json:"mention,omitempty" remark:"提及@用户" gorm:"type:varchar"`
-	ReplyID null.Int `json:"reply_id,omitempty" remark:"回复id" gorm:"type:real"` // reference to t_comment(id)
+	ReplyID null.Int `json:"reply_id,omitempty" remark:"回复id" gorm:"type:bigint"` // reference to t_comment(id)
 
 	Image     types.JSONText `json:"image,omitempty" remark:"图片地址[string]" gorm:"type:varchar[]"`
 	Anonymous null.Bool      `json:"anonymous,omitempty" remark:"是否匿名" gorm:"type:bool;default:false"`

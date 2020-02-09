@@ -15,13 +15,13 @@ type TTopic struct {
 	Category  null.String    `json:"category,omitempty" remark:"归属类别" gorm:"type:varchar"`
 	Image     types.JSONText `json:"image,omitempty" remark:"图片地址" gorm:"type:varchar[]"`
 	Label     types.JSONText `json:"label,omitempty" remark:"标签" gorm:"type:varchar[]"`
-	Viewed    null.Int       `json:"viewed,omitempty" remark:"浏览量" gorm:"type:real;default:0"`
+	Viewed    null.Int       `json:"viewed,omitempty" remark:"浏览量" gorm:"type:int;default:0"`
 	Anonymous null.Bool      `json:"anonymous,omitempty" remark:"是否匿名" gorm:"type:bool;default:false"`
 	Anonymity null.String    `json:"anonymity,omitempty" remark:"匿名/化名" gorm:"type:varchar"`
 
 	Addi      types.JSONText `json:"addi,omitempty" remark:"附加信息" gorm:"type:jsonb"`
-	Status    null.Int       `json:"status,omitempty" remark:"状态" gorm:"type:real;default:0"`
-	CreatedBy null.Int       `json:"created_by,omitempty" remark:"创建者" gorm:"type:real"`
+	Status    null.Int       `json:"status,omitempty" remark:"状态" gorm:"type:smallint;default:0"`
+	CreatedBy null.Int       `json:"created_by,omitempty" remark:"创建者" gorm:"type:bigint"`
 	CreatedAt time.Time      `json:"created_at,omitempty" remark:"创建时间" gorm:"default:current_timestamp"`
 	UpdatedAt time.Time      `json:"updated_at,omitempty" remark:"更新时间" gorm:"default:current_timestamp"`
 }

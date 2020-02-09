@@ -5,8 +5,10 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/astaxie/beego/logs"
+	"github.com/dgrijalva/jwt-go"
 	"io/ioutil"
 	"net/http"
 	"reflect"
@@ -38,6 +40,9 @@ type ResponseProto struct {
 
 //统一响应处理函数
 func Response(w http.ResponseWriter, r *http.Request, data interface{}, statusCode int, msg string) {
+	defer func() {
+		logs.Info("============== Responded ==============")
+	}()
 	if w == nil || r == nil {
 		http.Error(w, "Unknown Error", http.StatusInternalServerError)
 		return
@@ -157,4 +162,91 @@ func ReadRequestArg(r *http.Request, key string) (value interface{}, err error) 
 		return value, nil
 	}
 	return nil, fmt.Errorf("unsupported method: %s with content type: %v", r.Method, r.Header["Content-Type"])
+}
+
+//传入用户id，生成并返回Token
+func GenerateToken(userID int64) (string, error) {
+	//TODO config
+	SecretKey := []byte("pi") //设置密钥
+
+	token := jwt.New(jwt.SigningMethodHS256) //指定签名方式，创建token对象
+	claims := token.Claims.(jwt.MapClaims)   //Claims (Payload):声明 token 有关的重要信息
+
+	claims["authorized"] = true
+	claims["iss"] = userID                                     //指明Token用户
+	claims["exp"] = time.Now().Add(time.Hour * 24 * 30).Unix() //过期时间
+
+	tokenString, err := token.SignedString(SecretKey)
+
+	if err != nil {
+		logs.Error(err)
+		return "", err
+	}
+	return tokenString, nil
+}
+
+//传入token字符串，解析Token，返回用户id
+func ParseToken(tokenStr string) (userID int64, err error) {
+	SecretKey := []byte("pi") //设置密钥
+
+	token, err := jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
+		//methodt, ok := token.Method.(*jwt.SigningMethodHMAC)	//查看加密方式
+		return SecretKey, nil
+	})
+	if err != nil {
+		logs.Error(err)
+		return
+	}
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
+		logs.Error("claims not a jwt.MapClaims")
+		return
+	}
+	iss, ok := claims["iss"].(float64)
+	if !ok {
+		err = fmt.Errorf("iss not float64")
+		logs.Error(err)
+		return
+	}
+	if token.Valid {
+		return int64(iss), nil
+	} else {
+		return int64(iss), errors.New("token无效")
+	}
+}
+
+//从token读取用户id
+func GetUserID(r *http.Request) (userID int64, err error) {
+	var token string
+	if len(r.Cookies()) == 0 {
+		err = fmt.Errorf("cookie not set, please authenticate first")
+		return
+	}
+	cookie, err := r.Cookie("token")
+	if err != nil {
+		logs.Error(err)
+		return
+	}
+	token = cookie.Value
+	userID, err = ParseToken(token)
+	if err != nil {
+		logs.Error(err)
+		return
+	}
+	return
+}
+
+func NewCookie(userID int64) (newCookie string, err error) {
+	newToken, err := GenerateToken(userID)
+	if err != nil {
+		logs.Error(err)
+		return
+	}
+	cookie := http.Cookie{
+		Name:     "token",
+		Value:    newToken,
+		HttpOnly: true,
+	}
+	newCookie = cookie.String()
+	return
 }

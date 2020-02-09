@@ -49,25 +49,28 @@ func getCtxValue(ctx context.Context) (p *piCtx) {
 	return
 }
 
-func InitCtx(w http.ResponseWriter, r *http.Request) (ctx context.Context, ) {
+func InitCtx(w http.ResponseWriter, r *http.Request) (ctx context.Context, err error) {
 
 	p := &piCtx{
 		r:    r,
 		w:    w,
-		user: models.TUser{ID: 1},
+		user: models.TUser{},
 
 		gormDB: models.GetGorm(),
 	}
 	ctx = context.Background()
 	ctx = context.WithValue(ctx, piKey, p)
 
-	//TODO 读取cookie、初始化user
-	token := p.r.Header.Get("Authorization")
-	if token == "" {
-
+	p.user.ID, err = GetUserID(p.r)
+	if err != nil {
+		logs.Error(err)
+		return
 	}
-	//刷新token
-	//p.w.Header().Set("Set-Cookie", token)
+	if p.user.ID <= 0 {
+		err = fmt.Errorf("user not found")
+		return
+	}
+	logs.Info("current user ID: %d", p.user.ID)
 
 	return
 }

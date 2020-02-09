@@ -119,6 +119,8 @@ func customRouter(r *mux.Router) *mux.Router {
 		_, _ = w.Write([]byte("Hello!"))
 	})
 
+	r.HandleFunc("/auth", routers.PanicMV(routers.Auth)).Methods("POST")
+
 	//微信公众号接口
 	//r.HandleFunc("/wx/check", routers.PanicMV(routers.WeChatCheck))
 	//r.HandleFunc("/wx/check", routers.PanicMV(routers.Hello))
