@@ -1,0 +1,35 @@
+kind: pipeline
+type: docker
+name: gzhupi
+
+trigger:
+  branch:
+    - master
+
+steps:
+  - name: setup
+    image: zhenshaw/docker:compose
+    volumes:
+      - name: docker_sock
+        path: /var/run/docker.sock
+    environment:
+      GZHUPI_DB_HOST:
+        from_secret: GZHUPI_DB_HOST
+      GZHUPI_DB_PORT:
+        from_secret: GZHUPI_DB_PORT
+      GZHUPI_DB_USER:
+        from_secret: GZHUPI_DB_USER
+      GZHUPI_DB_PASSWORD:
+        from_secret: GZHUPI_DB_PASSWORD
+      GZHUPI_DB_DBNAME:
+        from_secret: GZHUPI_DB_DBNAME
+      GZHUPI_DB_SSLMODE:
+        from_secret: GZHUPI_DB_SSLMODE
+    commands:
+      - cd Server
+      - docker-compose -f docker-compose-gzhupi.yml up -d --build
+
+volumes:
+  - name: docker_sock
+    host:
+      path: /var/run/docker.sock

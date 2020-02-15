@@ -8,6 +8,7 @@ import (
 	jsoniter "github.com/json-iterator/go"
 	"io/ioutil"
 	"net/url"
+	"sort"
 	"strconv"
 	"strings"
 	"time"
@@ -138,13 +139,10 @@ func CountGpa(grades []*models.TGrade, gradeData *GradeData) {
 		tmpList = append(tmpList, &gradeList)
 	}
 	//按学期倒序排列，新学期在前
-	for i := 0; i < len(tmpList); i++ {
-		for j := i + 1; j < len(tmpList); j++ {
-			if bytes.Compare([]byte(tmpList[i].YearSem), []byte(tmpList[j].YearSem)) == -1 {
-				tmpList[i], tmpList[j] = tmpList[j], tmpList[i]
-			}
-		}
-	}
+	sort.Slice(tmpList, func(i, j int) bool {
+		return bytes.Compare([]byte(tmpList[i].YearSem), []byte(tmpList[j].YearSem)) == 1
+	})
+
 	gradeData.SemList = append(gradeData.SemList, tmpList...)
 }
 

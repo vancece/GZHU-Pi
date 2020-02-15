@@ -19,3 +19,7 @@ RUN go build -mod=vendor rpc
 FROM zhenshaw/ubuntu:tesseract
 COPY --from=builder /home/rpc /home/
 CMD ["./home/rpc"]
+
+
+#docker run -it -v "$PWD":/tmp/code -w /tmp/code zhenshaw/golang:tesseract \
+#        bash -c "go build -mod=vendor -o /tmp/code/build/bootstrap /tmp/code/rpc.go"

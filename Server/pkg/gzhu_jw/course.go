@@ -174,7 +174,8 @@ func ParseSjk(body []byte) (courses []*SjkCourse) {
 
 	for i := 0; true; i++ {
 		c := &SjkCourse{}
-		c.SjkCourseName = kbList.Get(i).Get("kcmc").ToString()
+		//c.SjkCourseName = kbList.Get(i).Get("kcmc").ToString()
+		c.SjkCourseName = kbList.Get(i).Get("sjkcgs").ToString()
 		if c.SjkCourseName == "" {
 			break
 		}

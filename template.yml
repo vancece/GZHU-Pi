@@ -13,7 +13,21 @@ Resources:
         Runtime: custom
         Timeout: 20
         MemorySize: 256
-        EnvironmentVariables: {}
+        EnvironmentVariables:
+          GZHUPI_DB_DBNAME: postgres
+          GZHUPI_DB_HOST: localhost
+          GZHUPI_DB_PASSWORD: postgres
+          GZHUPI_DB_PORT: 5432
+          GZHUPI_DB_SSLMODE: disable
+          GZHUPI_DB_USER: postgres
+          TZ: Asia/Shanghai
+          
+          TESSDATA_PREFIX: /code/.fun/root/usr/share/tesseract-ocr/4.00/tessdata
+          LD_LIBRARY_PATH: >-
+            /code/.fun/root/usr/lib:/code/.fun/root/usr/lib/x86_64-linux-gnu:/code/.fun/root/lib/x86_64-linux-gnu:/code/.fun/root/usr/lib64:/code:/code/lib:/usr/local/lib
+          PATH: >-
+            /code/.fun/root/usr/local/bin:/code/.fun/root/usr/local/sbin:/code/.fun/root/usr/bin:/code/.fun/root/usr/sbin:/code/.fun/root/sbin:/code/.fun/root/bin:/code/.fun/python/bin:/usr/local/bin:/usr/local/sbin:/usr/bin:/usr/sbin:/sbin:/bin
+          
         CodeUri: ./Server/build
       Events:
         trigger:
