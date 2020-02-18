@@ -3,7 +3,8 @@ package models
 import "time"
 
 type TStuInfo struct {
-	StuID      string `json:"stu_id,omitempty" remark:"学号" gorm:"primary_key;type:varchar"`
+	ID         int64  `json:"id,omitempty" remark:"id" gorm:"primary_key"`
+	StuID      string `json:"stu_id,omitempty" remark:"学号" gorm:"type:varchar;unique_index;not null"`
 	StuName    string `json:"stu_name,omitempty" remark:"姓名" gorm:"type:varchar"`
 	AdmitYear  string `json:"admit_year,omitempty" remark:"年级" gorm:"type:varchar"`
 	ClassID    string `json:"class_id,omitempty" remark:"班级id" gorm:"type:varchar"`

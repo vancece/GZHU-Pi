@@ -8,13 +8,14 @@ import (
 )
 
 type TGrade struct {
-	StuID    string `json:"stu_id,omitempty" remark:"学号" gorm:"primary_key;type:varchar"`
-	CourseID string `json:"course_id,omitempty" remark:"课程ID" gorm:"primary_key;type:varchar"`
-	JxbID    string `json:"jxb_id,omitempty" remark:"教学班ID" gorm:"primary_key;type:varchar"`
+	ID       int64  `json:"id,omitempty" remark:"id" gorm:"primary_key"`
+	StuID    string `json:"stu_id,omitempty" remark:"学号" gorm:"type:varchar;not null"`
+	CourseID string `json:"course_id,omitempty" remark:"课程ID" gorm:"type:varchar;not null"`
+	JxbID    string `json:"jxb_id,omitempty" remark:"教学班ID" gorm:"type:varchar;not null"`
 
-	Credit     float64 `json:"credit,omitempty" remark:"学分" gorm:"type:real"`
-	CourseGpa  float64 `json:"course_gpa,omitempty" remark:"课程绩点" gorm:"type:real"`
-	GradeValue float64 `json:"grade_value,omitempty" remark:"成绩分数" gorm:"type:real"`
+	Credit     float64 `json:"credit,omitempty" remark:"学分" gorm:"type:numeric(5,2)"`
+	CourseGpa  float64 `json:"course_gpa,omitempty" remark:"课程绩点" gorm:"type:numeric(5,2)"`
+	GradeValue float64 `json:"grade_value,omitempty" remark:"成绩分数" gorm:"type:numeric(5,2)"`
 	Grade      string  `json:"grade,omitempty" remark:"成绩" gorm:"type:varchar"`
 	CourseName string  `json:"course_name,omitempty" remark:"课程名称" gorm:"type:varchar"`
 	CourseType string  `json:"course_type,omitempty" remark:"课程类型" gorm:"type:varchar"`
