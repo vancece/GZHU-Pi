@@ -11,18 +11,18 @@ import (
 const (
 	vTopic = `
 			create or replace VIEW v_topic as
-			select t.*, u.id as uid,
-				   u.gender,
+			select t.*, u.gender,
 				   (CASE WHEN anonymous = true
 							THEN 'https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/icon/anonmous_avatar.png'
 						ELSE u.avatar END)                                         as avatar,
 				   (CASE WHEN anonymous = true THEN anonymity ELSE u.nickname END) as nickname,
 			
-				   (select count(*) from t_comment where object_id = t.id)         as comment_count,
-				   (select count(*) from t_relation where object_id = t.id)        as licked
+				   (select count(*) from t_discuss where object_id = t.id)         as discussed,
+				   (select count(*) from t_relation where object_id = t.id)        as liked
 			
 			from t_topic as t, t_user as u
 			where t.created_by = u.id;
+			comment on view v_grade is '主题/帖子视图';
 	`
 	vGrade = `
 			create or replace view v_grade (stu_id, class_id, major_class, major_id, major, stu_name, college_id, college, admit_year, year,
@@ -32,6 +32,16 @@ const (
 						  g.grade, g.course_gpa, g.course_type, g.exam_type, g.invalid,g.jxb_id, g.teacher, g.year_sem, g.created_at
 			FROM t_stu_info s, t_grade g WHERE ((s.stu_id)::text = (g.stu_id)::text);
 			comment on view v_grade is '学生成绩视图';
+	`
+	vDiscuss = `
+			create or replace VIEW v_discuss as
+			select d.*, u.gender,
+				   (CASE WHEN anonymous = true
+							THEN 'https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/icon/anonmous_avatar.png'
+						ELSE u.avatar END)                                         as avatar,
+				   (CASE WHEN anonymous = true THEN anonymity ELSE u.nickname END) as nickname
+			from t_discuss as d, t_user as u where d.created_by = u.id;
+			comment on view v_grade is '评论视图';
 	`
 )
 
@@ -65,11 +75,12 @@ func modelsInit() {
 
 	//自动迁移 只会 创建表、缺失的列、缺失的索引，不会 更改现有列的类型或删除未使用的列
 	db.AutoMigrate(&TStuInfo{}, &TGrade{}, &TApiRecord{}, &TUser{},
-		&TTopic{}, &TComment{}, &TRelation{})
+		&TTopic{}, &TDiscuss{}, &TRelation{})
 
 	db.Model(&TGrade{}).AddUniqueIndex("t_grade_stu_id_course_id_jxb_id_idx",
 		"stu_id", "course_id", "jxb_id")
 
 	db.Exec(vTopic)
 	db.Exec(vGrade)
+	db.Exec(vDiscuss)
 }
