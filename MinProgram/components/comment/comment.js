@@ -31,6 +31,9 @@ Component({
         this.setData({
           uid: user.id
         })
+        this.setData({
+          authorized: user.is_authorized
+        })
       }).catch(err => {
         this.setData({
           authorized: false
@@ -129,6 +132,15 @@ Component({
     },
     // 发布评论
     addComment() {
+
+      if (!this.data.authorized) {
+        wx.showToast({
+          title: '匿名用户？请授权！！！',
+          icon: "none"
+        })
+        return
+      }
+
       let that = this
       // 防抖处理
       if (this.data.debounce) return

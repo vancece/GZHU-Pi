@@ -1,3 +1,5 @@
+const Page = require('../../../utils/sdk/ald-stat.js').Page
+var utils = require("../../../utils/date.js")
 Page({
 
   data: {
@@ -8,6 +10,14 @@ Page({
     if (!options.id) options.id = 4
     this.data.id = options.id
     this.getDetail(options.id)
+  },
+  onShow: function() {
+    let that = this
+    setTimeout(function() {
+      that.setData({
+        wait: true
+      })
+    }, 500)
   },
 
   onShareAppMessage: function() {
@@ -78,7 +88,6 @@ Page({
         url: wx.$param.server["prest"] + "/postgres/public/v_topic?id=$eq." + id,
         method: "get",
         loading: true,
-        checkStatus: false,
       })
       .then(res => {
         console.log(res)
@@ -92,6 +101,10 @@ Page({
             }
           })
           return
+        }
+        for (let i = 0; i < res.data.length; i++) {
+          let time = new Date(res.data[i].created_at)
+          res.data[i].created_at = utils.relativeTime(time.getTime() / 1000)
         }
         this.setData({
           detail: res.data[0]
@@ -107,7 +120,6 @@ Page({
         url: wx.$param.server["prest"] + "/postgres/public/t_topic?id=$eq." + row_id,
         method: "delete",
         loading: true,
-        checkStatus: false,
       })
       .then(res => {
         console.log(res)
@@ -127,7 +139,7 @@ Page({
         }
 
       }).catch(err => {
-        console.err(err)
+        console.error(err)
       })
   },
 

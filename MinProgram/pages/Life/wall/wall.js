@@ -1,4 +1,5 @@
-const Page = require('../../../utils/sdk/ald-stat.js').Page;
+const Page = require('../../../utils/sdk/ald-stat.js').Page
+var utils = require("../../../utils/date.js")
 Page({
 
   data: {
@@ -170,7 +171,12 @@ Page({
         checkStatus: false,
       })
       .then(res => {
-        console.log(res)
+        console.log("主题列表", res)
+        // 格式化时间
+        for (let i = 0; i < res.data.length; i++) {
+          let time = new Date(res.data[i].updated_at)
+          res.data[i].updated_at = utils.relativeTime(time.getTime() / 1000)
+        }
         if (loadMore) {
           this.data.dataSet = this.data.dataSet.concat(res.data)
         } else {
