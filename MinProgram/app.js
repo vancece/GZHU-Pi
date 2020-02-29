@@ -38,7 +38,6 @@ App({
     }
 
     userService.auth()
-    // userService.update_create()
 
   },
 

@@ -71,9 +71,9 @@
 							</view>
 						</view>
 						<view class="text-gray text-right padding-xs">
-							<text class="cuIcon-attentionfill margin-lr-xs"></text>{{content_list[item].viewed}}
-							<text class="cuIcon-likefill margin-lr-xs"></text>{{content_list[item].discussed}}
-							<text class="cuIcon-messagefill margin-lr-xs"></text>{{content_list[item].liked}}
+							<text class="cuIcon-footprint margin-lr-xs"></text>{{content_list[item].viewed}}
+							<text class="cuIcon-like margin-lr-xs"></text>{{content_list[item].liked}}
+							<text class="cuIcon-message margin-lr-xs"></text>{{content_list[item].discussed}}
 						</view>
 					</view>
 				</view>

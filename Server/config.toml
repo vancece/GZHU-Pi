@@ -46,6 +46,9 @@ debug = true
 [http]
 port = 9000
 
+[queries]
+location = "queries"
+
 [jwt]
 key = "secret"
 algo = "HS256"

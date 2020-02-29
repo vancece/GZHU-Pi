@@ -73,7 +73,7 @@ class UserService {
   //     })
   // }
 
-  update_create() {
+  update() {
 
     wx.BaaS.auth.getCurrentUser().then(user => {
       // console.log(user)
@@ -105,19 +105,6 @@ class UserService {
         })
         .then(res => {
           console.log(res)
-          if (res.data.rows_affected == 0) {
-            wx.$ajax({
-                url: wx.$param.server["prest"] + "/postgres/public/t_user",
-                method: "post",
-                data: form,
-                header: {
-                  "content-type": "application/json"
-                }
-              })
-              .then(res => {
-                console.log(res)
-              })
-          }
         })
 
     }).catch(err => {
@@ -125,11 +112,7 @@ class UserService {
         console.log('用户未登录，发送user.update_create请求失败')
       }
     })
-
-
   }
-
-
 }
 
 export default UserService

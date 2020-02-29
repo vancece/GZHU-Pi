@@ -9,8 +9,6 @@ Page({
     loadDone: false, //加载完毕
     queryStr: "", //搜索的字符串
     loading: false,
-    category: ["全部", "图书文具", "生活用品", "电子产品", "化妆用品", "服装鞋包", "其它"],
-    categoryIndex: 0,
 
     dataSet: [],
     brick_option: {
@@ -134,7 +132,7 @@ Page({
       }
     }).then(res => {
       if (typeof star_list != "object" || star_list == null) star_list = []
-      if (res?.data?.id) {
+      if (res.data && res.data.id) {
         res.data.avatar = wx.getStorageSync('gzhupi_user').avatar
         star_list.push(res.data)
         this.setData({
@@ -154,9 +152,23 @@ Page({
   },
 
   search() {
-    this.setData({
-      categoryIndex: -1
-    })
+    if (this.data.queryStr == "") {
+      this.setData({
+        page: 0, //恢复页数
+        loadDone: false, //加载完毕
+        type: "",
+        "brick_option.columns": 2,
+        loading: true
+      })
+
+    } else {
+      this.setData({
+        page: 0, //恢复页数
+        loadDone: false, //加载完毕
+        dataSet: [],
+        loading: true
+      })
+    }
     this.getTopics()
   },
 
@@ -178,10 +190,10 @@ Page({
           "brick_option.columns": 2,
           navTitle: "广大墙"
         })
-        this.data.fliter = "$eq.日常"
+        this.data.type = "$eq.日常"
         break
       case "广大情墙":
-        this.data.fliter = "$eq.情墙"
+        this.data.type = "$eq.情墙"
         this.setData({
           "brick_option.columns": 1,
           navTitle: "广大情墙"
@@ -192,7 +204,7 @@ Page({
           "brick_option.columns": 1,
           navTitle: "悄悄话"
         })
-        this.data.fliter = "$eq.悄悄话"
+        this.data.type = "$eq.悄悄话"
         break
       case "校园市场":
         wx.$navTo("/pages/Life/oldthings/index")
@@ -206,8 +218,8 @@ Page({
       page: 0, //恢复页数
       loadDone: false, //加载完毕
       queryStr: "",
-      categoryIndex: id,
-      dataSet: []
+      dataSet: [],
+      loading: true
     })
 
     this.getTopics()
@@ -220,15 +232,20 @@ Page({
     let query = {
       _page: this.data.page,
       _page_size: this.data.pageSize,
-      type: this.data.fliter ? this.data.fliter : "",
-      _order: "-created_at"
+      type: this.data.type ? this.data.type : "",
+      _order: "-created_at",
     }
     query = wx.$objectToQuery(query)
 
+    let url = wx.$param.server["prest"] + "/postgres/public/v_topic" + query
+
+    if (this.data.queryStr != "") {
+      url = wx.$param.server["prest"] + "/_QUERIES/topic/v_topic_search?match=" + this.data.queryStr
+    }
+
     wx.$ajax({
-        url: wx.$param.server["prest"] + "/postgres/public/v_topic" + query,
+        url: url,
         method: "get",
-        loading: true,
       })
       .then(res => {
         console.log("主题列表", res)
@@ -250,6 +267,9 @@ Page({
 
       }).catch(err => {
         console.log(err)
+        this.setData({
+          loading: false
+        })
       })
   },
 

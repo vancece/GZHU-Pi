@@ -30,6 +30,11 @@ func TableAccessHandle(w http.ResponseWriter, r *http.Request, next http.Handler
 		topicViewCounter(r.URL)
 	}
 
+	if strings.ToUpper(r.Method) == "GET" {
+		next(w, r)
+		return
+	}
+
 	//======= 数据库可以找到对应用户、需要检查token =========
 
 	ctx, err := InitCtx(w, r)
