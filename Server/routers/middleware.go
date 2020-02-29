@@ -19,22 +19,13 @@ func TableAccessHandle(w http.ResponseWriter, r *http.Request, next http.Handler
 
 	//====== 无需校验token的接口 =======
 
-	if strings.Contains(r.URL.Path, "auth") ||
-		strings.Contains(r.URL.Path, "jwxt") ||
-		strings.Contains(r.URL.Path, "library") ||
-		strings.Contains(r.URL.Path, "second") {
+	if strings.Contains(r.URL.Path, "/auth") ||
+		strings.Contains(r.URL.Path, "/jwxt") ||
+		strings.Contains(r.URL.Path, "/library") ||
+		strings.Contains(r.URL.Path, "/second") {
 		next(w, r)
 		return
 	}
-	if strings.ToUpper(r.Method) == "POST" && strings.Contains(r.URL.Path, "t_user") {
-		if err := userCheck(r); err != nil {
-			Response(w, r, nil, http.StatusBadRequest, err.Error())
-			return
-		}
-		next(w, r)
-		return
-	}
-
 	if strings.ToUpper(r.Method) == "GET" && strings.Contains(r.URL.Path, "_topic") {
 		topicViewCounter(r.URL)
 	}
@@ -43,8 +34,6 @@ func TableAccessHandle(w http.ResponseWriter, r *http.Request, next http.Handler
 
 	ctx, err := InitCtx(w, r)
 	if err != nil {
-		logs.Error(err)
-		Response(w, r, nil, http.StatusBadRequest, err.Error())
 		return
 	}
 	switch strings.ToUpper(r.Method) {
@@ -63,14 +52,22 @@ func TableAccessHandle(w http.ResponseWriter, r *http.Request, next http.Handler
 				return
 			}
 		}
-
+		if strings.Contains(r.URL.Path, "t_relation") {
+			if err := relationCheck(ctx); err != nil {
+				Response(w, r, nil, http.StatusBadRequest, err.Error())
+				return
+			}
+		}
 	case "PUT", "PATCH":
 		p := getCtxValue(ctx)
 		if strings.Contains(r.URL.Path, "t_user") {
 			logs.Info(r.URL.RawQuery)
 			r.URL.RawQuery = fmt.Sprintf("id=%d", p.user.ID)
+			if err := userCheck(ctx); err != nil {
+				Response(w, r, nil, http.StatusBadRequest, err.Error())
+				return
+			}
 		}
-
 	case "DELETE":
 		p := getCtxValue(ctx)
 		qry := strings.ReplaceAll(p.r.URL.Query().Get("id"), "$eq.", "")
@@ -98,12 +95,19 @@ func TableAccessHandle(w http.ResponseWriter, r *http.Request, next http.Handler
 				return
 			}
 		}
-
+		if strings.Contains(r.URL.Path, "t_relation") {
+			var t models.TRelation
+			p.gormDB.First(&t, id)
+			if t.CreatedBy.Int64 != p.user.ID {
+				err := fmt.Errorf("permission denied")
+				Response(w, r, nil, http.StatusBadRequest, err.Error())
+				return
+			}
+		}
 	default:
 		_, _ = w.Write([]byte("unsupported method: " + r.Method))
 		return
 	}
-
 	next(w, r)
 }
 
@@ -171,7 +175,7 @@ func discussCheck(ctx context.Context) (err error) {
 		logs.Error(err)
 		return
 	}
-	if t.Content.String == "" {
+	if t.ObjectID <= 0 || t.Content.String == "" {
 		err = fmt.Errorf("必要字段咋能为空")
 		logs.Error(err)
 		return
@@ -195,16 +199,68 @@ func discussCheck(ctx context.Context) (err error) {
 	return
 }
 
-func userCheck(r *http.Request) (err error) {
+func relationCheck(ctx context.Context) (err error) {
+	p := getCtxValue(ctx)
 
-	body, err := ioutil.ReadAll(r.Body)
+	body, err := ioutil.ReadAll(p.r.Body)
 	if err != nil {
 		logs.Error(err)
 		return
 	}
-	r.Body = ioutil.NopCloser(bytes.NewBuffer(body))
-	defer r.Body.Close()
+	defer p.r.Body.Close()
+	if len(body) == 0 {
+		err = fmt.Errorf("Call api by post with empty body ")
+		logs.Error(err)
+		return
+	}
+	var t models.TRelation
+	err = json.Unmarshal(body, &t)
+	if err != nil {
+		logs.Error(err)
+		return
+	}
+	if t.ObjectID <= 0 {
+		err = fmt.Errorf("Are you kidding me ? ")
+		logs.Error(err)
+		return
+	}
+	if t.Object.String != "t_topic" && t.Object.String != "t_discuss" {
+		err = fmt.Errorf("unsupported object name: %s", t.Object.String)
+		logs.Error(err)
+		return
+	}
+	if t.Type.String != "star" && t.Type.String != "claim" && t.Type.String != "favourite" {
+		err = fmt.Errorf("Are you kidding me ? ")
+		logs.Error(err)
+		return
+	}
+	if t.CreatedBy.Valid {
+		err = fmt.Errorf("不能手动指定created_by")
+		logs.Error(err)
+		return
+	}
+	//根据唯一主键删除，防止写入冲突
+	p.gormDB.Where("object_id=? and object=? and type=? and created_by=?",
+		t.ObjectID, t.Object, t.Type, p.user.ID).Delete(models.TRelation{})
 
+	newBodyStr := fmt.Sprintf(`%s,"created_by":%d}`, strings.TrimSuffix(string(body), "}"), p.user.ID)
+
+	body = []byte(newBodyStr)
+	p.r.Body = ioutil.NopCloser(bytes.NewBuffer(body))
+
+	return
+}
+
+func userCheck(ctx context.Context) (err error) {
+
+	p := getCtxValue(ctx)
+
+	body, err := ioutil.ReadAll(p.r.Body)
+	if err != nil {
+		logs.Error(err)
+		return
+	}
+	defer p.r.Body.Close()
 	if len(body) == 0 {
 		err = fmt.Errorf("Call api by post with empty body ")
 		logs.Error(err)
@@ -216,10 +272,13 @@ func userCheck(r *http.Request) (err error) {
 		logs.Error(err)
 		return
 	}
-	logs.Info("%+v", u)
-	if u.MinappID.Int64 <= 0 || u.OpenID.String == "" {
-		err = fmt.Errorf("必要字段咋能为空")
+	if u.ID != 0 || u.RoleID.Int64 != 0 || u.OpenID.String != "" {
+		err = fmt.Errorf("could not update id/role_id/open_id")
 		logs.Error(err)
+		return
+	}
+	if u.Phone.String != "" && !verifyPhone(u.Phone.String) {
+		err = fmt.Errorf("%s not a valid phone number", u.Phone.String)
 		return
 	}
 	return

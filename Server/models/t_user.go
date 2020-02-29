@@ -12,7 +12,7 @@ type TUser struct {
 	OpenID    null.String    `json:"open_id,omitempty" remark:"微信openid" gorm:"type:varchar;unique_index;not null"`
 	UnionID   null.String    `json:"union_id,omitempty" remark:"微信unionid" gorm:"type:varchar;unique"`
 	StuID     null.String    `json:"stu_id,omitempty" remark:"学号" gorm:"type:varchar"`
-	RoleID    null.String    `json:"role_id,omitempty" remark:"用户角色id" gorm:"type:smallint"`
+	RoleID    null.Int       `json:"role_id,omitempty" remark:"用户角色id" gorm:"type:smallint"`
 	Avatar    null.String    `json:"avatar,omitempty" remark:"头像" gorm:"type:varchar"`
 	Nickname  null.String    `json:"nickname,omitempty" remark:"昵称" gorm:"type:varchar"`
 	City      null.String    `json:"city,omitempty" remark:"城市" gorm:"type:varchar"`

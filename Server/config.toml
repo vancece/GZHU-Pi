@@ -9,9 +9,11 @@ prest = true
 log_level = "debug"
 logfile = "/tmp/gzhupi/log.log"
 
+[secret]
+jwt = "jwt_secret"
+
 [rpc]
 addr = "ifeel.vip:7201"
-token = "1234"
 
 [db]
 type = "postgres"
@@ -49,13 +51,13 @@ key = "secret"
 algo = "HS256"
 
 [pg]
-host = "ifeel.vip"
-user = "ards"
-pass = "ards"
+host = "localhost"
+user = "postgres"
+pass = "postgres"
 port = 5432
-database = "ards"
+database = "postgres"
 ## or used cloud factor
-# URL = "postgresql://user:pass@localhost/mydatabase/?sslmode=disable"
+# URL = "postgresql://postgres:postgres@localhost/postgres/?sslmode=disable"
 
 [ssl]
 mode = "disable"

@@ -5,6 +5,7 @@
 package gzhu_jw
 
 import (
+	"GZHU-Pi/env"
 	"crypto/tls"
 	"fmt"
 	"github.com/astaxie/beego/logs"
@@ -140,7 +141,7 @@ func (c *JWClient) GetCaptcha() (capture string) {
 
 	var err error
 	if rpcClient == nil {
-		rpcClient, err = rpc.DialHTTP("tcp", "ifeel.vip:7201")
+		rpcClient, err = rpc.DialHTTP("tcp", env.Conf.Rpc.Addr)
 		if err != nil {
 			logs.Error(err)
 			return

@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"GZHU-Pi/env"
 	"GZHU-Pi/models"
 	"bytes"
 	"context"
@@ -12,6 +13,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"reflect"
+	"regexp"
 	"time"
 )
 
@@ -165,9 +167,9 @@ func ReadRequestArg(r *http.Request, key string) (value interface{}, err error) 
 }
 
 //传入用户id，生成并返回Token
-func GenerateToken(userID int64) (string, error) {
-	//TODO config
-	SecretKey := []byte("pi") //设置密钥
+func GenerateToken(userID int64, key string) (string, error) {
+
+	SecretKey := []byte(key) //设置密钥
 
 	token := jwt.New(jwt.SigningMethodHS256) //指定签名方式，创建token对象
 	claims := token.Claims.(jwt.MapClaims)   //Claims (Payload):声明 token 有关的重要信息
@@ -186,11 +188,11 @@ func GenerateToken(userID int64) (string, error) {
 }
 
 //传入token字符串，解析Token，返回用户id
-func ParseToken(tokenStr string) (userID int64, err error) {
-	SecretKey := []byte("pi") //设置密钥
+func ParseToken(tokenStr string, key string) (userID int64, err error) {
+	SecretKey := []byte(key) //设置密钥
 
 	token, err := jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
-		//methodt, ok := token.Method.(*jwt.SigningMethodHMAC)	//查看加密方式
+		//method, ok := token.Method.(*jwt.SigningMethodHMAC)	//查看加密方式
 		return SecretKey, nil
 	})
 	if err != nil {
@@ -228,7 +230,8 @@ func GetUserID(r *http.Request) (userID int64, err error) {
 		return
 	}
 	token = cookie.Value
-	userID, err = ParseToken(token)
+	secretKey := env.Conf.Secret.JWT
+	userID, err = ParseToken(token, secretKey)
 	if err != nil {
 		logs.Error(err)
 		return
@@ -237,7 +240,8 @@ func GetUserID(r *http.Request) (userID int64, err error) {
 }
 
 func NewCookie(userID int64) (newCookie string, err error) {
-	newToken, err := GenerateToken(userID)
+	secretKey := env.Conf.Secret.JWT
+	newToken, err := GenerateToken(userID, secretKey)
 	if err != nil {
 		logs.Error(err)
 		return
@@ -249,4 +253,9 @@ func NewCookie(userID int64) (newCookie string, err error) {
 	}
 	newCookie = cookie.String()
 	return
+}
+
+func verifyPhone(phone string) bool {
+	var telNoPattern = regexp.MustCompile(`^1[3-9]{1}[0-9]{9}$`)
+	return telNoPattern.MatchString(phone)
 }

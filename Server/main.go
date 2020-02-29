@@ -67,6 +67,7 @@ func runWithPRest(r *mux.Router) {
 	viper.Set("pg.port", viper.GetInt("db.port"))
 	viper.Set("pg.database", viper.GetString("db.dbname"))
 	viper.Set("ssl.mode", viper.GetString("db.sslmode"))
+	viper.Set("jwt.key", viper.GetString("secret.jwt"))
 
 	// load config for pREST
 	config.Load()

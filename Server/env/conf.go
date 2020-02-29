@@ -17,6 +17,8 @@ func InitViper() {
 	viper.AutomaticEnv()          //自动从环境变量读取匹配的参数
 
 	//绑定放进变量，会优先读取环境变量的值
+	_ = viper.BindEnv("secret.jwt", "GZHUPI_SECRET_JWT")
+
 	_ = viper.BindEnv("db.host", "GZHUPI_DB_HOST")
 	_ = viper.BindEnv("db.port", "GZHUPI_DB_PORT")
 	_ = viper.BindEnv("db.user", "GZHUPI_DB_USER")
@@ -65,6 +67,12 @@ type Configure struct {
 		Version string `json:"version" remark:"软件发布版本，对应仓库tag版本"`
 		Mode    string `json:"mode" remark:"开发模式develop/test/product"`
 		PRest   bool   `json:"prest" remark:"" remark:"是否开启pRest接口服务"`
+	}
+	Secret struct {
+		JWT string `json:"jwt" remark:"jwt密钥"`
+	}
+	Rpc struct {
+		Addr string `json:"addr" remark:"rpc主机地址"`
 	}
 	Db struct {
 		Type     string `json:"type" remark:"数据库类型"`

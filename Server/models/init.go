@@ -6,6 +6,7 @@ import (
 	"github.com/astaxie/beego/logs"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
+	"time"
 )
 
 const (
@@ -16,12 +17,17 @@ const (
 							THEN 'https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/icon/anonmous_avatar.png'
 						ELSE u.avatar END)                                         as avatar,
 				   (CASE WHEN anonymous = true THEN anonymity ELSE u.nickname END) as nickname,
-			
 				   (select count(*) from t_discuss where object_id = t.id)         as discussed,
-				   (select count(*) from t_relation where object_id = t.id)        as liked
-			
-			from t_topic as t, t_user as u
-			where t.created_by = u.id;
+				   --点赞数量
+				   (select count(*) from t_relation where object_id = t.id and object = 't_topic'
+					  and type = 'star')                                           as liked,
+				   --查询当前主题有关用户的点赞、记录
+				   (select json_agg(result)
+					from (select r.*, t_user.nickname, t_user.avatar
+						  from t_relation r, t_user where r.created_by = t_user.id
+							and r.object = 't_topic' and r.type = 'star' ) result
+					where object_id = t.id)                                        as star_list
+			from t_topic as t, t_user as u where t.created_by = u.id;
 			comment on view v_grade is '主题/帖子视图';
 	`
 	vGrade = `
@@ -60,6 +66,15 @@ func InitDb() error {
 	}
 	logs.Info("数据库：%s:%d/%s", d.Host, d.Port, d.Dbname)
 
+	// SetMaxIdleCons 设置连接池中的最大闲置连接数。
+	db.DB().SetMaxIdleConns(10)
+
+	// SetMaxOpenCons 设置数据库的最大连接数量。
+	db.DB().SetMaxOpenConns(5)
+
+	// SetConnMaxLifetiment 设置连接的最大可复用时间。
+	db.DB().SetConnMaxLifetime(time.Hour)
+
 	modelsInit()
 
 	return nil
@@ -80,7 +95,11 @@ func modelsInit() {
 	db.Model(&TGrade{}).AddUniqueIndex("t_grade_stu_id_course_id_jxb_id_idx",
 		"stu_id", "course_id", "jxb_id")
 
+	db.Model(&TRelation{}).AddUniqueIndex("t_relation_object_object_id_type_created_by_idx",
+		"object", "object_id", "type", "created_by")
+
 	db.Exec(vTopic)
 	db.Exec(vGrade)
 	db.Exec(vDiscuss)
+
 }

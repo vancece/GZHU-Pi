@@ -64,10 +64,13 @@ func InitCtx(w http.ResponseWriter, r *http.Request) (ctx context.Context, err e
 	p.user.ID, err = GetUserID(p.r)
 	if err != nil {
 		logs.Error(err)
+		Response(w, r, nil, http.StatusUnauthorized, err.Error())
 		return
 	}
 	if p.user.ID <= 0 {
 		err = fmt.Errorf("user not found")
+		logs.Error(err)
+		Response(w, r, nil, http.StatusUnauthorized, err.Error())
 		return
 	}
 	logs.Info("current user ID: %d", p.user.ID)
