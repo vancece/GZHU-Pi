@@ -1,5 +1,5 @@
 page {
-  background: white;
+  background: #f8f8f8;
 }
 
 .avatar {

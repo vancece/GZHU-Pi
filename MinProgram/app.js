@@ -38,7 +38,7 @@ App({
     }
 
     userService.auth()
-    userService.update_create()
+    // userService.update_create()
 
   },
 
@@ -61,7 +61,7 @@ App({
     wx.getSetting({
       success: res => {
         if (res.authSetting['scope.userInfo']) {
-          console.log("已授权微信")
+          console.log("已授权微信",res)
           this.globalData.isAuthorized = true
           wx.checkSession({
             success() {

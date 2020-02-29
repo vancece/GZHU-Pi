@@ -1,13 +1,16 @@
 <view style="background:rgba(255, 255, 255, 0.7)">
   <view style="padding:20rpx">评论区</view>
 
-  <view data-id="{{item.id}}" data-nickname="{{item.nickname}}" wx:for="{{comments}}" wx:key="index" class="comment">
-    <view bindtap="atSomebody" style="flex:1">
+  <view wx:for="{{comments}}" wx:key="index" class="comment">
+    <view bindtap="atSomebody" data-item="{{item}}" style="flex:1">
       <image class="avatar" src="{{item.avatar}}"></image>
     </view>
-    <view bindtap="deleteComment" style="flex:6" data-id="{{item.id}}" data-uid="{{item.created_by}}">
+    <view bindtap="deleteComment" style="flex:6" data-item="{{item}}">
       <view class="c-info">
         <view style="color:gray">{{item.nickname}}</view>
+        <view style="color:gray">
+          {{item.created_at}}
+        </view>
       </view>
       <view style="margin:5rpx">{{item.content}}</view>
     </view>

@@ -144,6 +144,7 @@ Page({
       },
       data: this.data.account,
       success: function (res) {
+        console.log("student_info:",res)
         if (res.statusCode != 200) {
           wx.showToast({
             title: "服务器响应错误",

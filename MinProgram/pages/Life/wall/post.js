@@ -189,7 +189,6 @@ Page({
         // url: "http://localhost:9000/api/v1/postgres/public/t_topic",
         data: form,
         loading: true,
-        checkStatus: false,
         header: {
           "content-type": "application/json"
         }

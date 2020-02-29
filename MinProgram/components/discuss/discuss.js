@@ -57,9 +57,8 @@ Component({
     },
     // @某用户
     atSomebody(e) {
-      // let id = e.currentTarget.dataset.id
-      let nickname = e.currentTarget.dataset.nickname
-      let content = "@" + nickname + " " + this.data.content
+      let item = e.currentTarget.dataset.item
+      let content = "@" + item.nickname + " " + this.data.content
       this.setData({
         content: content
       })
@@ -106,10 +105,14 @@ Component({
     },
 
     deleteComment(e) {
-      let row_id = e.currentTarget.dataset.id
-      let uid = e.currentTarget.dataset.uid
 
-      if (this.data.user.id != uid) return
+      let item = e.currentTarget.dataset.item
+      let row_id = item.id
+
+      if (this.data.user.id != item.created_by) {
+        this.atSomebody(e)
+        return
+      }
 
       let that = this
       wx.showModal({

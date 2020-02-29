@@ -1,5 +1,5 @@
 .oldthings .content {
-  margin-left: 50rpx;
+  margin-left: 30rpx;
 }
 
 /* 基本信息 */
@@ -72,4 +72,11 @@
   justify-content: space-between;
   padding: 5rpx 0;
   align-items: center;
+}
+
+.abs{
+  position: absolute;
+  top: 265rpx;
+  background-color: rgba(255, 255, 255, 0.6);
+  width: 100%;
 }

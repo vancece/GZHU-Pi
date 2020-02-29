@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/Life/wall/wall",
     "pages/Campus/home/home",
+    "pages/Life/wall/wall",
     "pages/Campus/tools/emptyRoom",
     "pages/Setting/login/sync",
     "pages/Campus/exp/exp",

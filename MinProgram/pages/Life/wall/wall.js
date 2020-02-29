@@ -14,7 +14,7 @@ Page({
 
     dataSet: [],
     brick_option: {
-      backgroundColor: "rgb(245, 245, 245)",
+      backgroundColor: "white",
       forceRepaint: true,
       imageFillMode: 'aspectFill',
       columns: 2,
@@ -38,7 +38,7 @@ Page({
   },
 
 
-  onLoad: function(options) {
+  onLoad: function (options) {
 
     if (wx.$param["mode"] != "prod") {
       this.setData({
@@ -54,25 +54,25 @@ Page({
     this.getTopics()
   },
 
-  onShareAppMessage: function() {
+  onShareAppMessage: function () {
 
   },
 
   // 下拉刷新
-  onPullDownRefresh: function() {
+  onPullDownRefresh: function () {
     this.setData({
       page: 1, //恢复页数
       loadDone: false, //加载完毕
       queryStr: ""
     })
     this.getTopics()
-    setTimeout(function() {
+    setTimeout(function () {
       wx.stopPullDownRefresh()
     }, 3000)
   },
 
   // 点击卡片，获取id，转跳详情页面
-  tapCard: function(event) {
+  tapCard: function (event) {
     console.log("ID：", event.detail.card_id)
     let args = {
       id: event.detail.card_id
@@ -80,12 +80,68 @@ Page({
     wx.$navTo('/pages/Life/wall/detail', args)
   },
   // 点击头像
-  tapUser: function(e) {
+  tapUser: function (e) {
     // console.log("用户id:", e.detail.user_id)
     // let args = {
     //   id: e.detail.user_id,
     // }
     // wx.$navTo('/pages/Life/oldthings/mine', args)
+  },
+  // 点击喜欢
+  tapLike: function (e) {
+    console.log("点赞:", e.detail.card_id)
+    let cur_uid = wx.getStorageSync('gzhupi_user').id
+    let topic_id = e.detail.card_id
+
+    let topic_index = -1
+    let star_list = []
+    for (let i in this.data.dataSet) {
+      if (this.data.dataSet[i].id == topic_id) {
+        topic_index = i
+        star_list = this.data.dataSet[i].star_list
+        for (let j in star_list) {
+          if (star_list[j].created_by == cur_uid && star_list[j].type == "star") {
+            console.log("用户已点赞，取消")
+            wx.$ajax({
+                url: wx.$param.server["prest"] + "/postgres/public/t_relation?id=$eq." + star_list[j].id,
+                method: "delete",
+              })
+              .then(res => {
+                star_list.splice(j, 1)
+                this.setData({
+                  ["dataSet[" + i + "].star_list"]: star_list
+                })
+              }).catch(err => {
+                console.error(err)
+              })
+            return
+          }
+        }
+      }
+    }
+    if (topic_index < 0) return
+    console.log("用户未点赞，点赞")
+    wx.$ajax({
+      url: wx.$param.server["prest"] + "/postgres/public/t_relation",
+      method: "post",
+      data: {
+        object_id: topic_id,
+        object: "t_topic",
+        type: "star"
+      },
+      header: {
+        "content-type": "application/json"
+      }
+    }).then(res => {
+      if (typeof star_list != "object" || star_list == null) star_list = []
+      if (res?.data?.id) {
+        res.data.avatar = wx.getStorageSync('gzhupi_user').avatar
+        star_list.push(res.data)
+        this.setData({
+          ["dataSet[" + topic_index + "].star_list"]: star_list
+        })
+      }
+    })
   },
 
   navToPost() {
@@ -93,7 +149,7 @@ Page({
   },
 
   // 读取搜索内容
-  searchInput: function(e) {
+  searchInput: function (e) {
     this.data.queryStr = e.detail.value
   },
 
@@ -105,7 +161,7 @@ Page({
   },
 
   // 触底加载更多，需改变offset，判断有无更多
-  onReachBottom: function() {
+  onReachBottom: function () {
     if (this.data.loadDone) return
     console.log('加载更多')
     this.data.page = this.data.page + 1
@@ -125,6 +181,11 @@ Page({
         this.data.fliter = "$eq.日常"
         break
       case "广大情墙":
+        this.data.fliter = "$eq.情墙"
+        this.setData({
+          "brick_option.columns": 1,
+          navTitle: "广大情墙"
+        })
         break
       case "悄悄话":
         this.setData({
@@ -168,7 +229,6 @@ Page({
         url: wx.$param.server["prest"] + "/postgres/public/v_topic" + query,
         method: "get",
         loading: true,
-        checkStatus: false,
       })
       .then(res => {
         console.log("主题列表", res)
@@ -192,4 +252,5 @@ Page({
         console.log(err)
       })
   },
+
 })

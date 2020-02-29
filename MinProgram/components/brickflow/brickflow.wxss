@@ -27,7 +27,7 @@
 .list-item {
   break-inside: avoid;
   box-sizing: border-box;
-  margin-bottom: 20rpx;
+  margin-bottom: 25rpx;
 }
 
 /* 每一个卡片 */

@@ -15,6 +15,7 @@ Component({
     multipleSlots: true
   },
   data: {
+    uid: wx.getStorageSync('gzhupi_user').id,
     list: [],
     rawData: {}, // 源数据
     orderArr: [], // 记录原始数值
@@ -43,7 +44,7 @@ Component({
     option: {
       type: Object,
       value: {},
-      observer: function(newVal) {
+      observer: function (newVal) {
         if (!newVal) {
           return
         }
@@ -101,7 +102,7 @@ Component({
     dataSet: {
       type: Array,
       value: [],
-      observer: function(newVal) {
+      observer: function (newVal) {
         let {
           rawData
         } = this.data
@@ -332,10 +333,14 @@ Component({
     }
   },
 
-  // 生命周期方法
-  lifetimes: {
-    attached: function() {
-      console.log(this.data)
-    }
-  },
+  pageLifetimes: {
+    show() {
+      if (this.data.uid == "" || this.data.uid == undefined || this.data.uid == null) {
+        this.setData({
+          uid: wx.getStorageSync('gzhupi_user').id,
+        })
+      }
+    },
+  }
+
 })

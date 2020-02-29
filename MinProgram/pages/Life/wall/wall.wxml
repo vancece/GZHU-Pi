@@ -42,8 +42,8 @@
 
   <!-- 列表 -->
   <view wx:if="{{dataSet.length>0}}">
-    <brickflow wx:if="{{brick_option.columns==1}}" _tplName="wall" dataSet="{{dataSet}}" option="{{brick_option}}" bind:tapCard="tapCard" bind:tapLike="handleLike" bind:tapUser="tapUser" bind:onCardExpanded="handleExpand" />
-    <brickflow wx:else _tplName="wall" dataSet="{{dataSet}}" option="{{brick_option}}" bind:tapCard="tapCard" bind:tapLike="handleLike" bind:tapUser="tapUser" bind:onCardExpanded="handleExpand" />
+    <brickflow wx:if="{{brick_option.columns==1}}" _tplName="wall" dataSet="{{dataSet}}" option="{{brick_option}}" bind:tapCard="tapCard" bind:tapLike="tapLike" bind:tapUser="tapUser" bind:onCardExpanded="handleExpand" />
+    <brickflow wx:else _tplName="wall" dataSet="{{dataSet}}" option="{{brick_option}}" bind:tapCard="tapCard" bind:tapLike="tapLike" bind:tapUser="tapUser" bind:onCardExpanded="handleExpand" />
   </view>
 
   <view class="cu-load" wx:if="{{dataSet.length>0 && loadDone}}">
