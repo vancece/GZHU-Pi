@@ -46,8 +46,19 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 		Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}
+	if user.MinappID.Int64 != u.MinappID.Int64 {
+		err = fmt.Errorf("auth failed with wrong minapp_id")
+		Response(w, r, nil, http.StatusUnauthorized, err.Error())
+		return
+	}
 	if user.ID <= 0 {
 		logs.Info("new user, create with open_id: %s", u.OpenID.String)
+
+		if u.MinappID.Int64 <= 0 {
+			err = fmt.Errorf("must provide minapp_id")
+			Response(w, r, nil, http.StatusBadRequest, err.Error())
+			return
+		}
 
 		if u.Nickname.String == "" || u.Avatar.String == "" {
 			err = fmt.Errorf("must provide nickname and avatar")

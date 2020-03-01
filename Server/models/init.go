@@ -12,7 +12,7 @@ import (
 const (
 	vTopic = `
 			create or replace VIEW v_topic as
-			select t.*, u.gender,
+			select t.*, u.open_id, u.gender,
 				   (CASE WHEN anonymous = true
 							THEN 'https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/icon/anonmous_avatar.png'
 						ELSE u.avatar END)                                         as avatar,
@@ -21,14 +21,20 @@ const (
 				   --点赞数量
 				   (select count(*) from t_relation where object_id = t.id and object = 't_topic'
 					  and type = 'star')                                           as liked,
-				   --查询当前主题有关用户的点赞、记录
+				   --查询当前主题有关用户的点赞记录
 				   (select json_agg(result)
 					from (select r.*, t_user.nickname, t_user.avatar
 						  from t_relation r, t_user where r.created_by = t_user.id
 							and r.object = 't_topic' and r.type = 'star' ) result
-					where object_id = t.id)                                        as star_list
+					where object_id = t.id)                                        as star_list,
+				   --查询当前主题有关用户的认领记录
+				   (select json_agg(result)
+					from (select r.*, t_user.nickname, t_user.avatar
+						  from t_relation r, t_user where r.created_by = t_user.id
+							and r.object = 't_topic' and r.type = 'claim' ) result
+					where object_id = t.id)                                        as claim_list
 			from t_topic as t, t_user as u where t.created_by = u.id;
-			comment on view v_grade is '主题/帖子视图';
+			comment on view v_topic is '主题/帖子视图';
 	`
 	vGrade = `
 			create or replace view v_grade (stu_id, class_id, major_class, major_id, major, stu_name, college_id, college, admit_year, year,
@@ -41,13 +47,13 @@ const (
 	`
 	vDiscuss = `
 			create or replace VIEW v_discuss as
-			select d.*, u.gender,
+			select d.*, u.open_id, u.gender,
 				   (CASE WHEN anonymous = true
 							THEN 'https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/icon/anonmous_avatar.png'
 						ELSE u.avatar END)                                         as avatar,
 				   (CASE WHEN anonymous = true THEN anonymity ELSE u.nickname END) as nickname
 			from t_discuss as d, t_user as u where d.created_by = u.id;
-			comment on view v_grade is '评论视图';
+			comment on view v_discuss is '评论视图';
 	`
 )
 

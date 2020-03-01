@@ -44,7 +44,7 @@
 							</view>
 						</view>
 						<view wx:if="{{content_list[item].star_list}}" class="cu-avatar-group">
-							<view class="cu-avatar round sm" wx:for="{{content_list[item].star_list}}" wx:key style="background-image:url({{item.avatar}});"></view>
+							<view wx:for="{{content_list[item].star_list}}" wx:if="{{index<10}}" wx:key="index" class="cu-avatar round sm" style="background-image:url({{item.avatar}});"></view>
 						</view>
 					</view>
 				</view>
@@ -57,6 +57,10 @@
 					<view class="text-lg text-orange margin-left-xs">
 						<view style="font-weight:bold" wx:if="{{content_list[item].title}}" class="user-name">{{content_list[item].title}}</view>
 						<view style="color: var(--gray);font-size:75%;">{{content_list[item].created_at}}</view>
+						<view class="text-xxl" style="position:absolute;right:30rpx;top:20rpx">
+							<text wx:if="{{!tool.isStar(content_list[item].star_list,uid)}}" data-card-id="{{content_list[item].id}}" catchtap="onLikeButtonTap" class="cuIcon-like text-red margin-left-sm"></text>
+							<text wx:if="{{tool.isStar(content_list[item].star_list,uid)}}" data-card-id="{{content_list[item].id}}" catchtap="onLikeButtonTap" class="cuIcon-likefill text-red margin-left-sm"></text>
+						</view>
 					</view>
 				</view>
 				<view class="content">
@@ -82,6 +86,10 @@
 			<!-- 双列模式 -->
 			<block wx:if="{{columns==2}}">
 				<template is="images-viewer" data="{{images:content_list[item].image,_imageFillMode}}"></template>
+				<view class="text-xl text-red" style="position:absolute;right:10rpx;top:10rpx">
+					<text wx:if="{{!tool.isStar(content_list[item].star_list,uid)}}" data-card-id="{{content_list[item].id}}" catchtap="onLikeButtonTap" class="cuIcon-like margin-left-sm"></text>
+					<text wx:if="{{tool.isStar(content_list[item].star_list,uid)}}" data-card-id="{{content_list[item].id}}" catchtap="onLikeButtonTap" class="cuIcon-likefill margin-left-sm"></text>
+				</view>
 				<view class="list-box_content margin-lr-xs ">
 					<view class="long-text text-lg .text-orange "># {{content_list[item].title}}</view>
 					<view class="long-text text-black ">{{content_list[item].content}}</view>

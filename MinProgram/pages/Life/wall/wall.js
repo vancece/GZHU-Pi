@@ -3,7 +3,7 @@ var utils = require("../../../utils/date.js")
 Page({
 
   data: {
-    navTitle: "广大墙",
+    navTitle: "广大墙 Beta",
     pageSize: 20, //每页数量
     page: 1, //页数
     loadDone: false, //加载完毕
@@ -69,6 +69,20 @@ Page({
     }, 3000)
   },
 
+  // true 说明在防抖期间，应该停止执行
+  isDebounce(timeout = 2000) {
+    let that = this
+    if (this.data.debounce) {
+      console.log("触发防抖")
+      return true
+    }
+    this.data.debounce = true
+    setTimeout(() => {
+      that.data.debounce = false
+    }, timeout)
+    return false
+  },
+
   // 点击卡片，获取id，转跳详情页面
   tapCard: function (event) {
     console.log("ID：", event.detail.card_id)
@@ -87,6 +101,8 @@ Page({
   },
   // 点击喜欢
   tapLike: function (e) {
+    if (this.isDebounce(1500)) return
+
     console.log("点赞:", e.detail.card_id)
     let cur_uid = wx.getStorageSync('gzhupi_user').id
     let topic_id = e.detail.card_id
@@ -123,7 +139,7 @@ Page({
       url: wx.$param.server["prest"] + "/postgres/public/t_relation",
       method: "post",
       data: {
-        object_id: topic_id,
+        object_id: Number(topic_id),
         object: "t_topic",
         type: "star"
       },
@@ -143,6 +159,7 @@ Page({
   },
 
   navToPost() {
+    wx.$subscribe()
     wx.$navTo('/pages/Life/wall/post')
   },
 

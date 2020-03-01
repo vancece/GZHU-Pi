@@ -17,6 +17,7 @@ services:
     volumes:
       - /tmp/gzhupi:/tmp/gzhupi
     environment:
+      - GZHUPI_SECRET_JWT=${GZHUPI_SECRET_JWT}
       - GZHUPI_DB_HOST=${GZHUPI_DB_HOST}
       - GZHUPI_DB_PORT=${GZHUPI_DB_PORT}
       - GZHUPI_DB_USER=${GZHUPI_DB_USER}

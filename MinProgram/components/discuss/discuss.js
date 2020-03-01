@@ -5,7 +5,7 @@ Component({
     object_id: {
       type: String,
       // id会有延迟传入，需要监听变化
-      observer: function(newVal) {
+      observer: function (newVal) {
         if (!newVal) {
           return
         }
@@ -22,7 +22,7 @@ Component({
   },
 
   lifetimes: {
-    attached: function() {
+    attached: function () {
       this.data.user = wx.getStorageSync("gzhupi_user")
     }
   },
@@ -83,6 +83,7 @@ Component({
     },
     // 发布评论
     addComment() {
+      wx.$subscribe()
       let that = this
       // 防抖处理
       if (this.data.debounce) return
@@ -147,7 +148,6 @@ Component({
       })
     },
 
-
     create(data) {
       wx.$ajax({
           url: wx.$param.server["prest"] + "/postgres/public/t_discuss",
@@ -158,7 +158,6 @@ Component({
           }
         })
         .then(res => {
-          console.log("comment", res)
           this.setData({
             loading: false,
             content: ""
@@ -167,6 +166,7 @@ Component({
             title: '留言成功',
           })
           this.query(this.data.object_id)
+          this.triggerEvent('success', res.data)
         })
     },
 

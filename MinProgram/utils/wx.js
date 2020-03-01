@@ -197,3 +197,47 @@ wx.$objectToQuery = function (obj = {}) {
   let query = '?' + args_str.join("&")
   return query
 }
+
+//收集订阅消息，回调成功数量
+wx.$subscribe = function () {
+
+  let tpls = {
+    unread: 'mzClt2VmH5tlVqVpbaKaeGZ2XM2GIYrztuGjNIjRaZw', //未读消息提醒 发送人、消息内容、备注
+    comment: "qXh2oaTKaNEBF1UJCjYkTqW4vs24yQCfmShdO4SyvXg", //留言通知	文章标题、留言人、留言内容
+  }
+  let tmplIds = [tpls["comment"], tpls["unread"]]
+
+  return new Promise(function (resolve) {
+    wx.requestSubscribeMessage({
+      tmplIds: tmplIds,
+      success: (res) => {
+        console.log(res)
+        let subscription = []
+        for (let i in tmplIds) {
+          if (res[tmplIds[i]] === 'accept') {
+            subscription.push({
+              template_id: tmplIds[i],
+              subscription_type: 'once',
+            })
+          }
+        }
+        if (subscription.length > 0) {
+          resolve(subscription.length)
+          wx.BaaS.subscribeMessage({
+            subscription
+          }).then(res => {
+            console.log(res)
+          }, err => {
+            console.error(err)
+          })
+        } else {
+          resolve(0)
+        }
+      },
+      fail: (err) => {
+        console.error(err)
+        resolve(0)
+      }
+    })
+  })
+}

@@ -3,30 +3,34 @@ var utils = require("../../../utils/date.js")
 Page({
 
   data: {
-
+    detail: {},
+    navTitle: "广大墙",
+    claim_list: [],
   },
 
-  onLoad: function(options) {
+  onLoad: function (options) {
     if (!options.id) options.id = 4
     this.data.id = options.id
     this.getDetail(options.id)
   },
-  onShow: function() {
+
+  onShow: function () {
     let that = this
-    setTimeout(function() {
+    setTimeout(function () {
       that.setData({
-        wait: true
+        wait: true,
+        uid: wx.getStorageSync('gzhupi_user').id
       })
     }, 500)
   },
 
-  onShareAppMessage: function() {
+  onShareAppMessage: function () {
     return {
-      title: '广大墙：' + this.data.detail.title,
+      title: this.data.navTitle + this.data.detail.title,
       desc: '',
       path: '/pages/Life/wall/detail?id=' + this.data.id,
       imageUrl: this.data.detail.image[0],
-      success: function(res) {
+      success: function (res) {
         wx.showToast({
           title: '分享成功',
           icon: "none"
@@ -35,24 +39,107 @@ Page({
     }
   },
 
+  // true 说明在防抖期间，应该停止执行
+  isDebounce(timeout = 2000) {
+    let that = this
+    if (this.data.debounce) {
+      console.log("触发防抖")
+      return true
+    }
+    this.data.debounce = true
+    setTimeout(() => {
+      that.data.debounce = false
+    }, timeout)
+    return false
+  },
+
+  setTitle(type = "广大墙") {
+    switch (type) {
+      case "情墙":
+        type = "广大情墙"
+        break
+      case "悄悄话":
+      case "树洞":
+        type = "悄悄话-心情树洞"
+        break
+      case "日常":
+        type = "广大日常"
+        break
+      default:
+        type = "广大墙"
+    }
+    this.setData({
+      navTitle: type
+    })
+  },
+
+  // 评论成功回调，发送通知
+  discussSuccess(e) {
+
+    let sender = wx.getStorageSync('gzhupi_user').nickname
+    if (e.detail.anonymity) {
+      sender = e.detail.anonymity //使用匿名信息
+    }
+    if (!sender) return
+
+    wx.cloud.callFunction({
+      // 需调用的云函数名
+      name: 'sendMsg',
+      // 传给云函数的参数
+      data: {
+        touser: this.data.detail.open_id,
+        page: '/pages/Life/wall/detail?id=' + this.data.id,
+        content: e.detail.content,
+        title: this.data.detail.title,
+        type: "comment",
+        sender: sender,
+      },
+      complete: function (res) {
+        console.log(res.result)
+        if (res.result.errCode == 43101) {
+          console.log("该用户未订阅通知")
+        }
+      }
+    })
+  },
+
+
+  sendClaimMsg() {
+    let sender = wx.getStorageSync('gzhupi_user').nickname
+    if (sender == "" || sender == undefined) return
+
+    wx.cloud.callFunction({
+      // 需调用的云函数名
+      name: 'sendMsg',
+      // 传给云函数的参数
+      data: {
+        touser: this.data.detail.open_id,
+        page: '/pages/Life/wall/detail?id=' + this.data.id,
+        content: "有人领取了你的表白，点击查看",
+        type: "unread",
+        sender: sender,
+      },
+      complete: function (res) {
+        console.log(res.result)
+      }
+    })
+  },
+
+
   operate(e) {
+    if (this.isDebounce()) return
+
+    console.log(e.target)
     let that = this
     switch (e.target.dataset.op) {
       case "star":
-        wx.cloud.callFunction({
-          // 需调用的云函数名
-          name: 'sendMsg',
-          // 传给云函数的参数
-          // data: {
-          //   a: 12,
-          //   b: 19,
-          // },
-          // 成功回调
-          complete: function(res) {
-
-            console.log(res.result)
-          }
-        })
+        this.setRelation("star")
+        break
+      case "claim":
+        wx.$subscribe()
+        this.setRelation("claim")
+        // TODO 云函数通知
+        this.sendClaimMsg()
         break
       case "delete":
         wx.showModal({
@@ -81,17 +168,62 @@ Page({
     });
   },
 
+  // 点赞、认领  type="star/claim"
+  setRelation: function (type = "star", object_id = this.data.id, object = "t_topic") {
+    if (!type || !object_id || !object) return
+
+    let cur_uid = wx.getStorageSync('gzhupi_user').id
+    let list = this.data.detail[type + "_list"]
+
+    for (let i in list) {
+      if (list[i].created_by == cur_uid) {
+        wx.$ajax({
+            url: wx.$param.server["prest"] + "/postgres/public/t_relation?id=$eq." + list[i].id,
+            method: "delete",
+          })
+          .then(res => {
+            list.splice(i, 1)
+            this.setData({
+              ["detail." + type + "_list"]: list
+            })
+          }).catch(err => {
+            console.error(err)
+          })
+        return
+      }
+    }
+    console.log("用户未点赞/认领，创建")
+    wx.$ajax({
+      url: wx.$param.server["prest"] + "/postgres/public/t_relation",
+      method: "post",
+      data: {
+        object_id: Number(object_id),
+        object: object,
+        type: type
+      },
+      header: {
+        "content-type": "application/json"
+      }
+    }).then(res => {
+      if (typeof list != "object" || list == null) list = []
+      if (res.data && res.data.id) {
+        res.data.avatar = wx.getStorageSync('gzhupi_user').avatar
+        list.push(res.data)
+        this.setData({
+          ["detail." + type + "_list"]: list
+        })
+      }
+    })
+  },
+
   // 获取详情
   getDetail(id) {
-    // return
     wx.$ajax({
         url: wx.$param.server["prest"] + "/postgres/public/v_topic?id=$eq." + id,
         method: "get",
         loading: true,
       })
       .then(res => {
-        console.log(res)
-
         if (res.data.length == 0) {
           wx.showModal({
             title: '提示',
@@ -109,6 +241,30 @@ Page({
         this.setData({
           detail: res.data[0]
         })
+        this.setTitle(res.data[0].type)
+      }).catch(err => {
+        console.log(err)
+      })
+  },
+
+  getRelations(id, type) {
+    if (!id || !type) return
+    wx.$ajax({
+        url: wx.$param.server["prest"] + "/postgres/public/v_relation?object_id=$eq." + id + "&type=$eq." + type,
+        method: "get",
+      })
+      .then(res => {
+        console.log(res)
+        if (type == "claim") {
+          this.setData({
+            claim_list: res.data
+          })
+        }
+        if (type == "star") {
+          this.setData({
+            star_list: res.data
+          })
+        }
       }).catch(err => {
         console.log(err)
       })
@@ -128,7 +284,7 @@ Page({
           wx.showToast({
             title: '删除成功！',
           })
-          setTimeout(function() {
+          setTimeout(function () {
             wx.$navTo("/pages/Life/wall/wall")
           }, 1000)
         } else {

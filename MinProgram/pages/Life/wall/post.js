@@ -43,8 +43,10 @@ Page({
       remark: ""
     },
 
+    anonymity: "匿名童鞋"
+
   },
-  onLoad: function(options) {
+  onLoad: function (options) {
     // 切换Tab
     let name = options.id
     let e = {
@@ -73,57 +75,30 @@ Page({
         console.log('用户未登录')
       }
     })
-
-    // TODO 刷新token
-
   },
 
-
-  post() {
-
+  // true 说明在防抖期间，应该停止执行
+  isDebounce(timeout = 2000) {
     let that = this
-    that.checkAndSave()
-    return
-
-    let tmplIds = ["qXh2oaTKaNEBF1UJCjYkTovi44fWJqBEocyvNvex58w", "mzClt2VmH5tlVqVpbaKaeMtPX2UOW2FgbQU2Sxq3ydk"]
-    wx.requestSubscribeMessage({
-      tmplIds: tmplIds,
-      success: (res) => {
-        console.log(res)
-        let subscription = []
-        for (let i in tmplIds) {
-          if (res[tmplIds[i]] === 'accept') {
-            subscription.push({
-              template_id: tmplIds[i],
-              subscription_type: 'once',
-            })
-          }
-        }
-        if (subscription.length > 0) {
-          wx.BaaS.subscribeMessage({
-            subscription
-          }).then(res => {
-            console.log(res)
-          }, err => {
-            console.error(err)
-          })
-        }
-        that.checkAndSave()
-      },
-      fail: (err) => {
-        console.error(err)
-      }
-    })
-  },
-
-  checkAndSave() {
-    let that = this
-    if (this.data.debounce) return
+    if (this.data.debounce) {
+      console.log("触发防抖")
+      return true
+    }
     this.data.debounce = true
     setTimeout(() => {
       that.data.debounce = false
-    }, 2000)
+    }, timeout)
+    return false
+  },
 
+  post() {
+    wx.$subscribe()
+    if (this.isDebounce(5000)) return
+    that.checkAndSave()
+  },
+
+  checkAndSave() {
+ 
     let form = {
       type: this.data.tabs[this.data.currentTab].name,
       title: this.data.title,
@@ -132,7 +107,6 @@ Page({
       label: this.data.label,
       anonymous: this.data.anonymous,
       addi: this.data.addi,
-      // created_by: 1
     }
 
     if (form.anonymous) {
@@ -164,13 +138,13 @@ Page({
       uploadTask.push(this.uploadFile('', this.data.imgList[i]))
     }
     Promise.all(uploadTask).then((result) => {
-      console.log("上传结果",result)
+      console.log("上传结果", result)
       for (let i in result) {
         form.image.push(result[i].path)
         form.addi.file_ids.push(result[i].file.id)
       }
       this.saveRecord(form)
-    }).catch(err=>{
+    }).catch(err => {
       console.error(err)
     })
   },
@@ -216,7 +190,7 @@ Page({
         wx.showToast({
           title: '发布成功',
         })
-        setTimeout(function() {
+        setTimeout(function () {
           wx.redirectTo({
             url: '/pages/Life/wall/detail?id=' + res.data.id,
           })
@@ -231,7 +205,7 @@ Page({
 
 
   // 添加标签
-  labelAdd: function() {
+  labelAdd: function () {
     if (this.data.labelInput == "" || this.data.labelInput == undefined) {
       wx.showToast({
         title: '请先输入标签内容',
@@ -262,7 +236,7 @@ Page({
   },
 
   // 读取标签内容
-  labelInput: function(e) {
+  labelInput: function (e) {
     this.data.labelInput = e.detail.value
   },
 
@@ -314,13 +288,13 @@ Page({
 
 
   // 异步上传单个文件
-  uploadFile: function(categoryName, filePath) {
+  uploadFile: function (categoryName, filePath) {
     let MyFile = new wx.BaaS.File()
     let metaData = {
       categoryName: categoryName
     }
     //返回上传文件后的信息
-    return new Promise(function(callback) {
+    return new Promise(function (callback) {
       let fileParams = {
         filePath: filePath
       }

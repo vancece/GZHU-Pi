@@ -1,37 +1,54 @@
 const cloud = require('wx-server-sdk')
 cloud.init()
-exports.main = async(event, context) => {
+exports.main = async (event, context) => {
 
-  // 未读消息提醒
-  let unreadTpl = 'mzClt2VmH5tlVqVpbaKaeMtPX2UOW2FgbQU2Sxq3ydk'
+  let tpls = {
+    unread: 'mzClt2VmH5tlVqVpbaKaeGZ2XM2GIYrztuGjNIjRaZw', //未读消息提醒 发送人、消息内容、备注
+    comment: "qXh2oaTKaNEBF1UJCjYkTqW4vs24yQCfmShdO4SyvXg", //留言通知	文章标题、留言人、留言内容
+  }
+  let tpl = tpls[event.type]
+  if (!tpl) {
+    return "unknown type of " + event.type
+  }
+
+  let data = {}
+  if (event.type == "unread") {
+    data = {
+      name1: {
+        value: event.sender //发送人
+      },
+      thing2: {
+        value: event.content //内容
+      },
+      thing7: {
+        value: event.remark ? event.remark : "无" //备注
+      }
+    }
+  }
+
+  if (event.type == "comment") {
+    data = {
+      thing4: {
+        value: event.title //文章标题
+      },
+      name1: {
+        value: event.sender //留言人
+      },
+      thing2: {
+        value: event.content //留言内容
+      }
+    }
+  }
 
   try {
     const result = await cloud.openapi.subscribeMessage.send({
-      touser: 'off364mCDvz_Ck5XYsMV0BN80img',
-      page: 'pages/Life/wall/post',
-      data: {
-        name1: {
-          value: '哈哈' //发送人
-        },
-        thing2: {
-          value: '2015年01月05日' //内容
-        },
-        time3: {
-          value: '2019年10月1日' //发送时间
-        },
-        number5: {
-          value: '2' //数量
-        },
-        thing7: {
-          value: '广州市新港中路397号' //备注
-        }
-      },
-      templateId: 'mzClt2VmH5tlVqVpbaKaeMtPX2UOW2FgbQU2Sxq3ydk'
+      touser: event.touser,
+      page: event.page,
+      data: data,
+      templateId: tpl
     })
-    console.log(result)
     return result
   } catch (err) {
-    console.log(err)
     return err
   }
 }
