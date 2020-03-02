@@ -100,7 +100,8 @@ func CountGpa(grades []*models.TGrade, gradeData *GradeData) {
 				Semester:  v.Semester,
 				Year:      v.Year,
 				YearSem:   v.YearSem,
-				//不及格不计算学分
+				//不及格不计算学分，三项保持不变
+				SemGpa:    semData[v.YearSem].SemGpa,
 				SemCredit: semData[v.YearSem].SemCredit,
 				GpaCredit: semData[v.YearSem].GpaCredit,
 			}

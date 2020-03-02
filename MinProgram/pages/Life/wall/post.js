@@ -94,7 +94,7 @@ Page({
   post() {
     wx.$subscribe()
     if (this.isDebounce(5000)) return
-    that.checkAndSave()
+    this.checkAndSave()
   },
 
   checkAndSave() {
