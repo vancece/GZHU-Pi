@@ -13,7 +13,6 @@ Page({
   },
 
   onLoad: function (options) {
-
   },
 
   onShareAppMessage: function () {
@@ -22,6 +21,9 @@ Page({
   onReady() {
     wx.hideLoading()
     this.updateCheck()
+    this.setData({
+      mode: wx.$param.mode
+    })
   },
 
   // 更新用户信息
@@ -140,7 +142,10 @@ Page({
   catchtap(e) {},
 
   navTo(e) {
-    wx.$navTo(e)
+    // wx.$navTo(e)
+    wx.switchTab({
+      url: '/pages/Life/wall/wall',
+    })
   }
 
 })

@@ -6,7 +6,9 @@
 	</view>
 </navBar>
 
-<block wx:if="{{normal}}">
+<fake wx:if="{{mode!='prod'}}" type="article"></fake>
+
+<block wx:if="{{mode=='prod'}}">
 	<!-- 发布悬浮图标 -->
 	<image bindtap='navToPost' class='post-icon' mode='widthFix' src='https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/icon/plane-pink.png'></image>
 

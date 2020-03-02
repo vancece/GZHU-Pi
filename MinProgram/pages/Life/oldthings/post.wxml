@@ -1,6 +1,8 @@
-<navBar title="物品发布" navColor="rgba(255, 255, 255, 0.8)"></navBar>
+<navBar title="{{mode=='prod'?'物品发布':''}}" navColor="rgba(255, 255, 255, 0.8)"></navBar>
 
-<block wx:if="{{normal}}">
+<fake wx:if="{{mode!='prod'}}" type="eval"></fake>
+
+<block wx:if="{{mode=='prod'}}">
   <!-- 加载动画 -->
   <view class='cu-load load-modal' wx:if="{{loading}}">
     <view class='cuIcon-emojifill text-orange'></view>
@@ -114,11 +116,4 @@
 
   </modal>
 
-</block>
-
-<block wx:if="{{!normal}}">
-  <view class="flex flex-direction align-center margin-xl">
-    <image style="width:150rpx;height:150rpx" src="https://cos.ifeel.vip/gzhu-pi/images/icon/weihu.svg"></image>
-    <text class="text-gray">页面升级维护中...</text>
-  </view>
 </block>

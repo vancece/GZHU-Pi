@@ -3,6 +3,7 @@
   "enablePullDownRefresh": true,
   "usingComponents": {
     "navBar": "/pages/Components/navBar",
-    "brickflow": "/components/brickflow/brickflow"
+    "brickflow": "/components/brickflow/brickflow",
+    "fake": "/components/fake/fake"
   }
 }

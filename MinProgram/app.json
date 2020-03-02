@@ -26,13 +26,13 @@
     "pages/Life/oldthings/post",
     "pages/Life/oldthings/detail",
     "pages/Life/oldthings/mine",
-    "pages/Life/wall/board",
     "pages/Setting/about/data",
     "pages/Campus/second/second",
     "pages/Campus/grade/achieve",
     "pages/Campus/grade/list",
     "pages/Life/wall/post",
-    "pages/Life/wall/detail"
+    "pages/Life/wall/detail",
+    "pages/Setting/webview/webview"
   ],
   "subpackages": [
     {

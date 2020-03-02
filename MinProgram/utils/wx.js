@@ -120,6 +120,7 @@ wx.$ajax = function (option) {
  * @param {object} args         页面参数
  */
 wx.$navTo = function (e, args) {
+  if (e == undefined && arg == undefined) return
   console.log('fun: navTo', e, args)
   let args_str = []
   if (typeof args === 'object') {

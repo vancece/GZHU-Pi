@@ -6,31 +6,46 @@ let tableName = "flea_market"
 Page({
 
   data: {
+    mode: wx.$param["mode"],
     bindStatus: app.globalData.bindStatus,
     loading: true,
     isOwner: false, //物品发布者
     refreshable: false, //是否可以刷新
   },
 
-  onLoad: async function(options) {
+  fake() {
+    let mode = wx.$param["mode"]
+    this.setData({
+      mode: mode
+    })
+    if (mode == "prod") {
+      return false
+    } else return true
+  },
+
+  onLoad: async function (options) {
+
+    if (this.fake()) return
+    
+    if (options.id == undefined || options.id == "") {
+      wx.showModal({
+        title: '提示',
+        content: '页面不存在...',
+        success() {
+          wx.$navTo("/pages/Campus/home/home")
+        }
+      })
+      return
+    }
+
+
 
     // 获取当前用户
     await wx.BaaS.auth.getCurrentUser().then(user => {
       this.data.uid = user.id
     })
     let id = options.id
-    // 测试id
-    // id = "5d73435057da6e383b57f752"
-    if (id == undefined) {
-      wx.showModal({
-        title: '提示',
-        content: '页面维护中...',
-        success(){
-          wx.$navTo("/pages/Campus/home/home")
-        }
-      })
-      return
-    }
+
     this.getDetail(id)
     this.updateCounter(id)
     this.setData({
@@ -40,7 +55,7 @@ Page({
 
   onShow(options) {
     let that = this
-    setTimeout(function() {
+    setTimeout(function () {
       that.setData({
         bindStatus: app.globalData.bindStatus
       })
@@ -48,7 +63,7 @@ Page({
   },
 
   // 点击头像
-  tapUser: function() {
+  tapUser: function () {
     if (!this.data.detail.created_by.id) return
     wx.navigateTo({
       url: '/pages/Life/oldthings/mine?id=' + this.data.detail.created_by.id,
@@ -132,7 +147,7 @@ Page({
   },
 
   // 分享页面带上商品id
-  onShareAppMessage: function() {
+  onShareAppMessage: function () {
     this.setData({
       shareModal: false
     })
@@ -141,7 +156,7 @@ Page({
       desc: '',
       path: '/pages/Life/oldthings/detail?id=' + this.data.id,
       imageUrl: "",
-      success: function(res) {
+      success: function (res) {
         wx.showToast({
           title: '分享成功',
           icon: "none"
@@ -221,7 +236,7 @@ Page({
       wx.showToast({
         title: '删除成功！',
       })
-      setTimeout(function() {
+      setTimeout(function () {
         wx.redirectTo({
           url: '/pages/Life/oldthings/index',
         })

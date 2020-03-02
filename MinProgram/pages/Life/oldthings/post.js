@@ -16,17 +16,19 @@ Page({
     debounce: false, //防抖
   },
 
-  onLoad: function(options) {
-    if (wx.$param["mode"] != "prod") {
-      this.setData({
-        normal: false
-      })
-      return
-    } else {
-      this.setData({
-        normal: true
-      })
-    }
+  fake() {
+    let mode = wx.$param["mode"]
+    this.setData({
+      mode: mode
+    })
+    if (mode == "prod") {
+      return false
+    } else return true
+  },
+
+  onLoad: function (options) {
+
+    if (this.fake()) return
     wx.BaaS.auth.getCurrentUser().then(user => {
       console.log(user)
       if (user._phone) {

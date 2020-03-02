@@ -56,19 +56,19 @@ Page({
 
   },
 
+  fake() {
+    let mode = wx.$param["mode"]
+    this.setData({
+      mode: mode
+    })
+    if (mode == "prod") {
+      return false
+    } else return true
+  },
 
-  onLoad: function(options) {
+  onLoad: function (options) {
 
-    if (wx.$param["mode"] != "prod") {
-      this.setData({
-        normal: false
-      })
-      return
-    } else {
-      this.setData({
-        normal: true
-      })
-    }
+    if (this.fake()) return
 
     this.getGoods()
   },

@@ -23,20 +23,19 @@ Page({
     }
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
+  fake() {
+    let mode = wx.$param["mode"]
+    this.setData({
+      mode: mode
+    })
+    if (mode == "prod") {
+      return false
+    } else return true
+  },
+
   onLoad: function (options) {
-    if (wx.$param["mode"] != "prod") {
-      this.setData({
-        normal: false
-      })
-      return
-    } else {
-      this.setData({
-        normal: true
-      })
-    }
+
+    if (this.fake()) return
     
     let id = options.id
     console.log("用户id:", id)

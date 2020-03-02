@@ -55,11 +55,7 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 		Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}
-	if user.MinappID.Int64 != u.MinappID.Int64 {
-		err = fmt.Errorf("auth failed with wrong minapp_id")
-		Response(w, r, nil, http.StatusUnauthorized, err.Error())
-		return
-	}
+
 	if user.ID <= 0 {
 		logs.Info("new user, create with open_id: %s", u.OpenID.String)
 
@@ -87,6 +83,13 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 		}
 		user = u
 	}
+
+	if user.MinappID.Int64 != u.MinappID.Int64 {
+		err = fmt.Errorf("auth failed with wrong minapp_id")
+		Response(w, r, nil, http.StatusUnauthorized, err.Error())
+		return
+	}
+
 	logs.Info(user)
 	cookieStr, err := NewCookie(user.ID)
 	if err != nil {

@@ -25,7 +25,8 @@ const tabs = [{
 
 Page({
   data: {
-
+    mode: wx.$param["mode"],
+    
     tabs: tabs,
     currentTab: 0,
     iconCamera: iconCamera,
@@ -42,11 +43,22 @@ Page({
       contact: "",
       remark: ""
     },
-
-    anonymity: "匿名童鞋"
-
   },
+
+  fake() {
+    let mode = wx.$param["mode"]
+    this.setData({
+      mode: mode
+    })
+    if (mode == "prod") {
+      return false
+    } else return true
+  },
+
   onLoad: function (options) {
+
+    if (this.fake()) return
+
     // 切换Tab
     let name = options.id
     let e = {

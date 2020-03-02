@@ -134,7 +134,7 @@ App({
 
   // 线上配置 > 缓存配置 > 默认配置
   getAppParam() {
-
+    // return
     let param = wx.getStorageSync("app_param")
     if (param != "") wx.$param = param
 

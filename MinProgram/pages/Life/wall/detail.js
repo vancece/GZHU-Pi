@@ -3,12 +3,26 @@ var utils = require("../../../utils/date.js")
 Page({
 
   data: {
+    mode: wx.$param["mode"],
     detail: {},
     navTitle: "广大墙",
     claim_list: [],
   },
 
+  fake() {
+    let mode = wx.$param["mode"]
+    this.setData({
+      mode: mode
+    })
+    if (mode == "prod") {
+      return false
+    } else return true
+  },
+
   onLoad: function (options) {
+
+    if (this.fake()) return
+
     if (!options.id) options.id = 4
     this.data.id = options.id
     this.getDetail(options.id)
