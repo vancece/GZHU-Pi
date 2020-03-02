@@ -15,8 +15,6 @@ var JWClients = make(map[string]*gzhu_jw.JWClient)
 func JWMiddleWare(next http.HandlerFunc) http.HandlerFunc {
 
 	return func(w http.ResponseWriter, r *http.Request) {
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Header().Add("Access-Control-Allow-Headers", "Content-Type")
 		u, err := ReadRequestArg(r, "username")
 		p, err0 := ReadRequestArg(r, "password")
 		if err != nil || err0 != nil {

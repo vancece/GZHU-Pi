@@ -58,9 +58,10 @@
   <view hidden='{{sjkList.length==0?true:false}}'>
     <view class='other-title'>实践课程：</view>
     <view class="other-course" wx:for="{{sjkList}}" wx:key="index">
-      <view style='flex:3'>{{item.sjk_course_name}}</view>
+    <view>{{item.sjk_course_name}}</view>
+      <!-- <view style='flex:3'>{{item.sjk_course_name}}</view>
       <view style='flex:1;text-align:center'>{{item.sjk_teacher}}</view>
-      <view style='flex:1;text-align:center'>{{item.sjk_weeks}}</view>
+      <view style='flex:1;text-align:center'>{{item.sjk_weeks}}</view> -->
     </view>
   </view>
   <view class='tips'>Powered by Shaw</view>

@@ -84,8 +84,8 @@ App({
             that.globalData.account = res.data
 
             // 本地无信息记录
-            if (wx.getStorageSync("student_info") == "")
-              Request.sync(res.data.username, res.data.password, "student_info")
+            // if (wx.getStorageSync("student_info") == "")
+            //   Request.sync(res.data.username, res.data.password, "student_info")
           },
           fail: function (res) {
             // 来自迁移
@@ -132,6 +132,7 @@ App({
     })
   },
 
+  // 线上配置 > 缓存配置 > 默认配置
   getAppParam() {
 
     let param = wx.getStorageSync("app_param")
@@ -146,6 +147,7 @@ App({
       if (res.data.data && res.data.data.mode) {
         wx.$param = res.data.data
         wx.setStorageSync("app_param", res.data.data)
+        wx.$param = res.data.data
       }
     }, err => {
       wx.showToast({

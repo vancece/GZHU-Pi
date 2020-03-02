@@ -26,7 +26,7 @@ Page({
 
   onShareAppMessage: function () {
     return {
-      title: this.data.navTitle + this.data.detail.title,
+      title: this.data.navTitle + "-" + this.data.detail.title,
       desc: '',
       path: '/pages/Life/wall/detail?id=' + this.data.id,
       imageUrl: this.data.detail.image[0],

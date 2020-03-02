@@ -13,7 +13,7 @@ class UserService {
   auth() {
     wx.BaaS.auth.getCurrentUser().then(user => {
 
-      let stu_id = wx.getStorageSync("student_info").student_id
+      let stu_id = wx.getStorageSync("account").username
       if (stu_id == undefined || stu_id == null) {
         stu_id = ""
       }
@@ -77,7 +77,7 @@ class UserService {
 
     wx.BaaS.auth.getCurrentUser().then(user => {
       // console.log(user)
-      let stu_id = wx.getStorageSync("student_info").student_id
+      let stu_id = wx.getStorageSync("account").username
       if (stu_id == undefined || stu_id == null) {
         stu_id = ""
       }

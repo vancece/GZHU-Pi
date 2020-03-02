@@ -73,49 +73,6 @@ function sync(username, password, type, account_key = "account",year_sem="2019-2
   });
 }
 
-
-
-
-function getInfo() {
-  let info = wx.getStorageInfoSync("student_info")
-
-  if (info != "") return
-  wx.request({
-    url: url + type,
-    method: "POST",
-    header: {
-      'content-type': 'application/x-www-form-urlencoded'
-    },
-    data: account,
-
-    success: function(res) {
-      if (res.statusCode != 200) {
-        callback("请求超时")
-        return
-      }
-      if (res.data.statusCode != 200) {
-        callback("账号或密码错误")
-        return
-      }
-      // 缓存账户信息
-      wx.setStorageSync(account_key, account)
-      // 缓存结果数据
-      wx.setStorageSync(type, res.data.data)
-      callback("同步完成")
-    },
-
-    fail: function(err) {
-      callback("服务器响应错误")
-    },
-
-    complete: function(res) {
-      callback(res)
-    }
-  })
-
-
-
-}
 function insertToTable(tableName,data){
   let table = tableName
   let Product = new wx.BaaS.TableObject(table)

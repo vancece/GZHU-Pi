@@ -2,6 +2,7 @@ package routers
 
 import (
 	"GZHU-Pi/models"
+	"GZHU-Pi/pkg/gzhu_jw"
 	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego/logs"
@@ -13,21 +14,29 @@ import (
 //使用open_id认证，不存在则创建新用户
 func Auth(w http.ResponseWriter, r *http.Request) {
 
+	if r.URL.Query().Get("type") == "gzhu" {
+		AuthBySchool(w, r)
+		return
+	}
+
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		logs.Error(err)
+		Response(w, r, nil, http.StatusBadRequest, err.Error())
 		return
 	}
 	defer r.Body.Close()
 	if len(body) == 0 {
 		err = fmt.Errorf("Call api by post with empty body ")
 		logs.Error(err)
+		Response(w, r, nil, http.StatusBadRequest, err.Error())
 		return
 	}
 	var u models.TUser
 	err = json.Unmarshal(body, &u)
 	if err != nil {
 		logs.Error(err)
+		Response(w, r, nil, http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -88,4 +97,31 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Set-Cookie", cookieStr)
 	Response(w, r, user, http.StatusOK, "")
 	return
+}
+
+func AuthBySchool(w http.ResponseWriter, r *http.Request) {
+	u, err := ReadRequestArg(r, "username")
+	p, err0 := ReadRequestArg(r, "password")
+	if err != nil || err0 != nil {
+		logs.Error(err, err0)
+		Response(w, r, nil, http.StatusBadRequest, err.Error())
+		return
+	}
+	username, _ := u.(string)
+	password, _ := p.(string)
+	if username == "" || password == "" {
+		Response(w, r, nil, http.StatusUnauthorized, "Unauthorized")
+		return
+	}
+	client, err := gzhu_jw.BasicAuthClient(username, password)
+	if err != nil {
+		logs.Error(err)
+		Response(w, r, nil, http.StatusUnauthorized, err.Error())
+		return
+	}
+	//将客户端存入缓存
+	JWClients[username] = client
+
+	logs.Info("用户：%s 接口：%s", username, r.URL.Path)
+	Response(w, r, nil, http.StatusOK, "request ok")
 }

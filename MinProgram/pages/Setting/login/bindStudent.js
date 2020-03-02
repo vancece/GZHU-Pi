@@ -9,7 +9,6 @@ Page({
     hideLogin: false,
     hideSuccess: true,
     checked: true,
-    api: "https://1171058535813521.cn-shanghai.fc.aliyuncs.com/2016-08-15/proxy/GZHU-API/Spider/"
   },
 
   onLoad: function (options) {
@@ -138,13 +137,14 @@ Page({
     })
     wx.request({
       method: "POST",
-      url: this.data.api + "student_info",
+      url: wx.$param.server["aliyun_go"] + "/auth?type=gzhu",
+      // url: "http://localhost:9000/api/v1" + "/auth?type=gzhu",
       header: {
         'content-type': 'application/x-www-form-urlencoded'
       },
       data: this.data.account,
       success: function (res) {
-        console.log("student_info:",res)
+        console.log("auth:", res)
         if (res.statusCode != 200) {
           wx.showToast({
             title: "服务器响应错误",
@@ -152,17 +152,13 @@ Page({
           })
           return
         }
-        if (res.data.statusCode != 200) {
+        if (res.data.status != 200 && res.data.status != 0) {
           that.setData({
             loading: false
           })
-          wx.showToast({
-            title: "账号或密码错误",
-            icon: "none"
-          })
           wx.showModal({
             title: '登录提示',
-            content: '账号或密码错误，如需修改请前往  http://my.gzhu.edu.cn',
+            content: res.data.msg,
             showCancel: false
           })
           return
@@ -173,10 +169,10 @@ Page({
           data: that.data.account,
         })
         // 缓存学生信息
-        wx.setStorage({
-          key: 'student_info',
-          data: res.data.data,
-        })
+        // wx.setStorage({
+        //   key: 'student_info',
+        //   data: res.data.data,
+        // })
         app.globalData.bindStatus = true
         app.globalData.account = that.data.account
         // 同步课表
@@ -209,9 +205,10 @@ Page({
     form["year_sem"] = wx.$param.school["year_sem"]
 
     wx.$ajax({
-      url: "/jwxt/course",
-      data: form
-    })
+        method: "post",
+        url: "/jwxt/course",
+        data: form
+      })
       .then(res => {
         wx.showToast({
           title: "同步完成",

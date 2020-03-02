@@ -1,9 +1,9 @@
 var param = {
   //启动模式 debug verify prod
-  "mode": "prod",
+  "mode": "verify",
   // 服务器地址列表
   "server": {
-    "prest": "https://1171058535813521.cn-shenzhen.fc.aliyuncs.com/2016-08-15/proxy/GZHU-API/trail/api/v1",
+    "prest": "https://1171058535813521.cn-shenzhen.fc.aliyuncs.com/2016-08-15/proxy/GZHU-API/go/api/v1",
     "aliyun_go": "https://1171058535813521.cn-shenzhen.fc.aliyuncs.com/2016-08-15/proxy/GZHU-API/go/api/v1",
     "aliyun_py": "https://1171058535813521.cn-shanghai.fc.aliyuncs.com/2016-08-15/proxy/GZHU-API/Spider/",
     "tx": "https://ifeel.vip/api/v1",
@@ -13,7 +13,7 @@ var param = {
   // 教务系统位置
   "school": {
     "year_sem": "2019-2020-2", //当前学期
-    "first_monday": "2020-02-17", //学期第一周周一
+    "first_monday": "2020-03-02", //学期第一周周一
     "sem_list": ["2018-2019-1", "2018-2019-2", "2019-2020-1", "2019-2020-2", "2020-2021-1", "2020-2021-2"]
   },
   // 首页功能导航
