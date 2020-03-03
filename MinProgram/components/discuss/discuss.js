@@ -100,7 +100,6 @@ Component({
       let data = {
         object_id: Number(this.data.object_id),
         content: this.data.content,
-        type: ""
       }
       this.create(data)
     },
@@ -122,7 +121,7 @@ Component({
         success(res) {
           if (res.confirm) {
             wx.$ajax({
-                url: wx.$param.server["prest"] + "/postgres/public/t_discuss?id=$eq." + row_id,
+                url: wx.$param.server["prest"] + wx.$param.server["scheme"] +"/t_discuss?id=$eq." + row_id,
                 method: "delete",
                 loading: true,
               })
@@ -150,7 +149,7 @@ Component({
 
     create(data) {
       wx.$ajax({
-          url: wx.$param.server["prest"] + "/postgres/public/t_discuss",
+          url: wx.$param.server["prest"] + wx.$param.server["scheme"] +"/t_discuss",
           method: "post",
           data: data,
           header: {
@@ -172,7 +171,7 @@ Component({
 
     query(object_id) {
       wx.$ajax({
-          url: wx.$param.server["prest"] + "/postgres/public/v_discuss?object_id=$eq." + object_id,
+          url: wx.$param.server["prest"] + wx.$param.server["scheme"] +"/v_discuss?object_id=$eq." + object_id,
           method: "get",
           header: {
             "content-type": "application/json"

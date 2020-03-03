@@ -37,7 +37,13 @@ App({
       this.getAuthStatus()
     }
 
+    
     userService.auth()
+
+    setTimeout(() => {
+      let u = wx.getStorageSync('gzhupi_user')
+      if (!u) userService.auth()
+    }, 4000);
   },
 
   onError: function (res) {

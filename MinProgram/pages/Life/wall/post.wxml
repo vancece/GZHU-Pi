@@ -53,7 +53,7 @@
 		</view>
 		<view wx:if="{{anonymous}}" class="margin-tb flex align-center animation-slide-top">
 			<image class="margin-lr cu-avatar round" src="{{avatar}}"></image>
-			<input bindinput="inputBind" data-field="anonymity" value="{{anonymity}}" class="anonymous-input" maxlength="15" placeholder="匿名童鞋" cursor-spacing="50"></input>
+			<input style="padding:5rpx" bindinput="inputBind" data-field="anonymity" value="{{anonymity}}" class="anonymous-input" maxlength="15" placeholder="匿名童鞋" cursor-spacing="50"></input>
 		</view>
 
 		<!-- 附加信息 -->
@@ -66,12 +66,12 @@
 			<view class="margin-left margin-tb flex align-center animation-slide-top">
 				<view class="margin-right">
 					<text class="cuIcon-titles text-orange"></text>联系</view>
-				<input bindinput="inputBind" data-field="addi.contact" value="{{addi.contact}}" class="anonymous-input" maxlength="30" placeholder="微信/手机/QQ..." cursor-spacing="50"></input>
+				<input style="padding:5rpx" bindinput="inputBind" data-field="addi.contact" value="{{addi.contact}}" class="anonymous-input" maxlength="30" placeholder="微信/手机/QQ..." cursor-spacing="50"></input>
 			</view>
 			<view class="margin-left margin-tb flex align-center animation-slide-top">
 				<view class="margin-right">
 					<text class="cuIcon-titles text-orange"></text>备注</view>
-				<input bindinput="inputBind" data-field="addi.remark" value="{{addi.remark}}" class="anonymous-input" maxlength="30" placeholder="姓名/班级/职务..." cursor-spacing="50"></input>
+				<input style="padding:5rpx" bindinput="inputBind" data-field="addi.remark" value="{{addi.remark}}" class="anonymous-input" maxlength="30" placeholder="姓名/班级/职务..." cursor-spacing="50"></input>
 			</view>
 		</block>
 

@@ -176,10 +176,10 @@
 					"scene": null
 				},
 				{
-					"id": -1,
+					"id": 16,
 					"name": "广大墙详情",
 					"pathName": "pages/Life/wall/detail",
-					"query": "",
+					"query": "id=24",
 					"scene": null
 				},
 				{

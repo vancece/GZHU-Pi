@@ -171,7 +171,7 @@ Page({
     console.log("表单数据", form)
     // 保存数据
     wx.$ajax({
-        url: wx.$param.server["prest"] + "/postgres/public/t_topic",
+        url: wx.$param.server["prest"] + wx.$param.server["scheme"] +"/t_topic",
         // url: "http://localhost:9000/api/v1/postgres/public/t_topic",
         data: form,
         loading: true,

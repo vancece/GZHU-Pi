@@ -8,7 +8,8 @@ var param = {
     "aliyun_py": "https://1171058535813521.cn-shanghai.fc.aliyuncs.com/2016-08-15/proxy/GZHU-API/Spider/",
     "tx": "https://ifeel.vip/api/v1",
     "cst": "https://cst.gzhu.edu.cn/gzhupi/api/v1",
-    "localhost": "http://localhost:9000/api/v1"
+    "localhost": "http://localhost:9000/api/v1",
+    "scheme":"/gzhupi/public"
   },
   // 教务系统位置
   "school": {
@@ -53,10 +54,15 @@ var param = {
     "icon": "/assets/exp.svg",
     "url": "/pages/Campus/exp/exp"
   }, {
-    "show": true,
+    "show": false,
     "name": "校园二手",
     "icon": "https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/icon/ershou.svg",
     "url": "/pages/Life/oldthings/index?vaild=true"
+  }, {
+    "icon": "https://cos.ifeel.vip/gzhu-pi/images/pic/rank.png",
+    "name": "成绩排名",
+    "show": true,
+    "url": "/pages/Campus/grade/rank"
   }]
 }
 

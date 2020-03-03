@@ -75,6 +75,7 @@ Page({
     }
   },
   syncData() {
+    if (!wx.getStorageSync("account"))return
     let that = this
     wx.showLoading({
       title: '更新排名...',

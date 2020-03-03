@@ -95,7 +95,7 @@ class UserService {
         phone: user._phone,
       }
       wx.$ajax({
-          url: wx.$param.server["prest"] + "/postgres/public/t_user",
+          url: wx.$param.server["prest"] + wx.$param.server["scheme"] +"/t_user",
           method: "put",
           data: form,
           showErr: false,
