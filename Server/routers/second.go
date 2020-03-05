@@ -5,6 +5,7 @@ import (
 	"context"
 	"github.com/astaxie/beego/logs"
 	"net/http"
+	"strings"
 	"time"
 )
 
@@ -13,6 +14,25 @@ var SecondClients = make(map[string]*gzhu_second.SecondClient)
 //教务系统统一中间件，做一些准备客户端的公共操作
 func SecondMiddleWare(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+
+		if strings.ToUpper(r.Method) == "GET" {
+			username := r.URL.Query().Get("username")
+			if username == "" {
+				Response(w, r, nil, http.StatusUnauthorized, "Unauthorized")
+				return
+			}
+			client, ok := SecondClients[username]
+			if !ok {
+				Response(w, r, nil, http.StatusUnauthorized, "Unauthorized")
+				return
+			}
+			ctx := context.WithValue(r.Context(), "client", client)
+			// 创建新的请求
+			r = r.WithContext(ctx)
+			next(w, r)
+			return
+		}
+
 		u, err := ReadRequestArg(r, "username")
 		p, err0 := ReadRequestArg(r, "password")
 		if err != nil || err0 != nil {
@@ -50,7 +70,7 @@ func SecondMiddleWare(next http.HandlerFunc) http.HandlerFunc {
 				client.ExpiresAt = time.Now().Add(20 * time.Minute)
 			}
 		}()
-		logs.Info("用户：%s 接口：%s",username, r.URL.Path)
+		logs.Info("用户：%s 接口：%s", username, r.URL.Path)
 		//把客户端通过context传递给下一级
 		ctx := context.WithValue(r.Context(), "client", client)
 		// 创建新的请求

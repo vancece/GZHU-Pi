@@ -60,6 +60,16 @@ username={{username}}&password={{password}}&year_sem=2019-2020-1
 
 ###
 
+# 全校课表导出
+#POST {{baseUrl}}/jwxt/all-course?year=2019&sem=2&page=1&count=15&action=export
+POST {{baseUrl}}/jwxt/all-course?year=2019&sem=2&page=1&count=15
+Content-Type: application/x-www-form-urlencoded
+
+username={{username}}&password={{password}}
+
+
+###
+
 # 图书查询
 GET {{baseUrl}}/library/search?query=python&page=1
 Content-Type: application/x-www-form-urlencoded

@@ -3,8 +3,10 @@ package routers
 import (
 	"GZHU-Pi/pkg/gzhu_jw"
 	"context"
+	"fmt"
 	"github.com/astaxie/beego/logs"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -15,6 +17,25 @@ var JWClients = make(map[string]*gzhu_jw.JWClient)
 func JWMiddleWare(next http.HandlerFunc) http.HandlerFunc {
 
 	return func(w http.ResponseWriter, r *http.Request) {
+
+		if strings.ToUpper(r.Method) == "GET" {
+			username := r.URL.Query().Get("username")
+			if username == "" {
+				Response(w, r, nil, http.StatusUnauthorized, "Unauthorized")
+				return
+			}
+			client, ok := JWClients[username]
+			if !ok {
+				Response(w, r, nil, http.StatusUnauthorized, "Unauthorized")
+				return
+			}
+			ctx := context.WithValue(r.Context(), "client", client)
+			// 创建新的请求
+			r = r.WithContext(ctx)
+			next(w, r)
+			return
+		}
+
 		u, err := ReadRequestArg(r, "username")
 		p, err0 := ReadRequestArg(r, "password")
 		if err != nil || err0 != nil {
@@ -212,4 +233,44 @@ func Achieve(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	Response(w, r, data, http.StatusOK, "request ok")
+}
+
+func AllCourse(w http.ResponseWriter, r *http.Request) {
+	//从context提取客户端
+	c := r.Context().Value("client")
+	if c == nil {
+		Response(w, r, nil, http.StatusInternalServerError, "get nil client from context")
+		return
+	}
+	client, ok := c.(*gzhu_jw.JWClient)
+	if !ok {
+		Response(w, r, nil, http.StatusInternalServerError, "get a wrong client from context")
+		return
+	}
+
+	year := r.URL.Query().Get("year")
+	sem := r.URL.Query().Get("sem")
+	pageStr := r.URL.Query().Get("page")
+	countStr := r.URL.Query().Get("count")
+
+	page, _ := strconv.Atoi(pageStr)
+	count, _ := strconv.Atoi(countStr)
+
+	data, csvData, err := client.SearchAllCourse(year, sem, page, count)
+	if err != nil {
+		logs.Error(err)
+		delete(JWClients, client.Username)
+		Response(w, r, nil, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	//导出文件
+	if r.URL.Query().Get("action") == "export" {
+		w.Header().Set("Content-Type", "application/csv")
+		w.Header().Set("Content-Disposition",
+			fmt.Sprintf("attachment; filename=%s", "export.csv"))
+		_, _ = w.Write(csvData)
+	} else {
+		Response(w, r, data, http.StatusOK, "request ok")
+	}
 }

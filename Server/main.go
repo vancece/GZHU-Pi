@@ -127,20 +127,21 @@ func customRouter(r *mux.Router) *mux.Router {
 	//r.HandleFunc("/wx/check", routers.PanicMV(routers.Hello))
 
 	//教务系统
-	r.HandleFunc("/jwxt/course", routers.PanicMV(routers.JWMiddleWare(routers.Course))).Methods("POST")
-	r.HandleFunc("/jwxt/exam", routers.PanicMV(routers.JWMiddleWare(routers.Exam))).Methods("POST")
-	r.HandleFunc("/jwxt/grade", routers.PanicMV(routers.JWMiddleWare(routers.Grade))).Methods("POST")
-	r.HandleFunc("/jwxt/classroom", routers.PanicMV(routers.JWMiddleWare(routers.EmptyRoom))).Methods("POST")
-	r.HandleFunc("/jwxt/achieve", routers.PanicMV(routers.JWMiddleWare(routers.Achieve))).Methods("POST")
+	r.HandleFunc("/jwxt/course", routers.PanicMV(routers.JWMiddleWare(routers.Course))).Methods("GET", "POST")
+	r.HandleFunc("/jwxt/exam", routers.PanicMV(routers.JWMiddleWare(routers.Exam))).Methods("GET", "POST")
+	r.HandleFunc("/jwxt/grade", routers.PanicMV(routers.JWMiddleWare(routers.Grade))).Methods("GET", "POST")
+	r.HandleFunc("/jwxt/classroom", routers.PanicMV(routers.JWMiddleWare(routers.EmptyRoom))).Methods("GET", "POST")
+	r.HandleFunc("/jwxt/achieve", routers.PanicMV(routers.JWMiddleWare(routers.Achieve))).Methods("GET", "POST")
+	r.HandleFunc("/jwxt/all-course", routers.PanicMV(routers.JWMiddleWare(routers.AllCourse))).Methods("GET", "POST")
 
 	//图书馆
 	r.HandleFunc("/library/search", routers.PanicMV(routers.BookSearch)).Methods("GET")
 	r.HandleFunc("/library/holdings", routers.PanicMV(routers.BookHoldings)).Methods("GET")
 
 	//第二课堂学分系统
-	r.HandleFunc("/second/my", routers.PanicMV(routers.SecondMiddleWare(routers.MySecond))).Methods("POST")
-	r.HandleFunc("/second/search", routers.PanicMV(routers.SecondMiddleWare(routers.SecondSearch))).Methods("POST")
-	r.HandleFunc("/second/image", routers.PanicMV(routers.SecondMiddleWare(routers.SecondImage))).Methods("POST")
+	r.HandleFunc("/second/my", routers.PanicMV(routers.SecondMiddleWare(routers.MySecond))).Methods("GET", "POST")
+	r.HandleFunc("/second/search", routers.PanicMV(routers.SecondMiddleWare(routers.SecondSearch))).Methods("GET", "POST")
+	r.HandleFunc("/second/image", routers.PanicMV(routers.SecondMiddleWare(routers.SecondImage))).Methods("GET", "POST")
 
 	//物理实验平台
 	//r.HandleFunc("/exp", test).Methods("POST")

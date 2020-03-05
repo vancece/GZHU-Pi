@@ -95,6 +95,7 @@ func Response(w http.ResponseWriter, r *http.Request, data interface{}, statusCo
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+	w.WriteHeader(http.StatusOK)
 	_, err = w.Write(response)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -120,7 +121,6 @@ func PanicMV(h http.HandlerFunc) http.HandlerFunc {
 			w.WriteHeader(http.StatusNoContent)
 			return
 		}
-		w.WriteHeader(http.StatusOK)
 		//请求开始时间
 		startTime := time.Now()
 		ctx := context.WithValue(r.Context(), "startTime", startTime)
