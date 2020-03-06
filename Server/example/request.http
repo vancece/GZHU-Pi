@@ -60,9 +60,9 @@ username={{username}}&password={{password}}&year_sem=2019-2020-1
 
 ###
 
-# 全校课表导出
+# 全校课表查询/导出
 #POST {{baseUrl}}/jwxt/all-course?year=2019&sem=2&page=1&count=15&action=export
-POST {{baseUrl}}/jwxt/all-course?year=2019&sem=2&page=1&count=15
+POST {{baseUrl}}/jwxt/all-course?year=2019&sem=2&page=1&count=30
 Content-Type: application/x-www-form-urlencoded
 
 username={{username}}&password={{password}}

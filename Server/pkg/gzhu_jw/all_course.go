@@ -11,8 +11,8 @@ import (
 	"time"
 )
 
-type CourseExport struct {
-	Xq      string `json:"xq"`
+type RawCourse struct {
+	Cdbh    string `json:"cdbh"`
 	Cdlbmc  string `json:"cdlbmc"`
 	Cdmc    string `json:"cdmc"`
 	Cdqsjsz string `json:"cdqsjsz"`
@@ -31,7 +31,9 @@ type CourseExport struct {
 	KchID   string `json:"kch_id"`
 	Kcmc    string `json:"kcmc"`
 	Kcxzmc  string `json:"kcxzmc"`
+	KkbmID  string `json:"kkbm_id"`
 	Kkxy    string `json:"kkxy"`
+	Qsjsz   string `json:"qsjsz"`
 	Rwzxs   string `json:"rwzxs"`
 	Skjc    string `json:"skjc"`
 	Sksj    string `json:"sksj"`
@@ -41,17 +43,25 @@ type CourseExport struct {
 	Xm      string `json:"xm"`
 	Xnm     string `json:"xnm"`
 	Xn      string `json:"xn"`
+	Xq      string `json:"xq"`
 	XqhID   string `json:"xqh_id"`
 	Xqj     int    `json:"xqj"`
+	Xqm     string `json:"xqm"`
 	Xqmc    string `json:"xqmc"`
 	Zcmc    string `json:"zcmc"`
 	Zgxl    string `json:"zgxl"`
 	Zhxs    string `json:"zhxs"`
+	Zjxh    string `json:"zjxh"`
 	Zyzc    string `json:"zyzc"`
+	Zcd     int    `json:"zcd"`
+	Jc      int    `json:"jc"`
+	Cdjc    string `json:"cdjc"`
+	Zws     int    `json:"zws"`
+	Lch     int    `json:"lch"`
 }
 
 //查询全校课表
-func (c *JWClient) SearchAllCourse(xnm, xqm string, page, count int) (data []CourseExport, csvData []byte, err error) {
+func (c *JWClient) SearchAllCourse(xnm, xqm string, page, count int) (data []RawCourse, csvData []byte, err error) {
 
 	if xnm == "" {
 		year := time.Now().Year()
@@ -98,65 +108,26 @@ func (c *JWClient) SearchAllCourse(xnm, xqm string, page, count int) (data []Cou
 	if strings.Contains(string(body), "登录") {
 		return nil, nil, AuthError
 	}
-	data = ParseAllCourse(body)
-	csvData = ToCsvFormat(data)
-	return
-}
 
-func ParseAllCourse(body []byte) (all []CourseExport) {
-
-	json := jsoniter.ConfigCompatibleWithStandardLibrary
-	courseList := json.Get(body, "items")
-
-	for i := 0; true; i++ {
-		v := CourseExport{}
-		v.KchID = courseList.Get(i).Get("kch_id").ToString()
-		if v.KchID == "" {
-			break
-		}
-		v.Xq = courseList.Get(i).Get("xq").ToString()
-		v.Cdlbmc = courseList.Get(i).Get("cdlbmc").ToString()
-		v.Cdmc = courseList.Get(i).Get("cdmc").ToString()
-		v.Cdqsjsz = courseList.Get(i).Get("cdqsjsz").ToString()
-		v.Cdskjc = courseList.Get(i).Get("cdskjc").ToString()
-		v.Jgh = courseList.Get(i).Get("jgh").ToString()
-		v.JghID = courseList.Get(i).Get("jgh_id").ToString()
-		v.Jslxdh = courseList.Get(i).Get("jslxdh").ToString()
-		v.Jsxy = courseList.Get(i).Get("jsxy").ToString()
-		v.JxbID = courseList.Get(i).Get("jxb_id").ToString()
-		v.Jxbmc = courseList.Get(i).Get("jxbmc").ToString()
-		v.Jxbrs = courseList.Get(i).Get("jxbrs").ToInt()
-		v.Jxbzc = courseList.Get(i).Get("jxbzc").ToString()
-		v.Jxdd = courseList.Get(i).Get("jxdd").ToString()
-		v.Jxlmc = courseList.Get(i).Get("jxlmc").ToString()
-		v.Kch = courseList.Get(i).Get("kch").ToString()
-		v.KchID = courseList.Get(i).Get("kch_id").ToString()
-		v.Kcmc = courseList.Get(i).Get("kcmc").ToString()
-		v.Kcxzmc = courseList.Get(i).Get("kcxzmc").ToString()
-		v.Kkxy = courseList.Get(i).Get("kkxy").ToString()
-		v.Rwzxs = courseList.Get(i).Get("rwzxs").ToString()
-		v.Skjc = courseList.Get(i).Get("skjc").ToString()
-		v.Sksj = courseList.Get(i).Get("sksj").ToString()
-		v.Xbmc = courseList.Get(i).Get("xbmc").ToString()
-		v.Xf = courseList.Get(i).Get("xf").ToString()
-		v.Xkrs = courseList.Get(i).Get("xkrs").ToInt()
-		v.Xm = courseList.Get(i).Get("xm").ToString()
-		v.Xnm = courseList.Get(i).Get("xnm").ToString()
-		v.Xn = courseList.Get(i).Get("xn").ToString()
-		v.XqhID = courseList.Get(i).Get("xqh_id").ToString()
-		v.Xqj = courseList.Get(i).Get("xqj").ToInt()
-		v.Xqmc = courseList.Get(i).Get("xqmc").ToString()
-		v.Zcmc = courseList.Get(i).Get("zcmc").ToString()
-		v.Zgxl = courseList.Get(i).Get("zgxl").ToString()
-		v.Zhxs = courseList.Get(i).Get("zhxs").ToString()
-		v.Zyzc = courseList.Get(i).Get("zyzc").ToString()
-
-		all = append(all, v)
+	type Data struct {
+		Items []RawCourse `json:"items"`
 	}
+	var d Data
+
+	json1 := jsoniter.ConfigCompatibleWithStandardLibrary
+	err = json1.Unmarshal(body, &d)
+	if err != nil {
+		logs.Error(err)
+		return
+	}
+	data = d.Items
+
+	csvData = ToCsvFormat(data)
+
 	return
 }
 
-func ToCsvFormat(all []CourseExport) (data []byte) {
+func ToCsvFormat(all []RawCourse) (data []byte) {
 
 	header := []string{"xq", "cdlbmc", "cdmc", "cdqsjsz", "cdskjc", "jgh", "jgh_id", "jslxdh", "jsxy",
 		"jxb_id", "jxbmc", "jxbrs", "jxbzc", "jxdd", "jxlmc", "kch", "kch_id", "kcmc", "kcxzmc", "kkxy",
