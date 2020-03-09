@@ -54,7 +54,7 @@
 }
 
 .solid-bottom {
-  border-bottom: 1rpx solid rgba(200, 200, 200, 0.6);
+  border-bottom: 1rpx solid rgba(220, 220, 220, 0.6);
   width: 65%;
   margin: 0 10rpx;
   padding: 5rpx;

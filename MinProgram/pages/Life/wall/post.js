@@ -83,6 +83,9 @@ Page({
         anonymity: this.data.anonymity
       })
     }).catch(err => {
+      this.setData({
+        anonymity: "匿名童鞋"
+      })
       if (err.code === 604) {
         console.log('用户未登录')
       }

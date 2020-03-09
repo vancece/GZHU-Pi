@@ -89,6 +89,7 @@ Page({
 
   // 评论成功回调，发送通知
   discussSuccess(e) {
+    console.log("留言回调",e)
     let cur_uid = wx.getStorageSync('gzhupi_user').id
     if (cur_uid == this.data.detail.created_by) return
 

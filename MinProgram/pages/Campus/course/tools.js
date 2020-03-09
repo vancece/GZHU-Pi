@@ -28,6 +28,7 @@ Page({
   },
 
   onLoad: function(options) {
+    console.log(options)
     let title = {
       eval: "课程评价",
       query: "任意门",

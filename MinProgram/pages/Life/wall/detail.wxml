@@ -16,7 +16,7 @@
 <fake wx:if="{{mode!='prod'}}"></fake>
 
 <block wx:if="{{mode=='prod'}}">
-	<navBar title="{{navTitle}}" titleColor="var(--black)" occupy="{{(detail && detail.image!=null && detail.image.length>0)?false:true}}"></navBar>
+	<navBar redirectTo="/pages/Life/wall/wall" title="{{navTitle}}" titleColor="var(--black)" occupy="{{(detail && detail.image!=null && detail.image.length>0)?false:true}}"></navBar>
 
 	<swiper wx:if="{{detail.image.length>0}}" class="square-dot" style="height:750rpx" autoplay indicator-dots="true" circular="true" indicator-color="#8799a3" indicator-active-color="var(--yellow)">
 		<swiper-item wx:for="{{detail.image}}" wx:key="index" class="flex justify-center align-center {{cardCur==index?'cur':''}}">

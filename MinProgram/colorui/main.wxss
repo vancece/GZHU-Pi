@@ -71,9 +71,9 @@ page {
   font-family: Helvetica Neue, Helvetica, sans-serif;
 }
 
-view, scroll-view, swiper, button, input, textarea, label, navigator{
+/* view, scroll-view, swiper, button, input, textarea, label, navigator{
   box-sizing: border-box;
-}
+} */
 
 .round {
   border-radius: 5000rpx;

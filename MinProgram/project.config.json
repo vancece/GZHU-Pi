@@ -179,7 +179,7 @@
 					"id": 16,
 					"name": "广大墙详情",
 					"pathName": "pages/Life/wall/detail",
-					"query": "id=24",
+					"query": "id=1",
 					"scene": null
 				},
 				{

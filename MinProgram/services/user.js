@@ -25,6 +25,7 @@ class UserService {
         avatar: user.avatar,
         nickname: user.nickname,
         city: user.city,
+        province: user.province,
         country: user.country,
         gender: user.gender,
         language: user.language,
@@ -32,6 +33,7 @@ class UserService {
       }
       wx.$ajax({
           url: wx.$param.server["prest"] + "/auth",
+          // url: "http://localhost:9000/api/v1/auth",
           method: "post",
           showErr: false,
           data: form,

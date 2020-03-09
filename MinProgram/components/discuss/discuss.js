@@ -1,6 +1,9 @@
 var utils = require("../../utils/date.js")
 Component({
-
+  options: {
+    addGlobalClass: true,
+    multipleSlots: true
+  },
   properties: {
     object_id: {
       type: String,
@@ -46,6 +49,44 @@ Component({
       }).catch(err => {
         wx.hideLoading()
       })
+    },
+
+    /*
+     * 伪双向绑定
+     * wxml input 定义属性：data-field="field1.field2" value="{{field1.field2}}"
+     * 输入内容将绑定到：this.data.field1.field2 = e.detail.value
+     */
+    inputBind(e) {
+      if (typeof e.currentTarget.dataset.field != "string") return
+      let field = e.currentTarget.dataset.field
+      // console.log("数据绑定：key：", field, " value:", e.detail.value)
+
+      let data = {}
+      data[field] = e.detail.value
+      this.setData(data)
+    },
+
+    anonymousSwitch(e) {
+      this.setData({
+        anonymous: e.detail.value
+      })
+      wx.BaaS.auth.getCurrentUser().then(user => {
+        console.log("user", user)
+        if (user.gender == 0) this.data.placeholder = "匿名童鞋"
+        if (user.gender == 1) this.data.placeholder = "匿名小哥哥"
+        if (user.gender == 2) this.data.placeholder = "匿名小姐姐"
+        this.setData({
+          placeholder: this.data.placeholder
+        })
+      }).catch(err => {
+        this.setData({
+          placeholder: "匿名童鞋"
+        })
+        if (err.code === 604) {
+          console.log('用户未登录')
+        }
+      })
+
     },
 
     refresh() {
@@ -97,9 +138,16 @@ Component({
         console.log("illegal argument")
         return
       }
+
+      if (this.data.anonymous) {
+        this.data.anonymity = this.data.anonymity ? this.data.anonymity : this.data.placeholder
+      }
+
       let data = {
         object_id: Number(this.data.object_id),
         content: this.data.content,
+        anonymous: this.data.anonymous,
+        anonymity: this.data.anonymity
       }
       this.create(data)
     },
@@ -121,7 +169,7 @@ Component({
         success(res) {
           if (res.confirm) {
             wx.$ajax({
-                url: wx.$param.server["prest"] + wx.$param.server["scheme"] +"/t_discuss?id=$eq." + row_id,
+                url: wx.$param.server["prest"] + wx.$param.server["scheme"] + "/t_discuss?id=$eq." + row_id,
                 method: "delete",
                 loading: true,
               })
@@ -149,7 +197,7 @@ Component({
 
     create(data) {
       wx.$ajax({
-          url: wx.$param.server["prest"] + wx.$param.server["scheme"] +"/t_discuss",
+          url: wx.$param.server["prest"] + wx.$param.server["scheme"] + "/t_discuss",
           method: "post",
           data: data,
           header: {
@@ -170,8 +218,15 @@ Component({
     },
 
     query(object_id) {
+
+      let query = {
+        object_id: object_id,
+        _order: "created_at",
+      }
+      query = wx.$objectToQuery(query)
+
       wx.$ajax({
-          url: wx.$param.server["prest"] + wx.$param.server["scheme"] +"/v_discuss?object_id=$eq." + object_id,
+          url: wx.$param.server["prest"] + wx.$param.server["scheme"] + "/v_discuss" + query,
           method: "get",
           header: {
             "content-type": "application/json"

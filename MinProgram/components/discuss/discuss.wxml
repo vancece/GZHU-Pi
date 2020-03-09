@@ -1,25 +1,31 @@
 <view style="background:rgba(255, 255, 255, 0.7)">
-  <view style="padding:20rpx">评论区</view>
+	<view style="padding:20rpx">评论区</view>
 
-  <view wx:for="{{comments}}" wx:key="index" class="comment">
-    <view bindtap="atSomebody" data-item="{{item}}" style="flex:1">
-      <image class="avatar" src="{{item.avatar}}"></image>
-    </view>
-    <view bindtap="deleteComment" style="flex:6" data-item="{{item}}">
-      <view class="c-info">
-        <view style="color:gray">{{item.nickname}}</view>
-        <view style="color:gray">
-          {{item.created_at}}
-        </view>
-      </view>
-      <view style="margin:5rpx">{{item.content}}</view>
-    </view>
-  </view>
+	<view wx:for="{{comments}}" wx:key="index" class="comment">
+		<view bindtap="atSomebody" data-item="{{item}}" style="flex:1">
+			<image class="avatar" src="{{item.avatar}}"></image>
+		</view>
+		<view bindtap="deleteComment" style="flex:6" data-item="{{item}}">
+			<view class="c-info">
+				<view style="color:gray">{{item.nickname}}</view>
+				<view style="color:gray">
+					{{item.created_at}}
+				</view>
+			</view>
+			<view style="margin:5rpx">{{item.content}}</view>
+		</view>
+	</view>
 
-  <view class="send">
-    <open-data type="userAvatarUrl" class='avatar'></open-data>
-    <input bindinput="commentInput" value="{{content}}" class="solid-bottom" maxlength="300" cursor-spacing="30"></input>
-    <button wx:if="{{authorized}}" bindtap="checkComment" class="cu-btn shadow-blur bg-green">发送</button>
-    <button wx:if="{{!authorized}}" class="cu-btn shadow-blur bg-green" open-type="getUserInfo" bindgetuserinfo='userInfoHandler'>授权</button>
-  </view>
+	<view class="flex margin-lr">
+		<switch class="margin-right sm" checked='{{anonymous}}' bindchange='anonymousSwitch'></switch>
+		<input wx:if="{{anonymous}}" focus bindinput="inputBind" data-field="anonymity" value="{{anonymity}}"  placeholder="{{placeholder}}" maxlength="20" cursor-spacing="100"></input>
+	</view>
+
+	<view class="send">
+		<open-data wx:if="{{!anonymous}}" type="userAvatarUrl" class='avatar'></open-data>
+    <image wx:if="{{anonymous}}" class='avatar' src="https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/icon/anonmous_avatar.png" ></image>
+		<input bindinput="commentInput" value="{{content}}" class="solid-bottom" maxlength="300" cursor-spacing="50"></input>
+		<button wx:if="{{authorized}}" bindtap="checkComment" class="cu-btn shadow-blur bg-green">发送</button>
+		<button wx:if="{{!authorized}}" class="cu-btn shadow-blur bg-green" open-type="getUserInfo" bindgetuserinfo='userInfoHandler'>授权</button>
+	</view>
 </view>
