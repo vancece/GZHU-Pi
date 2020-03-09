@@ -51,11 +51,11 @@ type RawCourse struct {
 	Zcmc    string `json:"zcmc"`
 	Zgxl    string `json:"zgxl"`
 	Zhxs    string `json:"zhxs"`
-	Zjxh    string `json:"zjxh"`
+	Zjxh    int    `json:"zjxh"`
 	Zyzc    string `json:"zyzc"`
 	Zcd     int    `json:"zcd"`
 	Jc      int    `json:"jc"`
-	Cdjc    string `json:"cdjc"`
+	Cdjc    int    `json:"cdjc"`
 	Zws     int    `json:"zws"`
 	Lch     int    `json:"lch"`
 }
@@ -129,20 +129,22 @@ func (c *JWClient) SearchAllCourse(xnm, xqm string, page, count int) (data []Raw
 
 func ToCsvFormat(all []RawCourse) (data []byte) {
 
-	header := []string{"xq", "cdlbmc", "cdmc", "cdqsjsz", "cdskjc", "jgh", "jgh_id", "jslxdh", "jsxy",
-		"jxb_id", "jxbmc", "jxbrs", "jxbzc", "jxdd", "jxlmc", "kch", "kch_id", "kcmc", "kcxzmc", "kkxy",
-		"rwzxs", "skjc", "sksj", "xbmc", "xf", "xkrs", "xm", "xnm", "xn", "xqh_id", "xqj", "xqmc", "zcmc",
-		"zgxl", "zhxs", "zyzc"}
+	header := []string{"cdbh", "cdlbmc", "cdmc", "cdqsjsz", "cdskjc", "jgh", "jgh_id", "jslxdh",
+		"jsxy", "jxb_id", "jxbmc", "jxbrs", "jxbzc", "jxdd", "jxlmc", "kch", "kch_id", "kcmc",
+		"kcxzmc", "kkbm_id", "kkxy", "qsjsz", "rwzxs", "skjc", "sksj", "xbmc", "xf", "xkrs",
+		"xm", "xnm", "xn", "xq", "xqh_id", "xqj", "xqm", "xqmc", "zcmc", "zgxl", "zhxs",
+		"zjxh", "zyzc", "zcd", "jc", "cdjc", "zws", "lch"}
 
 	var lines []string
 	lines = append(lines, strings.Join(header, ","))
 
 	for _, v := range all {
 		var values []string
-		values = append(values, v.Xq, v.Cdlbmc, v.Cdmc, v.Cdqsjsz, v.Cdskjc, v.Jgh, v.JghID, v.Jslxdh, v.Jsxy,
-			v.JxbID, v.Jxbmc, fmt.Sprint(v.Jxbrs), v.Jxbzc, v.Jxdd, v.Jxlmc, v.Kch, v.KchID, v.Kcmc, v.Kcxzmc,
-			v.Kkxy, v.Rwzxs, v.Skjc, v.Sksj, v.Xbmc, v.Xf, fmt.Sprint(v.Xkrs), v.Xm, v.Xnm, v.Xn, v.XqhID,
-			fmt.Sprint(v.Xqj), v.Xqmc, v.Zcmc, v.Zgxl, v.Zhxs, v.Zyzc)
+		values = append(values, v.Cdbh, v.Cdlbmc, v.Cdmc, v.Cdqsjsz, v.Cdskjc, v.Jgh, v.JghID, v.Jslxdh,
+			v.Jsxy, v.JxbID, v.Jxbmc, fmt.Sprint(v.Jxbrs), v.Jxbzc, v.Jxdd, v.Jxlmc, v.Kch, v.KchID, v.Kcmc, v.Kcxzmc,
+			v.KkbmID, v.Kkxy, v.Qsjsz, v.Rwzxs, v.Skjc, v.Sksj, v.Xbmc, v.Xf, fmt.Sprint(v.Xkrs), v.Xm, v.Xnm, v.Xn,
+			v.Xq, v.XqhID, fmt.Sprint(v.Xqj), v.Xqm, v.Xqmc, v.Zcmc, v.Zgxl, v.Zhxs, fmt.Sprint(v.Zjxh),
+			v.Zyzc, fmt.Sprint(v.Zcd), fmt.Sprint(v.Jc), fmt.Sprint(v.Cdjc), fmt.Sprint(v.Zws), fmt.Sprint(v.Lch))
 
 		for k, v := range values {
 			if strings.Contains(v, ",") {
