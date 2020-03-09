@@ -18,7 +18,6 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 		AuthBySchool(w, r)
 		return
 	}
-
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		logs.Error(err)
@@ -32,6 +31,7 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 		Response(w, r, nil, http.StatusBadRequest, err.Error())
 		return
 	}
+
 	var u models.TUser
 	err = json.Unmarshal(body, &u)
 	if err != nil {
@@ -39,7 +39,6 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 		Response(w, r, nil, http.StatusBadRequest, err.Error())
 		return
 	}
-
 	if u.OpenID.String == "" || len(u.OpenID.String) != 28 {
 		err = fmt.Errorf("must give openid and with length 28")
 		Response(w, r, nil, http.StatusUnauthorized, err.Error())
@@ -47,7 +46,7 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 	}
 	logs.Info("auth by open_id:", u.OpenID.String)
 
-	var user models.TUser
+	var user models.VUser
 	db := models.GetGorm()
 	result := db.Where("open_id = ?", u.OpenID.String).First(&user)
 	if result.Error != nil && result.Error != gorm.ErrRecordNotFound {
@@ -56,7 +55,8 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if user.ID <= 0 {
+	//创建新用户
+	if user.ID <= 0 || result.Error == gorm.ErrRecordNotFound {
 		logs.Info("new user, create with open_id: %s", u.OpenID.String)
 
 		if u.MinappID.Int64 <= 0 {
@@ -81,13 +81,39 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 			Response(w, r, nil, http.StatusInternalServerError, err.Error())
 			return
 		}
-		user = u
-	}
-
-	if user.MinappID.Int64 != u.MinappID.Int64 {
-		err = fmt.Errorf("auth failed with wrong minapp_id")
-		Response(w, r, nil, http.StatusUnauthorized, err.Error())
-		return
+		logs.Info("创建用户：%v", u)
+		result := db.Where("id = ?", u.ID).First(&user)
+		if result.Error != nil && result.Error != gorm.ErrRecordNotFound {
+			logs.Error(err)
+			Response(w, r, nil, http.StatusInternalServerError, err.Error())
+			return
+		}
+	} else {
+		if user.MinappID.Int64 != u.MinappID.Int64 {
+			err = fmt.Errorf("auth failed with wrong minapp_id")
+			Response(w, r, nil, http.StatusUnauthorized, err.Error())
+			return
+		}
+		err = invalidZeroNullValue(&u)
+		if err != nil {
+			logs.Error(err)
+			Response(w, r, nil, http.StatusBadRequest, err.Error())
+			return
+		}
+		//更新用户信息
+		if user.UnionID.String != u.UnionID.String || user.StuID.String != u.StuID.String ||
+			user.Avatar.String != u.Avatar.String || user.Nickname.String != u.Nickname.String ||
+			user.City.String != u.City.String || user.Province.String != u.Province.String ||
+			user.Country.String != u.Country.String || user.Gender.Int64 != u.Gender.Int64 ||
+			user.Language.String != u.Language.String || user.Phone.String != u.Phone.String {
+			u.ID = user.ID
+			result := db.Model(&u).Update(u)
+			if result.Error != nil && result.Error != gorm.ErrRecordNotFound {
+				logs.Error(err)
+				Response(w, r, nil, http.StatusInternalServerError, err.Error())
+				return
+			}
+		}
 	}
 
 	logs.Info(user)

@@ -55,6 +55,13 @@ const (
 			from t_discuss as d, t_user as u where d.created_by = u.id;
 			comment on view v_discuss is '评论视图';
 	`
+	vUser = `
+			create or replace view v_user as (
+			select u.*, s.stu_name, s.admit_year, s.class_id, s.college, s.college_id, 
+				s.major, s.major_class, s.major_id
+			from t_user u left join t_stu_info s on u.stu_id = s.stu_id);
+			comment on view v_discuss is '学生用户视图';
+	`
 )
 
 var db *gorm.DB
@@ -107,5 +114,6 @@ func modelsInit() {
 	db.Exec(vTopic)
 	db.Exec(vGrade)
 	db.Exec(vDiscuss)
+	db.Exec(vUser)
 
 }

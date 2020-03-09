@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"github.com/astaxie/beego/logs"
 	"github.com/dgrijalva/jwt-go"
+	"gopkg.in/guregu/null.v3"
 	"io/ioutil"
 	"net/http"
 	"reflect"
@@ -258,4 +259,77 @@ func NewCookie(userID int64) (newCookie string, err error) {
 func verifyPhone(phone string) bool {
 	var telNoPattern = regexp.MustCompile(`^1[3-9]{1}[0-9]{9}$`)
 	return telNoPattern.MatchString(phone)
+}
+
+
+func invalidZeroNullValue(p interface{}) (err error) {
+	if p == nil {
+		err = fmt.Errorf("call invalidEmptyNullValue with v==nil")
+		logs.Error(err)
+		return
+	}
+
+	if reflect.TypeOf(p).Kind() != reflect.Ptr {
+		err = fmt.Errorf("please call invalidEmptyNullValue with pointer to struct")
+		logs.Error(err)
+		return
+	}
+
+	s := reflect.ValueOf(p).Elem()
+	t := reflect.TypeOf(s.Interface())
+	if t.Kind() != reflect.Struct {
+		err = fmt.Errorf("Call invalidEmptyNullValue' pointer must to be struct ")
+		logs.Error(err)
+		return
+	}
+
+	for i := 0; i < s.NumField(); i++ {
+		if !s.Field(i).CanInterface() {
+			continue
+		}
+
+		switch d := s.Field(i).Interface().(type) {
+		case null.String:
+			if d.Valid && d.String == "" {
+				if s.Field(i).IsValid() && s.Field(i).CanSet() &&
+					s.Field(i).FieldByName("Valid").IsValid() &&
+					s.Field(i).FieldByName("Valid").CanSet() {
+					s.Field(i).FieldByName("Valid").SetBool(false)
+				}
+			}
+		case null.Int:
+			if d.Valid && d.Int64 == 0 {
+				if s.Field(i).IsValid() && s.Field(i).CanSet() &&
+					s.Field(i).FieldByName("Valid").IsValid() &&
+					s.Field(i).FieldByName("Valid").CanSet() {
+					s.Field(i).FieldByName("Valid").SetBool(false)
+				}
+			}
+		case null.Float:
+			if d.Valid && d.Float64 == 0 {
+				if s.Field(i).IsValid() && s.Field(i).CanSet() &&
+					s.Field(i).FieldByName("Valid").IsValid() &&
+					s.Field(i).FieldByName("Valid").CanSet() {
+					s.Field(i).FieldByName("Valid").SetBool(false)
+				}
+			}
+		// case null.Bool:
+		// 	if d.Valid && !d.Bool {
+		// 		if s.Field(i).IsValid() && s.Field(i).CanSet() &&
+		// 			s.Field(i).FieldByName("Valid").IsValid() &&
+		// 			s.Field(i).FieldByName("Valid").CanSet() {
+		// 			s.Field(i).FieldByName("Valid").SetBool(false)
+		// 		}
+		// 	}
+		case null.Time:
+			if d.Valid && d.Time.Unix() == 0 {
+				if s.Field(i).IsValid() && s.Field(i).CanSet() &&
+					s.Field(i).FieldByName("Valid").IsValid() &&
+					s.Field(i).FieldByName("Valid").CanSet() {
+					s.Field(i).FieldByName("Valid").SetBool(false)
+				}
+			}
+		}
+	}
+	return
 }
