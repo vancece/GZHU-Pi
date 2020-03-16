@@ -10,14 +10,14 @@ Page({
 
     zoneList: ["大学城", "桂花岗"],
     zoneIndex: 0, //默认校区
-    semList: ["2019-2020-2", "2019-2020-1", "2018-2019-2", "2018-2019-1"],
-    semIndex: 1, //默认显示的学期索引
+    semList: wx.$param.school["sem_list"],
+    semIndex: wx.$param.school["sem_list"].indexOf(wx.$param.school["year_sem"]), //默认显示的学期索引
     typeList: ["专业必修课程", "专业选修课程", "通识类必修课程", "通识类选修课程", "学科基础课程", "教师教育类必修课程"],
     typeIndex: 0, //默认显示的课程类型
     //条件筛选内容
     fliter_content: {
       zone: "大学城",
-      sem: "2018-2019-2",
+      sem: wx.$param.school["year_sem"],
       type: "专业必修课程"
     },
   },
@@ -165,9 +165,12 @@ Page({
     let that = this
     let Obj = new wx.BaaS.TableObject("all_course")
 
+    let fliter = this.data.fliter_content
+    let sp = fliter["sem"].split("-")
+    
     let query = new wx.BaaS.Query()
-    query.compare('xn', '=', "2019-2020") //学年
-    query.compare('xqm', '=', "3") //学期
+    query.compare('xn', '=', sp[0] + "-" + sp[1]) //学年
+    query.compare('xq', '=', sp[2]) //学期
     if (dayMode) {
       query.compare('xqj', '=', new Date().getDay()) //星期几
     }

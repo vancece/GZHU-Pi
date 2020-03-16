@@ -52,7 +52,7 @@
 				</view>
 				<!-- 标签、统计 -->
 				<view class="flex align-center margin-xs">
-					<view class="flex flex-wrap" style="flex:1">
+					<view class="flex flex-wrap" style="flex:1.3">
 						<view class="padding-xs" wx:for="{{detail.label}}" wx:key="index">
 							<view class="cu-tag radius line-red">{{item}}</view>
 						</view>

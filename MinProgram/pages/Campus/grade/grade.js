@@ -8,6 +8,14 @@ Page({
   },
 
   onLoad: function (options) {
+
+    wx.showLoading({
+      title: 'loading...',
+    })
+    setTimeout(() => {
+      wx.hideLoading()
+    }, 2000);
+
     this.data.account = wx.getStorageSync("account")
     let that = this
     if (!this.data.account) {
@@ -22,12 +30,15 @@ Page({
       success: function (res) {
         console.log("成绩", res)
         let height = 350
+        if (!res.data.sem_list[0] || !res.data.sem_list[0].grade_list) return
         if (res.data.sem_list[0].grade_list.length) {
           height = height + res.data.sem_list[0].grade_list.length * 170
         }
         that.setData({
           grade: res.data,
           height: height
+        }, () => {
+          wx.hideLoading()
         })
       },
       fail: function (res) {
@@ -148,9 +159,9 @@ Page({
     })
 
     wx.$ajax({
-      url: "/jwxt/grade",
-      data: this.data.account,
-    })
+        url: "/jwxt/grade",
+        data: this.data.account,
+      })
       .then(res => {
         if (res.data.sem_list) {
           // 缓存成绩信息

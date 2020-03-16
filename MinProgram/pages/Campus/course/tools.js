@@ -8,8 +8,8 @@ Page({
     id: "open",
     title: "任意门",
 
-    semList: ["2019-2020-2", "2019-2020-1", "2018-2019-2", "2018-2019-1"],
-    semIndex: 1, //默认显示的学期索引
+    semList: wx.$param.school["sem_list"],
+    semIndex: wx.$param.school["sem_list"].indexOf(wx.$param.school["year_sem"]), //默认显示的学期索引
 
     yearIndex: 1,
     collegeIndex: 5,
@@ -27,7 +27,7 @@ Page({
     ]
   },
 
-  onLoad: function(options) {
+  onLoad: function (options) {
     console.log(options)
     let title = {
       eval: "课程评价",
@@ -44,12 +44,12 @@ Page({
     this.insertAD()
   },
 
-  onShareAppMessage: function() {
+  onShareAppMessage: function () {
     return {
-      title: title ? title : "",
+      title: this.data.title ? this.data.title : "",
       path: '/pages/Campus/course/tools?id=query',
       imageUrl: imageUrl ? imageUrl : "",
-      success: function(res) {
+      success: function (res) {
         wx.showToast({
           title: '分享成功',
           icon: "none"
@@ -74,7 +74,7 @@ Page({
       })
     }
   },
-  onShow(){
+  onShow() {
     if (interstitialAd) {
       interstitialAd.show().catch((err) => {
         console.error('show ad error ', err)

@@ -123,7 +123,7 @@ Page({
   getExam() {
     let that = this
     let data = that.data.account
-    data["year_sem"] = "2019-2020-1"
+    data["year_sem"] = wx.$param.school["year_sem"],
 
     wx.$ajax({
       url: "/jwxt/exam",

@@ -171,6 +171,7 @@ Component({
       let that = this
       let id = this.data.openTarget
       let obj = wx.getStorageSync('course')
+      if(obj=="") return
       obj.course_list.splice(id, 1)
       wx.showModal({
         title: '提醒',

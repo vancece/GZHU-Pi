@@ -9,13 +9,13 @@ var param = {
     "tx": "https://ifeel.vip/api/v1",
     "cst": "https://cst.gzhu.edu.cn/gzhupi/api/v1",
     "localhost": "http://localhost:9000/api/v1",
-    "scheme":"/gzhupi/public"
+    "scheme": "/gzhupi/public"
   },
   // 教务系统位置
   "school": {
     "year_sem": "2019-2020-2", //当前学期
     "first_monday": "2020-03-02", //学期第一周周一
-    "sem_list": ["2018-2019-1", "2018-2019-2", "2019-2020-1", "2019-2020-2", "2020-2021-1", "2020-2021-2"]
+    "sem_list": ["2020-2021-2", "2020-2021-1", "2019-2020-2", "2019-2020-1", "2018-2019-2", "2018-2019-1"]
   },
   // 首页功能导航
   "nav": [{

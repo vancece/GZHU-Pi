@@ -11,14 +11,32 @@ exports.main = async (event, context) => {
     return "unknown type of " + event.type
   }
 
+  if (event.content && event.content.length > 20) {
+    event.content = event.content.substring(0, 17) + '...'
+  }
+  if (event.title && event.title.length > 20) {
+    event.title = event.title.substring(0, 17) + '...'
+  }
+  if (event.remark && event.remark.length > 20) {
+    event.remark = event.remark.substring(0, 17) + '...'
+  }
+
+  var nameLength = 20
+  if (/.*[\u4e00-\u9fa5]+.*$/.test(event.sender)) {
+    nameLength = 10
+  }
+  if (event.sender && event.sender.length > nameLength) {
+    event.sender = event.sender.substring(0, nameLength - 3) + '...'
+  }
+
   let data = {}
   if (event.type == "unread") {
     data = {
       name1: {
-        value: event.sender //发送人
+        value: event.sender //发送人 10中文/20纯英字母
       },
       thing2: {
-        value: event.content //内容
+        value: event.content //内容20字内
       },
       thing7: {
         value: event.remark ? event.remark : "无" //备注

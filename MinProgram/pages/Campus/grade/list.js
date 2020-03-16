@@ -6,22 +6,30 @@ Page({
     title: "修读列表"
   },
 
-  onLoad: function(options) {
+  onLoad: function (options) {
     if (JSON.stringify(options) == "{}") return
     if (options.type == undefined) return
 
     let achieve = wx.getStorageSync("achieve")
     if (achieve == "") return
     // 根据传入的类型从缓存中提取对象
-    let obj = achieve.find(function(obj) {
+    let obj = achieve.find(function (obj) {
       if (obj.type == options.type)
         return obj
     })
     if (obj == undefined || obj.items == undefined) return
 
+    if (obj.items.length > 25) {
+      wx.showLoading({
+        title: 'loading...',
+      })
+    }
+
     this.setData({
       list: obj.items,
       title: obj.type
+    }, () => {
+      wx.hideLoading()
     })
     this.countChosen(obj)
   },

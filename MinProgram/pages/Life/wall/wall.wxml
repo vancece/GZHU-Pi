@@ -6,17 +6,17 @@
 	</view>
 </navBar>
 
-<fake wx:if="{{mode!='prod'}}" type="article"></fake>
+<fake wx:if="{{mode && mode!='prod'}}" type="article"></fake>
+
+<!-- 加载动画 -->
+<view class='cu-load load-modal' wx:if="{{loading}}">
+	<view class='cuIcon-emojifill text-orange'></view>
+	<view class='gray-text'>Loading...</view>
+</view>
 
 <block wx:if="{{mode=='prod'}}">
 	<!-- 发布悬浮图标 -->
 	<image bindtap='navToPost' class='post-icon' mode='widthFix' src='https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/icon/plane-pink.png'></image>
-
-	<!-- 加载动画 -->
-	<!-- <view class='cu-load load-modal' wx:if="{{loading}}">
-    <view class='cuIcon-emojifill text-orange'></view>
-    <view class='gray-text'>Loading...</view>
-  </view> -->
 
 	<!-- 搜索框 -->
 	<view class="box">

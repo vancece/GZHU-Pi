@@ -8,7 +8,7 @@ Page({
     page: 1, //页数
     loadDone: false, //加载完毕
     queryStr: "", //搜索的字符串
-    loading: false,
+    loading: true,
 
     dataSet: [],
     brick_option: {
@@ -46,6 +46,12 @@ Page({
   },
 
   onLoad: function (options) {
+    let that = this
+    setTimeout(() => {
+      that.setData({
+        loading: false
+      })
+    }, 700);
 
     if (this.fake()) return
 
@@ -117,7 +123,7 @@ Page({
           if (star_list[j].created_by == cur_uid && star_list[j].type == "star") {
             console.log("用户已点赞，取消")
             wx.$ajax({
-                url: wx.$param.server["prest"] + wx.$param.server["scheme"] +"/t_relation?id=$eq." + star_list[j].id,
+                url: wx.$param.server["prest"] + wx.$param.server["scheme"] + "/t_relation?id=$eq." + star_list[j].id,
                 method: "delete",
               })
               .then(res => {
@@ -136,7 +142,7 @@ Page({
     if (topic_index < 0) return
     console.log("用户未点赞，点赞")
     wx.$ajax({
-      url: wx.$param.server["prest"] + wx.$param.server["scheme"] +"/t_relation",
+      url: wx.$param.server["prest"] + wx.$param.server["scheme"] + "/t_relation",
       method: "post",
       data: {
         object_id: Number(topic_id),
@@ -175,7 +181,7 @@ Page({
         loadDone: false, //加载完毕
         type: "",
         "brick_option.columns": 2,
-        loading: true
+        // loading: true
       })
 
     } else {
@@ -183,7 +189,7 @@ Page({
         page: 0, //恢复页数
         loadDone: false, //加载完毕
         dataSet: [],
-        loading: true
+        // loading: true
       })
     }
     this.getTopics()
@@ -236,7 +242,7 @@ Page({
       loadDone: false, //加载完毕
       queryStr: "",
       dataSet: [],
-      loading: true
+      // loading: true
     })
 
     this.getTopics()
@@ -254,7 +260,7 @@ Page({
     }
     query = wx.$objectToQuery(query)
 
-    let url = wx.$param.server["prest"] + wx.$param.server["scheme"] +"/v_topic" + query
+    let url = wx.$param.server["prest"] + wx.$param.server["scheme"] + "/v_topic" + query
 
     if (this.data.queryStr != "") {
       url = wx.$param.server["prest"] + "/_QUERIES/topic/v_topic_search?match=" + this.data.queryStr
