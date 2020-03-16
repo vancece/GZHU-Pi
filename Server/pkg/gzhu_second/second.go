@@ -5,6 +5,7 @@
 package gzhu_second
 
 import (
+	"GZHU-Pi/env"
 	"crypto/tls"
 	"fmt"
 	"github.com/astaxie/beego/logs"
@@ -12,6 +13,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/http/cookiejar"
+	"net/rpc"
 	"net/url"
 	"regexp"
 	"strings"
@@ -108,10 +110,16 @@ func BasicAuthClient(username, password string) (client *SecondClient, err error
 		return nil, fmt.Errorf("get login form failed")
 	}
 
+	captcha, err := c.GetCaptcha()
+	if err != nil {
+		logs.Error(err)
+		return
+	}
+
 	postValue := url.Values{
 		"username":  {c.Username},
 		"password":  {c.Password},
-		"captcha":   {""},
+		"captcha":   {captcha},
 		"warn":      {"true"},
 		"lt":        {lt[1]},
 		"execution": {execution[1]},
@@ -127,11 +135,68 @@ func BasicAuthClient(username, password string) (client *SecondClient, err error
 	}
 	body, err = ioutil.ReadAll(resp.Body)
 	defer resp.Body.Close()
-	//判断是否登录成功
 
-	ok, _ := regexp.MatchString("账号或密码错误", string(body))
-	if ok {
+	//判断是否登录成功
+	if strings.Contains(string(body), "验证码不正确") {
+		return nil, fmt.Errorf("验证码识别不正确，请重试")
+	}
+	if strings.Contains(string(body), "必须输入验证码") {
+		return nil, fmt.Errorf("验证码识别失败，请重试")
+	}
+	if strings.Contains(string(body), "重新设置密码") {
+		return nil, fmt.Errorf("温馨提示: 该账号需重置密码，且不能与初始密码相同，请登录 my.gzhu.edu.cn 操作！")
+	}
+	if strings.Contains(string(body), "账号或密码错误") {
 		return nil, LoginError
 	}
+	ok, _ := regexp.MatchString(`用户名[\s\S]*密码`, string(body))
+	if ok {
+		return nil, fmt.Errorf("不知为啥，就是没有登录进去，请告知开发者")
+	}
 	return c, nil
+}
+
+var rpcClient *rpc.Client
+
+func (c *SecondClient) GetCaptcha() (capture string, err error) {
+
+	if rpcClient == nil {
+		rpcClient, err = rpc.DialHTTP("tcp", env.Conf.Rpc.Addr)
+		if err != nil {
+			logs.Error(err)
+			return
+		}
+	}
+
+	const maxTry = 3
+	for range [maxTry]int{} {
+
+		resp, err := c.doRequest("GET", "https://cas.gzhu.edu.cn/cas_server/captcha.jsp", nil, nil)
+		if err != nil {
+			logs.Error(err)
+			return capture, err
+		}
+		body, err := ioutil.ReadAll(resp.Body)
+		if err != nil {
+			logs.Error(err)
+			return capture, err
+		}
+
+		err = rpcClient.Call("OcrService.Capture", body, &capture)
+		if err != nil {
+			logs.Error(err)
+			return capture, err
+		}
+
+		reg := regexp.MustCompile(`\d+`)
+		res := reg.FindStringSubmatch(capture)
+		if len(res) == 0 || len(res[0]) != 4 {
+			logs.Debug("capture ocr failed: ", res)
+			continue
+		}
+		capture = res[0]
+		break
+	}
+	logs.Info("验证码：", capture)
+	return
 }

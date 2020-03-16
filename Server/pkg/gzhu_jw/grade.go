@@ -14,10 +14,6 @@ import (
 	"time"
 )
 
-type Zfjw interface {
-	GetAllGrade(year, sem string) (gradeData *GradeData, err error)
-}
-
 type GradeData struct {
 	StuInfo     *models.TStuInfo `json:"stu_info" remark:"基本信息"`
 	GPA         float64          `json:"GPA" remark:"平均绩点"`

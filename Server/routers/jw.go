@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"GZHU-Pi/pkg"
 	"GZHU-Pi/pkg/gzhu_jw"
 	"context"
 	"fmt"
@@ -11,7 +12,31 @@ import (
 	"time"
 )
 
-var JWClients = make(map[string]*gzhu_jw.JWClient)
+var Jwxt = make(map[string]pkg.Jwxt)
+
+func newJWClient(school, username, password string) (client pkg.Jwxt, err error) {
+
+	if school == "" {
+		school = "gzhu"
+	}
+
+	if school == "gzhu" {
+		return gzhu_jw.BasicAuthClient(username, password)
+	}
+
+	if school == "demo" {
+		client = &pkg.Demo{Username: username, Password: password}
+	}
+	return
+}
+
+func getCacheKey(r *http.Request, username string) string {
+	s := r.URL.Query().Get("school")
+	if r.URL.Query().Get("school") == "" {
+		s = "gzhu"
+	}
+	return s + username
+}
 
 //教务系统统一中间件，做一些准备客户端的公共操作
 func JWMiddleWare(next http.HandlerFunc) http.HandlerFunc {
@@ -24,7 +49,7 @@ func JWMiddleWare(next http.HandlerFunc) http.HandlerFunc {
 				Response(w, r, nil, http.StatusUnauthorized, "Unauthorized")
 				return
 			}
-			client, ok := JWClients[username]
+			client, ok := Jwxt[getCacheKey(r, username)]
 			if !ok {
 				Response(w, r, nil, http.StatusUnauthorized, "Unauthorized")
 				return
@@ -50,27 +75,27 @@ func JWMiddleWare(next http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 		//从缓存中获取客户端，不存在或者过期则创建
-		client, ok := JWClients[username]
-		if !ok || client == nil || time.Now().After(client.ExpiresAt) {
-			if client != nil && time.Now().After(client.ExpiresAt) {
-				logs.Debug("客户端在 %ds 前过期了", time.Now().Unix()-client.ExpiresAt.Unix())
+		client, ok := Jwxt[getCacheKey(r, username)]
+		if !ok || client == nil || time.Now().After(client.GetExpiresAt()) {
+			if client != nil && time.Now().After(client.GetExpiresAt()) {
+				logs.Debug("客户端在 %ds 前过期了", time.Now().Unix()-client.GetExpiresAt().Unix())
 			}
-			client, err = gzhu_jw.BasicAuthClient(username, password)
+			client, err = newJWClient(r.URL.Query().Get("school"), username, password)
 			if err != nil {
 				logs.Error(err)
 				Response(w, r, nil, http.StatusUnauthorized, err.Error())
 				return
 			}
 			//将客户端存入缓存
-			JWClients[username] = client
+			Jwxt[getCacheKey(r, username)] = client
 		}
-		if client != nil && !time.Now().After(client.ExpiresAt) {
-			logs.Debug("客户端正常 %ds 后过期", client.ExpiresAt.Unix()-time.Now().Unix())
+		if client != nil && !time.Now().After(client.GetExpiresAt()) {
+			logs.Debug("客户端正常 %ds 后过期", client.GetExpiresAt().Unix()-time.Now().Unix())
 		}
 		//如果客户端不发生错误而被删除，则更新过期时间
 		defer func() {
-			if client, ok := JWClients[username]; ok || client != nil {
-				client.ExpiresAt = time.Now().Add(20 * time.Minute)
+			if client, ok := Jwxt[getCacheKey(r, username)]; ok || client != nil {
+				client.SetExpiresAt(time.Now().Add(20 * time.Minute))
 			}
 		}()
 		logs.Info("用户：%s 接口：%s", username, r.URL.Path)
@@ -91,7 +116,7 @@ func Course(w http.ResponseWriter, r *http.Request) {
 		Response(w, r, nil, http.StatusInternalServerError, "get nil client from context")
 		return
 	}
-	client, ok := c.(*gzhu_jw.JWClient)
+	client, ok := c.(pkg.Jwxt)
 	if !ok {
 		Response(w, r, nil, http.StatusInternalServerError, "get a wrong client from context")
 		return
@@ -115,7 +140,7 @@ func Course(w http.ResponseWriter, r *http.Request) {
 	data, err := client.GetCourse(year, sem)
 	if err != nil {
 		logs.Error(err)
-		delete(JWClients, client.Username) //发生错误，从缓存中删除
+		delete(Jwxt, getCacheKey(r, client.GetUsername())) //发生错误，从缓存中删除
 		Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -129,7 +154,7 @@ func Exam(w http.ResponseWriter, r *http.Request) {
 		Response(w, r, nil, http.StatusInternalServerError, "get nil client from context")
 		return
 	}
-	client, ok := c.(*gzhu_jw.JWClient)
+	client, ok := c.(pkg.Jwxt)
 	if !ok {
 		Response(w, r, nil, http.StatusInternalServerError, "get a wrong client from context")
 		return
@@ -153,7 +178,7 @@ func Exam(w http.ResponseWriter, r *http.Request) {
 	data, err := client.GetExam(year, sem)
 	if err != nil {
 		logs.Error(err)
-		delete(JWClients, client.Username)
+		delete(Jwxt, getCacheKey(r, getCacheKey(r, client.GetUsername())))
 		Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -167,7 +192,7 @@ func Grade(w http.ResponseWriter, r *http.Request) {
 		Response(w, r, nil, http.StatusInternalServerError, "get nil client from context")
 		return
 	}
-	client, ok := c.(*gzhu_jw.JWClient)
+	client, ok := c.(pkg.Jwxt)
 	if !ok {
 		Response(w, r, nil, http.StatusInternalServerError, "get a wrong client from context")
 		return
@@ -176,7 +201,7 @@ func Grade(w http.ResponseWriter, r *http.Request) {
 	data, err := client.GetAllGrade("", "")
 	if err != nil {
 		logs.Error(err)
-		delete(JWClients, client.Username)
+		delete(Jwxt, getCacheKey(r, getCacheKey(r, client.GetUsername())))
 		if err == gzhu_jw.AuthError {
 			//TODO 重试处理
 
@@ -196,7 +221,7 @@ func EmptyRoom(w http.ResponseWriter, r *http.Request) {
 		Response(w, r, nil, http.StatusInternalServerError, "get nil client from context")
 		return
 	}
-	client, ok := c.(*gzhu_jw.JWClient)
+	client, ok := c.(pkg.Jwxt)
 	if !ok {
 		Response(w, r, nil, http.StatusInternalServerError, "get a wrong client from context")
 		return
@@ -205,7 +230,7 @@ func EmptyRoom(w http.ResponseWriter, r *http.Request) {
 	data, err := client.GetEmptyRoom(r)
 	if err != nil {
 		logs.Error(err)
-		delete(JWClients, client.Username)
+		delete(Jwxt, getCacheKey(r, client.GetUsername()))
 		Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -219,7 +244,7 @@ func Achieve(w http.ResponseWriter, r *http.Request) {
 		Response(w, r, nil, http.StatusInternalServerError, "get nil client from context")
 		return
 	}
-	client, ok := c.(*gzhu_jw.JWClient)
+	client, ok := c.(pkg.Jwxt)
 	if !ok {
 		Response(w, r, nil, http.StatusInternalServerError, "get a wrong client from context")
 		return
@@ -228,7 +253,7 @@ func Achieve(w http.ResponseWriter, r *http.Request) {
 	data, err := client.GetAchieve()
 	if err != nil {
 		logs.Error(err)
-		delete(JWClients, client.Username)
+		delete(Jwxt, getCacheKey(r, client.GetUsername()))
 		Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -242,7 +267,7 @@ func AllCourse(w http.ResponseWriter, r *http.Request) {
 		Response(w, r, nil, http.StatusInternalServerError, "get nil client from context")
 		return
 	}
-	client, ok := c.(*gzhu_jw.JWClient)
+	client, ok := c.(pkg.Jwxt)
 	if !ok {
 		Response(w, r, nil, http.StatusInternalServerError, "get a wrong client from context")
 		return
@@ -250,16 +275,13 @@ func AllCourse(w http.ResponseWriter, r *http.Request) {
 
 	year := r.URL.Query().Get("year")
 	sem := r.URL.Query().Get("sem")
-	pageStr := r.URL.Query().Get("page")
-	countStr := r.URL.Query().Get("count")
-
-	page, _ := strconv.Atoi(pageStr)
-	count, _ := strconv.Atoi(countStr)
+	page, _ := strconv.Atoi(r.URL.Query().Get("page"))
+	count, _ := strconv.Atoi(r.URL.Query().Get("count"))
 
 	data, csvData, err := client.SearchAllCourse(year, sem, page, count)
 	if err != nil {
 		logs.Error(err)
-		delete(JWClients, client.Username)
+		delete(Jwxt, getCacheKey(r, client.GetUsername()))
 		Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}

@@ -27,6 +27,18 @@ type JWClient struct {
 	Client    *http.Client
 }
 
+func (c *JWClient) GetExpiresAt() time.Time {
+	return c.ExpiresAt
+}
+
+func (c *JWClient) SetExpiresAt(t time.Time) {
+	c.ExpiresAt = t
+}
+
+func (c *JWClient) GetUsername() string {
+	return c.Username
+}
+
 func (c *JWClient) doRequest(method, url string, header http.Header, body io.Reader) (*http.Response, error) {
 	t1 := time.Now()
 
@@ -90,9 +102,10 @@ func BasicAuthClient(username, password string) (client *JWClient, err error) {
 		return nil, fmt.Errorf("get login form failed")
 	}
 
-	captcha := c.GetCaptcha()
-	if captcha == "" {
-		logs.Debug("验证码识别为空")
+	captcha, err := c.GetCaptcha()
+	if err != nil {
+		logs.Error(err)
+		return
 	}
 
 	postValue := url.Values{
@@ -137,9 +150,8 @@ func BasicAuthClient(username, password string) (client *JWClient, err error) {
 
 var rpcClient *rpc.Client
 
-func (c *JWClient) GetCaptcha() (capture string) {
+func (c *JWClient) GetCaptcha() (capture string, err error) {
 
-	var err error
 	if rpcClient == nil {
 		rpcClient, err = rpc.DialHTTP("tcp", env.Conf.Rpc.Addr)
 		if err != nil {
@@ -154,18 +166,18 @@ func (c *JWClient) GetCaptcha() (capture string) {
 		resp, err := c.doRequest("GET", "https://cas.gzhu.edu.cn/cas_server/captcha.jsp", nil, nil)
 		if err != nil {
 			logs.Error(err)
-			return
+			return capture, err
 		}
 		body, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
 			logs.Error(err)
-			return
+			return capture, err
 		}
 
 		err = rpcClient.Call("OcrService.Capture", body, &capture)
 		if err != nil {
 			logs.Error(err)
-			return
+			return capture, err
 		}
 
 		reg := regexp.MustCompile(`\d+`)
