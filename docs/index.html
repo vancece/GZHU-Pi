@@ -20,15 +20,49 @@
   <div id="app"></div>
   <script>
     window.$docsify = {
+      name: 'GZHU-Pi',
+      repo: 'https://github.com/ZhenShaw/GZHU-Pi.git',
       coverpage: true, //封面
       // onlyCover: true,
       // loadNavbar: true, //导航栏
       // loadSidebar: true, //侧边栏
-      name: 'GZHU-Pi',
-      repo: ''
+      search: {
+        maxAge: 86400000, // 过期时间，单位毫秒，默认一天
+        paths: [], // or 'auto'，匹配文件路径
+        placeholder: 'Type to search', // 搜索提示框文字 
+        noData: 'No Results!', // 找不到结果文字提示 
+        depth: 2, // 搜索标题的最大程级, 1 - 6
+      }
     }
   </script>
   <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
+  <!-- 引入搜索模块 -->
+  <script src="//unpkg.com/docsify/lib/plugins/search.js"></script>
+
+
+  <div id="gitalk-container"></div>
+
+  <link rel="stylesheet" href="//unpkg.com/gitalk/dist/gitalk.css">
+  <script src="//unpkg.com/docsify/lib/plugins/gitalk.min.js"></script>
+  <script src="//unpkg.com/gitalk/dist/gitalk.min.js"></script>
+  <script>
+    const gitalk = new Gitalk({
+      clientID: 'Github Application Client ID',
+      clientSecret: 'Github Application Client Secret',
+      repo: 'https://github.com/ZhenShaw/GZHU-Pi.git',
+      owner: 'ZhenShaw',
+      admin: ['ZhenShaw'],
+      // facebook-like distraction free mode
+      distractionFreeMode: false,
+      id: location.pathname, // 用于标记评论是哪个页面的，确保唯一，并且长度小于50
+    })
+    // 监听URL中hash的变化，如果发现换了一个MD文件，那么刷新页面，解决整个网站使用一个gitalk评论issues的问题。
+    window.onhashchange = function(event){
+      if(event.newURL.split('?')[0] !== event.oldURL .split('?')[0]) {
+        location.reload()
+      }
+  </script>
+
 </body>
 
 </html>

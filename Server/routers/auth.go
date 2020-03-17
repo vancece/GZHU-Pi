@@ -13,7 +13,8 @@ import (
 //使用open_id认证，不存在则创建新用户
 func Auth(w http.ResponseWriter, r *http.Request) {
 
-	if r.URL.Query().Get("type") == "school" {
+	if r.URL.Query().Get("type") == "gzhu" || r.URL.Query().Get("type") == "school" ||
+		r.URL.Query().Get("school") != "" {
 		AuthBySchool(w, r)
 		return
 	}
