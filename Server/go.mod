@@ -4,6 +4,7 @@ go 1.13
 
 require (
 	github.com/PuerkitoBio/goquery v1.5.0
+	github.com/StackExchange/wmi v0.0.0-20190523213315-cbe66965904d // indirect
 	github.com/astaxie/beego v1.12.0
 	github.com/auth0/go-jwt-middleware v0.0.0-20190805220309-36081240882b // indirect
 	github.com/boltdb/bolt v1.3.1
@@ -11,6 +12,7 @@ require (
 	github.com/cznic/ql v1.2.0 // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/fatih/color v1.9.0 // indirect
+	github.com/go-ole/go-ole v1.2.4 // indirect
 	github.com/go-redis/redis v6.14.2+incompatible
 	github.com/gorilla/mux v1.7.3
 	github.com/jinzhu/gorm v1.9.11
@@ -25,7 +27,9 @@ require (
 	github.com/prest/helpers v0.0.0-20180627002842-07dcf603c9a1 // indirect
 	github.com/prest/middlewares v0.0.0-20190501210230-25fb4a665793
 	github.com/prest/template v0.0.0-20190409192546-ae0e5431a9b5 // indirect
+	github.com/prometheus/client_golang v0.9.3
 	github.com/shiena/ansicolor v0.0.0-20151119151921-a422bbe96644 // indirect
+	github.com/shirou/gopsutil v2.20.2+incompatible
 	github.com/silenceper/wechat v2.0.0+incompatible
 	github.com/smartystreets/goconvey v1.6.4 // indirect
 	github.com/spf13/cobra v0.0.5 // indirect
