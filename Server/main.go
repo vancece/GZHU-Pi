@@ -14,6 +14,7 @@ import (
 	"github.com/spf13/viper"
 	"log"
 	"net/http"
+	_ "net/http/pprof"
 	"os"
 	"regexp"
 	"strings"
@@ -25,9 +26,14 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	// init db without handling errors
-	go models.InitDb()
+	err = models.InitDb()
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = env.InitRedis()
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	r := mux.NewRouter()
 
@@ -110,6 +116,7 @@ func runWithPRest(r *mux.Router) {
 	// Register custom routes
 	customRouter(r)
 
+	os.Args = []string{os.Args[0]}
 	// Call pREST cmd
 	cmd.Execute()
 }

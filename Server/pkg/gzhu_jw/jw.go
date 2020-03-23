@@ -86,6 +86,7 @@ func BasicAuthClient(username, password string) (client *JWClient, err error) {
 	//发送get请求，获取登录页面信息
 	resp, err := c.doRequest("GET", Urls["jw-login"], nil, nil)
 	if err != nil {
+		logs.Error(err)
 		return nil, err
 	}
 	body, _ := ioutil.ReadAll(resp.Body)

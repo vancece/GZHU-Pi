@@ -94,6 +94,7 @@ func BasicAuthClient(username, password string) (client *SecondClient, err error
 	//发送get请求，获取登录页面信息
 	resp, err := c.doRequest("GET", Urls["second-login"], nil, nil)
 	if err != nil {
+		logs.Error(err)
 		return nil, err
 	}
 	body, _ := ioutil.ReadAll(resp.Body)

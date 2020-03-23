@@ -12,12 +12,14 @@ import (
 
 func InitViper() {
 
+	//viper.SetConfigFile("config.toml")
 	viper.SetConfigName("config") //指定配置文件的文件名称(不需要制定配置文件的扩展名)
 	viper.AddConfigPath(".")      // 设置配置文件和可执行二进制文件在用一个目录
 	viper.AutomaticEnv()          //自动从环境变量读取匹配的参数
 
 	//绑定放进变量，会优先读取环境变量的值
 	_ = viper.BindEnv("secret.jwt", "GZHUPI_SECRET_JWT")
+	_ = viper.BindEnv("rpc.addr", "GZHUPI_RPC_ADDR")
 
 	_ = viper.BindEnv("db.host", "GZHUPI_DB_HOST")
 	_ = viper.BindEnv("db.port", "GZHUPI_DB_PORT")
@@ -26,7 +28,7 @@ func InitViper() {
 	_ = viper.BindEnv("db.dbname", "GZHUPI_DB_DBNAME")
 	_ = viper.BindEnv("db.sslmode", "GZHUPI_DB_SSLMODE")
 
-	_ = viper.BindEnv("redis.host", "GZHUPI_REDIS_USER")
+	_ = viper.BindEnv("redis.host", "GZHUPI_REDIS_HOST")
 	_ = viper.BindEnv("redis.port", "GZHUPI_REDIS_PORT")
 	_ = viper.BindEnv("redis.password", "GZHUPI_REDIS_PASSWORD")
 
@@ -47,17 +49,6 @@ func InitViper() {
 	if err != nil {
 		log.Fatal(err)
 	}
-}
-
-func main() {
-	InitViper()
-	fmt.Println("获取配置文件的string", viper.GetString(`db.user`))
-	fmt.Println("获取配置文件的string", viper.GetInt(`db.user`))
-	fmt.Println("获取配置文件的string", viper.GetBool(`app.bar`))
-	fmt.Println("获取配置文件的string", viper.Sub(`app`).GetString("logfile"))
-	fmt.Println("获取配置文件的map[string]string", viper.GetStringMapString(`db`))
-	_ = InitConfigure()
-	logs.Info(Conf)
 }
 
 //配置文件结构体，配置文件上的内容需要一一对应，可多不可少
@@ -85,8 +76,8 @@ type Configure struct {
 	}
 	Redis struct {
 		Host     string `json:"host" remark:"redis主机"`
-		Port     string `json:"port" remark:"redis端口"`
-		Password string `json:"password" remark:"redis密码"`
+		Port     int64  `json:"port" remark:"redis端口"`
+		Password string `json:"password" remark:"redis密码" must:"false"`
 	}
 }
 
@@ -110,6 +101,7 @@ func InitConfigure() (err error) {
 
 			sec := strings.ToLower(section.Name) //配置文件节名
 			remark := key.Tag.Get("remark")      //配置备注
+			must := key.Tag.Get("must")          //配置备注
 			tag := key.Tag.Get("json")           //配置键节名
 			if tag == "" {
 				err = fmt.Errorf("can not found a tag name `json` in struct of [%s].%s", sec, tag)
@@ -117,32 +109,33 @@ func InitConfigure() (err error) {
 				return err
 			}
 
-			if key.Type.Kind() == reflect.String {
-
-			}
 			//根据类型识别配置字段
 			switch key.Type.Kind() {
 			case reflect.String:
 				value := viper.GetString(sec + "." + tag)
-				if value == "" {
-					err = fmt.Errorf("get a blank value of [%s].%s %s", sec, tag, remark)
+				if value == "" && must != "false" {
+					err = fmt.Errorf("get a blank value of must item [%s].%s %s", sec, tag, remark)
 					logs.Error(err)
 					return err
 				}
 				keyValue.SetString(value)
+
 			case reflect.Int, reflect.Int8, reflect.Int16, reflect.Int32, reflect.Int64:
 				value := viper.GetInt64(sec + "." + tag)
+				if value == 0 && must != "false" {
+					err = fmt.Errorf("get a zero value of must item [%s].%s %s", sec, tag, remark)
+					logs.Error(err)
+					return err
+				}
 				keyValue.SetInt(value)
+
 			case reflect.Bool:
 				value := viper.GetBool(sec + "." + tag)
 				keyValue.SetBool(value)
 
 			default:
-				logs.Warn("unsupported config struct key type")
+				logs.Warn("unsupported config struct key type %T", key.Type.Kind())
 			}
-
-			//读取配置文件初始化结构体
-
 		}
 	}
 	return

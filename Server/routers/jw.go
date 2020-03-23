@@ -9,10 +9,13 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 )
 
-var Jwxt = make(map[string]pkg.Jwxt)
+// TODO Note
+//var Jwxt = make(map[string]pkg.Jwxt)
+var Jwxt sync.Map
 
 func newJWClient(school, username, password string) (client pkg.Jwxt, err error) {
 
@@ -49,7 +52,9 @@ func JWMiddleWare(next http.HandlerFunc) http.HandlerFunc {
 				Response(w, r, nil, http.StatusUnauthorized, "Unauthorized")
 				return
 			}
-			client, ok := Jwxt[getCacheKey(r, username)]
+			//client, ok := Jwxt[getCacheKey(r, username)]
+			c, _ := Jwxt.Load(getCacheKey(r, username))
+			client, ok := c.(pkg.Jwxt)
 			if !ok {
 				Response(w, r, nil, http.StatusUnauthorized, "Unauthorized")
 				return
@@ -75,7 +80,9 @@ func JWMiddleWare(next http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 		//从缓存中获取客户端，不存在或者过期则创建
-		client, ok := Jwxt[getCacheKey(r, username)]
+		//client, ok := Jwxt[getCacheKey(r, username)]
+		c, _ := Jwxt.Load(getCacheKey(r, username))
+		client, ok := c.(pkg.Jwxt)
 		if !ok || client == nil || time.Now().After(client.GetExpiresAt()) {
 			if client != nil && time.Now().After(client.GetExpiresAt()) {
 				logs.Debug("客户端在 %ds 前过期了", time.Now().Unix()-client.GetExpiresAt().Unix())
@@ -87,14 +94,17 @@ func JWMiddleWare(next http.HandlerFunc) http.HandlerFunc {
 				return
 			}
 			//将客户端存入缓存
-			Jwxt[getCacheKey(r, username)] = client
+			//Jwxt[getCacheKey(r, username)] = client
+			Jwxt.Store(getCacheKey(r, username), client)
 		}
 		if client != nil && !time.Now().After(client.GetExpiresAt()) {
 			logs.Debug("客户端正常 %ds 后过期", client.GetExpiresAt().Unix()-time.Now().Unix())
 		}
 		//如果客户端不发生错误而被删除，则更新过期时间
 		defer func() {
-			if client, ok := Jwxt[getCacheKey(r, username)]; ok || client != nil {
+			c, _ := Jwxt.Load(getCacheKey(r, username))
+			client, ok := c.(pkg.Jwxt)
+			if ok || client != nil {
 				client.SetExpiresAt(time.Now().Add(20 * time.Minute))
 			}
 		}()
@@ -140,7 +150,8 @@ func Course(w http.ResponseWriter, r *http.Request) {
 	data, err := client.GetCourse(year, sem)
 	if err != nil {
 		logs.Error(err)
-		delete(Jwxt, getCacheKey(r, client.GetUsername())) //发生错误，从缓存中删除
+		Jwxt.Delete(getCacheKey(r, client.GetUsername())) //发生错误，从缓存中删除
+		//delete(Jwxt, getCacheKey(r, client.GetUsername())) //发生错误，从缓存中删除
 		Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -178,7 +189,7 @@ func Exam(w http.ResponseWriter, r *http.Request) {
 	data, err := client.GetExam(year, sem)
 	if err != nil {
 		logs.Error(err)
-		delete(Jwxt, getCacheKey(r, getCacheKey(r, client.GetUsername())))
+		Jwxt.Delete(getCacheKey(r, client.GetUsername()))
 		Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -201,7 +212,7 @@ func Grade(w http.ResponseWriter, r *http.Request) {
 	data, err := client.GetAllGrade("", "")
 	if err != nil {
 		logs.Error(err)
-		delete(Jwxt, getCacheKey(r, getCacheKey(r, client.GetUsername())))
+		Jwxt.Delete(getCacheKey(r, client.GetUsername()))
 		if err == gzhu_jw.AuthError {
 			//TODO 重试处理
 
@@ -230,7 +241,7 @@ func EmptyRoom(w http.ResponseWriter, r *http.Request) {
 	data, err := client.GetEmptyRoom(r)
 	if err != nil {
 		logs.Error(err)
-		delete(Jwxt, getCacheKey(r, client.GetUsername()))
+		Jwxt.Delete(getCacheKey(r, client.GetUsername()))
 		Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -253,7 +264,7 @@ func Achieve(w http.ResponseWriter, r *http.Request) {
 	data, err := client.GetAchieve()
 	if err != nil {
 		logs.Error(err)
-		delete(Jwxt, getCacheKey(r, client.GetUsername()))
+		Jwxt.Delete(getCacheKey(r, client.GetUsername()))
 		Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -281,7 +292,7 @@ func AllCourse(w http.ResponseWriter, r *http.Request) {
 	data, csvData, err := client.SearchAllCourse(year, sem, page, count)
 	if err != nil {
 		logs.Error(err)
-		delete(Jwxt, getCacheKey(r, client.GetUsername()))
+		Jwxt.Delete(getCacheKey(r, client.GetUsername()))
 		Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}

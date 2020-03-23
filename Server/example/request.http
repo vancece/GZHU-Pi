@@ -9,12 +9,14 @@ Content-Type: application/x-www-form-urlencoded
 
 username={{username}}&password={{password}}
 
+> {% client.global.set("cookie", response.headers.valueOf("Set-Cookie"));%}
 
 ###
 
 # 课表查询
 POST {{baseUrl}}/jwxt/course
 Content-Type: application/x-www-form-urlencoded
+Cookie: {{cookie}}
 
 username={{username}}&password={{password}}&year_sem=2019-2020-2
 

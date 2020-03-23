@@ -149,7 +149,7 @@ func AuthBySchool(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	//将客户端存入缓存
-	Jwxt[getCacheKey(r, username)] = client
+	Jwxt.Store(getCacheKey(r, username), client)
 
 	logs.Info("用户：%s 接口：%s", username, r.URL.Path)
 	Response(w, r, nil, http.StatusOK, "request ok")

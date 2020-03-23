@@ -13,6 +13,10 @@ steps:
       - name: docker_sock
         path: /var/run/docker.sock
     environment:
+      GZHUPI_SECRET_JWT: 
+        from_secret: GZHUPI_SECRET_JWT
+      GZHUPI_RPC_ADDR: 
+        from_secret: GZHUPI_RPC_ADDR
       GZHUPI_DB_HOST:
         from_secret: GZHUPI_DB_HOST
       GZHUPI_DB_PORT:
@@ -25,6 +29,12 @@ steps:
         from_secret: GZHUPI_DB_DBNAME
       GZHUPI_DB_SSLMODE:
         from_secret: GZHUPI_DB_SSLMODE
+      GZHUPI_REDIS_HOST:
+        from_secret: GZHUPI_REDIS_HOST
+      GZHUPI_REDIS_PORT:
+        from_secret: GZHUPI_REDIS_PORT
+      GZHUPI_REDIS_PASSWORD:
+        from_secret: GZHUPI_REDIS_PASSWORD
     commands:
       - cd Server
       - docker-compose -f docker-compose-gzhupi.yml up -d --build

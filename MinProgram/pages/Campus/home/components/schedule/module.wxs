@@ -1,35 +1,33 @@
 // 1.根据课程周数关系判断是否显示
-var judegShow = function(course, curWeek = 0, dayModule = false) {
+var judegShow = function (course, curWeek = 0, dayModule = false) {
   // 日模式若未开学，隐藏
   if (dayModule) {
     if (curWeek <= 0)
       return true
   }
 
-  weekArr = getWeek(course.weeks)
+  weekArr = course.week_section
+  if (!course.week_section) {
+    weekArr = getWeek(course.weeks)
+  }
+
   var hide = true
   if (curWeek < 1) {
     return false
   }
   // 遍历周数组，不在本周的课程隐藏
-  for (var i = 0; i < weekArr.length; i++) {
-    if (weekArr[i].length == 1) {
-      if (weekArr[i][0] == curWeek) {
-        hide = false
-        break
-      } else continue
-    } else if (weekArr[i].length == 2) {
-      if (weekArr[i][0] <= curWeek && curWeek <= weekArr[i][1]) {
-        hide = false
-        break
-      } else continue
+  for (var i = 0; i < weekArr.length; i = i + 2) {
+    if (weekArr[i] <= curWeek && curWeek <= weekArr[i + 1]) {
+      hide = false
+      break
     }
   }
+
   return hide
 }
 
 // 2.判断当日有无课程
-var noCourse = function(todayCourse, schoolWeek) {
+var noCourse = function (todayCourse, schoolWeek) {
   var flag = false
   for (var i = 0; i < todayCourse.length; i++) {
     weekArr = getWeek(todayCourse[i].weeks)
@@ -53,13 +51,13 @@ module.exports = {
 
 
 // 生成[start,end, start,end]格式的周段记录
-var getWeek = function(weekStr) {
+var getWeek = function (weekStr) {
 
   var weekSplit = weekStr.split(",") // 将多个周段拆分
   var reg = getRegExp("\d+", "g")
 
   var weekArr = [] //存放所有周段开始和结束
-  weekSplit.forEach(function(i) {
+  weekSplit.forEach(function (i) {
     var temp = [] //存放一个周段开始和结束
     var res = i.match(reg)
 
@@ -70,7 +68,8 @@ var getWeek = function(weekStr) {
       temp.push(parseInt(res[0]))
       temp.push(parseInt(res[0]))
     }
-    weekArr.push(temp)
+    weekArr.push(temp[0])
+    weekArr.push(temp[1])
   })
   return weekArr
 }

@@ -98,6 +98,8 @@ func GetGorm() *gorm.DB {
 }
 
 func modelsInit() {
+	logs.Info("models initializing ...")
+
 	//关闭复数表名
 	db.SingularTable(true)
 
