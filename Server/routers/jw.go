@@ -1,6 +1,7 @@
 package routers
 
 import (
+	"GZHU-Pi/models"
 	"GZHU-Pi/pkg"
 	"GZHU-Pi/pkg/gzhu_jw"
 	"context"
@@ -17,8 +18,9 @@ import (
 //var Jwxt = make(map[string]pkg.Jwxt)
 var Jwxt sync.Map
 
-func newJWClient(school, username, password string) (client pkg.Jwxt, err error) {
+func newJWClient(r *http.Request, username, password string) (client pkg.Jwxt, err error) {
 
+	school := r.URL.Query().Get("school")
 	if school == "" {
 		school = "gzhu"
 	}
@@ -79,6 +81,8 @@ func JWMiddleWare(next http.HandlerFunc) http.HandlerFunc {
 			Response(w, r, nil, http.StatusUnauthorized, "Unauthorized")
 			return
 		}
+		logs.Info("用户：%s 接口：%s IP: ", username, r.URL.Path, r.RemoteAddr)
+
 		//从缓存中获取客户端，不存在或者过期则创建
 		//client, ok := Jwxt[getCacheKey(r, username)]
 		c, _ := Jwxt.Load(getCacheKey(r, username))
@@ -87,7 +91,7 @@ func JWMiddleWare(next http.HandlerFunc) http.HandlerFunc {
 			if client != nil && time.Now().After(client.GetExpiresAt()) {
 				logs.Debug("客户端在 %ds 前过期了", time.Now().Unix()-client.GetExpiresAt().Unix())
 			}
-			client, err = newJWClient(r.URL.Query().Get("school"), username, password)
+			client, err = newJWClient(r, username, password)
 			if err != nil {
 				logs.Error(err)
 				Response(w, r, nil, http.StatusUnauthorized, err.Error())
@@ -108,7 +112,6 @@ func JWMiddleWare(next http.HandlerFunc) http.HandlerFunc {
 				client.SetExpiresAt(time.Now().Add(20 * time.Minute))
 			}
 		}()
-		logs.Info("用户：%s 接口：%s", username, r.URL.Path)
 		//把客户端通过context传递给下一级
 		ctx := context.WithValue(r.Context(), "client", client)
 		// 创建新的请求
@@ -306,4 +309,33 @@ func AllCourse(w http.ResponseWriter, r *http.Request) {
 	} else {
 		Response(w, r, data, http.StatusOK, "request ok")
 	}
+}
+
+func Rank(w http.ResponseWriter, r *http.Request) {
+
+	username := r.URL.Query().Get("username")
+	user := &models.TUser{}
+	user, err := AuthByCookies(r)
+	if err != nil {
+		logs.Error(err)
+		Response(w, r, nil, http.StatusBadRequest, err.Error())
+		return
+	}
+	if user.StuID.String != "" && user.StuID.String != username {
+		err = fmt.Errorf("Unauthorized ")
+		logs.Error(err)
+		Response(w, r, nil, http.StatusUnauthorized, err.Error())
+		return
+	}
+	logs.Info("用户：%d 学号：%s 接口：%s IP: ", user.ID, username, r.URL.Path, r.RemoteAddr)
+
+	client := &gzhu_jw.JWClient{Username: username}
+
+	data, err := client.GetRank(client.GetUsername())
+	if err != nil {
+		logs.Error(err)
+		Response(w, r, nil, http.StatusInternalServerError, err.Error())
+		return
+	}
+	Response(w, r, data, http.StatusOK, "request ok")
 }

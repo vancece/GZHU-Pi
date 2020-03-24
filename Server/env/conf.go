@@ -17,25 +17,25 @@ func InitViper() {
 	viper.AddConfigPath(".")      // 设置配置文件和可执行二进制文件在用一个目录
 	viper.AutomaticEnv()          //自动从环境变量读取匹配的参数
 
-	//绑定放进变量，会优先读取环境变量的值
-	_ = viper.BindEnv("secret.jwt", "GZHUPI_SECRET_JWT")
-	_ = viper.BindEnv("rpc.addr", "GZHUPI_RPC_ADDR")
-
-	_ = viper.BindEnv("db.host", "GZHUPI_DB_HOST")
-	_ = viper.BindEnv("db.port", "GZHUPI_DB_PORT")
-	_ = viper.BindEnv("db.user", "GZHUPI_DB_USER")
-	_ = viper.BindEnv("db.password", "GZHUPI_DB_PASSWORD")
-	_ = viper.BindEnv("db.dbname", "GZHUPI_DB_DBNAME")
-	_ = viper.BindEnv("db.sslmode", "GZHUPI_DB_SSLMODE")
-
-	_ = viper.BindEnv("redis.host", "GZHUPI_REDIS_HOST")
-	_ = viper.BindEnv("redis.port", "GZHUPI_REDIS_PORT")
-	_ = viper.BindEnv("redis.password", "GZHUPI_REDIS_PASSWORD")
-
-	_ = viper.BindEnv("weixin.path", "GZHUPI_WEIXIN_PATH")
-	_ = viper.BindEnv("weixin.app_id", "GZHUPI_WEIXIN_APP_ID")
-	_ = viper.BindEnv("weixin.secret", "GZHUPI_WEIXIN_PATH")
-	_ = viper.BindEnv("weixin.token", "GZHUPI_WEIXIN_TOKEN")
+	//_ = viper.BindEnv("secret.jwt", "GZHUPI_SECRET_JWT")
+	//_ = viper.BindEnv("rpc.addr", "GZHUPI_RPC_ADDR")
+	//_ = viper.BindEnv("app.init_models", "GZHUPI_APP_INIT_MODELS")
+	//
+	//_ = viper.BindEnv("db.host", "GZHUPI_DB_HOST")
+	//_ = viper.BindEnv("db.port", "GZHUPI_DB_PORT")
+	//_ = viper.BindEnv("db.user", "GZHUPI_DB_USER")
+	//_ = viper.BindEnv("db.password", "GZHUPI_DB_PASSWORD")
+	//_ = viper.BindEnv("db.dbname", "GZHUPI_DB_DBNAME")
+	//_ = viper.BindEnv("db.sslmode", "GZHUPI_DB_SSLMODE")
+	//
+	//_ = viper.BindEnv("redis.host", "GZHUPI_REDIS_HOST")
+	//_ = viper.BindEnv("redis.port", "GZHUPI_REDIS_PORT")
+	//_ = viper.BindEnv("redis.password", "GZHUPI_REDIS_PASSWORD")
+	//
+	//_ = viper.BindEnv("weixin.path", "GZHUPI_WEIXIN_PATH")
+	//_ = viper.BindEnv("weixin.app_id", "GZHUPI_WEIXIN_APP_ID")
+	//_ = viper.BindEnv("weixin.secret", "GZHUPI_WEIXIN_PATH")
+	//_ = viper.BindEnv("weixin.token", "GZHUPI_WEIXIN_TOKEN")
 
 	//读取-c输入的路径参数，初始化配置文件，如： ./main -c config.yaml
 	if len(os.Args) >= 3 {
@@ -54,10 +54,11 @@ func InitViper() {
 //配置文件结构体，配置文件上的内容需要一一对应，可多不可少
 type Configure struct {
 	App struct {
-		Name    string `json:"name" remark:"应用名称"`
-		Version string `json:"version" remark:"软件发布版本，对应仓库tag版本"`
-		Mode    string `json:"mode" remark:"开发模式develop/test/product"`
-		PRest   bool   `json:"prest" remark:"" remark:"是否开启pRest接口服务"`
+		Name       string `json:"name" remark:"应用名称"`
+		Version    string `json:"version" remark:"软件发布版本，对应仓库tag版本"`
+		Mode       string `json:"mode" remark:"开发模式develop/test/product"`
+		PRest      bool   `json:"prest" remark:"" remark:"是否开启pRest接口服务"`
+		InitModels bool   `json:"init_models" remark:"是否初始化数据库模型" must:"false"`
 	}
 	Secret struct {
 		JWT string `json:"jwt" remark:"jwt密钥"`
@@ -108,6 +109,11 @@ func InitConfigure() (err error) {
 				logs.Error(err)
 				return err
 			}
+
+			//绑定环境变量，会优先使用环境变量的值
+			logs.Info("绑定环境变量 GZHUPI_%s_%s ==> %s.%s", strings.ToUpper(sec), strings.ToUpper(tag), sec, tag)
+			envKey := fmt.Sprintf("GZHUPI_%s_%s", strings.ToUpper(sec), strings.ToUpper(tag))
+			_ = viper.BindEnv(sec+"."+tag, envKey)
 
 			//根据类型识别配置字段
 			switch key.Type.Kind() {

@@ -11,6 +11,7 @@ import (
 	"github.com/prest/config"
 	"github.com/prest/config/router"
 	"github.com/prest/middlewares"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/spf13/viper"
 	"log"
 	"net/http"
@@ -34,6 +35,8 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	go env.MemoryCollector()
 
 	r := mux.NewRouter()
 
@@ -87,7 +90,6 @@ func runWithPRest(r *mux.Router) {
 	// Register custom middleware
 	n.UseFunc(func(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 		//该中间件用于消除路由前缀对pRest内部路由的影响
-		logs.Info(r.URL.Path)
 		if !strings.Contains(r.URL.Path, "/api/v") {
 			_, _ = w.Write([]byte("path must contains /api/v\\d"))
 			return
@@ -123,6 +125,8 @@ func runWithPRest(r *mux.Router) {
 
 func customRouter(r *mux.Router) *mux.Router {
 
+	r.Handle("/metrics", promhttp.Handler())
+
 	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		_, _ = w.Write([]byte("Hello!"))
 	})
@@ -140,6 +144,7 @@ func customRouter(r *mux.Router) *mux.Router {
 	r.HandleFunc("/jwxt/classroom", routers.PanicMV(routers.JWMiddleWare(routers.EmptyRoom))).Methods("GET", "POST")
 	r.HandleFunc("/jwxt/achieve", routers.PanicMV(routers.JWMiddleWare(routers.Achieve))).Methods("GET", "POST")
 	r.HandleFunc("/jwxt/all-course", routers.PanicMV(routers.JWMiddleWare(routers.AllCourse))).Methods("GET", "POST")
+	r.HandleFunc("/jwxt/rank", routers.PanicMV(routers.Rank)).Methods("GET")
 
 	//图书馆
 	r.HandleFunc("/library/search", routers.PanicMV(routers.BookSearch)).Methods("GET")

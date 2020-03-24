@@ -8,6 +8,7 @@ mode = "debug"
 prest = true
 log_level = "debug"
 logfile = "/tmp/gzhupi/log.log"
+init_models = true
 
 [secret]
 jwt = "jwt_secret"

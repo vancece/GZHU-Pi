@@ -6,6 +6,7 @@ import (
 	"github.com/astaxie/beego/logs"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
+	"github.com/jmoiron/sqlx"
 	"time"
 )
 
@@ -65,6 +66,7 @@ const (
 )
 
 var db *gorm.DB
+var sqlxDB *sqlx.DB
 
 func InitDb() error {
 	d := env.Conf.Db
@@ -79,29 +81,50 @@ func InitDb() error {
 	}
 	logs.Info("数据库：%s:%d/%s", d.Host, d.Port, d.Dbname)
 
+	sqlxDB = sqlx.MustOpen("postgres", dbInfo)
+	err = sqlxDB.Ping()
+	if err != nil {
+		logs.Error(err)
+		return err
+	}
+
 	// SetMaxIdleCons 设置连接池中的最大闲置连接数。
 	db.DB().SetMaxIdleConns(10)
 
 	// SetMaxOpenCons 设置数据库的最大连接数量。
 	db.DB().SetMaxOpenConns(5)
 
-	// SetConnMaxLifetiment 设置连接的最大可复用时间。
+	// SetConnMaxLifetime 设置连接的最大可复用时间。
 	db.DB().SetConnMaxLifetime(time.Hour)
 
-	modelsInit()
+	//关闭复数表名
+	db.SingularTable(true)
+
+	if env.Conf.App.InitModels {
+		t := time.Now()
+		modelsInit()
+		logs.Info("init models in:", time.Since(t))
+	}
 
 	return nil
 }
 
 func GetGorm() *gorm.DB {
+	if db == nil {
+		InitDb()
+	}
 	return db
+}
+
+func GetSqlx() *sqlx.DB {
+	if sqlxDB == nil {
+		InitDb()
+	}
+	return sqlxDB
 }
 
 func modelsInit() {
 	logs.Info("models initializing ...")
-
-	//关闭复数表名
-	db.SingularTable(true)
 
 	//自动迁移 只会 创建表、缺失的列、缺失的索引，不会 更改现有列的类型或删除未使用的列
 	db.AutoMigrate(&TStuInfo{}, &TGrade{}, &TApiRecord{}, &TUser{},
@@ -114,8 +137,11 @@ func modelsInit() {
 		"object", "object_id", "type", "created_by")
 
 	db.Exec(vTopic)
-	db.Exec(vGrade)
 	db.Exec(vDiscuss)
 	db.Exec(vUser)
+
+	t := time.Now()
+	db.Exec(vGrade)
+	logs.Debug("init view vGrade in", time.Since(t))
 
 }

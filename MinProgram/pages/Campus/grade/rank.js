@@ -74,55 +74,20 @@ Page({
       })
     }
   },
+
   syncData() {
-    if (!wx.getStorageSync("account"))return
-    let that = this
-    wx.showLoading({
-      title: '更新排名...',
-    })
-    wx.request({
-      method: "POST",
-      url: "https://1171058535813521.cn-shanghai.fc.aliyuncs.com/2016-08-15/proxy/GZHU-API/Spider/rank",
-      header: {
-        'content-type': 'application/x-www-form-urlencoded'
-      },
-      data: this.data.account,
-      success: function (res) {
-        if (res.statusCode != 200) {
-          wx.showModal({
-            title: '错误提示',
-            content: '服务器响应错误',
-          })
-          return
-        }
-        if (res.data.statusCode != 200) {
-          wx.showModal({
-            title: '错误提示',
-            content: '账号或密码错误',
-          })
-          return
-        }
-        that.setData({
-          rank: res.data.data,
+    if (!wx.getStorageSync("account")) return
+    wx.$ajax({
+        url: wx.$param.server["prest"] + "/jwxt/rank",
+        method: "get",
+        data: this.data.account,
+        loading: "更新排名..."
+      })
+      .then(res => {
+        this.setData({
+          rank: res.data,
         })
-        // wx.setStorageSync("rank", res.data.data)
-      },
-      fail: function (err) {
-        console.log("err:", err)
-        wx.showToast({
-          title: "请求失败",
-          icon: "none"
-        })
-      },
-      complete: function (res) {
-        wx.hideLoading()
-        if (res.statusCode == 502) {
-          wx.showToast({
-            title: "访问超时 " + res.statusCode,
-            icon: "none"
-          })
-        }
-      }
-    })
-  },
+      })
+  }
+
 })

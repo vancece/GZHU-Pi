@@ -48,15 +48,15 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 
 	var user models.VUser
 	db := models.GetGorm()
-	result := db.Where("open_id = ?", u.OpenID.String).First(&user)
-	if result.Error != nil && result.Error != gorm.ErrRecordNotFound {
+	err = db.Where("open_id = ?", u.OpenID.String).First(&user).Error
+	if err != nil && err != gorm.ErrRecordNotFound {
 		logs.Error(err)
 		Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}
 
 	//创建新用户
-	if user.ID <= 0 || result.Error == gorm.ErrRecordNotFound {
+	if user.ID <= 0 || err == gorm.ErrRecordNotFound {
 		logs.Info("new user, create with open_id: %s", u.OpenID.String)
 
 		if u.MinappID.Int64 <= 0 {
@@ -107,8 +107,8 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 			user.Country.String != u.Country.String || user.Gender.Int64 != u.Gender.Int64 ||
 			user.Language.String != u.Language.String || user.Phone.String != u.Phone.String {
 			u.ID = user.ID
-			result := db.Model(&u).Update(u)
-			if result.Error != nil && result.Error != gorm.ErrRecordNotFound {
+			err = db.Model(&u).Update(u).Error
+			if err != nil && err != gorm.ErrRecordNotFound {
 				logs.Error(err)
 				Response(w, r, nil, http.StatusInternalServerError, err.Error())
 				return
@@ -142,7 +142,7 @@ func AuthBySchool(w http.ResponseWriter, r *http.Request) {
 		Response(w, r, nil, http.StatusUnauthorized, "Unauthorized")
 		return
 	}
-	client, err := newJWClient(r.URL.Query().Get("school"), username, password)
+	client, err := newJWClient(r, username, password)
 	if err != nil {
 		logs.Error(err)
 		Response(w, r, nil, http.StatusUnauthorized, err.Error())
@@ -153,4 +153,18 @@ func AuthBySchool(w http.ResponseWriter, r *http.Request) {
 
 	logs.Info("用户：%s 接口：%s", username, r.URL.Path)
 	Response(w, r, nil, http.StatusOK, "request ok")
+}
+
+func AuthByCookies(r *http.Request) (user *models.TUser, err error) {
+	user = &models.TUser{}
+	user.ID, err = GetUserID(r)
+	if err != nil {
+		return
+	}
+	err = models.GetGorm().First(user).Error
+	if err != nil {
+		logs.Error(err)
+		return
+	}
+	return
 }
