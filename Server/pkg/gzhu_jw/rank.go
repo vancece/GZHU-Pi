@@ -8,16 +8,16 @@ import (
 )
 
 type Rank struct {
-	StuID       string  `json:"stu_id"     db:"stu_id" `
-	Year        string  `json:"year"       db:"year"`
-	YearSem     string  `json:"year_sem"   db:"year_sem"`
-	CourseName  string  `json:"course_name"db:"course_name"`
-	CourseID    string  `json:"course_id"  db:"course_id"`
-	GradeValue  float64 `json:"grade_value"db:"grade_value"`
-	Gpa         float64 `json:"gpa"        db:"gpa"`
-	CollegeRank int64   `json:"college_rank"db:"college_rank"`
-	MajorRank   int64   `json:"major_rank"  db:"major_rank"`
-	ClassRank   int64   `json:"class_rank"  db:"class_rank"`
+	StuID       string  `json:"stu_id"       db:"stu_id" `
+	Year        string  `json:"year"         db:"year"`
+	YearSem     string  `json:"year_sem"     db:"year_sem"`
+	CourseName  string  `json:"course_name"  db:"course_name"`
+	CourseID    string  `json:"course_id"    db:"course_id"`
+	GradeValue  float64 `json:"grade_value"  db:"grade_value"`
+	Gpa         float64 `json:"gpa"          db:"gpa"`
+	CollegeRank int64   `json:"college_rank" db:"college_rank"`
+	MajorRank   int64   `json:"major_rank"   db:"major_rank"`
+	ClassRank   int64   `json:"class_rank"   db:"class_rank"`
 }
 
 var (
@@ -34,7 +34,7 @@ var (
                                     from v_grade where stu_id in (select distinct stu_id --学院同级所有学生
                                             from v_grade where college_id = (select college_id from t_stu_info where stu_id = '%s')
                                                        and admit_year = (select admit_year from t_stu_info where stu_id = '%s'))
-                                      and course_gpa != 0
+                                      and invalid != '是' and course_gpa != 0
                                     group by major_id, class_id, stu_id) as a) as b
                         where major_id = (select distinct major_id from t_stu_info where stu_id = '%s')) as c
                   where class_id = (select distinct class_id from t_stu_info where stu_id = '%s')) as d
@@ -53,7 +53,7 @@ var (
                                     from v_grade where stu_id in (select distinct stu_id from v_grade
                                                 where college_id = (select college_id from t_stu_info where stu_id = '%s')
                                                   and admit_year = (select admit_year from t_stu_info where stu_id = '%s'))
-                                        and course_gpa != 0
+                                        and invalid != '是' and course_gpa != 0
                                     group by year, major_id, class_id, stu_id) as v) as a
                         where major_id = (select major_id from t_stu_info where stu_id = '%s')) as b
                   where class_id = (select class_id from t_stu_info where stu_id = '%s') order by stu_id) as c
@@ -73,7 +73,8 @@ var (
                                     from v_grade where stu_id in (select distinct stu_id --学院同级所有学生
                                         from v_grade where college_id = (select college_id from t_stu_info where stu_id = '%s')
                                              and admit_year = (select admit_year from t_stu_info where stu_id = '%s'))
-                                        and invalid != '是' group by year_sem, major_id, class_id, stu_id) as v) as a
+                                        and invalid != '是' and course_gpa != 0
+									group by year_sem, major_id, class_id, stu_id) as v) as a
                         where major_id = (select major_id from t_stu_info where stu_id = '%s')) as b
                   where class_id = (select class_id from t_stu_info where stu_id = '%s') order by stu_id) as c
             where stu_id = '%s' order by year_sem desc;

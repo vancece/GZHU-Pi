@@ -81,7 +81,7 @@ func JWMiddleWare(next http.HandlerFunc) http.HandlerFunc {
 			Response(w, r, nil, http.StatusUnauthorized, "Unauthorized")
 			return
 		}
-		logs.Info("用户：%s 接口：%s IP: ", username, r.URL.Path, r.RemoteAddr)
+		logs.Info("用户：%s 接口：%s IP: %s", username, r.URL.Path, r.RemoteAddr)
 
 		//从缓存中获取客户端，不存在或者过期则创建
 		//client, ok := Jwxt[getCacheKey(r, username)]
@@ -327,7 +327,7 @@ func Rank(w http.ResponseWriter, r *http.Request) {
 		Response(w, r, nil, http.StatusUnauthorized, err.Error())
 		return
 	}
-	logs.Info("用户：%d 学号：%s 接口：%s IP: ", user.ID, username, r.URL.Path, r.RemoteAddr)
+	logs.Info("用户：%d 学号：%s 接口：%s IP: %s", user.ID, username, r.URL.Path, r.RemoteAddr)
 
 	client := &gzhu_jw.JWClient{Username: username}
 
