@@ -35,6 +35,7 @@ require (
 	github.com/spf13/cobra v0.0.5 // indirect
 	github.com/spf13/viper v1.4.0
 	github.com/urfave/negroni v1.0.0 // indirect
+	golang.org/x/sync v0.0.0-20190227155943-e225da77a7e6
 	gopkg.in/guregu/null.v3 v3.4.0
 	gopkg.in/mattes/migrate.v1 v1.3.2 // indirect
 )

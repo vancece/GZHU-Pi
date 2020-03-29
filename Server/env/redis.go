@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/astaxie/beego/logs"
 	"github.com/go-redis/redis"
+	_ "golang.org/x/sync/singleflight"
 )
 
 var RedisCli *redis.Client
