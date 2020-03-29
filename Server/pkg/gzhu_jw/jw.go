@@ -50,10 +50,14 @@ func (c *JWClient) doRequest(method, url string, header http.Header, body io.Rea
 		req.Header[k] = v
 	}
 	resp, err := c.Client.Do(req)
+	//defer c.Client.CloseIdleConnections()
 
 	logs.Debug("请求耗时：", time.Since(t1), url)
 	return resp, err
 }
+
+//https://my.oschina.net/u/2950272/blog/1634815
+var transport = &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}}
 
 func newClient(username, password string) *JWClient {
 	// Allocate a new cookie jar to mimic the browser behavior:
@@ -68,12 +72,9 @@ func newClient(username, password string) *JWClient {
 	// Whn initializing the http.Client, copy default values from http.DefaultClient
 	// Pass a pointer to the cookie jar that was created earlier:
 	c.Client = &http.Client{
-		CheckRedirect: http.DefaultClient.CheckRedirect,
 		Jar:           cookieJar,
-		Timeout:       http.DefaultClient.Timeout,
-		Transport: &http.Transport{
-			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-		},
+		Timeout:       time.Minute,
+		Transport:     transport,
 	}
 	return c
 }

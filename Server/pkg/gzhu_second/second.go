@@ -63,6 +63,8 @@ func (c *SecondClient) doRequest(method, url string, header http.Header, body io
 	return resp, err
 }
 
+var transport = &http.Transport{TLSClientConfig: &tls.Config{InsecureSkipVerify: true}}
+
 func newClient(username, password string) *SecondClient {
 	// Allocate a new cookie jar to mimic the browser behavior:
 	cookieJar, _ := cookiejar.New(nil)
@@ -76,12 +78,9 @@ func newClient(username, password string) *SecondClient {
 	// Whn initializing the http.Client, copy default values from http.DefaultClient
 	// Pass a pointer to the cookie jar that was created earlier:
 	c.Client = &http.Client{
-		CheckRedirect: http.DefaultClient.CheckRedirect,
-		Jar:           cookieJar,
-		Timeout:       http.DefaultClient.Timeout,
-		Transport: &http.Transport{
-			TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-		},
+		Jar:       cookieJar,
+		Timeout:   http.DefaultClient.Timeout,
+		Transport: transport,
 	}
 	return c
 }
