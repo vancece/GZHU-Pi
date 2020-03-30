@@ -35,7 +35,7 @@ Page({
       icon: 'https://cos.ifeel.vip/gzhu-pi/images/icon/tongji.svg',
       name: '学分统计'
     }, {
-        icon: 'https://cos.ifeel.vip/gzhu-pi/images/icon/switch.svg',
+      icon: 'https://cos.ifeel.vip/gzhu-pi/images/icon/switch.svg',
       name: '切换网络'
     }, {
       icon: 'https://cos.ifeel.vip/gzhu-pi/images/icon/shaixuan.svg',
@@ -56,7 +56,7 @@ Page({
   },
 
   catchtap() {},
-  onLoad: function(options) {
+  onLoad: function (options) {
     let user = wx.getStorageSync("account")
     if (!user) {
       wx.showToast({
@@ -68,10 +68,10 @@ Page({
     this.getMyData()
   },
 
-  onShareAppMessage: function() {},
+  onShareAppMessage: function () {},
 
   // 加载更多
-  onReachBottom: function() {
+  onReachBottom: function () {
 
     if (this.data.myApply == this.data.applyList) return
     if (this.data.applyList.length % 10 > 0) return
@@ -96,19 +96,6 @@ Page({
       })
       return
     }
-    if (this.data.queryStr == "肖镇") {
-      wx.showToast({
-        title: '搜啥捏？！',
-        icon: "none"
-      })
-      let data = {
-        info: user.username
-      }
-      let Table = new wx.BaaS.TableObject('tmprecord')
-      let record = Table.create()
-      record.set(data).save()
-      return
-    }
 
     let form = {}
     form["username"] = user.username
@@ -128,7 +115,7 @@ Page({
     this.getSearchData(form)
   },
 
-  searchInput: function(e) {
+  searchInput: function (e) {
     this.data.queryStr = e.detail.value
   },
 
@@ -177,6 +164,7 @@ Page({
         this.count()
         break
       case "切换网络":
+        return
         wx.showModal({
           title: '切换网络',
           content: '默认使用校园网访问，非校园网无法访问；若使用移动网络或非校园网可切换为校外网络，但查询速度会很慢，同时无法查看图片。',
@@ -185,7 +173,7 @@ Page({
           success(res) {
             if (res.confirm) {
               baseUrl = url2
-            }else{
+            } else {
               baseUrl = url1
             }
           }
@@ -260,23 +248,15 @@ Page({
       loading: true
     })
     let that = this
-    wx.request({
-      url: baseUrl + "/api/v1/second/search",
-      method: "POST",
-      header: {
-        'content-type': 'application/x-www-form-urlencoded'
-      },
-      data: form,
-      success: function(res) {
-        if (res.data.status != 200) {
-          wx.showToast({
-            title: res.data.msg,
-            icon: "none"
-          })
-          return
-        }
+    wx.$ajax({
+        url: wx.$param.server["default"] + "/second/search",
+        method: "post",
+        data: form,
+        // loading: true
+      })
+      .then(res => {
         if (loadMore) {
-          if (res.data.data.length == 0) {
+          if (res.data.length == 0) {
             wx.showToast({
               title: '没有更多啦',
               icon: "none"
@@ -284,94 +264,68 @@ Page({
             return
           }
           that.setData({
-            applyList: that.data.applyList.concat(res.data.data),
+            applyList: that.data.applyList.concat(res.data),
           })
         } else {
           that.setData({
-            applyList: res.data.data,
+            applyList: res.data,
+            loading: false
           })
         }
-
-      },
-      fail: function(err) {
-        wx.showModal({
-          title: '请求失败',
-          content: "错误信息:" + err.errMsg,
-        })
-      },
-      complete(res) {
-        console.log(res.data)
-        that.setData({
+      }).catch(err => {
+        this.setData({
           loading: false
         })
-      }
-    })
+      })
   },
 
   getMyData() {
+    if (!wx.getStorageSync("account")) return
     this.setData({
       loading: true
     })
-    let that = this
-    wx.request({
-      url: baseUrl + "/api/v1/second/my",
-      method: "POST",
-      header: {
-        'content-type': 'application/x-www-form-urlencoded'
-      },
-      data: wx.getStorageSync("account"),
-      success: function(res) {
-        if (res.data.status != 200) {
-          wx.showToast({
-            title: res.data.msg,
-            icon: "none"
-          })
-          return
-        }
-        wx.setStorageSync("myApply", res.data.data)
-        that.setData({
-          applyList: res.data.data,
-          myApply: res.data.data
-        })
-      },
-      fail: function(err) {
-        wx.showModal({
-          title: '请求失败',
-          content: "错误信息:" + err.errMsg,
-        })
-      },
-      complete(res) {
-        console.log(res.data)
-        that.setData({
+    wx.$ajax({
+        url: wx.$param.server["default"] + "/second/my",
+        method: "post",
+        data: wx.getStorageSync("account"),
+        // loading: true
+      })
+      .then(res => {
+        wx.setStorageSync("myApply", res.data)
+        this.setData({
+          applyList: res.data,
+          myApply: res.data,
           loading: false
         })
-      }
-    })
+      }).catch(err => {
+        this.setData({
+          loading: false
+        })
+      })
   },
 
   // 获取证明材料
   getImage(id) {
     let that = this
+    if (!wx.getStorageSync("account")) return
+
     let data = wx.getStorageSync("account")
     data["id"] = id
-    wx.request({
-      url: baseUrl + "/api/v1/second/image",
-      method: "POST",
-      header: {
-        'content-type': 'application/x-www-form-urlencoded'
-      },
-      data: data,
-      success: function(res) {
+
+    if (!wx.getStorageSync("account")) return
+    wx.$ajax({
+        url: wx.$param.server["default"] + "/second/image",
+        method: "post",
+        data: data,
+        loading: true
+      })
+      .then(res => {
         let detail = that.data.detail
-        detail["images"] = res.data.data
+        detail["images"] = res.data
         that.setData({
           detail: detail
         })
-      },
-      complete(res) {
-        console.log(res.data)
-      }
-    })
+      })
   },
 
   // 学分统计

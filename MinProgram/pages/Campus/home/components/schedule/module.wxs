@@ -30,9 +30,12 @@ var judegShow = function (course, curWeek = 0, dayModule = false) {
 var noCourse = function (todayCourse, schoolWeek) {
   var flag = false
   for (var i = 0; i < todayCourse.length; i++) {
-    weekArr = getWeek(todayCourse[i].weeks)
-    for (var j = 0; j < weekArr.length; j++) {
-      if (weekArr[j][0] <= schoolWeek && schoolWeek <= weekArr[j][1]) {
+    weekArr = todayCourse[i].week_section
+    if (!todayCourse[i].week_section) {
+      weekArr = getWeek(todayCourse[i].weeks)
+    }
+    for (var j = 0; j < weekArr.length; j = j + 2) {
+      if (weekArr[j] <= schoolWeek && schoolWeek <= weekArr[j + 1]) {
         flag = true // 只要检测到有课就全部跳出，隐藏提示
         break
       } else continue

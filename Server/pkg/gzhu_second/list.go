@@ -2,6 +2,7 @@ package gzhu_second
 
 import (
 	"bytes"
+	"encoding/base64"
 	"fmt"
 	"github.com/PuerkitoBio/goquery"
 	"github.com/astaxie/beego/logs"
@@ -227,6 +228,24 @@ func (c *SecondClient) GetImages(itemID string) (images []string, err error) {
 			images = append(images, baseUrl+v[1])
 		}
 	}
+	for k, v := range images {
+		images[k] = c.imgToBase64(v)
+	}
+	return
+}
+
+func (c *SecondClient) imgToBase64(url string) (base string) {
+	resp, err := c.doRequest("GET", url, nil, nil)
+	if err != nil {
+		logs.Error(err)
+		return err.Error()
+	}
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		logs.Error(err)
+		return err.Error()
+	}
+	base = "data:image/png;base64," + base64.StdEncoding.EncodeToString(body)
 	return
 }
 
