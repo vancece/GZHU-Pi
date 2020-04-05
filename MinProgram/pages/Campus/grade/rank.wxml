@@ -9,11 +9,16 @@
     <view>
       <text class='cuIcon-titles text-orange'></text>同班级/专业/学院的人使用小程序越多，对应数据越准确。</view>
     <view>
-      <text class='cuIcon-titles text-orange'></text>仅提供相对排名比率，具体准确排名请查看奕报告。</view>
+      <text class='cuIcon-titles text-orange'></text>仅提供相对排名率，具体准确排名请查看奕报告。</view>
     <view>
       <text class='cuIcon-titles text-orange'></text>部分未补考/重修用户可能存在计算错误。</view>
   </view>
 </modal>
+
+<view class='switch'>
+  <view bindtap='switch' id='0' class='{{current==0?"selected":""}}'>百分比</view>
+  <view bindtap='switch' id='1' class='{{current==1?"selected":""}}'>排名</view>
+</view>
 
 <view class="part">
   <view class="title">统计人数</view>
@@ -34,7 +39,7 @@
 </view>
 
 <view class="part">
-  <view class="title">大学总GPA排名比</view>
+  <view class="title">大学总GPA排名</view>
   <view class="content" style="font-weight:bold">
     <view style="flex:1">
       <view>GPA</view>
@@ -54,19 +59,19 @@
       <view class="value" style="color:#e28800">{{rank.gpa_rank.gpa}}</view>
     </view>
     <view style="flex:1">
-      <view class="value">{{tools.rate(rank.gpa_rank.college_rank,rank.stu_count.college_count)}}</view>
+      <view class="value">{{tools.rate(rankType,rank.gpa_rank.college_rank,rank.stu_count.college_count)}}</view>
     </view>
     <view style="flex:1">
-      <view class="value">{{tools.rate(rank.gpa_rank.major_rank,rank.stu_count.major_count)}}</view>
+      <view class="value">{{tools.rate(rankType,rank.gpa_rank.major_rank,rank.stu_count.major_count)}}</view>
     </view>
     <view style="flex:1">
-      <view class="value">{{tools.rate(rank.gpa_rank.class_rank,rank.stu_count.class_count)}}</view>
+      <view class="value">{{tools.rate(rankType,rank.gpa_rank.class_rank,rank.stu_count.class_count)}}</view>
     </view>
   </view>
 </view>
 
 <view class="part">
-  <view class="title">各学年GPA排名比</view>
+  <view class="title">各学年GPA排名</view>
   <view class="content" style="font-weight:bold">
     <view style="flex:1">
       <view>GPA</view>
@@ -86,20 +91,20 @@
       <view class="value" style="color:#e28800">{{item.gpa}}</view>
     </view>
     <view style="flex:1">
-      <view class="value">{{tools.rate(item.college_rank,rank.stu_count.college_count)}}</view>
+      <view class="value">{{tools.rate(rankType,item.college_rank,rank.stu_count.college_count)}}</view>
     </view>
     <view style="flex:1">
-      <view class="value">{{tools.rate(item.major_rank,rank.stu_count.major_count)}}</view>
+      <view class="value">{{tools.rate(rankType,item.major_rank,rank.stu_count.major_count)}}</view>
     </view>
     <view style="flex:1">
-      <view class="value">{{tools.rate(item.class_rank,rank.stu_count.class_count)}}</view>
+      <view class="value">{{tools.rate(rankType,item.class_rank,rank.stu_count.class_count)}}</view>
     </view>
   </view>
 </view>
 
 
 <view class="part">
-  <view class="title">各学期GPA排名比</view>
+  <view class="title">各学期GPA排名</view>
   <view class="content" style="font-weight:bold">
     <view style="flex:1">
       <view>GPA</view>
@@ -119,13 +124,13 @@
       <view class="value" style="color:#e28800">{{item.gpa}}</view>
     </view>
     <view style="flex:1">
-      <view class="value">{{tools.rate(item.college_rank,rank.stu_count.college_count)}}</view>
+      <view class="value">{{tools.rate(rankType,item.college_rank,rank.stu_count.college_count)}}</view>
     </view>
     <view style="flex:1">
-      <view class="value">{{tools.rate(item.major_rank,rank.stu_count.major_count)}}</view>
+      <view class="value">{{tools.rate(rankType,item.major_rank,rank.stu_count.major_count)}}</view>
     </view>
     <view style="flex:1">
-      <view class="value">{{tools.rate(item.class_rank,rank.stu_count.class_count)}}</view>
+      <view class="value">{{tools.rate(rankType,item.class_rank,rank.stu_count.class_count)}}</view>
     </view>
   </view>
 </view>
@@ -133,7 +138,7 @@
 <button type='primary' class='share-btn' open-type='share'>分享到班级</button>
 
 <view class="part">
-  <view class="title">各科目排名比</view>
+  <view class="title">各科目排名</view>
   <view wx:for="{{rank.course_rank}}" wx:key="index">
     <view class='grade-cell'>
 
@@ -143,9 +148,9 @@
       </view>
 
       <view class='son-part part2'>
-        <view style='flex:1'>学院：{{tools.rate(item.college_rank,rank.stu_count.college_count)}}</view>
-        <view style='flex:1'>专业：{{tools.rate(item.major_rank,rank.stu_count.major_count)}}</view>
-        <view style='flex:1'>班级：{{tools.rate(item.class_rank,rank.stu_count.class_count)}}</view>
+        <view style='flex:1'>学院：{{tools.rate(rankType,item.college_rank,rank.stu_count.college_count)}}</view>
+        <view style='flex:1'>专业：{{tools.rate(rankType,item.major_rank,rank.stu_count.major_count)}}</view>
+        <view style='flex:1'>班级：{{tools.rate(rankType,item.class_rank,rank.stu_count.class_count)}}</view>
       </view>
     </view>
   </view>

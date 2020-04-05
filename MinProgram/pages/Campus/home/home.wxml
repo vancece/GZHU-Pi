@@ -112,8 +112,10 @@
 <modal wx:if="{{mode=='prod'}}" show="{{showUpdate}}" title="版本更新">
 	<view>What's New</view>
 	<view style='font-size:90%;color:rgb(80,80,80);margin:20rpx;'>
-		<view>广大派诞生之前就想做的功能</view>
-		<button bindtap="navTo" data-url="/pages/Life/wall/wall" class="margin bg-yellow text-white round">广大墙</button>
+		<view>* 增加匿名回复功能</view>
+		<view>* 增加单双周课表识别</view>
+		<view>* 细节体验优化</view>
+		<button bindtap="navTo" data-url="/pages/Life/wall/post" class="margin bg-yellow text-white round">发个帖</button>
 	</view>
 	<!-- <button open-type="contact" class='callme'>
     <image style='width:80rpx;height:80rpx' src='https://cos.ifeel.vip/gzhu-pi/images/icon/kefu.svg'></image>

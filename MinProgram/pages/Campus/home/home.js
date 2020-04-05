@@ -142,10 +142,10 @@ Page({
   catchtap(e) {},
 
   navTo(e) {
-    // wx.$navTo(e)
-    wx.switchTab({
-      url: '/pages/Life/wall/wall',
-    })
+    wx.$navTo(e)
+    // wx.switchTab({
+    //   url: '/pages/Life/wall/wall',
+    // })
   }
 
 })

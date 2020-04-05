@@ -3,7 +3,7 @@ var utils = require("../../../utils/date.js")
 Page({
 
   data: {
-    navTitle: "广大墙 Beta",
+    navTitle: "广大墙",
     pageSize: 20, //每页数量
     page: 1, //页数
     loadDone: false, //加载完毕

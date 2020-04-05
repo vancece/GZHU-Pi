@@ -2,7 +2,8 @@ const Page = require('../../../utils/sdk/ald-stat.js').Page;
 Page({
 
   data: {
-
+    current: 0,
+    rankType: "rate" // abs绝对排名，rate百分百相对排名
   },
   onLoad: function (options) {
     let account = wx.getStorageSync("account")
@@ -73,6 +74,13 @@ Page({
         url: '/pages/Setting/login/bindStudent',
       })
     }
+  },
+
+  switch (e) {
+    this.setData({
+      current: Number(e.target.id),
+      rankType: Number(e.target.id) == 0 ? "rate" : "abs"
+    })
   },
 
   syncData() {

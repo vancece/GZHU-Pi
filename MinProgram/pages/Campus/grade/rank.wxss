@@ -1,3 +1,24 @@
+.switch {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  text-align: center;
+  font-weight: bold;
+  color: rgb(68, 68, 68);
+  line-height: 65rpx;
+  border-top: 1rpx solid #f8f8f8f8;
+}
+
+.switch view {
+  flex: 1;
+  margin: 20rpx;
+}
+
+.selected {
+  border-bottom: 5rpx solid rgb(0, 153, 255);
+  color: rgb(0, 153, 255);
+}
+
 .part {
   /* border: 1rpx solid red; */
   margin: 30rpx;
