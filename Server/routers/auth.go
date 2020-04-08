@@ -82,8 +82,8 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		logs.Info("创建用户：%v", u)
-		result := db.Where("id = ?", u.ID).First(&user)
-		if result.Error != nil && result.Error != gorm.ErrRecordNotFound {
+		err = db.Where("id = ?", u.ID).First(&user).Error
+		if err != nil && err != gorm.ErrRecordNotFound {
 			logs.Error(err)
 			Response(w, r, nil, http.StatusInternalServerError, err.Error())
 			return

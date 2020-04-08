@@ -1,6 +1,10 @@
 package models
 
-import "time"
+import (
+	"github.com/astaxie/beego/logs"
+	"github.com/jinzhu/gorm"
+	"time"
+)
 
 type TStuInfo struct {
 	ID         int64  `json:"id,omitempty" remark:"id" gorm:"primary_key"`
@@ -20,5 +24,22 @@ type TStuInfo struct {
 
 func SaveStuInfo(info *TStuInfo) {
 	//获取匹配的第一条记录, 否则根据给定的条件创建一个新的记录 (仅支持 struct 和 map 条件)
-	db.FirstOrCreate(info, &info)
+	//db.FirstOrCreate(info, &info)
+	var stu TStuInfo
+	err := db.Where("stu_id = ?", info.StuID).First(&stu).Error
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			db.FirstOrCreate(info, &info)
+		}
+		logs.Error(err)
+		return
+	}
+	if stu.ClassID != info.ClassID || stu.College != info.College {
+		logs.Info("%s 更新信息", stu.StuID)
+		err = db.Model(&stu).Where("stu_id = ?", info.StuID).Update(info).Error
+		if err != nil {
+			logs.Error(err)
+			return
+		}
+	}
 }
