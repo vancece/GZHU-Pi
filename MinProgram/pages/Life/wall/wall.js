@@ -177,7 +177,7 @@ Page({
   search() {
     if (this.data.queryStr == "") {
       this.setData({
-        page: 0, //恢复页数
+        page: 1, //恢复页数
         loadDone: false, //加载完毕
         type: "",
         "brick_option.columns": 2,
@@ -186,7 +186,7 @@ Page({
 
     } else {
       this.setData({
-        page: 0, //恢复页数
+        page: 1, //恢复页数
         loadDone: false, //加载完毕
         dataSet: [],
         // loading: true
@@ -238,7 +238,7 @@ Page({
     }
 
     this.setData({
-      page: 0, //恢复页数
+      page: 1, //恢复页数
       loadDone: false, //加载完毕
       queryStr: "",
       dataSet: [],

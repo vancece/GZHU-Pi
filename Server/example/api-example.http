@@ -3,6 +3,17 @@
 #@username=123
 #@password=123
 
+# 认证
+POST {{baseUrl}}/auth
+Content-Type: application/json
+
+{
+  "open_id": "off364mCDvz_xxxx",
+  "minapp_id": 17523774886169
+}
+
+###
+
 # 学号密码认证
 POST {{baseUrl}}/auth?school=gzhu
 Content-Type: application/x-www-form-urlencoded

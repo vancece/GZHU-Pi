@@ -15,7 +15,7 @@ const (
 			create or replace VIEW v_topic as
 			select t.*, u.open_id, u.gender,
 				   (CASE WHEN anonymous = true
-							THEN 'https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/icon/anonmous_avatar.png'
+							THEN u.profile_pic
 						ELSE u.avatar END)                                         as avatar,
 				   (CASE WHEN anonymous = true THEN anonymity ELSE u.nickname END) as nickname,
 				   (select count(*) from t_discuss where object_id = t.id)         as discussed,
@@ -50,7 +50,7 @@ const (
 			create or replace VIEW v_discuss as
 			select d.*, u.open_id, u.gender,
 				   (CASE WHEN anonymous = true
-							THEN 'https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/icon/anonmous_avatar.png'
+							THEN u.profile_pic
 						ELSE u.avatar END)                                         as avatar,
 				   (CASE WHEN anonymous = true THEN anonymity ELSE u.nickname END) as nickname
 			from t_discuss as d, t_user as u where d.created_by = u.id;

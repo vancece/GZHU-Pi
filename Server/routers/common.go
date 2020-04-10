@@ -5,6 +5,9 @@ import (
 	"GZHU-Pi/models"
 	"bytes"
 	"context"
+	"crypto/md5"
+	"encoding/base64"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -261,7 +264,6 @@ func verifyPhone(phone string) bool {
 	return telNoPattern.MatchString(phone)
 }
 
-
 func invalidZeroNullValue(p interface{}) (err error) {
 	if p == nil {
 		err = fmt.Errorf("call invalidEmptyNullValue with v==nil")
@@ -332,4 +334,39 @@ func invalidZeroNullValue(p interface{}) (err error) {
 		}
 	}
 	return
+}
+
+//通过Gravatar服务随机生成头像
+func RandomAvatar(str string) (baseImg string) {
+
+	defaultAvatar := "https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/icon/anonmous_avatar.png"
+	size := 48
+	styles := []string{"identicon", "monsterid", "wavatar"}
+	style := styles[time.Now().UnixNano()%3]
+
+	hash := md5.New()
+	hash.Write([]byte(str + style))
+	MD5 := hex.EncodeToString(hash.Sum(nil))
+
+	url := fmt.Sprintf("http://www.gravatar.com/avatar/%s?s=%d&d=%s", MD5, size, style)
+
+	resp, err := http.Get(url)
+	if err != nil {
+		logs.Error(err)
+		return defaultAvatar
+	}
+	defer resp.Body.Close()
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		logs.Error(err)
+		return defaultAvatar
+	}
+
+	if len(resp.Header["Content-Type"]) == 0 || resp.Header["Content-Type"][0] != "image/png" {
+		logs.Error(err)
+		return defaultAvatar
+	}
+	baseImg = "data:image/png;base64," + base64.StdEncoding.EncodeToString(body)
+
+	return baseImg
 }

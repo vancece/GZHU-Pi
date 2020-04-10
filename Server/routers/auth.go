@@ -6,8 +6,10 @@ import (
 	"fmt"
 	"github.com/astaxie/beego/logs"
 	"github.com/jinzhu/gorm"
+	"gopkg.in/guregu/null.v3"
 	"io/ioutil"
 	"net/http"
+	"time"
 )
 
 //使用open_id认证，不存在则创建新用户
@@ -100,13 +102,14 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 			Response(w, r, nil, http.StatusBadRequest, err.Error())
 			return
 		}
+		u.ID = user.ID
 		//更新用户信息
 		if user.UnionID.String != u.UnionID.String || user.StuID.String != u.StuID.String ||
 			user.Avatar.String != u.Avatar.String || user.Nickname.String != u.Nickname.String ||
 			user.City.String != u.City.String || user.Province.String != u.Province.String ||
 			user.Country.String != u.Country.String || user.Gender.Int64 != u.Gender.Int64 ||
 			user.Language.String != u.Language.String || user.Phone.String != u.Phone.String {
-			u.ID = user.ID
+
 			err = db.Model(&u).Update(u).Error
 			if err != nil && err != gorm.ErrRecordNotFound {
 				logs.Error(err)
@@ -114,8 +117,20 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 				return
 			}
 		}
+		//创建随机头像
+		if user.ProfilePic.String == "" {
+			str := user.StuID.String + user.OpenID.String + user.Nickname.String + fmt.Sprint(time.Now().Unix())
+			go func() {
+				u.ProfilePic = null.StringFrom(RandomAvatar(str))
+				err = db.Model(&u).Update(u).Error
+				if err != nil && err != gorm.ErrRecordNotFound {
+					logs.Error(err)
+					return
+				}
+			}()
+		}
 	}
-
+	user.ProfilePic.String = ""
 	logs.Info(user)
 	cookieStr, err := NewCookie(user.ID)
 	if err != nil {
