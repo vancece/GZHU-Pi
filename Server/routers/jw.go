@@ -317,7 +317,7 @@ func Rank(w http.ResponseWriter, r *http.Request) {
 	user := &models.TUser{}
 	user, err := AuthByCookies(r)
 	if err != nil {
-		logs.Error(err)
+		//logs.Error(err)
 		Response(w, r, nil, http.StatusBadRequest, err.Error())
 		return
 	}

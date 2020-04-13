@@ -2,6 +2,7 @@ package gzhu_jw
 
 import (
 	"GZHU-Pi/models"
+	"database/sql"
 	"fmt"
 	"github.com/astaxie/beego/logs"
 	"github.com/jmoiron/sqlx"
@@ -149,6 +150,9 @@ func (c *JWClient) GetRank(stuID string) (result map[string]interface{}, err err
 	var collegeCount, majorCount, classCount int64
 	err = sqlxDB.QueryRowx(countSQL).Scan(&collegeCount, &majorCount, &classCount)
 	if err != nil {
+		if err == sql.ErrNoRows {
+			err = fmt.Errorf("找不到该学号(%s)数据记录，请先查询成绩! ", stuID)
+		}
 		logs.Error(err)
 		return
 	}

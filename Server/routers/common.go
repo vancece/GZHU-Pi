@@ -226,6 +226,7 @@ func GetUserID(r *http.Request) (userID int64, err error) {
 	var token string
 	if len(r.Cookies()) == 0 {
 		err = fmt.Errorf("cookie not set, please authenticate first")
+		logs.Error(err)
 		return
 	}
 	cookie, err := r.Cookie("token")
@@ -237,7 +238,7 @@ func GetUserID(r *http.Request) (userID int64, err error) {
 	secretKey := env.Conf.Secret.JWT
 	userID, err = ParseToken(token, secretKey)
 	if err != nil {
-		logs.Error(err)
+		//logs.Error(err)
 		return
 	}
 	return

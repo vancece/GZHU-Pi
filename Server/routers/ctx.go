@@ -63,7 +63,7 @@ func InitCtx(w http.ResponseWriter, r *http.Request) (ctx context.Context, err e
 
 	p.user.ID, err = GetUserID(p.r)
 	if err != nil {
-		logs.Error(err)
+		//logs.Error(err)
 		Response(w, r, nil, http.StatusUnauthorized, err.Error())
 		return
 	}

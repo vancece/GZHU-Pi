@@ -29,7 +29,12 @@ func SaveStuInfo(info *TStuInfo) {
 	err := db.Where("stu_id = ?", info.StuID).First(&stu).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
-			db.FirstOrCreate(info, &info)
+			err = db.FirstOrCreate(info, &info).Error
+			if err != nil {
+				logs.Error(err)
+				return
+			}
+			return
 		}
 		logs.Error(err)
 		return
