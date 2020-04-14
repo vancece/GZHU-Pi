@@ -10,7 +10,6 @@ import (
 var RedisCli *redis.Client
 
 func InitRedis() (err error) {
-	return
 	host := Conf.Redis.Host
 	port := Conf.Redis.Port
 	password := Conf.Redis.Password
@@ -32,26 +31,3 @@ func InitRedis() (err error) {
 	return
 }
 
-func ExampleClient() {
-	err := RedisCli.Set("key", "value", 0).Err()
-	if err != nil {
-		panic(err)
-	}
-
-	val, err := RedisCli.Get("key").Result()
-	if err != nil {
-		panic(err)
-	}
-	fmt.Println("key", val)
-
-	val2, err := RedisCli.Get("key2").Result()
-	if err == redis.Nil {
-		fmt.Println("key2 does not exist")
-	} else if err != nil {
-		panic(err)
-	} else {
-		fmt.Println("key2", val2)
-	}
-	// Output: key value
-	// key2 does not exist
-}

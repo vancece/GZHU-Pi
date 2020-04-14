@@ -1,10 +1,12 @@
 package routers
 
 import (
+	"GZHU-Pi/env"
 	"GZHU-Pi/models"
 	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego/logs"
+	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
 	"gopkg.in/guregu/null.v3"
 	"io/ioutil"
@@ -50,11 +52,45 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 
 	var user models.VUser
 	db := models.GetGorm()
-	err = db.Where("open_id = ?", u.OpenID.String).First(&user).Error
-	if err != nil && err != gorm.ErrRecordNotFound {
+
+	key := fmt.Sprintf("gzhupi:vuser:%s", u.OpenID.String)
+	//查询缓存
+	val, err := env.RedisCli.Get(key).Result()
+	if err != nil && err != redis.Nil {
 		logs.Error(err)
 		Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
+	}
+	if err == redis.Nil {
+		err = db.Where("open_id = ?", u.OpenID.String).First(&user).Error
+		if err != nil && err != gorm.ErrRecordNotFound {
+			logs.Error(err)
+			Response(w, r, nil, http.StatusInternalServerError, err.Error())
+			return
+		}
+		//加入缓存
+		logs.Debug("Set cache %s", key)
+		buf, err := json.Marshal(&user)
+		if err != nil {
+			logs.Error(err)
+			Response(w, r, nil, http.StatusInternalServerError, err.Error())
+			return
+		}
+		err = env.RedisCli.Set(key, string(buf), 30*24*time.Hour).Err()
+		if err != nil {
+			logs.Error(err)
+			Response(w, r, nil, http.StatusInternalServerError, err.Error())
+			return
+		}
+	} else {
+		//解析缓存
+		logs.Debug("Hit cache %s", key)
+		err = json.Unmarshal([]byte(val), &user)
+		if err != nil {
+			logs.Error(err)
+			Response(w, r, nil, http.StatusInternalServerError, err.Error())
+			return
+		}
 	}
 
 	//创建新用户
@@ -104,13 +140,21 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 		}
 		u.ID = user.ID
 		//更新用户信息
-		if user.UnionID.String != u.UnionID.String || user.StuID.String != u.StuID.String ||
+		if (user.UnionID.String != u.UnionID.String || user.StuID.String != u.StuID.String ||
 			user.Avatar.String != u.Avatar.String || user.Nickname.String != u.Nickname.String ||
 			user.City.String != u.City.String || user.Province.String != u.Province.String ||
 			user.Country.String != u.Country.String || user.Gender.Int64 != u.Gender.Int64 ||
-			user.Language.String != u.Language.String || user.Phone.String != u.Phone.String {
+			user.Language.String != u.Language.String || user.Phone.String != u.Phone.String) &&
+			u.Nickname.String != "" {
 
 			err = db.Model(&u).Update(u).Error
+			if err != nil && err != gorm.ErrRecordNotFound {
+				logs.Error(err)
+				Response(w, r, nil, http.StatusInternalServerError, err.Error())
+				return
+			}
+			logs.Debug("Del key %s", key)
+			_, err = env.RedisCli.Del(key).Result()
 			if err != nil && err != gorm.ErrRecordNotFound {
 				logs.Error(err)
 				Response(w, r, nil, http.StatusInternalServerError, err.Error())
@@ -123,6 +167,12 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 			go func() {
 				u.ProfilePic = null.StringFrom(RandomAvatar(str))
 				err = db.Model(&u).Update(u).Error
+				if err != nil && err != gorm.ErrRecordNotFound {
+					logs.Error(err)
+					return
+				}
+				logs.Debug("Del key %s", key)
+				_, err = env.RedisCli.Del(key).Result()
 				if err != nil && err != gorm.ErrRecordNotFound {
 					logs.Error(err)
 					return
