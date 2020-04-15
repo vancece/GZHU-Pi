@@ -68,19 +68,21 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 			Response(w, r, nil, http.StatusInternalServerError, err.Error())
 			return
 		}
-		//加入缓存
-		logs.Debug("Set cache %s", key)
-		buf, err := json.Marshal(&user)
-		if err != nil {
-			logs.Error(err)
-			Response(w, r, nil, http.StatusInternalServerError, err.Error())
-			return
-		}
-		err = env.RedisCli.Set(key, string(buf), 30*24*time.Hour).Err()
-		if err != nil {
-			logs.Error(err)
-			Response(w, r, nil, http.StatusInternalServerError, err.Error())
-			return
+		if err == nil {
+			//加入缓存
+			logs.Debug("Set cache %s", key)
+			buf, err := json.Marshal(&user)
+			if err != nil {
+				logs.Error(err)
+				Response(w, r, nil, http.StatusInternalServerError, err.Error())
+				return
+			}
+			err = env.RedisCli.Set(key, string(buf), 30*24*time.Hour).Err()
+			if err != nil {
+				logs.Error(err)
+				Response(w, r, nil, http.StatusInternalServerError, err.Error())
+				return
+			}
 		}
 	} else {
 		//解析缓存
@@ -95,21 +97,24 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 
 	//创建新用户
 	if user.ID <= 0 || err == gorm.ErrRecordNotFound {
-		logs.Info("new user, create with open_id: %s", u.OpenID.String)
+		logs.Info("new user, create with open_id: %v", u)
 
 		if u.MinappID.Int64 <= 0 {
 			err = fmt.Errorf("must provide minapp_id")
+			logs.Error(err)
 			Response(w, r, nil, http.StatusBadRequest, err.Error())
 			return
 		}
 
 		if u.Nickname.String == "" || u.Avatar.String == "" {
 			err = fmt.Errorf("must provide nickname and avatar")
+			logs.Error(err)
 			Response(w, r, nil, http.StatusBadRequest, err.Error())
 			return
 		}
 		if u.Phone.String != "" && !verifyPhone(u.Phone.String) {
 			err = fmt.Errorf("%s not a valid phone number", u.Phone.String)
+			logs.Error(err)
 			Response(w, r, nil, http.StatusBadRequest, err.Error())
 			return
 		}
@@ -129,6 +134,7 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 	} else {
 		if user.MinappID.Int64 != u.MinappID.Int64 {
 			err = fmt.Errorf("auth failed with wrong minapp_id")
+			logs.Error(err)
 			Response(w, r, nil, http.StatusUnauthorized, err.Error())
 			return
 		}

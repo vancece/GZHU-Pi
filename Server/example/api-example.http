@@ -8,9 +8,11 @@ POST {{baseUrl}}/auth
 Content-Type: application/json
 
 {
-  "open_id": "off364mCDvz_xxxx",
-  "minapp_id": 17523774886169
+  "open_id": "{{open_id}}",
+  "minapp_id": {{minapp_id}}
 }
+
+> {% client.global.set("cookie", response.headers.valueOf("Set-Cookie"));%}
 
 ###
 
@@ -20,14 +22,12 @@ Content-Type: application/x-www-form-urlencoded
 
 username={{username}}&password={{password}}
 
-### > {% client.global.set("cookie", response.headers.valueOf("Set-Cookie"));%}
 
 ###
 
 # 课表查询
 POST {{baseUrl}}/jwxt/course
 Content-Type: application/x-www-form-urlencoded
-#Cookie: {{cookie}}
 
 username={{username}}&password={{password}}&year_sem=2019-2020-2
 
@@ -35,7 +35,7 @@ username={{username}}&password={{password}}&year_sem=2019-2020-2
 ###
 
 # 成绩查询
-POST {{baseUrl}}/jwxt/grade
+POST {{baseUrl}}/jwxt/rank
 Content-Type: application/json
 
 {
@@ -43,6 +43,13 @@ Content-Type: application/json
   "password": "{{password}}"
 }
 
+
+###
+
+# 成绩排名
+GET {{baseUrl}}/jwxt/rank?username={{username}}
+Content-Type: application/x-www-form-urlencoded
+Cookie: {{cookie}}
 
 ###
 
