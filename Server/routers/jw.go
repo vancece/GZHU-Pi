@@ -1,12 +1,15 @@
 package routers
 
 import (
+	"GZHU-Pi/env"
 	"GZHU-Pi/models"
 	"GZHU-Pi/pkg"
 	"GZHU-Pi/pkg/gzhu_jw"
 	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego/logs"
+	"github.com/go-redis/redis"
 	"net/http"
 	"strconv"
 	"strings"
@@ -317,7 +320,6 @@ func Rank(w http.ResponseWriter, r *http.Request) {
 	user := &models.TUser{}
 	user, err := AuthByCookies(r)
 	if err != nil {
-		//logs.Error(err)
 		Response(w, r, nil, http.StatusBadRequest, err.Error())
 		return
 	}
@@ -329,13 +331,50 @@ func Rank(w http.ResponseWriter, r *http.Request) {
 	}
 	logs.Info("用户：%d 学号：%s 接口：%s IP: %s", user.ID, username, r.URL.Path, r.RemoteAddr)
 
-	client := &gzhu_jw.JWClient{Username: username}
+	var data map[string]interface{}
 
-	data, err := client.GetRank(client.GetUsername())
-	if err != nil {
+	//====查询缓存
+	key := fmt.Sprintf("gzhupi:rank:%s", username)
+	val, err := env.RedisCli.Get(key).Result()
+	if err != nil && err != redis.Nil {
 		logs.Error(err)
 		Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}
+	if err == redis.Nil {
+
+		client := &gzhu_jw.JWClient{Username: username}
+		data, err = client.GetRank(client.GetUsername())
+		if err != nil {
+			logs.Error(err)
+			Response(w, r, nil, http.StatusInternalServerError, err.Error())
+			return
+		}
+		//加入缓存
+		logs.Debug("Set cache %s", key)
+		buf, err := json.Marshal(&data)
+		if err != nil {
+			logs.Error(err)
+			Response(w, r, nil, http.StatusInternalServerError, err.Error())
+			return
+		}
+		//缓存一天
+		err = env.RedisCli.Set(key, string(buf), 1*24*time.Hour).Err()
+		if err != nil {
+			logs.Error(err)
+			Response(w, r, nil, http.StatusInternalServerError, err.Error())
+			return
+		}
+	} else {
+		//解析缓存
+		logs.Debug("Hit cache %s", key)
+		err = json.Unmarshal([]byte(val), &data)
+		if err != nil {
+			logs.Error(err)
+			Response(w, r, nil, http.StatusInternalServerError, err.Error())
+			return
+		}
+	}
+
 	Response(w, r, data, http.StatusOK, "request ok")
 }
