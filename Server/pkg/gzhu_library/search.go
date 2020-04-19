@@ -5,14 +5,20 @@
 package gzhu_library
 
 import (
+	"GZHU-Pi/env"
+	"fmt"
 	"github.com/astaxie/beego/logs"
+	"github.com/go-redis/redis"
 	jsoniter "github.com/json-iterator/go"
 	"io/ioutil"
+	"math"
 	"net/http"
 	"net/url"
 	"regexp"
+	"strconv"
 	"strings"
 	"sync"
+	"time"
 )
 
 type Book struct {
@@ -33,17 +39,18 @@ query:用户搜索的图书
 searchPage:请求页数
 []*Book:返回Book类型的切片
 */
-func BookSearch(query string, searchPage string) (books []*Book, err error) {
+func BookSearch(query string, searchPage string) (result map[string]interface{}, err error) {
 
-	if query == "" || searchPage == "" {
+	if query == "" {
 		return
 	}
 	//为0时会返回所有页数据
-	if searchPage == "0" {
+	if searchPage == "0" || searchPage == "" {
 		searchPage = "1"
 	}
-
-	resp, err := http.PostForm(`http://lib.gzhu.edu.cn:8080/bookle/`, url.Values{"query": {query}, "searchPage": {searchPage}})
+	t1 := time.Now()
+	u := "http://lib.gzhu.edu.cn:8080/bookle/"
+	resp, err := http.PostForm(u, url.Values{"query": {query}, "searchPage": {searchPage}})
 	if err != nil {
 		logs.Error(err)
 		return nil, err
@@ -54,6 +61,7 @@ func BookSearch(query string, searchPage string) (books []*Book, err error) {
 		logs.Error(err)
 		return nil, err
 	}
+	logs.Debug("请求耗时：", time.Since(t1), u)
 
 	//匹配book_info
 	re := regexp.MustCompile(`<div class=book_info>([\s\S]*?)</div>`)
@@ -64,7 +72,7 @@ func BookSearch(query string, searchPage string) (books []*Book, err error) {
 	}
 
 	var wg = sync.WaitGroup{}
-
+	var books []*Book
 	for i := 0; i < len(bookInfo); i++ {
 		if len(bookInfo[i]) < 2 {
 			logs.Error("非预期错误", bookInfo[i])
@@ -126,7 +134,7 @@ func BookSearch(query string, searchPage string) (books []*Book, err error) {
 			re = regexp.MustCompile(`出版发行：([\s\S]*?)\r\n`)
 			bookPublisher := re.FindAllStringSubmatch(bookInfoH4[0][0], -1)
 			if bookPublisher == nil {
-				logs.Error(`正则匹配失败，返回为空`)
+				logs.Warn(`正则匹配失败，返回为空`)
 			} else {
 				book.Publisher = bookPublisher[0][1]
 				book.Publisher = strings.Replace(book.Publisher, ",", "", -1)
@@ -181,13 +189,49 @@ func BookSearch(query string, searchPage string) (books []*Book, err error) {
 		//异步请求豆瓣接口获取图书封面
 		wg.Add(1)
 		go func() {
-			book.Image = GetCover(book.ISBN)
+			key := fmt.Sprintf("book:cover:%s", book.ISBN)
+			val, err := env.RedisCli.Get(key).Result()
+			if err != nil && err != redis.Nil {
+				logs.Error(err)
+				return
+			}
+			if err == redis.Nil {
+				book.Image = GetCover(book.ISBN)
+				//加入缓存
+				if book.Image != "" {
+					logs.Debug("Set cache %s", key)
+					err = env.RedisCli.Set(key, book.Image, 120*24*time.Hour).Err()
+					if err != nil {
+						logs.Error(err)
+						return
+					}
+				}
+			} else {
+				//解析缓存
+				logs.Debug("Hit cache %s", key)
+				book.Image = val
+			}
 			wg.Done()
 		}()
+
 		books = append(books, book)
 	}
 	wg.Wait()
-	return books, nil
+
+	var total = 0
+	r1 := regexp.MustCompile(`(\d+)条结果`)
+	totalMatch := r1.FindStringSubmatch(string(bytes))
+	if len(totalMatch) == 2 {
+		total, _ = strconv.Atoi(totalMatch[1])
+	}
+
+	result = map[string]interface{}{
+		"books": books,
+		"pages": math.Ceil(float64(total) / float64(10)),
+		"total": total,
+	}
+
+	return result, nil
 }
 
 //提取豆瓣图书封面
@@ -195,6 +239,7 @@ func GetCover(ISBN string) (image string) {
 	if ISBN == "" {
 		return
 	}
+	t1 := time.Now()
 	var URL = "https://douban.uieee.com/v2/book/isbn/" + ISBN
 	client := http.Client{}
 	request, err := http.NewRequest("GET", URL, nil)
@@ -211,6 +256,7 @@ func GetCover(ISBN string) (image string) {
 	}
 	defer resp.Body.Close()
 	body, _ := ioutil.ReadAll(resp.Body)
+	logs.Debug("请求耗时：", time.Since(t1), URL)
 
 	image = jsoniter.Get(body, "image").ToString()
 	return image
