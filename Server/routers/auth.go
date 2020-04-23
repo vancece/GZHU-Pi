@@ -54,6 +54,11 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 	db := models.GetGorm()
 
 	key := fmt.Sprintf("gzhupi:vuser:%s", u.OpenID.String)
+	defer func() {
+		if err != nil {
+			_, _ = env.RedisCli.Del(key).Result()
+		}
+	}()
 	//查询缓存
 	val, err := env.RedisCli.Get(key).Result()
 	if err != nil && err != redis.Nil {
@@ -68,7 +73,7 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 			Response(w, r, nil, http.StatusInternalServerError, err.Error())
 			return
 		}
-		if err == nil {
+		if err == nil && user.ID > 0 {
 			//加入缓存
 			logs.Debug("Set cache %s", key)
 			buf, err := json.Marshal(&user)
@@ -83,6 +88,8 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 				Response(w, r, nil, http.StatusInternalServerError, err.Error())
 				return
 			}
+		} else {
+			logs.Debug(u.OpenID.String, err)
 		}
 	} else {
 		//解析缓存
@@ -105,7 +112,10 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 			Response(w, r, nil, http.StatusBadRequest, err.Error())
 			return
 		}
-
+		if u.Nickname.String == "" {
+			t := fmt.Sprint(time.Now().UnixNano())
+			u.Nickname = null.StringFrom(t[len(t)-4:])
+		}
 		if u.Nickname.String == "" || u.Avatar.String == "" {
 			err = fmt.Errorf("must provide nickname and avatar")
 			logs.Error(err)

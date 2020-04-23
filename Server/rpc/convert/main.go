@@ -18,15 +18,16 @@ import (
 	"regexp"
 	"strings"
 	"sync"
+	"time"
 )
 
-//全局实例
+//ConvertCli 全局实例
 var ConvertCli = ConvertService{
 	Token:      "123456",
 	supported:  []string{"pdf"},
 	delInfile:  true,
 	delOutfile: true,
-	outDir:     "files",
+	outDir:     "./files",
 }
 
 const port = "6618"
@@ -57,6 +58,7 @@ func main() {
 	}
 }
 
+// ConvertService 服务参数
 type ConvertService struct {
 	Token       string `json:"token"`        //秘钥，防止非法调用
 	Body        []byte `json:"body"`         //文件数据
@@ -72,7 +74,23 @@ type ConvertService struct {
 	outDir string //保存文件的路径
 }
 
-//读取body保存成文件 filename=md5
+// Ping 用于检测服务状态
+func (p *ConvertService) Ping(request *ConvertService, reply *string) (err error) {
+	if request == nil {
+		err = fmt.Errorf("call convert with  nil request argument")
+		return
+	}
+	if request.Token != p.Token {
+		err = fmt.Errorf("service auth failed with wrong token")
+		return
+	}
+
+	*reply = "Pong"
+
+	return nil
+}
+
+//Convert 读取body保存成文件 filename=md5
 //调用系统命令 soffice --headless --convert-to {{ConvertType}} filename
 func (p *ConvertService) Convert(request *ConvertService, reply *[]byte) (err error) {
 	defer logs.Info("====== convert done ======")
@@ -130,7 +148,9 @@ func (p *ConvertService) Convert(request *ConvertService, reply *[]byte) (err er
 	logs.Info(command)
 
 	p.Lock.Lock()
+	t := time.Now()
 	stdout, _, err := shellOut(command)
+	logs.Info("convert in %s", time.Since(t))
 	p.Lock.Unlock()
 	if err != nil {
 		logs.Error(err)
@@ -173,7 +193,7 @@ func saveFileByMd5(data []byte, dir string) (filepath, MD5 string, err error) {
 	}
 
 	dir = strings.TrimRight(dir, "/") + "/"
-	err = os.MkdirAll(dir, 0666)
+	err = os.MkdirAll(dir, os.ModePerm)
 	if err != nil {
 		logs.Error(err)
 		return
@@ -188,7 +208,7 @@ func saveFileByMd5(data []byte, dir string) (filepath, MD5 string, err error) {
 	MD5 = hex.EncodeToString(hash.Sum(nil))
 	filepath = dir + MD5
 
-	err = ioutil.WriteFile(filepath, data, 0666)
+	err = ioutil.WriteFile(filepath, data, os.ModePerm)
 	if err != nil {
 		logs.Error(err)
 		return
@@ -206,6 +226,7 @@ func shellOut(command string) (string, string, error) {
 	return stdout.String(), stderr.String(), err
 }
 
+// InitLogger 初始化日志
 func InitLogger(path string) error {
 	if path == "" {
 		path = "/tmp/log/"

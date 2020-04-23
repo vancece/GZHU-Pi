@@ -5,6 +5,7 @@ import (
 	"github.com/astaxie/beego/logs"
 	"log"
 	"os"
+	"strings"
 )
 
 func InitLogger(path string) error {
@@ -12,6 +13,7 @@ func InitLogger(path string) error {
 		path = "/tmp/log/"
 	}
 	//创建日志目录
+	path = strings.TrimRight(path, "/") + "/"
 	err := os.MkdirAll(path, os.ModePerm)
 	if err != nil {
 		log.Fatal("创建日志目录失败 ", err)

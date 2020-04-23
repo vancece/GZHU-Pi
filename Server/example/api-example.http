@@ -35,7 +35,7 @@ username={{username}}&password={{password}}&year_sem=2019-2020-2
 ###
 
 # 成绩查询
-POST {{baseUrl}}/jwxt/rank
+POST {{baseUrl}}/jwxt/grade
 Content-Type: application/json
 
 {

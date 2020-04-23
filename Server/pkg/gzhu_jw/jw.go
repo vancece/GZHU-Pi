@@ -72,14 +72,27 @@ func newClient(username, password string) *JWClient {
 	// Whn initializing the http.Client, copy default values from http.DefaultClient
 	// Pass a pointer to the cookie jar that was created earlier:
 	c.Client = &http.Client{
-		Jar:           cookieJar,
-		Timeout:       time.Minute,
-		Transport:     transport,
+		Jar:       cookieJar,
+		Timeout:   time.Minute,
+		Transport: transport,
 	}
 	return c
 }
 
+func isAvailable() error {
+	h := time.Now().Hour()
+	if h >= 0 && h < 7 {
+		err := fmt.Errorf("当前时间段，教务系统通道关闭，服务不可用")
+		logs.Warn(err)
+		return err
+	}
+	return nil
+}
+
 func BasicAuthClient(username, password string) (client *JWClient, err error) {
+	if err = isAvailable(); err != nil {
+		return
+	}
 	if username == "" {
 		return nil, fmt.Errorf("not init username or password")
 	}

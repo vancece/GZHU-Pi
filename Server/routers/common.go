@@ -255,6 +255,8 @@ func NewCookie(userID int64) (newCookie string, err error) {
 		Name:     "token",
 		Value:    newToken,
 		HttpOnly: true,
+		Secure:   true,
+		SameSite: http.SameSiteNoneMode,
 	}
 	newCookie = cookie.String()
 	return
