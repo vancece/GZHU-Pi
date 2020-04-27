@@ -191,6 +191,7 @@ func (c *JWClient) GetCaptcha() (capture string, err error) {
 
 		err = rpcClient.Call("OcrService.Capture", body, &capture)
 		if err != nil {
+			rpcClient = nil
 			logs.Error(err)
 			return capture, err
 		}

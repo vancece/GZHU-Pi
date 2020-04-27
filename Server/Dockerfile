@@ -14,6 +14,7 @@ RUN apk update \
 
 COPY --from=0 /home/main /home
 COPY --from=0 /home/config.toml /home
+COPY --from=0 /home/queries /home/queries
 WORKDIR /home
 
 CMD ["/home/main"]

@@ -1,0 +1,20 @@
+# 认证
+POST {{baseUrl}}/auth
+Content-Type: application/json
+
+{
+  "open_id": "{{open_id}}",
+  "minapp_id": {{minapp_id}}
+}
+
+> {% client.global.set("cookie", response.headers.valueOf("Set-Cookie"));%}
+
+###
+
+
+# 模糊搜索
+GET {{baseUrl}}/_QUERIES/topic/v_topic_search?match=第二课堂
+Content-Type: application/x-www-form-urlencoded
+Cookie: {{cookie}}
+
+###

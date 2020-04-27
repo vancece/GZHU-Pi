@@ -97,12 +97,6 @@ func MySecond(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		logs.Error(err)
 		delete(SecondClients, client.Username)
-		if err == gzhu_second.AuthError {
-			//TODO 重试处理
-
-			Response(w, r, nil, http.StatusUnauthorized, err.Error())
-			return
-		}
 		Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -125,12 +119,6 @@ func SecondSearch(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		logs.Error(err)
 		delete(SecondClients, client.Username)
-		if err == gzhu_second.AuthError {
-			//TODO 重试处理
-
-			Response(w, r, nil, http.StatusUnauthorized, err.Error())
-			return
-		}
 		Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}
@@ -161,12 +149,6 @@ func SecondImage(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		logs.Error(err)
 		delete(SecondClients, client.Username)
-		if err == gzhu_second.AuthError {
-			//TODO 重试处理
-
-			Response(w, r, nil, http.StatusUnauthorized, err.Error())
-			return
-		}
 		Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}
