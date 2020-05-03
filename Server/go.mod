@@ -4,6 +4,7 @@ go 1.13
 
 require (
 	github.com/PuerkitoBio/goquery v1.5.0
+	github.com/Shopify/sarama v1.19.0
 	github.com/StackExchange/wmi v0.0.0-20190523213315-cbe66965904d // indirect
 	github.com/astaxie/beego v1.12.0
 	github.com/auth0/go-jwt-middleware v0.0.0-20190805220309-36081240882b // indirect

@@ -1,7 +1,7 @@
 package routers
 
 import (
-	"GZHU-Pi/models"
+	"GZHU-Pi/env"
 	"bytes"
 	"context"
 	"encoding/json"
@@ -83,7 +83,7 @@ func TableAccessHandle(w http.ResponseWriter, r *http.Request, next http.Handler
 			return
 		}
 		if strings.Contains(r.URL.Path, "t_topic") {
-			var t models.TTopic
+			var t env.TTopic
 			p.gormDB.First(&t, id)
 			if t.CreatedBy.Int64 != p.user.ID {
 				err := fmt.Errorf("permission denied")
@@ -92,7 +92,7 @@ func TableAccessHandle(w http.ResponseWriter, r *http.Request, next http.Handler
 			}
 		}
 		if strings.Contains(r.URL.Path, "t_discuss") {
-			var t models.TDiscuss
+			var t env.TDiscuss
 			p.gormDB.First(&t, id)
 			if t.CreatedBy.Int64 != p.user.ID {
 				err := fmt.Errorf("permission denied")
@@ -101,7 +101,7 @@ func TableAccessHandle(w http.ResponseWriter, r *http.Request, next http.Handler
 			}
 		}
 		if strings.Contains(r.URL.Path, "t_relation") {
-			var t models.TRelation
+			var t env.TRelation
 			p.gormDB.First(&t, id)
 			if t.CreatedBy.Int64 != p.user.ID {
 				err := fmt.Errorf("permission denied")
@@ -130,7 +130,7 @@ func topicCheck(ctx context.Context) (err error) {
 		logs.Error(err)
 		return
 	}
-	var t models.TTopic
+	var t env.TTopic
 	err = json.Unmarshal(body, &t)
 	if err != nil {
 		logs.Error(err)
@@ -174,7 +174,7 @@ func discussCheck(ctx context.Context) (err error) {
 		logs.Error(err)
 		return
 	}
-	var t models.TDiscuss
+	var t env.TDiscuss
 	err = json.Unmarshal(body, &t)
 	if err != nil {
 		logs.Error(err)
@@ -218,7 +218,7 @@ func relationCheck(ctx context.Context) (err error) {
 		logs.Error(err)
 		return
 	}
-	var t models.TRelation
+	var t env.TRelation
 	err = json.Unmarshal(body, &t)
 	if err != nil {
 		logs.Error(err)
@@ -246,7 +246,7 @@ func relationCheck(ctx context.Context) (err error) {
 	}
 	//根据唯一主键删除，防止写入冲突
 	p.gormDB.Where("object_id=? and object=? and type=? and created_by=?",
-		t.ObjectID, t.Object, t.Type, p.user.ID).Delete(models.TRelation{})
+		t.ObjectID, t.Object, t.Type, p.user.ID).Delete(env.TRelation{})
 
 	newBodyStr := fmt.Sprintf(`%s,"created_by":%d}`, strings.TrimSuffix(string(body), "}"), p.user.ID)
 
@@ -271,7 +271,7 @@ func userCheck(ctx context.Context) (err error) {
 		logs.Error(err)
 		return
 	}
-	var u models.TUser
+	var u env.TUser
 	err = json.Unmarshal(body, &u)
 	if err != nil {
 		logs.Error(err)
@@ -303,8 +303,8 @@ func topicViewCounter(u *url.URL) {
 		return
 	}
 
-	db := models.GetGorm()
-	db.Model(&models.TTopic{ID: int64(id)}).
+	db := env.GetGorm()
+	db.Model(&env.TTopic{ID: int64(id)}).
 		UpdateColumn("viewed", gorm.Expr("viewed + ?", 1))
 
 }

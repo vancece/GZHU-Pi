@@ -2,7 +2,6 @@ package routers
 
 import (
 	"GZHU-Pi/env"
-	"GZHU-Pi/models"
 	"GZHU-Pi/pkg"
 	"GZHU-Pi/pkg/gzhu_jw"
 	"context"
@@ -317,7 +316,7 @@ func AllCourse(w http.ResponseWriter, r *http.Request) {
 func Rank(w http.ResponseWriter, r *http.Request) {
 
 	username := r.URL.Query().Get("username")
-	user := &models.TUser{}
+	user := &env.TUser{}
 	user, err := AuthByCookies(r)
 	if err != nil {
 		Response(w, r, nil, http.StatusBadRequest, err.Error())

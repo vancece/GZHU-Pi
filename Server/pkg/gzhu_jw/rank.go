@@ -1,7 +1,7 @@
 package gzhu_jw
 
 import (
-	"GZHU-Pi/models"
+	"GZHU-Pi/env"
 	"database/sql"
 	"fmt"
 	"github.com/astaxie/beego/logs"
@@ -146,7 +146,7 @@ func (c *JWClient) GetRank(stuID string) (result map[string]interface{}, err err
 		return
 	}
 
-	sqlxDB := models.GetSqlx()
+	sqlxDB := env.GetSqlx()
 	var collegeCount, majorCount, classCount int64
 	err = sqlxDB.QueryRowx(countSQL).Scan(&collegeCount, &majorCount, &classCount)
 	if err != nil {
@@ -173,7 +173,7 @@ func (c *JWClient) GetRank(stuID string) (result map[string]interface{}, err err
 }
 
 func getGpaRank(query string) (list []Rank, err error) {
-	sqlxDB := models.GetSqlx()
+	sqlxDB := env.GetSqlx()
 
 	var rows *sqlx.Rows
 	rows, err = sqlxDB.Queryx(query)

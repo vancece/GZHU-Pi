@@ -1,13 +1,16 @@
 package gzhu_jw
 
 import (
-	"GZHU-Pi/models"
+	"GZHU-Pi/env"
 	"bytes"
 	"fmt"
 	"github.com/astaxie/beego/logs"
+	"github.com/jinzhu/gorm"
 	jsoniter "github.com/json-iterator/go"
 	"io/ioutil"
+	"math"
 	"net/url"
+	"reflect"
 	"sort"
 	"strconv"
 	"strings"
@@ -15,25 +18,25 @@ import (
 )
 
 type GradeData struct {
-	StuInfo     *models.TStuInfo `json:"stu_info" remark:"基本信息"`
-	GPA         float64          `json:"GPA" remark:"平均绩点"`
-	SemList     []*SemGrade      `json:"sem_list" remark:"学期列表"`
-	TotalCredit float64          `json:"total_credit" remark:"总学分"`
-	UpdateTime  string           `json:"update_time" remark:"更新时间"`
+	StuInfo     *env.TStuInfo `json:"stu_info" remark:"基本信息"`
+	GPA         float64       `json:"GPA" remark:"平均绩点"`
+	SemList     []*SemGrade   `json:"sem_list" remark:"学期列表"`
+	TotalCredit float64       `json:"total_credit" remark:"总学分"`
+	UpdateTime  string        `json:"update_time" remark:"更新时间"`
 }
 
 type SemGrade struct {
-	GradeList []*models.TGrade `json:"grade_list"  remark:"学期成绩列表"`
-	SemCredit float64          `json:"sem_credit" remark:"学期学分"`
-	SemGpa    float64          `json:"sem_gpa" remark:"学期绩点"`
-	Semester  string           `json:"semester" remark:"学期"`
-	Year      string           `json:"year" remark:"学年2018-2019"`
-	YearSem   string           `json:"year_sem" remark:"学年学期"`
+	GradeList []*env.TGrade `json:"grade_list"  remark:"学期成绩列表"`
+	SemCredit float64       `json:"sem_credit" remark:"学期学分"`
+	SemGpa    float64       `json:"sem_gpa" remark:"学期绩点"`
+	Semester  string        `json:"semester" remark:"学期"`
+	Year      string        `json:"year" remark:"学年2018-2019"`
+	YearSem   string        `json:"year_sem" remark:"学年学期"`
 
 	GpaCredit float64 `json:"-" remark:"学分*绩点 忽略字段"`
 }
 
-//type Grade models.TGrade
+//type Grade env.TGrade
 
 func (c *JWClient) GetAllGrade(year, sem string) (gradeData *GradeData, err error) {
 
@@ -68,8 +71,8 @@ func (c *JWClient) GetAllGrade(year, sem string) (gradeData *GradeData, err erro
 	grades, stuInfo := ParseGrade(body)
 	gradeData.StuInfo = stuInfo
 
-	go models.SaveStuInfo(stuInfo)
-	go models.SaveOrUpdateGrade(grades)
+	go SaveStuInfo(stuInfo)
+	go SaveOrUpdateGrade(grades)
 
 	//根基成绩列表统计所有成绩信息，传址
 	CountGpa(grades, gradeData)
@@ -80,7 +83,7 @@ func (c *JWClient) GetAllGrade(year, sem string) (gradeData *GradeData, err erro
 }
 
 //统计GPA信息，指针传递
-func CountGpa(grades []*models.TGrade, gradeData *GradeData) {
+func CountGpa(grades []*env.TGrade, gradeData *GradeData) {
 
 	var (
 		sumCredit    float64 = 0                         //大学总学分绩点
@@ -144,20 +147,20 @@ func CountGpa(grades []*models.TGrade, gradeData *GradeData) {
 }
 
 //解析提取成绩信息，同时填充学生基本信息
-func ParseGrade(body []byte) (grades []*models.TGrade, info *models.TStuInfo) {
+func ParseGrade(body []byte) (grades []*env.TGrade, info *env.TStuInfo) {
 
-	grades = []*models.TGrade{}
+	grades = []*env.TGrade{}
 	json := jsoniter.ConfigCompatibleWithStandardLibrary
 	gradeList := json.Get(body, "items")
 
 	for i := 0; true; i++ {
-		g := &models.TGrade{}
+		g := &env.TGrade{}
 		g.CourseID = gradeList.Get(i).Get("kch_id").ToString()
 		if g.CourseID == "" {
 			break
 		}
 		if i == 0 {
-			info = &models.TStuInfo{
+			info = &env.TStuInfo{
 				AdmitYear:  gradeList.Get(i).Get("njdm_id").ToString(),
 				ClassID:    gradeList.Get(i).Get("bh_id").ToString(),
 				College:    gradeList.Get(i).Get("jgmc").ToString(),
@@ -187,4 +190,74 @@ func ParseGrade(body []byte) (grades []*models.TGrade, info *models.TStuInfo) {
 		grades = append(grades, g)
 	}
 	return
+}
+
+func SaveOrUpdateGrade(grades []*env.TGrade) {
+	db := env.GetGorm()
+	for _, v := range grades {
+		//根据主键查询
+		var res = env.TGrade{}
+		result := db.Where("stu_id = ? and course_id = ? and jxb_id = ?",
+			v.StuID, v.CourseID, v.JxbID).First(&res)
+
+		//不存在记录则插入
+		if result.Error == gorm.ErrRecordNotFound {
+			logs.Debug("create record for course_id %s", v.CourseID)
+			db.Create(v)
+			continue
+		}
+		//存在记录但没有变动，跳过
+		if math.Round(res.CourseGpa*10)/10 == v.CourseGpa &&
+			res.GradeValue == v.GradeValue &&
+			res.Grade == v.Grade &&
+			res.Credit == v.Credit &&
+			res.Invalid == v.Invalid {
+			continue
+		}
+		//更新记录 结构体转换为map
+		m := make(map[string]interface{})
+		elem := reflect.ValueOf(v).Elem()
+		relType := elem.Type()
+		for i := 0; i < relType.NumField(); i++ {
+			m[relType.Field(i).Name] = elem.Field(i).Interface()
+		}
+		delete(m, "CreatedAt")
+		delete(m, "UpdatedAt")
+
+		result = db.Model(&res).Where("stu_id = ? and course_id = ? and jxb_id = ?",
+			v.StuID, v.CourseID, v.JxbID).Updates(m)
+		if result.Error != nil {
+			logs.Error(result.Error)
+			continue
+		}
+		logs.Debug("update record: %s %s %s ", v.StuID, v.CourseID, v.JxbID)
+	}
+}
+
+func SaveStuInfo(info *env.TStuInfo) {
+	db := env.GetGorm()
+	//获取匹配的第一条记录, 否则根据给定的条件创建一个新的记录 (仅支持 struct 和 map 条件)
+	//db.FirstOrCreate(info, &info)
+	var stu env.TStuInfo
+	err := db.Where("stu_id = ?", info.StuID).First(&stu).Error
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			err = db.FirstOrCreate(info, &info).Error
+			if err != nil {
+				logs.Error(err)
+				return
+			}
+			return
+		}
+		logs.Error(err)
+		return
+	}
+	if stu.ClassID != info.ClassID || stu.College != info.College {
+		logs.Info("%s 更新信息", stu.StuID)
+		err = db.Model(&stu).Where("stu_id = ?", info.StuID).Update(info).Error
+		if err != nil {
+			logs.Error(err)
+			return
+		}
+	}
 }

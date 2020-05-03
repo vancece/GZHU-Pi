@@ -1,7 +1,14 @@
-package models
+/**
+ * @File: dbInit
+ * @Author: Shaw
+ * @Date: 2020/5/3 5:36 PM
+ * @Desc
+
+ */
+
+package env
 
 import (
-	"GZHU-Pi/env"
 	"fmt"
 	"github.com/astaxie/beego/logs"
 	"github.com/jinzhu/gorm"
@@ -69,7 +76,7 @@ var db *gorm.DB
 var sqlxDB *sqlx.DB
 
 func InitDb() error {
-	d := env.Conf.Db
+	d := Conf.Db
 	dbInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=%s",
 		d.Host, d.Port, d.User, d.Password, d.Dbname, d.SslMode)
 
@@ -100,7 +107,7 @@ func InitDb() error {
 	//关闭复数表名
 	db.SingularTable(true)
 
-	if env.Conf.App.InitModels {
+	if Conf.App.InitModels {
 		t := time.Now()
 		modelsInit()
 		logs.Info("init models in:", time.Since(t))
@@ -110,16 +117,10 @@ func InitDb() error {
 }
 
 func GetGorm() *gorm.DB {
-	if db == nil {
-		InitDb()
-	}
 	return db
 }
 
 func GetSqlx() *sqlx.DB {
-	if sqlxDB == nil {
-		InitDb()
-	}
 	return sqlxDB
 }
 

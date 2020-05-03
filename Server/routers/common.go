@@ -2,7 +2,6 @@ package routers
 
 import (
 	"GZHU-Pi/env"
-	"GZHU-Pi/models"
 	"bytes"
 	"context"
 	"crypto/md5"
@@ -79,11 +78,13 @@ func Response(w http.ResponseWriter, r *http.Request, data interface{}, statusCo
 	//保存请求记录
 	u, _ := ReadRequestArg(r, "username")
 	username, _ := u.(string)
-	models.SaveApiRecord(&models.TApiRecord{
+	record := &env.TApiRecord{
 		Username: username,
 		Uri:      r.RequestURI,
 		Duration: resp.Time,
-	})
+	}
+	db := env.GetGorm()
+	db.Create(&record)
 
 	//统计数组/切片长度
 	if data != nil {

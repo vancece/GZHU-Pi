@@ -1,7 +1,7 @@
 package routers
 
 import (
-	"GZHU-Pi/models"
+	"GZHU-Pi/env"
 	"context"
 	"fmt"
 	"github.com/astaxie/beego/logs"
@@ -13,7 +13,7 @@ type piCtx struct {
 	r *http.Request
 	w http.ResponseWriter
 
-	user models.TUser
+	user env.TUser
 
 	gormDB *gorm.DB
 }
@@ -54,9 +54,9 @@ func InitCtx(w http.ResponseWriter, r *http.Request) (ctx context.Context, err e
 	p := &piCtx{
 		r:    r,
 		w:    w,
-		user: models.TUser{},
+		user: env.TUser{},
 
-		gormDB: models.GetGorm(),
+		gormDB: env.GetGorm(),
 	}
 	ctx = context.Background()
 	ctx = context.WithValue(ctx, piKey, p)

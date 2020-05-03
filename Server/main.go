@@ -2,7 +2,6 @@ package main
 
 import (
 	"GZHU-Pi/env"
-	"GZHU-Pi/models"
 	"GZHU-Pi/routers"
 	"github.com/astaxie/beego/logs"
 	"github.com/gorilla/mux"
@@ -23,20 +22,7 @@ import (
 
 func main() {
 
-	err := env.InitConfigure()
-	if err != nil {
-		log.Fatal(err)
-	}
-	err = models.InitDb()
-	if err != nil {
-		log.Fatal(err)
-	}
-	err = env.InitRedis()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	go env.MemoryCollector()
+	env.EnvInit()
 
 	r := mux.NewRouter()
 
@@ -45,11 +31,9 @@ func main() {
 	if port == "" {
 		port = "9000"
 		logs.Info("自主部署 Server on port: " + port)
-		_ = env.InitLogger("./log/")
 		r = r.PathPrefix("/api/v1").Subrouter()
 	} else {
 		logs.Info("阿里云云函数部署 Server on port: " + port)
-		_ = env.InitLogger("/tmp/log/")
 		r = r.PathPrefix("/2016-08-15/proxy/GZHU-API/go/api/v1").Subrouter()
 	}
 

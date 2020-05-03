@@ -2,7 +2,7 @@ package routers
 
 import (
 	"GZHU-Pi/env"
-	"GZHU-Pi/models"
+
 	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego/logs"
@@ -36,7 +36,7 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var u models.TUser
+	var u env.TUser
 	err = json.Unmarshal(body, &u)
 	if err != nil {
 		logs.Error(err)
@@ -50,8 +50,8 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 	}
 	logs.Info("auth by open_id:", u.OpenID.String)
 
-	var user models.VUser
-	db := models.GetGorm()
+	var user env.VUser
+	db := env.GetGorm()
 
 	key := fmt.Sprintf("gzhupi:vuser:%s", u.OpenID.String)
 	defer func() {
@@ -236,13 +236,13 @@ func AuthBySchool(w http.ResponseWriter, r *http.Request) {
 	Response(w, r, nil, http.StatusOK, "request ok")
 }
 
-func AuthByCookies(r *http.Request) (user *models.TUser, err error) {
-	user = &models.TUser{}
+func AuthByCookies(r *http.Request) (user *env.TUser, err error) {
+	user = &env.TUser{}
 	user.ID, err = GetUserID(r)
 	if err != nil {
 		return
 	}
-	err = models.GetGorm().First(user).Error
+	err = env.GetGorm().First(user).Error
 	if err != nil {
 		logs.Error(err)
 		return

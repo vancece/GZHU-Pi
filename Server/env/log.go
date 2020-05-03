@@ -26,6 +26,7 @@ func InitLogger(path string) error {
 		return err
 	}
 	defer f.Close()
+	logs.Info("日志路径:", fileName)
 
 	logs.SetLogFuncCallDepth(3)    //调用层级
 	logs.EnableFuncCallDepth(true) //输出文件名和行号
