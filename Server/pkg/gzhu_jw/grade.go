@@ -2,15 +2,14 @@ package gzhu_jw
 
 import (
 	"GZHU-Pi/env"
+	"GZHU-Pi/services/kafka"
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego/logs"
-	"github.com/jinzhu/gorm"
 	jsoniter "github.com/json-iterator/go"
 	"io/ioutil"
-	"math"
 	"net/url"
-	"reflect"
 	"sort"
 	"strconv"
 	"strings"
@@ -71,8 +70,41 @@ func (c *JWClient) GetAllGrade(year, sem string) (gradeData *GradeData, err erro
 	grades, stuInfo := ParseGrade(body)
 	gradeData.StuInfo = stuInfo
 
-	go SaveStuInfo(stuInfo)
-	go SaveOrUpdateGrade(grades)
+	//go env.SaveStuInfo(stuInfo)
+	//go env.SaveOrUpdateGrade(grades)
+
+	//加入消息队列
+	go func() {
+
+		info, err := json.Marshal(stuInfo)
+		if err != nil {
+			logs.Error(err)
+			return
+		}
+		err = env.Kafka.SendData(&kafka.ProduceData{
+			Topic: "kafka-queue-student-info",
+			Data:  info,
+		})
+		if err != nil {
+			logs.Error(err)
+			return
+		}
+
+		//====
+		g, err := json.Marshal(grades)
+		if err != nil {
+			logs.Error(err)
+			return
+		}
+		err = env.Kafka.SendData(&kafka.ProduceData{
+			Topic: env.QueueTopicGrade,
+			Data:  g,
+		})
+		if err != nil {
+			logs.Error(err)
+			return
+		}
+	}()
 
 	//根基成绩列表统计所有成绩信息，传址
 	CountGpa(grades, gradeData)
@@ -190,74 +222,4 @@ func ParseGrade(body []byte) (grades []*env.TGrade, info *env.TStuInfo) {
 		grades = append(grades, g)
 	}
 	return
-}
-
-func SaveOrUpdateGrade(grades []*env.TGrade) {
-	db := env.GetGorm()
-	for _, v := range grades {
-		//根据主键查询
-		var res = env.TGrade{}
-		result := db.Where("stu_id = ? and course_id = ? and jxb_id = ?",
-			v.StuID, v.CourseID, v.JxbID).First(&res)
-
-		//不存在记录则插入
-		if result.Error == gorm.ErrRecordNotFound {
-			logs.Debug("create record for course_id %s", v.CourseID)
-			db.Create(v)
-			continue
-		}
-		//存在记录但没有变动，跳过
-		if math.Round(res.CourseGpa*10)/10 == v.CourseGpa &&
-			res.GradeValue == v.GradeValue &&
-			res.Grade == v.Grade &&
-			res.Credit == v.Credit &&
-			res.Invalid == v.Invalid {
-			continue
-		}
-		//更新记录 结构体转换为map
-		m := make(map[string]interface{})
-		elem := reflect.ValueOf(v).Elem()
-		relType := elem.Type()
-		for i := 0; i < relType.NumField(); i++ {
-			m[relType.Field(i).Name] = elem.Field(i).Interface()
-		}
-		delete(m, "CreatedAt")
-		delete(m, "UpdatedAt")
-
-		result = db.Model(&res).Where("stu_id = ? and course_id = ? and jxb_id = ?",
-			v.StuID, v.CourseID, v.JxbID).Updates(m)
-		if result.Error != nil {
-			logs.Error(result.Error)
-			continue
-		}
-		logs.Debug("update record: %s %s %s ", v.StuID, v.CourseID, v.JxbID)
-	}
-}
-
-func SaveStuInfo(info *env.TStuInfo) {
-	db := env.GetGorm()
-	//获取匹配的第一条记录, 否则根据给定的条件创建一个新的记录 (仅支持 struct 和 map 条件)
-	//db.FirstOrCreate(info, &info)
-	var stu env.TStuInfo
-	err := db.Where("stu_id = ?", info.StuID).First(&stu).Error
-	if err != nil {
-		if err == gorm.ErrRecordNotFound {
-			err = db.FirstOrCreate(info, &info).Error
-			if err != nil {
-				logs.Error(err)
-				return
-			}
-			return
-		}
-		logs.Error(err)
-		return
-	}
-	if stu.ClassID != info.ClassID || stu.College != info.College {
-		logs.Info("%s 更新信息", stu.StuID)
-		err = db.Model(&stu).Where("stu_id = ?", info.StuID).Update(info).Error
-		if err != nil {
-			logs.Error(err)
-			return
-		}
-	}
 }

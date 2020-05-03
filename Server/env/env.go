@@ -39,10 +39,10 @@ func EnvInit() {
 	}
 
 	//------5、初始化kafka------
-	//err = InitKafka()
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
+	err = InitKafka()
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	//------6、初始化性能监控------
 	go MemoryCollector()
