@@ -12,6 +12,7 @@ import (
 	"fmt"
 	"github.com/Shopify/sarama"
 	"github.com/astaxie/beego/logs"
+	"strings"
 )
 
 //消费者读取目标并处理的参数
@@ -159,12 +160,20 @@ func (k *Kafka) consume() {
 			var pc sarama.PartitionConsumer
 			pc, err := k.consumer.ConsumePartition(h.Topic, h.Partition, h.Offset)
 			if err != nil {
-				logs.Error(err)
-				h.ErrorFun(h, err)
-				break
+				if strings.Contains(err.Error(), "outside") {
+					pc, err = k.consumer.ConsumePartition(h.Topic, h.Partition, sarama.OffsetNewest)
+					if err != nil {
+						logs.Error(err)
+						h.ErrorFun(h, err)
+						break
+					}
+				} else {
+					logs.Error(err)
+					h.ErrorFun(h, err)
+					break
+				}
 			}
 			k.pc[key] = pc
-
 			// 等待 生产者产生对应数据 然后消费
 			go func() {
 				for {

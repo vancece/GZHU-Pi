@@ -19,7 +19,10 @@ var Kafka *kafka.Kafka
 
 func InitKafka() (err error) {
 
-	broker := []string{fmt.Sprintf("%s:%d", Conf.Redis.Host, 9092)}
+	broker := []string{fmt.Sprintf("ifeel.vip:9092")}
+
+	logs.Info("connecting to broker: %v", broker)
+
 	Kafka, err = kafka.DefaultKafka(broker)
 	if err != nil {
 		logs.Error(err)

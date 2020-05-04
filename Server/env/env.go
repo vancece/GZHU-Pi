@@ -9,6 +9,7 @@
 package env
 
 import (
+	"github.com/astaxie/beego/logs"
 	"log"
 )
 
@@ -46,4 +47,6 @@ func EnvInit() {
 
 	//------6、初始化性能监控------
 	go MemoryCollector()
+
+	logs.Info("======== finish to init app env ========")
 }
