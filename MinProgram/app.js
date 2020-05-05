@@ -37,7 +37,7 @@ App({
       this.getAuthStatus()
     }
 
-    
+
     userService.auth()
 
     setTimeout(() => {
@@ -151,7 +151,14 @@ App({
     Product.get(recordID).then(res => {
       console.log("在线配置：", res.data.data)
       if (res.data.data && res.data.data.mode) {
-        wx.$param = res.data.data
+
+        // verify模式下 username有效且不是测试账号放行
+        let account = wx.getStorageSync("account")
+        if (res.data.data.mode == "verify") {
+          if (!!account.username && account.username != "1706300039" && account.username != "20180829") {
+            res.data.data.mode = "prod"
+          }
+        }
         wx.setStorageSync("app_param", res.data.data)
         wx.$param = res.data.data
       }

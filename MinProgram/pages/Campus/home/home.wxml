@@ -122,3 +122,5 @@
     <view style='font-size:90%;margin-left:10rpx'>意见反馈</view>
   </button> -->
 </modal>
+
+<user-modal></user-modal>

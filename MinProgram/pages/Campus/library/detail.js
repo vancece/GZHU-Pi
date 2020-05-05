@@ -8,7 +8,7 @@ Page({
     holdings: []
   },
 
-  onLoad: function(options) {
+  onLoad: function (options) {
 
     // 从收藏页面进入 options.id != undefined 
     if (options.id != undefined) {
@@ -122,7 +122,7 @@ Page({
       header: {
         'content-type': 'application/x-www-form-urlencoded'
       },
-      success: function(res) {
+      success: function (res) {
         console.log("豆瓣", res.data)
         if (res.statusCode != 200) return
         // 豆瓣查找成功
@@ -138,8 +138,8 @@ Page({
           })
         }
       },
-      fail: function(res) {},
-      complete: function(res) {
+      fail: function (res) {},
+      complete: function (res) {
         that.setData({
           loading: false
         })
@@ -158,26 +158,17 @@ Page({
       return
     }
 
-    let that = this
-    let url = "https://1171058535813521.cn-shanghai.fc.aliyuncs.com/2016-08-15/proxy/GZHU-API/Spider/"
-    wx.request({
-      url: url + 'library/holdings?id=' + id + "&source=" + source,
-      method: "get",
-      header: {
-        'content-type': 'application/x-www-form-urlencoded'
-      },
-      success: function(res) {
+    wx.$ajax({
+        url: '/library/holdings?id=' + id + "&source=" + source,
+        method: "get",
+      })
+      .then(res => {
         console.log("馆藏信息", res.data)
-        if (res.statusCode != 200) return
-        that.setData({
-          holdings: res.data.data,
+        this.setData({
+          holdings: res.data,
         })
-      },
-      fail: function(res) {},
-      complete: function(res) {
-        wx.hideLoading()
-      }
-    })
+      })
+      .catch((e) => {})
   },
 
 })

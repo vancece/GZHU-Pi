@@ -8,7 +8,7 @@ Page({
     books: []
   },
 
-  onLoad: function(options) {
+  onLoad: function (options) {
     this.getBooks(options.query)
     this.setData({
       query: options.query
@@ -65,14 +65,40 @@ Page({
   getBooks(query, page = 1) {
     let that = this
     this.setData({
-      loading:true
+      loading: true
+    })
+
+    wx.$ajax({
+        url: '/library/search?query=' + query + "&page=" + page,
+        method: "get",
+      })
+      .then(res => {
+        that.setData({
+          books: that.data.books.concat(res.data.books),
+          pages: res.data.pages == 0 ? 1 : res.data.pages,
+          page: page,
+          loading: false
+        })
+      })
+      .catch((e) => {
+        that.setData({
+          loading: false
+        })
+      })
+  },
+
+  // 发送GET请求
+  getBooks0(query, page = 1) {
+    let that = this
+    this.setData({
+      loading: true
     })
 
     let url = "https://1171058535813521.cn-shanghai.fc.aliyuncs.com/2016-08-15/proxy/GZHU-API/Spider/"
     wx.request({
       url: url + 'library/search?query=' + query + "&page=" + page,
       method: "get",
-      success: function(res) {
+      success: function (res) {
         console.log(res.data.data)
         if (res.data.data.total == 0) {
           wx.showToast({
@@ -87,7 +113,7 @@ Page({
           page: page
         })
       },
-      complete: function() {
+      complete: function () {
         that.setData({
           loading: false
         })
