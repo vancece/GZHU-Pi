@@ -189,7 +189,7 @@ func BookSearch(query string, searchPage string) (result map[string]interface{},
 		//异步请求豆瓣接口获取图书封面
 		wg.Add(1)
 		go func() {
-			key := fmt.Sprintf("book:cover:%s", book.ISBN)
+			key := fmt.Sprintf("gzhupi:book:cover:%s", book.ISBN)
 			val, err := env.RedisCli.Get(key).Result()
 			if err != nil && err != redis.Nil {
 				logs.Error(err)
