@@ -184,6 +184,7 @@ func (c *SecondClient) GetCaptcha() (capture string, err error) {
 
 		err = rpcClient.Call("OcrService.Capture", body, &capture)
 		if err != nil {
+			_ = rpcClient.Close()
 			rpcClient = nil
 			logs.Error(err)
 			return capture, err

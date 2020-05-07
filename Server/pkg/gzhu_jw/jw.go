@@ -15,6 +15,7 @@ import (
 	"net/http/cookiejar"
 	"net/rpc"
 	"net/url"
+	"os"
 	"regexp"
 	"strings"
 	"time"
@@ -117,11 +118,18 @@ func BasicAuthClient(username, password string) (client *JWClient, err error) {
 		return nil, fmt.Errorf("get login form failed")
 	}
 
-	captcha, err := c.GetCaptcha()
+	captcha, captchaData, err := c.GetCaptcha()
 	if err != nil {
 		logs.Error(err)
 		return
 	}
+	defer func() {
+		if err != nil {
+			_ = saveCapture(captchaData, "wrong_"+captcha+".png")
+		} else {
+			_ = saveCapture(captchaData, captcha+".png")
+		}
+	}()
 
 	postValue := url.Values{
 		"username":  {c.Username},
@@ -165,7 +173,8 @@ func BasicAuthClient(username, password string) (client *JWClient, err error) {
 
 var rpcClient *rpc.Client
 
-func (c *JWClient) GetCaptcha() (capture string, err error) {
+//验证码识别
+func (c *JWClient) GetCaptcha() (capture string, body []byte, err error) {
 
 	if rpcClient == nil {
 		rpcClient, err = rpc.DialHTTP("tcp", env.Conf.Rpc.Addr)
@@ -177,23 +186,24 @@ func (c *JWClient) GetCaptcha() (capture string, err error) {
 
 	const maxTry = 3
 	for range [maxTry]int{} {
-
-		resp, err := c.doRequest("GET", "https://cas.gzhu.edu.cn/cas_server/captcha.jsp", nil, nil)
+		var resp *http.Response
+		resp, err = c.doRequest("GET", "https://cas.gzhu.edu.cn/cas_server/captcha.jsp", nil, nil)
 		if err != nil {
 			logs.Error(err)
-			return capture, err
+			return
 		}
-		body, err := ioutil.ReadAll(resp.Body)
+		body, err = ioutil.ReadAll(resp.Body)
 		if err != nil {
 			logs.Error(err)
-			return capture, err
+			return
 		}
 
 		err = rpcClient.Call("OcrService.Capture", body, &capture)
 		if err != nil {
+			_ = rpcClient.Close()
 			rpcClient = nil
 			logs.Error(err)
-			return capture, err
+			return
 		}
 
 		reg := regexp.MustCompile(`\d+`)
@@ -206,5 +216,30 @@ func (c *JWClient) GetCaptcha() (capture string, err error) {
 		break
 	}
 	logs.Info("验证码：", capture)
+	return
+}
+
+//保存验证码图片，用于自动识别训练
+func saveCapture(data []byte, filename string) (err error) {
+	if len(data) == 0 {
+		return
+	}
+	path := "/tmp/gzhupi/capture/"
+
+	if _, err = os.Stat(path); os.IsNotExist(err) {
+		_ = os.MkdirAll(path, os.ModePerm)
+	}
+	filename = path + filename
+
+	_, err = os.Stat(filename)
+	if err == nil {
+		filename = filename + fmt.Sprint(time.Now().Unix())
+	}
+
+	err = ioutil.WriteFile(filename, data, os.ModePerm)
+	if err != nil {
+		logs.Error(err)
+		return
+	}
 	return
 }

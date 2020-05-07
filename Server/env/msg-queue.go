@@ -174,7 +174,7 @@ func SaveOrUpdateGrade(grades []*TGrade) {
 		result = db.Model(&res).Where("stu_id = ? and course_id = ? and jxb_id = ?",
 			v.StuID, v.CourseID, v.JxbID).Updates(m)
 		if result.Error != nil {
-			logs.Error(result.Error)
+			logs.Error(result.Error, v)
 			continue
 		}
 		logs.Debug("update record: %s %s %s ", v.StuID, v.CourseID, v.JxbID)
