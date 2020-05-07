@@ -1,27 +1,38 @@
 # github.com/PuerkitoBio/goquery v1.5.0
+## explicit
 github.com/PuerkitoBio/goquery
 # github.com/Shopify/sarama v1.19.0
+## explicit
 github.com/Shopify/sarama
 # github.com/StackExchange/wmi v0.0.0-20190523213315-cbe66965904d
+## explicit
 github.com/StackExchange/wmi
 # github.com/andybalholm/cascadia v1.0.0
 github.com/andybalholm/cascadia
 # github.com/astaxie/beego v1.12.0
+## explicit
 github.com/astaxie/beego/logs
 # github.com/auth0/go-jwt-middleware v0.0.0-20190805220309-36081240882b
+## explicit
 github.com/auth0/go-jwt-middleware
 # github.com/beorn7/perks v1.0.0
 github.com/beorn7/perks/quantile
 # github.com/boltdb/bolt v1.3.1
+## explicit
 github.com/boltdb/bolt
-# github.com/bradfitz/gomemcache v0.0.0-20180710155616-bc664df96737
+# github.com/bradfitz/gomemcache v0.0.0-20190913173617-a41fca850d0b
+## explicit
 github.com/bradfitz/gomemcache/memcache
 # github.com/clbanning/mxj v1.8.4
+## explicit
 github.com/clbanning/mxj
 github.com/clbanning/mxj/j2x
+# github.com/cznic/ql v1.2.0
+## explicit
 # github.com/davecgh/go-spew v1.1.1
 github.com/davecgh/go-spew/spew
 # github.com/dgrijalva/jwt-go v3.2.0+incompatible
+## explicit
 github.com/dgrijalva/jwt-go
 # github.com/eapache/go-resiliency v1.1.0
 github.com/eapache/go-resiliency/breaker
@@ -30,13 +41,17 @@ github.com/eapache/go-xerial-snappy
 # github.com/eapache/queue v1.1.0
 github.com/eapache/queue
 # github.com/fatih/color v1.9.0
+## explicit
 github.com/fatih/color
-# github.com/fsnotify/fsnotify v1.4.7
+# github.com/fsnotify/fsnotify v1.4.9
+## explicit
 github.com/fsnotify/fsnotify
 # github.com/go-ole/go-ole v1.2.4
+## explicit
 github.com/go-ole/go-ole
 github.com/go-ole/go-ole/oleutil
 # github.com/go-redis/redis v6.14.2+incompatible
+## explicit
 github.com/go-redis/redis
 github.com/go-redis/redis/internal
 github.com/go-redis/redis/internal/consistenthash
@@ -49,10 +64,11 @@ github.com/go-redis/redis/internal/util
 github.com/golang/protobuf/proto
 # github.com/golang/snappy v0.0.0-20180518054509-2e65f85255db
 github.com/golang/snappy
-# github.com/gomodule/redigo v2.0.0+incompatible
+# github.com/gomodule/redigo v2.0.1-0.20180627144507-2cd21d9966bf+incompatible
 github.com/gomodule/redigo/internal
 github.com/gomodule/redigo/redis
-# github.com/gorilla/mux v1.7.3
+# github.com/gorilla/mux v1.7.4
+## explicit
 github.com/gorilla/mux
 # github.com/hashicorp/hcl v1.0.0
 github.com/hashicorp/hcl
@@ -68,22 +84,26 @@ github.com/hashicorp/hcl/json/token
 # github.com/inconshreveable/mousetrap v1.0.0
 github.com/inconshreveable/mousetrap
 # github.com/jinzhu/gorm v1.9.11
+## explicit
 github.com/jinzhu/gorm
 github.com/jinzhu/gorm/dialects/postgres
 # github.com/jinzhu/inflection v1.0.0
 github.com/jinzhu/inflection
 # github.com/jmoiron/sqlx v1.2.0
+## explicit
 github.com/jmoiron/sqlx
 github.com/jmoiron/sqlx/reflectx
 github.com/jmoiron/sqlx/types
-# github.com/json-iterator/go v1.1.7
+# github.com/json-iterator/go v1.1.9
+## explicit
 github.com/json-iterator/go
-# github.com/lib/pq v1.2.0
+# github.com/lib/pq v1.5.1
+## explicit
 github.com/lib/pq
 github.com/lib/pq/hstore
 github.com/lib/pq/oid
 github.com/lib/pq/scram
-# github.com/magiconair/properties v1.8.0
+# github.com/magiconair/properties v1.8.1
 github.com/magiconair/properties
 # github.com/mattn/go-colorable v0.1.4
 github.com/mattn/go-colorable
@@ -93,20 +113,25 @@ github.com/mattn/go-isatty
 github.com/matttproud/golang_protobuf_extensions/pbutil
 # github.com/mitchellh/go-homedir v1.1.0
 github.com/mitchellh/go-homedir
-# github.com/mitchellh/mapstructure v1.1.2
+# github.com/mitchellh/mapstructure v1.3.0
+## explicit
 github.com/mitchellh/mapstructure
-# github.com/modern-go/concurrent v0.0.0-20180228061459-e0a39a4cb421
+# github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd
+## explicit
 github.com/modern-go/concurrent
-# github.com/modern-go/reflect2 v0.0.0-20180701023420-4b7aa43c6742
+# github.com/modern-go/reflect2 v1.0.1
 github.com/modern-go/reflect2
 # github.com/nuveo/log v0.0.0-20190430190217-44d02db6bdf8
+## explicit
 github.com/nuveo/log
-# github.com/pelletier/go-toml v1.2.0
+# github.com/pelletier/go-toml v1.7.0
+## explicit
 github.com/pelletier/go-toml
 # github.com/pierrec/lz4 v2.0.5+incompatible
 github.com/pierrec/lz4
 github.com/pierrec/lz4/internal/xxh32
 # github.com/prest/adapters v0.0.0-20190405151647-53750aa8ac63
+## explicit
 github.com/prest/adapters
 github.com/prest/adapters/postgres
 github.com/prest/adapters/postgres/formatters
@@ -114,20 +139,27 @@ github.com/prest/adapters/postgres/internal/connection
 github.com/prest/adapters/postgres/statements
 github.com/prest/adapters/scanner
 # github.com/prest/cmd v0.0.0-20190320205342-75b2d0c5d4a2
+## explicit
 github.com/prest/cmd
 # github.com/prest/config v0.0.0-20190409232338-8a78beea4d99
+## explicit
 github.com/prest/config
 github.com/prest/config/router
 # github.com/prest/controllers v0.0.0-20190714165742-7200b74ea33a
+## explicit
 github.com/prest/controllers
 # github.com/prest/helpers v0.0.0-20180627002842-07dcf603c9a1
+## explicit
 github.com/prest/helpers
 # github.com/prest/middlewares v0.0.0-20190501210230-25fb4a665793
+## explicit
 github.com/prest/middlewares
 github.com/prest/middlewares/statements
 # github.com/prest/template v0.0.0-20190409192546-ae0e5431a9b5
+## explicit
 github.com/prest/template
 # github.com/prometheus/client_golang v0.9.3
+## explicit
 github.com/prometheus/client_golang/prometheus
 github.com/prometheus/client_golang/prometheus/internal
 github.com/prometheus/client_golang/prometheus/promhttp
@@ -143,14 +175,18 @@ github.com/prometheus/procfs/internal/fs
 # github.com/rcrowley/go-metrics v0.0.0-20181016184325-3113b8401b8a
 github.com/rcrowley/go-metrics
 # github.com/shiena/ansicolor v0.0.0-20151119151921-a422bbe96644
+## explicit
 github.com/shiena/ansicolor
 # github.com/shirou/gopsutil v2.20.2+incompatible
+## explicit
 github.com/shirou/gopsutil/internal/common
 github.com/shirou/gopsutil/mem
-# github.com/silenceper/wechat v2.0.0+incompatible
+# github.com/silenceper/wechat v1.2.3
+## explicit
 github.com/silenceper/wechat
 github.com/silenceper/wechat/cache
 github.com/silenceper/wechat/context
+github.com/silenceper/wechat/device
 github.com/silenceper/wechat/js
 github.com/silenceper/wechat/material
 github.com/silenceper/wechat/menu
@@ -160,46 +196,65 @@ github.com/silenceper/wechat/oauth
 github.com/silenceper/wechat/pay
 github.com/silenceper/wechat/qr
 github.com/silenceper/wechat/server
-github.com/silenceper/wechat/template
+github.com/silenceper/wechat/tcb
 github.com/silenceper/wechat/user
 github.com/silenceper/wechat/util
-# github.com/spf13/afero v1.1.2
+# github.com/spf13/afero v1.2.2
+## explicit
 github.com/spf13/afero
 github.com/spf13/afero/mem
-# github.com/spf13/cast v1.3.0
+# github.com/spf13/cast v1.3.1
+## explicit
 github.com/spf13/cast
 # github.com/spf13/cobra v0.0.5
+## explicit
 github.com/spf13/cobra
-# github.com/spf13/jwalterweatherman v1.0.0
+# github.com/spf13/jwalterweatherman v1.1.0
+## explicit
 github.com/spf13/jwalterweatherman
-# github.com/spf13/pflag v1.0.3
+# github.com/spf13/pflag v1.0.5
+## explicit
 github.com/spf13/pflag
-# github.com/spf13/viper v1.4.0
+# github.com/spf13/viper v1.6.3
+## explicit
 github.com/spf13/viper
+# github.com/subosito/gotenv v1.2.0
+github.com/subosito/gotenv
 # github.com/urfave/negroni v1.0.0
+## explicit
 github.com/urfave/negroni
-# golang.org/x/crypto v0.0.0-20190325154230-a5d413f7728c
+# golang.org/x/crypto v0.0.0-20200429183012-4b2356b1ed79
+## explicit
 golang.org/x/crypto/pkcs12
 golang.org/x/crypto/pkcs12/internal/rc2
-# golang.org/x/net v0.0.0-20190522155817-f3200d17e092
+# golang.org/x/net v0.0.0-20191125084936-ffdde1057850
 golang.org/x/net/html
 golang.org/x/net/html/atom
-# golang.org/x/sync v0.0.0-20190227155943-e225da77a7e6
+# golang.org/x/sync v0.0.0-20190911185100-cd5d95a43a6e
+## explicit
 golang.org/x/sync/singleflight
-# golang.org/x/sys v0.0.0-20191026070338-33540a1f6037
+# golang.org/x/sys v0.0.0-20200501145240-bc7a7d42d5c3
+## explicit
+golang.org/x/sys/internal/unsafeheader
 golang.org/x/sys/unix
 golang.org/x/sys/windows
-# golang.org/x/text v0.3.1-0.20180807135948-17ff2d5776d2
+# golang.org/x/text v0.3.2
+## explicit
 golang.org/x/text/transform
 golang.org/x/text/unicode/norm
 # gopkg.in/guregu/null.v3 v3.4.0
+## explicit
 gopkg.in/guregu/null.v3
+# gopkg.in/ini.v1 v1.55.0
+## explicit
+gopkg.in/ini.v1
 # gopkg.in/mattes/migrate.v1 v1.3.2
+## explicit
 gopkg.in/mattes/migrate.v1/driver
 gopkg.in/mattes/migrate.v1/driver/postgres
 gopkg.in/mattes/migrate.v1/file
 gopkg.in/mattes/migrate.v1/migrate
 gopkg.in/mattes/migrate.v1/migrate/direction
 gopkg.in/mattes/migrate.v1/pipe
-# gopkg.in/yaml.v2 v2.2.2
+# gopkg.in/yaml.v2 v2.2.8
 gopkg.in/yaml.v2

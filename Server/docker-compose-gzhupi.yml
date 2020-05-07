@@ -15,7 +15,7 @@ services:
     ports:
       - 9000:9000
     volumes:
-      - /tmp/gzhupi:/home/log
+      - /tmp/gzhupi:/tmp/
     environment:
       - GZHUPI_SECRET_JWT=${GZHUPI_SECRET_JWT}
       - GZHUPI_RPC_ADDR=${GZHUPI_RPC_ADDR}
