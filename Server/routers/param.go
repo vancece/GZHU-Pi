@@ -20,10 +20,21 @@ import (
 
 func Param(w http.ResponseWriter, r *http.Request) {
 
+	data, err := getActionParam()
+	if err != nil || data == nil {
+		Response(w, r, nil, http.StatusOK, fmt.Sprint(err))
+		return
+	}
+	open, ok := data["open"]
+	o, ok := open.(bool)
+	if !ok || !o {
+		Response(w, r, nil, http.StatusOK, "close")
+		return
+	}
+
 	var user env.TUser
-	var err error
 	if len(r.Cookies()) == 0 {
-		Response(w, r, nil, http.StatusOK, "request ok")
+		Response(w, r, nil, http.StatusOK, "no cookie")
 		return
 	}
 	user.ID, err = GetUserID(r)
@@ -39,9 +50,8 @@ func Param(w http.ResponseWriter, r *http.Request) {
 		Response(w, r, nil, http.StatusUnauthorized, err.Error())
 		return
 	}
-	var data map[string]interface{}
+	//var data map[string]interface{}
 	if err == redis.Nil {
-		data, err = getActionParam()
 		var store = map[string]interface{}{
 			"timestamp": time.Now().Unix() * 1000,
 			"data":      data,
@@ -74,7 +84,7 @@ func getActionParam() (data map[string]interface{}, err error) {
 	}
 	if err == redis.Nil {
 		//example := map[string]interface{}{
-		//
+		//	"open":   false,
 		//	"modal": map[string]interface{}{
 		//		"valid":   false,
 		//		"cancel":  false,
