@@ -31,10 +31,25 @@ port = "6379"
 password = ""
 
 [weixin]
-path = "/"
-token = "foobar"
-app_id = "12345678"
-secret = "12345678"
+enable = false
+token = ""
+ase_key = ""
+app_id = ""
+secret = ""
+min_app_id = ""
+min_app_secret = ""
+
+# 腾讯云cos
+[cos]
+enable = false
+secret_id = ""
+secret_key = ""
+
+# face++ api
+[facepp]
+enable = false
+api_key = ""
+api_secret = ""
 
 
 # ================================================

@@ -117,10 +117,11 @@ func customRouter(r *mux.Router) *mux.Router {
 
 	r.HandleFunc("/auth", routers.PanicMV(routers.Auth)).Methods("POST")
 	r.HandleFunc("/param", routers.PanicMV(routers.Param))
+	r.HandleFunc("/upload", routers.PanicMV(routers.Upload))
 
 	//微信公众号接口
 	//r.HandleFunc("/wx/check", routers.PanicMV(routers.WeChatCheck))
-	//r.HandleFunc("/wx/check", routers.PanicMV(routers.Hello))
+	r.HandleFunc("/wx/check", routers.PanicMV(routers.Hello))
 
 	//教务系统
 	r.HandleFunc("/jwxt/course", routers.PanicMV(routers.JWMiddleWare(routers.Course))).Methods("GET", "POST")

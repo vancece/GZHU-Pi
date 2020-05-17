@@ -60,6 +60,25 @@ type Configure struct {
 		Port     int64  `json:"port" remark:"redis端口"`
 		Password string `json:"password" remark:"redis密码" must:"false"`
 	}
+	Cos struct {
+		Enable    bool   `json:"enabled" must:"false"`
+		SecretID  string `json:"secret_id" must:"false"`
+		SecretKey string `json:"secret_key" must:"false"`
+	} `json:"cos" remark:"腾讯cos云储存"`
+	FacePP struct {
+		Enable    bool   `json:"enabled" must:"false"`
+		ApiKey    string `json:"api_key" must:"false"`
+		ApiSecret string `json:"api_secret" must:"false"`
+	} `json:"facepp" remark:"face++ 人像抠图api"`
+	WeiXin struct {
+		Enable       bool   `json:"enabled" must:"false"`
+		Token        string `json:"token" remark:"公众号token" must:"false"`
+		AseKey       string `json:"ase_key" remark:"公众号AseKey" must:"false"`
+		AppID        string `json:"app_id" remark:"公众号AppID" must:"false"`
+		Secret       string `json:"secret" remark:"公众号Secret" must:"false"`
+		MinAppID     string `json:"min_app_id" remark:"小程序AppID" must:"false"`
+		MinAppSecret string `json:"min_app_secret" remark:"小程序AppSecret" must:"false"`
+	} `json:"weixin" remark:"微信公众、小程序"`
 }
 
 var Conf = &Configure{}
