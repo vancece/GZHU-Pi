@@ -67,6 +67,8 @@ github.com/golang/snappy
 # github.com/gomodule/redigo v2.0.1-0.20180627144507-2cd21d9966bf+incompatible
 github.com/gomodule/redigo/internal
 github.com/gomodule/redigo/redis
+# github.com/google/go-querystring v1.0.0
+github.com/google/go-querystring/query
 # github.com/gorilla/mux v1.7.4
 ## explicit
 github.com/gorilla/mux
@@ -121,6 +123,8 @@ github.com/mitchellh/mapstructure
 github.com/modern-go/concurrent
 # github.com/modern-go/reflect2 v1.0.1
 github.com/modern-go/reflect2
+# github.com/mozillazg/go-httpheader v0.2.1
+github.com/mozillazg/go-httpheader
 # github.com/nuveo/log v0.0.0-20190430190217-44d02db6bdf8
 ## explicit
 github.com/nuveo/log
@@ -220,6 +224,9 @@ github.com/spf13/pflag
 github.com/spf13/viper
 # github.com/subosito/gotenv v1.2.0
 github.com/subosito/gotenv
+# github.com/tencentyun/cos-go-sdk-v5 v0.7.4
+## explicit
+github.com/tencentyun/cos-go-sdk-v5
 # github.com/urfave/negroni v1.0.0
 ## explicit
 github.com/urfave/negroni
