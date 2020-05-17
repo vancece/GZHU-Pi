@@ -2,9 +2,7 @@ package gzhu_jw
 
 import (
 	"GZHU-Pi/env"
-	"GZHU-Pi/services/kafka"
 	"bytes"
-	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego/logs"
 	jsoniter "github.com/json-iterator/go"
@@ -72,39 +70,6 @@ func (c *JWClient) GetAllGrade(year, sem string) (gradeData *GradeData, err erro
 
 	//go env.SaveStuInfo(stuInfo)
 	//go env.SaveOrUpdateGrade(grades)
-
-	//加入消息队列
-	go func() {
-
-		info, err := json.Marshal(stuInfo)
-		if err != nil {
-			logs.Error(err)
-			return
-		}
-		err = env.Kafka.SendData(&kafka.ProduceData{
-			Topic: "kafka-queue-student-info",
-			Data:  info,
-		})
-		if err != nil {
-			logs.Error(err)
-			return
-		}
-
-		//====
-		g, err := json.Marshal(grades)
-		if err != nil {
-			logs.Error(err)
-			return
-		}
-		err = env.Kafka.SendData(&kafka.ProduceData{
-			Topic: env.QueueTopicGrade,
-			Data:  g,
-		})
-		if err != nil {
-			logs.Error(err)
-			return
-		}
-	}()
 
 	//根基成绩列表统计所有成绩信息，传址
 	CountGpa(grades, gradeData)

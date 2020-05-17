@@ -223,10 +223,12 @@ func ParseToken(tokenStr string, key string) (userID int64, err error) {
 }
 
 //从token读取用户id
+var ErrMissCookie = fmt.Errorf("cookie not set, please authenticate first")
+
 func GetUserID(r *http.Request) (userID int64, err error) {
 	var token string
 	if len(r.Cookies()) == 0 {
-		err = fmt.Errorf("cookie not set, please authenticate first")
+		err = ErrMissCookie
 		logs.Error(err)
 		return
 	}

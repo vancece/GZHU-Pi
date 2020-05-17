@@ -41,7 +41,7 @@ var Urls = map[string]string{
 	"achieve-post": baseUrl + "/xsxy/xsxyqk_cxJxzxjhxfyqKcxx.html?gnmkdm=N105515",
 }
 
-var WeekdayMatcher = map[string]int{
+var WeekdayMatcher = map[string]int64{
 	"星期一": 1,
 	"星期二": 2,
 	"星期三": 3,

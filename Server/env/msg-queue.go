@@ -144,14 +144,21 @@ func SaveOrUpdateGrade(grades []*TGrade) {
 	for _, v := range grades {
 		//根据主键查询
 		var res = TGrade{}
-		result := db.Where("stu_id = ? and course_id = ? and jxb_id = ?",
-			v.StuID, v.CourseID, v.JxbID).First(&res)
-
+		err := db.Where("stu_id = ? and course_id = ? and jxb_id = ?",
+			v.StuID, v.CourseID, v.JxbID).First(&res).Error
 		//不存在记录则插入
-		if result.Error == gorm.ErrRecordNotFound {
+		if err == gorm.ErrRecordNotFound {
 			logs.Debug("create record for course_id %s", v.CourseID)
-			db.Create(v)
+			err = db.Create(v).Error
+			if err != nil {
+				logs.Error(err)
+				//return
+			}
 			continue
+		}
+		if err != nil || res.ID <= 0 {
+			logs.Error(err, res)
+			return
 		}
 		//存在记录但没有变动，跳过
 		if math.Round(res.CourseGpa*10)/10 == v.CourseGpa &&
@@ -161,6 +168,7 @@ func SaveOrUpdateGrade(grades []*TGrade) {
 			res.Invalid == v.Invalid {
 			continue
 		}
+		v.ID = res.ID
 		//更新记录 结构体转换为map
 		m := make(map[string]interface{})
 		elem := reflect.ValueOf(v).Elem()
@@ -171,10 +179,10 @@ func SaveOrUpdateGrade(grades []*TGrade) {
 		delete(m, "CreatedAt")
 		delete(m, "UpdatedAt")
 
-		result = db.Model(&res).Where("stu_id = ? and course_id = ? and jxb_id = ?",
-			v.StuID, v.CourseID, v.JxbID).Updates(m)
-		if result.Error != nil {
-			logs.Error(result.Error, v)
+		err = db.Model(&res).Where("stu_id = ? and course_id = ? and jxb_id = ?",
+			v.StuID, v.CourseID, v.JxbID).Updates(m).Error
+		if err != nil {
+			logs.Error(err, v)
 			continue
 		}
 		logs.Debug("update record: %s %s %s ", v.StuID, v.CourseID, v.JxbID)

@@ -4,6 +4,7 @@ import (
 	"GZHU-Pi/env"
 	"GZHU-Pi/pkg"
 	"GZHU-Pi/pkg/gzhu_jw"
+	"GZHU-Pi/services/kafka"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -219,15 +220,53 @@ func Grade(w http.ResponseWriter, r *http.Request) {
 		logs.Error(err)
 		Jwxt.Delete(getCacheKey(r, client.GetUsername()))
 		if err == gzhu_jw.AuthError {
-			//TODO 重试处理
-
 			Response(w, r, nil, http.StatusUnauthorized, err.Error())
 			return
 		}
 		Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}
+
 	Response(w, r, data, http.StatusOK, "request ok")
+
+	stuInfo := data.StuInfo
+	var grades []*env.TGrade
+	for _, v := range data.SemList {
+		grades = append(grades, v.GradeList...)
+	}
+	//加入消息队列
+	go func() {
+
+		info, err := json.Marshal(stuInfo)
+		if err != nil {
+			logs.Error(err)
+			return
+		}
+		err = env.Kafka.SendData(&kafka.ProduceData{
+			Topic: "kafka-queue-student-info",
+			Data:  info,
+		})
+		if err != nil {
+			logs.Error(err)
+			return
+		}
+
+		//====
+		g, err := json.Marshal(grades)
+		if err != nil {
+			logs.Error(err)
+			return
+		}
+		err = env.Kafka.SendData(&kafka.ProduceData{
+			Topic: env.QueueTopicGrade,
+			Data:  g,
+		})
+		if err != nil {
+			logs.Error(err)
+			return
+		}
+	}()
+
 }
 
 func EmptyRoom(w http.ResponseWriter, r *http.Request) {

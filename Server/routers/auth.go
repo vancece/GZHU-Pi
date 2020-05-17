@@ -240,6 +240,9 @@ func AuthByCookies(r *http.Request) (user *env.TUser, err error) {
 	user = &env.TUser{}
 	user.ID, err = GetUserID(r)
 	if err != nil {
+		if err == ErrMissCookie {
+			err = fmt.Errorf("登录信息无效，请退出小程序重新打开")
+		}
 		return
 	}
 	err = env.GetGorm().First(user).Error

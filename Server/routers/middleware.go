@@ -20,9 +20,15 @@ func TableAccessHandle(w http.ResponseWriter, r *http.Request, next http.Handler
 	//====== 无需校验token的接口 =======
 
 	if strings.Contains(r.URL.Path, "/auth") ||
+		strings.Contains(r.URL.Path, "/wx") ||
 		strings.Contains(r.URL.Path, "/jwxt") ||
 		strings.Contains(r.URL.Path, "/library") ||
 		strings.Contains(r.URL.Path, "/second") {
+		next(w, r)
+		return
+	}
+	if !strings.Contains(r.URL.Path, "gzhupi") ||
+		!strings.Contains(strings.ToUpper(r.URL.Path), "QUERIES") {
 		next(w, r)
 		return
 	}

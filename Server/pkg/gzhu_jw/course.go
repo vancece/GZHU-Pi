@@ -18,21 +18,21 @@ type CourseData struct {
 }
 
 type Course struct {
-	CheckType   string `json:"check_type" remark:"考核类型"`
-	ClassPlace  string `json:"class_place" remark:"上课地点"`
-	Color       int    `json:"color" remark:"课表颜色"`
-	CourseID    string `json:"course_id" remark:"课程ID"`
-	CourseName  string `json:"course_name" remark:"课程名称"`
-	CourseTime  string `json:"course_time" remark:"上课时间"`
-	Credit      string `json:"credit" remark:"学分"`
-	JghID       string `json:"jgh_id" remark:"教工号ID"`
-	Last        int    `json:"last" remark:"持续节数"`
-	Start       int    `json:"start" remark:"开始节数"`
-	Teacher     string `json:"teacher" remark:"教师"`
-	Weekday     int    `json:"weekday" remark:"星期几数值"`
-	Weeks       string `json:"weeks" remark:"周段"`
-	WhichDay    string `json:"which_day" remark:"星期几"`
-	WeekSection []int  `json:"week_section" remark:"周段[start,end,start,end]"`
+	CheckType   string  `json:"check_type" remark:"考核类型"`
+	ClassPlace  string  `json:"class_place" remark:"上课地点"`
+	Color       int64   `json:"color" remark:"课表颜色"`
+	CourseID    string  `json:"course_id" remark:"课程ID"`
+	CourseName  string  `json:"course_name" remark:"课程名称"`
+	CourseTime  string  `json:"course_time" remark:"上课时间"`
+	Credit      float64 `json:"credit" remark:"学分"`
+	JghID       string  `json:"jgh_id" remark:"教工号ID"`
+	Last        int64   `json:"last" remark:"持续节数"`
+	Start       int64   `json:"start" remark:"开始节数"`
+	Teacher     string  `json:"teacher" remark:"教师"`
+	Weekday     int64   `json:"weekday" remark:"星期几数值"`
+	Weeks       string  `json:"weeks" remark:"周段"`
+	WhichDay    string  `json:"which_day" remark:"星期几"`
+	WeekSection []int   `json:"week_section" remark:"周段[start,end,start,end]"`
 }
 
 type SjkCourse struct {
@@ -89,9 +89,9 @@ func (c *JWClient) GetCourse(year, semester string) (courseData *CourseData, err
 }
 
 //获取到的课程信息不包含学分，从另一个请求结果进行匹配
-func MatchCredit(body []byte) (matcher map[string]string) {
+func MatchCredit(body []byte) (matcher map[string]float64) {
 
-	matcher = make(map[string]string)
+	matcher = make(map[string]float64)
 	json := jsoniter.ConfigCompatibleWithStandardLibrary
 	item := json.Get(body, "items")
 
@@ -101,20 +101,20 @@ func MatchCredit(body []byte) (matcher map[string]string) {
 		if courseID == "" {
 			break
 		}
-		credit := item.Get(i).Get("xf").ToString()
+		credit := item.Get(i).Get("xf").ToFloat64()
 		matcher[courseID] = credit
 	}
 	return
 }
 
 //解析提取课程信息
-func ParseCourse(body []byte, matcher map[string]string) (courses []*Course) {
+func ParseCourse(body []byte, matcher map[string]float64) (courses []*Course) {
 
 	courses = []*Course{}
 	json := jsoniter.ConfigCompatibleWithStandardLibrary
 	kbList := json.Get(body, "kbList")
 
-	var idSet = make(map[string]int) //课程id集合，去重
+	var idSet = make(map[string]int64) //课程id集合，去重
 	//遍历所有课程
 	for i := 0; true; i++ {
 		c := &Course{}
@@ -141,11 +141,11 @@ func ParseCourse(body []byte, matcher map[string]string) (courses []*Course) {
 		reg, _ := regexp.Compile(`\d+`)
 		res := reg.FindAllString(c.CourseTime, 2)
 		if len(res) == 2 {
-			c.Start, _ = strconv.Atoi(res[0])
-			end, _ := strconv.Atoi(res[1])
+			c.Start, _ = strconv.ParseInt(res[0], 10, 64)
+			end, _ := strconv.ParseInt(res[1], 10, 64)
 			c.Last = end - c.Start + 1
 		} else if len(res) == 1 {
-			c.Start, _ = strconv.Atoi(res[0])
+			c.Start, _ = strconv.ParseInt(res[0], 10, 64)
 			c.Last = 1
 		}
 
@@ -153,7 +153,7 @@ func ParseCourse(body []byte, matcher map[string]string) (courses []*Course) {
 		var ok bool
 		c.Color, ok = idSet[c.CourseID]
 		if !ok {
-			idSet[c.CourseID] = len(idSet)
+			idSet[c.CourseID] = int64(len(idSet))
 			c.Color = idSet[c.CourseID]
 		}
 		//匹配课程学分

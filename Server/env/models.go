@@ -161,3 +161,26 @@ type VUser struct {
 	MajorClass string `json:"major_class,omitempty" remark:"专业班级" gorm:"type:varchar"`
 	MajorID    string `json:"major_id,omitempty" remark:"专业id" gorm:"type:varchar"`
 }
+
+type TStuCourse struct {
+	ID int64 `json:"id,omitempty" remark:"自增id" gorm:"primary_key"`
+
+	CheckType   string  `json:"check_type" remark:"考核类型" gorm:"type:varchar"`
+	ClassPlace  string  `json:"class_place" remark:"上课地点" gorm:"type:varchar"`
+	Color       int64   `json:"color" remark:"课表颜色" gorm:"type:smallint"`
+	CourseID    string  `json:"course_id" remark:"课程ID" gorm:"type:varchar"`
+	CourseName  string  `json:"course_name" remark:"课程名称" gorm:"type:varchar"`
+	CourseTime  string  `json:"course_time" remark:"上课时间" gorm:"type:varchar"`
+	Credit      float64 `json:"credit" remark:"学分" gorm:"type:varchar"`
+	JghID       string  `json:"jgh_id" remark:"教工号ID" gorm:"type:varchar"`
+	Last        int64   `json:"last" remark:"持续节数" gorm:"type:smallint"`
+	Start       int64   `json:"start" remark:"开始节数" gorm:"type:smallint"`
+	Teacher     string  `json:"teacher" remark:"教师" gorm:"type:varchar"`
+	Weekday     int64   `json:"weekday" remark:"星期几数值" gorm:"type:smallint"`
+	Weeks       string  `json:"weeks" remark:"周段" gorm:"type:varchar"`
+	WhichDay    string  `json:"which_day" remark:"星期几" gorm:"type:varchar"`
+	WeekSection []int   `json:"week_section" remark:"周段[start,end,start,end]" gorm:"type:jsonb"`
+
+	CreatedAt time.Time `json:"created_at,omitempty" remark:"创建时间" gorm:"default:current_timestamp"`
+	UpdatedAt time.Time `json:"updated_at,omitempty" remark:"更新时间" gorm:"default:current_timestamp"`
+}
