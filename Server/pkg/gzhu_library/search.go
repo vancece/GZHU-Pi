@@ -85,12 +85,12 @@ func BookSearch(query string, searchPage string) (result map[string]interface{},
 
 		bookInfoH2 := re.FindAllStringSubmatch(bookInfo[i][1], -1)
 		if bookInfoH2 == nil {
-			logs.Error(`正则匹配失败，返回为空`)
+			logs.Warn(`正则匹配失败，返回为空`)
 		} else { //书名
 			re = regexp.MustCompile(`<a[\s\S]*?>[\s]*?([\S][\s\S]*?)</a>`)
 			bookInfoH2A := re.FindAllStringSubmatch(bookInfoH2[0][1], -1)
 			if bookInfoH2A == nil {
-				logs.Error(`正则匹配失败，返回为空`)
+				logs.Warn(`正则匹配失败，返回为空`)
 			} else {
 				book.BookName = bookInfoH2A[0][1]
 				book.BookName = strings.TrimSuffix(book.BookName, " /")
@@ -99,7 +99,7 @@ func BookSearch(query string, searchPage string) (result map[string]interface{},
 				re = regexp.MustCompile(`[\d]{3,}`)
 				bookID := re.FindAllStringSubmatch(bookInfoH2A[0][0], -1)
 				if bookID == nil {
-					logs.Error(`正则匹配失败，返回为空`)
+					logs.Warn(`正则匹配失败，返回为空`)
 				} else {
 					book.ID = bookID[0][0]
 				}
@@ -108,7 +108,7 @@ func BookSearch(query string, searchPage string) (result map[string]interface{},
 				re = regexp.MustCompile(`source=(.+)"`)
 				bookResource := re.FindAllStringSubmatch(bookInfoH2A[0][0], -1)
 				if bookResource == nil {
-					logs.Error(`正则匹配失败，返回为空`)
+					logs.Warn(`正则匹配失败，返回为空`)
 				} else {
 					book.Source = bookResource[0][1]
 				}
@@ -118,7 +118,7 @@ func BookSearch(query string, searchPage string) (result map[string]interface{},
 			re = regexp.MustCompile(`<span[\s\S]*?>(.*?)</span>`)
 			bookAuthor := re.FindAllStringSubmatch(bookInfoH2[0][1], -1)
 			if bookAuthor == nil {
-				logs.Error(`正则匹配失败，返回为空`)
+				logs.Warn(`正则匹配失败，返回为空`)
 			} else {
 				book.Author = bookAuthor[0][1]
 			}
@@ -128,7 +128,7 @@ func BookSearch(query string, searchPage string) (result map[string]interface{},
 		re = regexp.MustCompile(`<h4[\s\S]*?>[\s\S]*?</h4>`)
 		bookInfoH4 := re.FindAllStringSubmatch(bookInfo[i][1], -1)
 		if bookInfoH4 == nil {
-			logs.Error(`正则匹配失败，返回为空`)
+			logs.Warn(`正则匹配失败，返回为空`)
 		} else {
 			//出版社
 			re = regexp.MustCompile(`出版发行：([\s\S]*?)\r\n`)
@@ -146,13 +146,13 @@ func BookSearch(query string, searchPage string) (result map[string]interface{},
 			re = regexp.MustCompile(`&nbsp;&nbsp;[\s\S]*?&nbsp;&nbsp;`)
 			bookISbnRow := re.FindAllStringSubmatch(bookInfoH4[0][0], -1)
 			if bookISbnRow == nil {
-				logs.Error(`正则匹配失败，返回为空`)
+				logs.Warn(`正则匹配失败，返回为空`)
 			} else {
 				//ISbn
 				re = regexp.MustCompile(`[\d-]{10,}`)
 				bookISbn := re.FindAllStringSubmatch(bookISbnRow[0][0], -1)
 				if bookISbn == nil {
-					logs.Error(`正则匹配失败，返回为空`)
+					logs.Warn(`正则匹配失败，返回为空`)
 				} else {
 					book.ISBN = bookISbn[0][0]
 				}
@@ -163,7 +163,7 @@ func BookSearch(query string, searchPage string) (result map[string]interface{},
 			re = regexp.MustCompile(`复本数.*([\d]+).*\n`)
 			bookCopyNumber := re.FindAllStringSubmatch(bookInfoH4[1][0], -1)
 			if bookCopyNumber == nil {
-				logs.Error(`正则匹配失败，返回为空`)
+				logs.Warn(`正则匹配失败，返回为空`)
 			} else {
 				book.Copies = bookCopyNumber[0][1]
 			}
@@ -172,7 +172,7 @@ func BookSearch(query string, searchPage string) (result map[string]interface{},
 			re = regexp.MustCompile(`在馆数.*([\d]+).*\n`)
 			bookCouldBeBorrow := re.FindAllStringSubmatch(bookInfoH4[1][0], -1)
 			if bookCouldBeBorrow == nil {
-				logs.Error(`正则匹配失败，返回为空`)
+				logs.Warn(`正则匹配失败，返回为空`)
 			} else {
 				book.Loanable = bookCouldBeBorrow[0][1]
 			}
@@ -181,7 +181,7 @@ func BookSearch(query string, searchPage string) (result map[string]interface{},
 			re = regexp.MustCompile(`([A-Z][\s\S]*?)\r\n`)
 			bookCallNumber := re.FindAllStringSubmatch(bookInfoH4[1][0], -1)
 			if bookCallNumber == nil {
-				logs.Error(`正则匹配失败，返回为空`)
+				logs.Warn(`正则匹配失败，返回为空`)
 			} else {
 				book.CallNo = bookCallNumber[0][1]
 			}

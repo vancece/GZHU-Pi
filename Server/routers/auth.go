@@ -128,6 +128,9 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 			Response(w, r, nil, http.StatusBadRequest, err.Error())
 			return
 		}
+		seed := user.StuID.String + user.OpenID.String + user.Nickname.String + fmt.Sprint(time.Now().Unix())
+		u.ProfilePic = null.StringFrom(RandomAvatar(seed))
+
 		err = db.Create(&u).Error
 		if err != nil {
 			logs.Error(err)
@@ -179,9 +182,9 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 		}
 		//创建随机头像
 		if user.ProfilePic.String == "" {
-			str := user.StuID.String + user.OpenID.String + user.Nickname.String + fmt.Sprint(time.Now().Unix())
+			seed := user.StuID.String + user.OpenID.String + user.Nickname.String + fmt.Sprint(time.Now().Unix())
 			go func() {
-				u.ProfilePic = null.StringFrom(RandomAvatar(str))
+				u.ProfilePic = null.StringFrom(RandomAvatar(seed))
 				err = db.Model(&u).Update(u).Error
 				if err != nil && err != gorm.ErrRecordNotFound {
 					logs.Error(err)
@@ -237,12 +240,16 @@ func AuthBySchool(w http.ResponseWriter, r *http.Request) {
 }
 
 func AuthByCookies(r *http.Request) (user *env.TUser, err error) {
+
+	if len(r.Cookies()) == 0 {
+		err = fmt.Errorf("登录信息无效，请退出小程序重新打开")
+		logs.Error(err)
+		return
+	}
+
 	user = &env.TUser{}
 	user.ID, err = GetUserID(r)
 	if err != nil {
-		if err == ErrMissCookie {
-			err = fmt.Errorf("登录信息无效，请退出小程序重新打开")
-		}
 		return
 	}
 	err = env.GetGorm().First(user).Error

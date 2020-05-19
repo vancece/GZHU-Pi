@@ -27,7 +27,7 @@ func TableAccessHandle(w http.ResponseWriter, r *http.Request, next http.Handler
 		next(w, r)
 		return
 	}
-	if !strings.Contains(r.URL.Path, "gzhupi") ||
+	if !strings.Contains(r.URL.Path, env.Conf.Db.Dbname) &&
 		!strings.Contains(strings.ToUpper(r.URL.Path), "QUERIES") {
 		next(w, r)
 		return

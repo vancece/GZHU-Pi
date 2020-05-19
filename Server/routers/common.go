@@ -343,7 +343,7 @@ func invalidZeroNullValue(p interface{}) (err error) {
 }
 
 //通过Gravatar服务随机生成头像
-func RandomAvatar(str string) (baseImg string) {
+func RandomAvatar(seed string) (baseImg string) {
 
 	defaultAvatar := "https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/icon/anonmous_avatar.png"
 	size := 48
@@ -351,7 +351,7 @@ func RandomAvatar(str string) (baseImg string) {
 	style := styles[time.Now().UnixNano()%3]
 
 	hash := md5.New()
-	hash.Write([]byte(str + style))
+	hash.Write([]byte(seed + style))
 	MD5 := hex.EncodeToString(hash.Sum(nil))
 
 	url := fmt.Sprintf("http://www.gravatar.com/avatar/%s?s=%d&d=%s", MD5, size, style)
