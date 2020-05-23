@@ -60,6 +60,7 @@ func (c *JWClient) GetAllGrade(year, sem string) (gradeData *GradeData, err erro
 	defer resp.Body.Close()
 	//检查登录状态
 	if strings.Contains(string(body), "登录") {
+		logs.Info(string(body))
 		return nil, AuthError
 	}
 

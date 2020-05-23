@@ -151,8 +151,7 @@ func SaveOrUpdateGrade(grades []*TGrade) {
 			logs.Debug("create record for course_id %s", v.CourseID)
 			err = db.Create(v).Error
 			if err != nil {
-				logs.Error(err)
-				//return
+				logs.Error(err, v)
 			}
 			continue
 		}

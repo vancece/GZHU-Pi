@@ -133,7 +133,7 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 
 		err = db.Create(&u).Error
 		if err != nil {
-			logs.Error(err)
+			logs.Error(err, u)
 			Response(w, r, nil, http.StatusInternalServerError, err.Error())
 			return
 		}

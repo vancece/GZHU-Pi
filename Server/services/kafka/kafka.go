@@ -252,10 +252,10 @@ func SaramaConsumer() {
 	}()
 
 	//sarama提供了一些额外的方法，以便我们获取broker那边的情况
-	topics, _ := consumer.Topics()
-	fmt.Println(topics)
-	partitions, _ := consumer.Partitions("0606_test")
-	fmt.Println(partitions)
+	//topics, _ := consumer.Topics()
+	//fmt.Println(topics)
+	//partitions, _ := consumer.Partitions("0606_test")
+	//fmt.Println(partitions)
 
 	//第一次的offset从kafka获取(发送OffsetFetchRequest)，之后从本地获取，由MarkOffset()得来
 	nextOffset, _ := partitionOffsetManager.NextOffset()
