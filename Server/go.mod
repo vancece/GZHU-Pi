@@ -6,7 +6,8 @@ require (
 	github.com/PuerkitoBio/goquery v1.5.0
 	github.com/Shopify/sarama v1.19.0
 	github.com/StackExchange/wmi v0.0.0-20190523213315-cbe66965904d // indirect
-	github.com/astaxie/beego v1.12.0
+	github.com/ZhenShaw/tesseract-rpc v0.0.0-20200526052921-59dbae21c243
+	github.com/astaxie/beego v1.12.1
 	github.com/auth0/go-jwt-middleware v0.0.0-20190805220309-36081240882b // indirect
 	github.com/boltdb/bolt v1.3.1
 	github.com/bradfitz/gomemcache v0.0.0-20190913173617-a41fca850d0b // indirect
@@ -34,7 +35,6 @@ require (
 	github.com/prest/middlewares v0.0.0-20190501210230-25fb4a665793
 	github.com/prest/template v0.0.0-20190409192546-ae0e5431a9b5 // indirect
 	github.com/prometheus/client_golang v0.9.3
-	github.com/shiena/ansicolor v0.0.0-20151119151921-a422bbe96644 // indirect
 	github.com/shirou/gopsutil v2.20.2+incompatible
 	github.com/silenceper/wechat v1.2.3
 	github.com/spf13/afero v1.2.2 // indirect
@@ -46,9 +46,10 @@ require (
 	github.com/tencentyun/cos-go-sdk-v5 v0.7.4
 	github.com/urfave/negroni v1.0.0 // indirect
 	golang.org/x/crypto v0.0.0-20200429183012-4b2356b1ed79 // indirect
+	golang.org/x/net v0.0.0-20200520182314-0ba52f642ac2
 	golang.org/x/sync v0.0.0-20190911185100-cd5d95a43a6e
 	golang.org/x/sys v0.0.0-20200501145240-bc7a7d42d5c3 // indirect
-	golang.org/x/text v0.3.2 // indirect
+	google.golang.org/grpc v1.29.1
 	gopkg.in/guregu/null.v3 v3.4.0
 	gopkg.in/ini.v1 v1.55.0 // indirect
 	gopkg.in/mattes/migrate.v1 v1.3.2 // indirect
