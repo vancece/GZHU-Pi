@@ -17,6 +17,8 @@ steps:
         from_secret: GZHUPI_SECRET_JWT
       GZHUPI_RPC_ADDR: 
         from_secret: GZHUPI_RPC_ADDR
+      GZHUPI_RPC_TOKEN: 
+        from_secret: GZHUPI_RPC_TOKEN
       GZHUPI_DB_HOST:
         from_secret: GZHUPI_DB_HOST
       GZHUPI_DB_PORT:

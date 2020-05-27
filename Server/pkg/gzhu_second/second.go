@@ -6,14 +6,16 @@ package gzhu_second
 
 import (
 	"GZHU-Pi/env"
+	"context"
 	"crypto/tls"
 	"fmt"
+	pb "github.com/ZhenShaw/tesseract-rpc/proto"
 	"github.com/astaxie/beego/logs"
+	"google.golang.org/grpc"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"net/http/cookiejar"
-	"net/rpc"
 	"net/url"
 	"regexp"
 	"strings"
@@ -110,7 +112,7 @@ func BasicAuthClient(username, password string) (client *SecondClient, err error
 		return nil, fmt.Errorf("get login form failed")
 	}
 
-	captcha, err := c.GetCaptcha()
+	captcha, _, err := c.GetCaptcha()
 	if err != nil {
 		logs.Error(err)
 		return
@@ -156,39 +158,46 @@ func BasicAuthClient(username, password string) (client *SecondClient, err error
 	return c, nil
 }
 
-var rpcClient *rpc.Client
+var rpcClient pb.CaptureOCRClient
 
-func (c *SecondClient) GetCaptcha() (capture string, err error) {
+//验证码识别
+func (c *SecondClient) GetCaptcha() (capture string, body []byte, err error) {
 
 	if rpcClient == nil {
-		rpcClient, err = rpc.DialHTTP("tcp", env.Conf.Rpc.Addr)
+		var conn *grpc.ClientConn
+		conn, err = grpc.Dial(env.Conf.Rpc.Addr, grpc.WithInsecure())
 		if err != nil {
 			logs.Error(err)
 			return
 		}
+		rpcClient = pb.NewCaptureOCRClient(conn)
 	}
 
 	const maxTry = 3
 	for range [maxTry]int{} {
-
-		resp, err := c.doRequest("GET", "https://cas.gzhu.edu.cn/cas_server/captcha.jsp", nil, nil)
+		var resp *http.Response
+		resp, err = c.doRequest("GET", "https://cas.gzhu.edu.cn/cas_server/captcha.jsp", nil, nil)
 		if err != nil {
 			logs.Error(err)
-			return capture, err
+			return
 		}
-		body, err := ioutil.ReadAll(resp.Body)
+		body, err = ioutil.ReadAll(resp.Body)
 		if err != nil {
 			logs.Error(err)
-			return capture, err
+			return
 		}
-
-		err = rpcClient.Call("OcrService.Capture", body, &capture)
+		req := &pb.OCRRequest{
+			Data:  body,
+			Token: env.Conf.Rpc.Token,
+		}
+		var reply *pb.OCRReply
+		reply, err = rpcClient.Recognize(context.Background(), req)
 		if err != nil {
-			_ = rpcClient.Close()
 			rpcClient = nil
 			logs.Error(err)
-			return capture, err
+			return
 		}
+		capture = reply.Code
 
 		reg := regexp.MustCompile(`\d+`)
 		res := reg.FindStringSubmatch(capture)

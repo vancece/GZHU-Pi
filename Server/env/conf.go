@@ -44,7 +44,8 @@ type Configure struct {
 		JWT string `json:"jwt" remark:"jwt密钥"`
 	}
 	Rpc struct {
-		Addr string `json:"addr" remark:"rpc主机地址"`
+		Addr  string `json:"addr" remark:"rpc主机地址"`
+		Token string `json:"token" remark:"rpc连接秘钥" must:"false"`
 	}
 	Db struct {
 		Type     string `json:"type" remark:"数据库类型"`

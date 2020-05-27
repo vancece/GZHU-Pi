@@ -23,17 +23,23 @@ services:
     environment:
       # 此处的环境变量会覆盖配置文件中的对应配置
       - GZHUPI_SECRET_JWT=jwt_secret
-      - GZHUPI_RPC_ADDR=gzhu-pi-rpc:7201
+      - GZHUPI_RPC_ADDR=tesseract-rpc:8080
+      - GZHUPI_RPC_TOKEN=
+
       - GZHUPI_DB_HOST=gzhu-pi-db
       - GZHUPI_DB_PORT=5432
       - GZHUPI_DB_USER=postgres
       - GZHUPI_DB_PASSWORD=postgres
       - GZHUPI_DB_DBNAME=postgres
       - GZHUPI_DB_SSLMODE=disable
-      - TZ=Asia/Shanghai
+
       - GZHUPI_REDIS_HOST=gzhu-pi-redis
       - GZHUPI_REDIS_PORT=6379
       - GZHUPI_REDIS_PASSWORD=
+
+      - GZHUPI_APP_INIT_MODELS=true
+      - TZ=Asia/Shanghai
+
     depends_on:
       - pgdb
 
@@ -64,13 +70,12 @@ services:
     volumes:
       - gzhupi_redis:/data
 
-  rpc:
-    build:
-      context: ./rpc
-      dockerfile: Dockerfile
-    container_name: gzhu-pi-rpc
+  # 验证码识别 rpc 服务
+  tesseract:
+    image: zhenshaw/tesseract:rpc
+    container_name: tesseract-rpc
     restart: always
-    ports:
-      - 7201:7201
     networks:
       - gzhupi-net
+    ports:
+      - 8080:8080

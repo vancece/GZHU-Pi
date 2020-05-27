@@ -6,14 +6,16 @@ package gzhu_jw
 
 import (
 	"GZHU-Pi/env"
+	"context"
 	"crypto/tls"
 	"fmt"
+	pb "github.com/ZhenShaw/tesseract-rpc/proto"
 	"github.com/astaxie/beego/logs"
+	"google.golang.org/grpc"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"net/http/cookiejar"
-	"net/rpc"
 	"net/url"
 	"os"
 	"regexp"
@@ -171,17 +173,19 @@ func BasicAuthClient(username, password string) (client *JWClient, err error) {
 	return c, nil
 }
 
-var rpcClient *rpc.Client
+var rpcClient pb.CaptureOCRClient
 
 //验证码识别
 func (c *JWClient) GetCaptcha() (capture string, body []byte, err error) {
 
 	if rpcClient == nil {
-		rpcClient, err = rpc.DialHTTP("tcp", env.Conf.Rpc.Addr)
+		var conn *grpc.ClientConn
+		conn, err = grpc.Dial(env.Conf.Rpc.Addr, grpc.WithInsecure())
 		if err != nil {
 			logs.Error(err)
 			return
 		}
+		rpcClient = pb.NewCaptureOCRClient(conn)
 	}
 
 	const maxTry = 3
@@ -197,14 +201,18 @@ func (c *JWClient) GetCaptcha() (capture string, body []byte, err error) {
 			logs.Error(err)
 			return
 		}
-
-		err = rpcClient.Call("OcrService.Capture", body, &capture)
+		req := &pb.OCRRequest{
+			Data:  body,
+			Token: env.Conf.Rpc.Token,
+		}
+		var reply *pb.OCRReply
+		reply, err = rpcClient.Recognize(context.Background(), req)
 		if err != nil {
-			_ = rpcClient.Close()
 			rpcClient = nil
 			logs.Error(err)
 			return
 		}
+		capture = reply.Code
 
 		reg := regexp.MustCompile(`\d+`)
 		res := reg.FindStringSubmatch(capture)

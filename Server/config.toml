@@ -14,7 +14,8 @@ init_models = true
 jwt = "jwt_secret"
 
 [rpc]
-addr = "localhost:7201"
+addr = "localhost:8080"
+token = ""
 
 [db]
 type = "postgres"
