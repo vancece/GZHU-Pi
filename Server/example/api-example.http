@@ -102,7 +102,17 @@ Content-Type: application/x-www-form-urlencoded
 
 ###
 
+# CET验证码获取，captcha留空
+GET {{baseUrl}}/cet?id=准考证&name=姓名captcha=
+Content-Type: application/x-www-form-urlencoded
 
+###
+
+# CET查询
+GET {{baseUrl}}/cet?id=准考证&name=姓名captcha=验证码
+Content-Type: application/x-www-form-urlencoded
+
+###
 
 
 

@@ -145,7 +145,7 @@ func customRouter(r *mux.Router) *mux.Router {
 	//r.HandleFunc("/exp", test).Methods("POST")
 
 	//四六级、普通话考试查询
-	//r.HandleFunc("/exam/cet", test).Methods("POST")
+	r.HandleFunc("/cet", routers.PanicMV(routers.GetCet)).Methods("GET")
 	//r.HandleFunc("/exam/chinese", test).Methods("POST")
 	return r
 }

@@ -356,23 +356,31 @@ func RandomAvatar(seed string) (baseImg string) {
 
 	url := fmt.Sprintf("http://www.gravatar.com/avatar/%s?s=%d&d=%s", MD5, size, style)
 
+	baseImg, err := imgUrlToBase64(url)
+	if err != nil {
+		return defaultAvatar
+	}
+	return
+}
+
+func imgUrlToBase64(url string) (baseImg string, err error) {
 	resp, err := http.Get(url)
 	if err != nil {
 		logs.Error(err)
-		return defaultAvatar
+		return
 	}
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		logs.Error(err)
-		return defaultAvatar
+		return
 	}
 
 	if len(resp.Header["Content-Type"]) == 0 || resp.Header["Content-Type"][0] != "image/png" {
+		err = fmt.Errorf("not a imgage type with content-type: %v", resp.Header["Content-Type"])
 		logs.Error(err)
-		return defaultAvatar
+		return
 	}
-	baseImg = "data:image/png;base64," + base64.StdEncoding.EncodeToString(body)
-
-	return baseImg
+	baseImg = fmt.Sprintf("data:%s;base64,%s", resp.Header["Content-Type"][0], base64.StdEncoding.EncodeToString(body))
+	return
 }

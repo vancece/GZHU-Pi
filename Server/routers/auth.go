@@ -50,6 +50,12 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 	}
 	logs.Info("auth by open_id:", u.OpenID.String)
 
+	//防抖检测
+	if isDebounce("auth:"+u.OpenID.String, 10*time.Second) {
+		Response(w, r, nil, http.StatusBadRequest, "debounce auth")
+		return
+	}
+
 	var user env.VUser
 	db := env.GetGorm()
 
@@ -258,4 +264,29 @@ func AuthByCookies(r *http.Request) (user *env.TUser, err error) {
 		return
 	}
 	return
+}
+
+//防抖检测，存在该key则返回true，否则设置key在指定时间过期
+func isDebounce(key string, expiration time.Duration) (ok bool) {
+
+	if expiration < 3 {
+		expiration = 3
+	}
+
+	key = fmt.Sprintf("gzhupi:debounce:%s", key)
+	_, err := env.RedisCli.Get(key).Result()
+	if err != nil && err != redis.Nil {
+		logs.Error(err)
+		return
+	}
+	if err == redis.Nil {
+		err = env.RedisCli.Set(key, "", expiration).Err()
+		if err != nil {
+			logs.Error(err)
+			return
+		}
+		return
+	}
+	logs.Warn("Hit debounce cache %s", key)
+	return true
 }
