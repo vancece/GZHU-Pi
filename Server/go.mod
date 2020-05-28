@@ -35,6 +35,7 @@ require (
 	github.com/prest/middlewares v0.0.0-20190501210230-25fb4a665793
 	github.com/prest/template v0.0.0-20190409192546-ae0e5431a9b5 // indirect
 	github.com/prometheus/client_golang v0.9.3
+	github.com/robfig/cron/v3 v3.0.1
 	github.com/shirou/gopsutil v2.20.2+incompatible
 	github.com/silenceper/wechat v1.2.3
 	github.com/spf13/afero v1.2.2 // indirect
@@ -46,7 +47,6 @@ require (
 	github.com/tencentyun/cos-go-sdk-v5 v0.7.4
 	github.com/urfave/negroni v1.0.0 // indirect
 	golang.org/x/crypto v0.0.0-20200429183012-4b2356b1ed79 // indirect
-	golang.org/x/net v0.0.0-20200520182314-0ba52f642ac2
 	golang.org/x/sync v0.0.0-20190911185100-cd5d95a43a6e
 	golang.org/x/sys v0.0.0-20200501145240-bc7a7d42d5c3 // indirect
 	google.golang.org/grpc v1.29.1
