@@ -11,6 +11,7 @@ var (
 
 	SemCode = []string{"3", "12"} //3是第一学期，12是第二学期
 	Year    = "2019"
+	FirstMonday="2020-03-02"
 
 	//jsonHeader       = http.Header{"Content-Type": []string{"application/json"}}
 	urlencodedHeader = http.Header{"Content-Type": []string{"application/x-www-form-urlencoded"}}

@@ -72,7 +72,8 @@ Page({
     let account = {
       username: e.detail.value.username,
       password: e.detail.value.password,
-      year_sem: that.data.sem_list[that.data.pickerIndex]
+      year_sem: that.data.sem_list[that.data.pickerIndex],
+      first_monday:wx.$param.school["first_monday"]
     }
 
     switch (id) {
@@ -100,6 +101,7 @@ Page({
                   })
                   // 缓存账户信息
                   delete account["year_sem"]
+                  delete account["first_monday"]
                   wx.setStorageSync("account", account)
                   // 缓存结果数据
                   res.data["update_time"] = res.update_time

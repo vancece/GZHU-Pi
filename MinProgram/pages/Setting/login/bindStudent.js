@@ -203,6 +203,7 @@ Page({
     let that = this
     let form = this.data.account
     form["year_sem"] = wx.$param.school["year_sem"]
+    form["first_monday"] = wx.$param.school["first_monday"]
 
     wx.$ajax({
         method: "post",

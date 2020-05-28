@@ -1,6 +1,7 @@
 package gzhu_jw
 
 import (
+	"GZHU-Pi/env"
 	"github.com/astaxie/beego/logs"
 	"github.com/json-iterator/go"
 	"io/ioutil"
@@ -13,27 +14,11 @@ import (
 )
 
 type CourseData struct {
-	CourseList    []*Course    `json:"course_list"  remark:"课程列表"`
+	CourseList    []*env.TStuCourse    `json:"course_list"  remark:"课程列表"`
 	SjkCourseList []*SjkCourse `json:"sjk_course_list" remark:"实践课"`
 }
 
-type Course struct {
-	CheckType   string  `json:"check_type" remark:"考核类型"`
-	ClassPlace  string  `json:"class_place" remark:"上课地点"`
-	Color       int64   `json:"color" remark:"课表颜色"`
-	CourseID    string  `json:"course_id" remark:"课程ID"`
-	CourseName  string  `json:"course_name" remark:"课程名称"`
-	CourseTime  string  `json:"course_time" remark:"上课时间"`
-	Credit      float64 `json:"credit" remark:"学分"`
-	JghID       string  `json:"jgh_id" remark:"教工号ID"`
-	Last        int64   `json:"last" remark:"持续节数"`
-	Start       int64   `json:"start" remark:"开始节数"`
-	Teacher     string  `json:"teacher" remark:"教师"`
-	Weekday     int64   `json:"weekday" remark:"星期几数值"`
-	Weeks       string  `json:"weeks" remark:"周段"`
-	WhichDay    string  `json:"which_day" remark:"星期几"`
-	WeekSection []int   `json:"week_section" remark:"周段[start,end,start,end]"`
-}
+//type Course env.TStuCourse
 
 type SjkCourse struct {
 	SjkCourseName string `json:"sjk_course_name" remark:"实践课名"`
@@ -108,16 +93,16 @@ func MatchCredit(body []byte) (matcher map[string]float64) {
 }
 
 //解析提取课程信息
-func ParseCourse(body []byte, matcher map[string]float64) (courses []*Course) {
+func ParseCourse(body []byte, matcher map[string]float64) (courses []*env.TStuCourse) {
 
-	courses = []*Course{}
+	courses = []*env.TStuCourse{}
 	json := jsoniter.ConfigCompatibleWithStandardLibrary
 	kbList := json.Get(body, "kbList")
 
 	var idSet = make(map[string]int64) //课程id集合，去重
 	//遍历所有课程
 	for i := 0; true; i++ {
-		c := &Course{}
+		c := &env.TStuCourse{}
 		c.CourseID = kbList.Get(i).Get("kch_id").ToString()
 		if c.CourseID == "" {
 			break

@@ -29,7 +29,7 @@ username={{username}}&password={{password}}
 POST {{baseUrl}}/jwxt/course
 Content-Type: application/x-www-form-urlencoded
 
-username={{username}}&password={{password}}&year_sem=2019-2020-2
+username={{username}}&password={{password}}&year_sem=2019-2020-2&first_monday=2020-03-02
 
 
 ###

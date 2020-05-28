@@ -2,6 +2,7 @@ package routers
 
 import (
 	"GZHU-Pi/env"
+	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego/logs"
 	"github.com/silenceper/wechat"
@@ -16,10 +17,19 @@ var wc *wechat.Wechat
 var MinAppID = ""
 
 //微信公众初始化
-func wxInit() {
+func wxInit() (ok bool) {
+
+	if wc != nil {
+		return true
+	}
 
 	wx := env.Conf.WeiXin
 	MinAppID = wx.MinAppID
+
+	if !wx.Enable {
+		logs.Warn("disable weixin")
+		return
+	}
 
 	//配置微信参数
 	config := &wechat.Config{
@@ -143,12 +153,13 @@ func wxInit() {
 		logs.Error(err)
 		return
 	}
+	return true
 }
 
 func Hello(rw http.ResponseWriter, req *http.Request) {
 
-	if wc == nil {
-		wxInit()
+	if !wxInit() {
+		return
 	}
 
 	server := wc.GetServer(req, rw)
@@ -259,8 +270,8 @@ func wxReply(msg message.MixMessage) *message.Reply {
 }
 
 func TplMsg() {
-	if wc == nil {
-		wxInit()
+	if !wxInit() {
+		return
 	}
 
 	tpl := message.NewTemplate(wc.Context)
@@ -281,6 +292,21 @@ func TplMsg() {
 			AppID    string `json:"appid"`
 			PagePath string `json:"pagepath"`
 		}{AppID: MinAppID, PagePath: "pages/Campus/tools/calendar"},
+	}
+
+	db := env.GetGorm()
+	var n env.TNotify
+	db.Where("id=60").First(&n)
+	logs.Info(n)
+	d, err := json.Marshal(&n)
+	if err != nil {
+		logs.Error(err)
+		return
+	}
+	err = json.Unmarshal(d, msg)
+	if err != nil {
+		logs.Error(err)
+		return
 	}
 
 	msgID, err := tpl.Send(msg)

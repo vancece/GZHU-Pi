@@ -10,7 +10,6 @@ package env
 
 import (
 	"GZHU-Pi/services/kafka"
-	"fmt"
 	"github.com/astaxie/beego/logs"
 	"time"
 )
@@ -19,7 +18,7 @@ var Kafka *kafka.Kafka
 
 func InitKafka() (err error) {
 
-	broker := []string{fmt.Sprintf("ifeel.vip:9092")}
+	broker := Conf.Kafka.Broker
 
 	logs.Info("connecting to broker: %v", broker)
 
@@ -37,6 +36,10 @@ func InitKafka() (err error) {
 			return
 		}
 		err = GradeQueue()
+		if err != nil {
+			return
+		}
+		err = CourseQueue()
 		if err != nil {
 			return
 		}

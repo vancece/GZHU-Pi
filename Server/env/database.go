@@ -129,7 +129,7 @@ func modelsInit() {
 
 	//自动迁移 只会 创建表、缺失的列、缺失的索引，不会 更改现有列的类型或删除未使用的列
 	db.AutoMigrate(&TStuInfo{}, &TGrade{}, &TApiRecord{}, &TUser{},
-		&TTopic{}, &TDiscuss{}, &TRelation{})
+		&TTopic{}, &TDiscuss{}, &TRelation{}, &TNotify{})
 
 	db.Model(&TGrade{}).AddUniqueIndex("t_grade_stu_id_course_id_jxb_id_idx",
 		"stu_id", "course_id", "jxb_id")

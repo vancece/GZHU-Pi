@@ -30,6 +30,9 @@ func main() {
 	port := os.Getenv("FC_SERVER_PORT")
 	if port == "" {
 		port = "9000"
+		if viper.GetString("http.port") != "" {
+			port = viper.GetString("http.port")
+		}
 		logs.Info("自主部署 Server on port: " + port)
 		r = r.PathPrefix("/api/v1").Subrouter()
 	} else {
@@ -61,6 +64,7 @@ func runWithPRest(r *mux.Router) {
 	viper.Set("pg.database", viper.GetString("db.dbname"))
 	viper.Set("ssl.mode", viper.GetString("db.sslmode"))
 	viper.Set("jwt.key", viper.GetString("secret.jwt"))
+	viper.Set("http.port", viper.GetString("app.port"))
 
 	// load config for pREST
 	config.Load()

@@ -5,9 +5,11 @@ debug = true
 name = "GZHU-Pi"
 version = "2.0"
 mode = "debug"
-prest = true
 log_level = "debug"
 logfile = "/tmp/gzhupi/log.log"
+
+port = 9000
+prest = true
 init_models = true
 
 [secret]
@@ -16,6 +18,10 @@ jwt = "jwt_secret"
 [rpc]
 addr = "localhost:8080"
 token = ""
+
+[kafka]
+enabled = false
+broker = ["localhost:9092"]
 
 [db]
 type = "postgres"

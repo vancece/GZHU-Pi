@@ -34,11 +34,12 @@ func InitViper() {
 //配置文件结构体，配置文件上的内容需要一一对应，可多不可少
 type Configure struct {
 	App struct {
-		Name       string `json:"name" remark:"应用名称"`
-		Version    string `json:"version" remark:"软件发布版本，对应仓库tag版本"`
-		Mode       string `json:"mode" remark:"开发模式develop/test/product"`
-		PRest      bool   `json:"prest" remark:"" remark:"是否开启pRest接口服务"`
-		InitModels bool   `json:"init_models" remark:"是否初始化数据库模型" must:"false"`
+		//Name       string `json:"name" remark:"应用名称"`
+		//Version    string `json:"version" remark:"软件发布版本，对应仓库tag版本"`
+		//Mode       string `json:"mode" remark:"开发模式develop/test/product"`
+		PRest      bool  `json:"prest" remark:"" remark:"是否开启pRest接口服务"`
+		InitModels bool  `json:"init_models" remark:"是否初始化数据库模型" must:"false"`
+		Port       int64 `json:"port" remark:"http端口"`
 	}
 	Secret struct {
 		JWT string `json:"jwt" remark:"jwt密钥"`
@@ -47,6 +48,10 @@ type Configure struct {
 		Addr  string `json:"addr" remark:"rpc主机地址"`
 		Token string `json:"token" remark:"rpc连接秘钥" must:"false"`
 	}
+	Kafka struct {
+		Enable bool     `json:"enabled" must:"false"`
+		Broker []string `json:"broker" remark:"节点地址"`
+	} `json:"kafka" remark:"kafka集群"`
 	Db struct {
 		Type     string `json:"type" remark:"数据库类型"`
 		Host     string `json:"host" remark:"数据库主机"`
@@ -112,6 +117,7 @@ func InitConfigure() (err error) {
 
 			//绑定环境变量，会优先使用环境变量的值
 			logs.Info("绑定环境变量 GZHUPI_%s_%s ==> %s.%s", strings.ToUpper(sec), strings.ToUpper(tag), sec, tag)
+			//fmt.Printf("- GZHUPI_%s_%s = %v\n", strings.ToUpper(sec), strings.ToUpper(tag), viper.GetString(sec + "." + tag))
 			envKey := fmt.Sprintf("GZHUPI_%s_%s", strings.ToUpper(sec), strings.ToUpper(tag))
 			_ = viper.BindEnv(sec+"."+tag, envKey)
 
@@ -138,6 +144,11 @@ func InitConfigure() (err error) {
 			case reflect.Bool:
 				value := viper.GetBool(sec + "." + tag)
 				keyValue.SetBool(value)
+
+			case reflect.Slice:
+				value := viper.GetStringSlice(sec + "." + tag)
+				val := reflect.ValueOf(&value)
+				keyValue.Set(val.Elem())
 
 			default:
 				logs.Warn("unsupported config struct key type %T", key.Type.Kind())

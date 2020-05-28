@@ -115,6 +115,7 @@ type TUser struct {
 	ID         int64          `json:"id,omitempty" remark:"自增id" gorm:"primary_key"`
 	MinappID   null.Int       `json:"minapp_id,omitempty" remark:"知晓云用户id" gorm:"type:bigint;unique_index"`
 	OpenID     null.String    `json:"open_id,omitempty" remark:"微信openid" gorm:"type:varchar;unique_index;not null"`
+	MpOpenID   null.String    `json:"mp_open_id,omitempty" remark:"微信公众号openid" gorm:"type:varchar"`
 	UnionID    null.String    `json:"union_id,omitempty" remark:"微信unionid" gorm:"type:varchar;unique"`
 	StuID      null.String    `json:"stu_id,omitempty" remark:"学号" gorm:"type:varchar"`
 	RoleID     null.Int       `json:"role_id,omitempty" remark:"用户角色id" gorm:"type:smallint"`
@@ -136,6 +137,7 @@ type VUser struct {
 	ID         int64          `json:"id,omitempty" remark:"自增id" gorm:"primary_key"`
 	MinappID   null.Int       `json:"minapp_id,omitempty" remark:"知晓云用户id" gorm:"type:bigint;unique_index"`
 	OpenID     null.String    `json:"open_id,omitempty" remark:"微信openid" gorm:"type:varchar;unique_index;not null"`
+	MpOpenID   null.String    `json:"mp_open_id,omitempty" remark:"微信公众号openid" gorm:"type:varchar"`
 	UnionID    null.String    `json:"union_id,omitempty" remark:"微信unionid" gorm:"type:varchar;unique"`
 	StuID      null.String    `json:"stu_id,omitempty" remark:"学号" gorm:"type:varchar"`
 	RoleID     null.Int       `json:"role_id,omitempty" remark:"用户角色id" gorm:"type:smallint"`
@@ -165,6 +167,8 @@ type VUser struct {
 type TStuCourse struct {
 	ID int64 `json:"id,omitempty" remark:"自增id" gorm:"primary_key"`
 
+	StuID       string  `json:"stu_id" remark:"学号" gorm:"type:varchar"`
+	YearSem     string  `json:"year_sem" remark:"学年学期" gorm:"type:varchar"`
 	CheckType   string  `json:"check_type" remark:"考核类型" gorm:"type:varchar"`
 	ClassPlace  string  `json:"class_place" remark:"上课地点" gorm:"type:varchar"`
 	Color       int64   `json:"color" remark:"课表颜色" gorm:"type:smallint"`
@@ -181,6 +185,29 @@ type TStuCourse struct {
 	WhichDay    string  `json:"which_day" remark:"星期几" gorm:"type:varchar"`
 	WeekSection []int   `json:"week_section" remark:"周段[start,end,start,end]" gorm:"type:jsonb"`
 
+	CreatedBy null.Int  `json:"created_by,omitempty" remark:"创建者" gorm:"type:bigint"`
 	CreatedAt time.Time `json:"created_at,omitempty" remark:"创建时间" gorm:"default:current_timestamp"`
 	UpdatedAt time.Time `json:"updated_at,omitempty" remark:"更新时间" gorm:"default:current_timestamp"`
+}
+
+type TNotify struct {
+	ID     int64       `json:"id,omitempty" remark:"自增id" gorm:"primary_key"`
+	Digest null.String `json:"digest,omitempty" remark:"哈希标识防止重复" gorm:"type:varchar;unique_index;not null"`
+	Type   null.String `json:"type,omitempty" remark:"通知类型" gorm:"type:varchar"`
+
+	SentTime time.Time `json:"sent_time,omitempty" remark:"指定发送时间"`
+
+	//微信公众号通知
+	ToUser      null.String    `json:"touser,omitempty" gorm:"type:varchar"`      // 必须, 接受者OpenID
+	TemplateID  null.String    `json:"template_id,omitempty" gorm:"type:varchar"` // 必须, 模版ID
+	URL         null.String    `json:"url,omitempty" gorm:"type:varchar"`         // 可选, 用户点击后跳转的URL, 该URL必须处于开发者在公众平台网站中设置的域中
+	Color       null.String    `json:"color,omitempty" gorm:"type:varchar"`       // 可选, 整个消息的颜色, 可以不设置
+	Data        types.JSONText `json:"data,omitempty" gorm:"type:jsonb"`          // 必须, 模板数据
+	MiniProgram types.JSONText `json:"miniprogram,omitempty" gorm:"type:jsonb"`
+
+	Addi      types.JSONText `json:"addi,omitempty" remark:"附加信息" gorm:"type:jsonb"`
+	Status    null.Int       `json:"status,omitempty" remark:"状态0未通知，2已通知" gorm:"type:smallint;default:0"`
+	CreatedBy null.Int       `json:"created_by,omitempty" remark:"创建者" gorm:"type:bigint"`
+	CreatedAt time.Time      `json:"created_at,omitempty" remark:"创建时间" gorm:"default:current_timestamp"`
+	UpdatedAt time.Time      `json:"updated_at,omitempty" remark:"更新时间" gorm:"default:current_timestamp"`
 }

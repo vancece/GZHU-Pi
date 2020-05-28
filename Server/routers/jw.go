@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"github.com/astaxie/beego/logs"
 	"github.com/go-redis/redis"
+	"gopkg.in/guregu/null.v3"
 	"net/http"
 	"strconv"
 	"strings"
@@ -157,11 +158,56 @@ func Course(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		logs.Error(err)
 		Jwxt.Delete(getCacheKey(r, client.GetUsername())) //发生错误，从缓存中删除
-		//delete(Jwxt, getCacheKey(r, client.GetUsername())) //发生错误，从缓存中删除
 		Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}
+
+	var userID int64
+	if len(r.Cookies()) > 0 {
+		userID, _ = GetUserID(r)
+	}
+
+	for _, v := range data.CourseList {
+		v.YearSem = ys
+		v.StuID = client.GetUsername()
+		v.CreatedBy = null.IntFrom(userID)
+	}
 	Response(w, r, data, http.StatusOK, "request ok")
+
+	if len(data.CourseList) == 0 {
+		return
+	}
+
+	//添加自动提醒，每个学生每学期，只自动设置上课提醒一次
+	go func() {
+		if !env.Conf.Kafka.Enable {
+			return
+		}
+		fm, _ := ReadRequestArg(r, "first_monday")
+		firstMonday, _ := fm.(string)
+		if firstMonday == "" {
+			firstMonday = gzhu_jw.FirstMonday
+			logs.Warn("use default firstMonday %s", firstMonday)
+		}
+		key := fmt.Sprintf("gzhupi:notify:course:stu:%s_%s", ys, client.GetUsername())
+		_, err := env.RedisCli.Get(key).Result()
+		if err == redis.Nil {
+			err = AddCourseNotify(data.CourseList, firstMonday)
+			if err != nil {
+				return
+			}
+			err = env.RedisCli.Set(key, key, 120*24*time.Hour).Err()
+			if err != nil {
+				logs.Error(err)
+				return
+			}
+		} else if err != nil {
+			logs.Error(err, key)
+			return
+		}
+		logs.Debug("skip add course notify key=%s", key)
+	}()
+
 }
 
 func Exam(w http.ResponseWriter, r *http.Request) {
@@ -236,14 +282,16 @@ func Grade(w http.ResponseWriter, r *http.Request) {
 	}
 	//加入消息队列
 	go func() {
-
+		if !env.Conf.Kafka.Enable {
+			return
+		}
 		info, err := json.Marshal(stuInfo)
 		if err != nil {
 			logs.Error(err)
 			return
 		}
 		err = env.Kafka.SendData(&kafka.ProduceData{
-			Topic: "kafka-queue-student-info",
+			Topic: env.QueueTopicStuInfo,
 			Data:  info,
 		})
 		if err != nil {
