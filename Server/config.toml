@@ -38,7 +38,7 @@ port = "6379"
 password = ""
 
 [weixin]
-enable = false
+enabled = false
 token = ""
 ase_key = ""
 app_id = ""
@@ -48,13 +48,13 @@ min_app_secret = ""
 
 # 腾讯云cos
 [cos]
-enable = false
+enabled = false
 secret_id = ""
 secret_key = ""
 
 # face++ api
 [facepp]
-enable = false
+enabled = false
 api_key = ""
 api_secret = ""
 

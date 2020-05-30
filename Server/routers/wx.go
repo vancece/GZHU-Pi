@@ -2,7 +2,6 @@ package routers
 
 import (
 	"GZHU-Pi/env"
-	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego/logs"
 	"github.com/silenceper/wechat"
@@ -17,6 +16,11 @@ import (
 var wc *wechat.Wechat
 var MinAppID = ""
 
+func GetWC() *wechat.Wechat {
+	wxInit()
+	return wc
+}
+
 //微信公众初始化
 func wxInit() (ok bool) {
 
@@ -27,7 +31,7 @@ func wxInit() (ok bool) {
 	wx := env.Conf.WeiXin
 	MinAppID = wx.MinAppID
 
-	if !wx.Enable {
+	if !wx.Enabled || MinAppID == "" {
 		logs.Warn("disable weixin")
 		return
 	}
@@ -283,53 +287,6 @@ func wxReply(msg message.MixMessage) *message.Reply {
 	return nil
 }
 
-func TplMsg() {
-	if !wxInit() {
-		return
-	}
-
-	tpl := message.NewTemplate(wc.Context)
-
-	msg := &message.Message{
-		ToUser:     "o0NA46MaFl75sPaC8nHS6SZLcWGM",
-		TemplateID: "aFpe_zN27IOKa3I_WhATW4-CxxcsOhwlFJbLJpz1zuk",
-		URL:        "",
-		Color:      "",
-		Data: map[string]*message.DataItem{
-			"first":    {Value: "您有一门课程即将开始！"},
-			"keyword1": {Value: "编译原理-汤茂斌"},
-			"keyword2": {Value: "星期三 7-8节 15:45"},
-			"keyword3": {Value: "理科南312"},
-			"remark":   {Value: "点击进入课程提醒管理"},
-		},
-		MiniProgram: struct {
-			AppID    string `json:"appid"`
-			PagePath string `json:"pagepath"`
-		}{AppID: MinAppID, PagePath: "pages/Campus/tools/calendar"},
-	}
-
-	db := env.GetGorm()
-	var n env.TNotify
-	db.Where("id=60").First(&n)
-	logs.Info(n)
-	d, err := json.Marshal(&n)
-	if err != nil {
-		logs.Error(err)
-		return
-	}
-	err = json.Unmarshal(d, msg)
-	if err != nil {
-		logs.Error(err)
-		return
-	}
-
-	msgID, err := tpl.Send(msg)
-	if err != nil {
-		logs.Error(err)
-	}
-	logs.Info(msgID)
-}
-
 func GetMedia() []byte {
 	accessToken, err := wc.GetAccessToken()
 	if err != nil {
@@ -348,41 +305,4 @@ func GetMedia() []byte {
 	logs.Info(string(response))
 
 	return response
-}
-
-type MinP struct {
-	message.CommonToken
-
-	Miniprogrampage *message.MediaMiniprogrampage `json:"miniprogrampage,omitempty"` //可选
-}
-
-//NewImage 回复图片消息
-func NewImage(mpage *message.MediaMiniprogrampage) *MinP {
-	MP := new(MinP)
-	MP.Miniprogrampage = mpage
-	return MP
-}
-
-func ReplyMp(msg1 message.MixMessage) *message.Reply {
-
-	if !wxInit() {
-		return nil
-	}
-	logs.Info(fmt.Sprintf("收到一条消息：%v", msg1))
-
-	msg := &message.CustomerMessage{
-		ToUser:  "o0NA46MaFl75sPaC8nHS6SZLcWGM",
-		Msgtype: "miniprogrampage",
-		Miniprogrampage: &message.MediaMiniprogrampage{
-			Title:        "hello",
-			Appid:        env.Conf.WeiXin.MinAppID,
-			Pagepath:     classNotifyMgrPath,
-			ThumbMediaID: "oVb96gPsyuxuaUAhLrub2xqckeMWzoCC5UqwkwGUHLo",
-		},
-	}
-
-	msgp := NewImage(msg.Miniprogrampage)
-
-	return &message.Reply{MsgType: "miniprogrampage", MsgData: msgp}
-
 }

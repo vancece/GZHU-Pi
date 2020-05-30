@@ -1,3 +1,4 @@
+const Page = require('../../../utils/sdk/ald-stat.js').Page;
 import UserService from "../../../services/user.js"
 var userService = new UserService()
 Page({
@@ -13,9 +14,11 @@ Page({
   },
 
   onLoad: function (options) {
+
+    userService.auth()
+
     console.log(options)
     let mp_open_id = options.mp_open_id
-
 
     // 绑定公众号
     if (!!mp_open_id) {

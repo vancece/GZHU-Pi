@@ -187,7 +187,7 @@ func Course(w http.ResponseWriter, r *http.Request) {
 
 	//添加自动提醒，每个学生每学期，只自动设置上课提醒一次
 	go func() {
-		if !env.Conf.Kafka.Enable {
+		if !env.Conf.Kafka.Enabled {
 			return
 		}
 		fm, _ := ReadRequestArg(r, "first_monday")
@@ -196,7 +196,7 @@ func Course(w http.ResponseWriter, r *http.Request) {
 			firstMonday = gzhu_jw.FirstMonday
 			logs.Warn("use default firstMonday %s", firstMonday)
 		}
-		key := fmt.Sprintf("gzhupi:notify:course:stu:%s_%s", ys, client.GetUsername())
+		key := fmt.Sprintf("gzhupi:notify:course:stu:%d_%s_%s", userID, ys, client.GetUsername())
 		_, err := env.RedisCli.Get(key).Result()
 		if err == redis.Nil {
 			err = AddCourseNotify(data.CourseList, firstMonday)
@@ -212,7 +212,7 @@ func Course(w http.ResponseWriter, r *http.Request) {
 			logs.Error(err, key)
 			return
 		}
-		logs.Debug("skip add course notify key=%s", key)
+		logs.Debug("key exists, skip add course notify key=%s", key)
 	}()
 
 }
@@ -289,7 +289,7 @@ func Grade(w http.ResponseWriter, r *http.Request) {
 	}
 	//加入消息队列
 	go func() {
-		if !env.Conf.Kafka.Enable {
+		if !env.Conf.Kafka.Enabled {
 			return
 		}
 		info, err := json.Marshal(stuInfo)

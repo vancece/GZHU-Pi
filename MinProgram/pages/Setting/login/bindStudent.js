@@ -1,5 +1,9 @@
 const Page = require('../../../utils/sdk/ald-stat.js').Page;
 var app = getApp()
+
+import UserService from "../../../services/user.js"
+var userService = new UserService()
+
 Page({
 
   data: {
@@ -12,6 +16,8 @@ Page({
   },
 
   onLoad: function (options) {
+
+    userService.auth()
 
     this.setData({
       show: !app.globalData.isAuthorized,
@@ -135,66 +141,41 @@ Page({
     this.setData({
       loading: true
     })
-    wx.request({
-      method: "POST",
-      url: wx.$param.server["aliyun_go"] + "/auth?type=gzhu",
+
+    wx.$ajax({
+      method: "post",
+      url: "/auth?type=gzhu",
       // url: "http://localhost:9000/api/v1" + "/auth?type=gzhu",
-      header: {
-        'content-type': 'application/x-www-form-urlencoded'
-      },
       data: this.data.account,
-      success: function (res) {
-        console.log("auth:", res)
-        if (res.statusCode != 200) {
-          wx.showToast({
-            title: "服务器响应错误",
-            icon: "none"
-          })
-          return
-        }
-        if (res.data.status != 200 && res.data.status != 0) {
-          that.setData({
-            loading: false
-          })
-          wx.showModal({
-            title: '登录提示',
-            content: res.data.msg,
-            showCancel: false
-          })
-          return
-        }
-        // 缓存账户信息
-        wx.setStorage({
-          key: 'account',
-          data: that.data.account,
-        })
-        // 缓存学生信息
-        // wx.setStorage({
-        //   key: 'student_info',
-        //   data: res.data.data,
-        // })
-        app.globalData.bindStatus = true
-        app.globalData.account = that.data.account
-        // 同步课表
-        that.syncData("course")
-      },
-      fail: function (err) {
-        console.log("err:", err)
-        that.setData({
-          loading: false
-        })
-        wx.showToast({
-          title: "访问超时",
-          icon: "none"
-        })
-      },
-      complete: function () {
-        wx.hideLoading()
-        that.setData({
-          hideLoginBtn1: false,
-          hideLoginBtn2: true,
-        })
-      }
+    }).then(res => {
+      // 缓存账户信息
+      wx.setStorage({
+        key: 'account',
+        data: that.data.account,
+      })
+      // 缓存学生信息
+      // wx.setStorage({
+      //   key: 'student_info',
+      //   data: res.data.data,
+      // })
+      app.globalData.bindStatus = true
+      app.globalData.account = that.data.account
+      // 同步课表
+      that.syncData("course")
+
+      wx.hideLoading()
+      that.setData({
+        hideLoginBtn1: false,
+        hideLoginBtn2: true,
+      })
+
+    }).catch(err => {
+      wx.hideLoading()
+      that.setData({
+        loading: false,
+        hideLoginBtn1: false,
+        hideLoginBtn2: true,
+      })
     })
   },
 
@@ -239,6 +220,9 @@ Page({
 
   // 清除本地缓存
   cleanStorage() {
+
+    let cookie = wx.getStorageSync('gzhupi_cookie')
+
     wx.showModal({
       title: '警告',
       content: '确认操作将会清除课表、成绩等所有缓存信息!',
@@ -246,6 +230,9 @@ Page({
         if (res.confirm) {
           wx.clearStorage({
             success: function () {
+
+              wx.setStorageSync('gzhupi_cookie', cookie)
+
               app.globalData.bindStatus = false
               wx.showToast({
                 title: '清除完成',

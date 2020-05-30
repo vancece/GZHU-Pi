@@ -24,7 +24,7 @@ import (
 var beforeMinutes time.Duration = 30                               //通知提前时间
 var classNotifyTpl = "aFpe_zN27IOKa3I_WhATW4-CxxcsOhwlFJbLJpz1zuk" //微信公众号上课提醒通知模板
 var classNotifyMgrPath = "pages/Campus/home/home"                  //通知转跳地址
-var mpBindPath = "/pages/Setting/login/auth" //公众号绑定页面
+var mpBindPath = "/pages/Setting/login/auth"                       //公众号绑定页面
 
 func init() {
 	go func() {
@@ -121,11 +121,12 @@ func AddCourseNotify(courses []*env.TStuCourse, firstMonday string) (err error) 
 				Status:    null.IntFrom(0),
 				CreatedBy: c.CreatedBy,
 			}
+			logs.Info("添加通知：%s %s", notify.SentTime.String(), notify.ToUser.String)
 			notifies = append(notifies, notify)
 		}
 	}
 
-	if !env.Conf.Kafka.Enable {
+	if !env.Conf.Kafka.Enabled {
 		return
 	}
 	//写入消息队列

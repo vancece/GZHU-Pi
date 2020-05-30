@@ -263,6 +263,8 @@ func AuthBySchool(w http.ResponseWriter, r *http.Request) {
 	Jwxt.Store(getCacheKey(r, username), client)
 
 	logs.Info("用户：%s 接口：%s", username, r.URL.Path)
+	Response(w, r, nil, http.StatusOK, "request ok")
+	return
 
 	//绑定账号
 	vUser, err := VUserByCookies(r)
@@ -273,7 +275,7 @@ func AuthBySchool(w http.ResponseWriter, r *http.Request) {
 	}
 	vUser.StuID = null.StringFrom(username)
 
-	err = env.GetGorm().Model(&env.TUser{}).UpdateColumns(env.TUser{StuID: vUser.StuID}).Error
+	err = env.GetGorm().Model(&env.TUser{ID: vUser.ID}).UpdateColumns(env.TUser{StuID: vUser.StuID}).Error
 	if err != nil {
 		logs.Error(err)
 		Response(w, r, nil, http.StatusInternalServerError, err.Error())
@@ -340,7 +342,7 @@ func BindMpOpenID(w http.ResponseWriter, r *http.Request) {
 	}
 	vUser.MpOpenID = null.StringFrom(mpOpenID)
 
-	err = env.GetGorm().Model(&env.TUser{}).UpdateColumns(env.TUser{MpOpenID: vUser.MpOpenID}).Error
+	err = env.GetGorm().Model(&env.TUser{ID: vUser.ID}).UpdateColumns(env.TUser{MpOpenID: vUser.MpOpenID}).Error
 	if err != nil {
 		logs.Error(err)
 		Response(w, r, nil, http.StatusInternalServerError, err.Error())

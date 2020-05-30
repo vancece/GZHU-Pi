@@ -49,8 +49,8 @@ type Configure struct {
 		Token string `json:"token" remark:"rpc连接秘钥" must:"false"`
 	}
 	Kafka struct {
-		Enable bool     `json:"enable" must:"false"`
-		Broker []string `json:"broker" remark:"节点地址"`
+		Enabled bool     `json:"enabled" must:"false"`
+		Broker  []string `json:"broker" remark:"节点地址"`
 	} `json:"kafka" remark:"kafka集群"`
 	Db struct {
 		Type     string `json:"type" remark:"数据库类型"`
@@ -67,17 +67,17 @@ type Configure struct {
 		Password string `json:"password" remark:"redis密码" must:"false"`
 	}
 	Cos struct {
-		Enable    bool   `json:"enable" must:"false"`
+		Enabled   bool   `json:"enabled" must:"false"`
 		SecretID  string `json:"secret_id" must:"false"`
 		SecretKey string `json:"secret_key" must:"false"`
 	} `json:"cos" remark:"腾讯cos云储存"`
 	FacePP struct {
-		Enable    bool   `json:"enable" must:"false"`
+		Enabled   bool   `json:"enabled" must:"false"`
 		ApiKey    string `json:"api_key" must:"false"`
 		ApiSecret string `json:"api_secret" must:"false"`
 	} `json:"facepp" remark:"face++ 人像抠图api"`
 	WeiXin struct {
-		Enable       bool   `json:"enable" must:"false"`
+		Enabled      bool   `json:"enabled" must:"false"`
 		Token        string `json:"token" remark:"公众号token" must:"false"`
 		AseKey       string `json:"ase_key" remark:"公众号AseKey" must:"false"`
 		AppID        string `json:"app_id" remark:"公众号AppID" must:"false"`

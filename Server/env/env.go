@@ -40,7 +40,7 @@ func EnvInit() {
 	}
 
 	//------5、初始化kafka------
-	if Conf.Kafka.Enable {
+	if Conf.Kafka.Enabled {
 		err = InitKafka()
 		if err != nil {
 			log.Fatal(err)

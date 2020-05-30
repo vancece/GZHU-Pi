@@ -24,8 +24,8 @@ username={{username}}&password={{password}}
 
 ###
 
-# 学号密码认证
-POST {{baseUrl}}/auth?type=bind_mp&mp_open_id=AAAA46MaFl75sPaC8nHS6SZLcWGM
+# 绑定公众号
+POST {{baseUrl}}/auth?type=bind_mp&mp_open_id=AAAA46MaFl75sPaC8nHS6SZLxxxx
 Content-Type: application/x-www-form-urlencoded
 
 ###
