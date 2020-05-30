@@ -51,23 +51,27 @@ func TableAccessHandle(w http.ResponseWriter, r *http.Request, next http.Handler
 
 	case "GET":
 	case "POST":
-		if strings.Contains(r.URL.Path, "t_topic") {
-			if err := topicCheck(ctx); err != nil {
-				Response(w, r, nil, http.StatusBadRequest, err.Error())
+
+		switch {
+		case strings.Contains(r.URL.Path, "t_topic"):
+			err = topicCheck(ctx)
+		case strings.Contains(r.URL.Path, "t_discuss"):
+			err = discussCheck(ctx)
+		case strings.Contains(r.URL.Path, "t_relation"):
+			err = relationCheck(ctx)
+		case strings.Contains(r.URL.Path, "t_notify"):
+			err = notifyCheck(ctx)
+			if err == nil {
+				Response(w, r, nil, http.StatusOK, "")
 				return
 			}
+		default:
+			err = fmt.Errorf("illegal request")
 		}
-		if strings.Contains(r.URL.Path, "t_discuss") {
-			if err := discussCheck(ctx); err != nil {
-				Response(w, r, nil, http.StatusBadRequest, err.Error())
-				return
-			}
-		}
-		if strings.Contains(r.URL.Path, "t_relation") {
-			if err := relationCheck(ctx); err != nil {
-				Response(w, r, nil, http.StatusBadRequest, err.Error())
-				return
-			}
+		if err != nil {
+			logs.Error(err)
+			Response(w, r, nil, http.StatusBadRequest, err.Error())
+			return
 		}
 	case "PUT", "PATCH":
 		p := getCtxValue(ctx)
@@ -78,6 +82,11 @@ func TableAccessHandle(w http.ResponseWriter, r *http.Request, next http.Handler
 				Response(w, r, nil, http.StatusBadRequest, err.Error())
 				return
 			}
+		} else {
+			err = fmt.Errorf("illegal request")
+			logs.Error(err)
+			Response(w, r, nil, http.StatusBadRequest, err.Error())
+			return
 		}
 	case "DELETE":
 		p := getCtxValue(ctx)
@@ -88,32 +97,33 @@ func TableAccessHandle(w http.ResponseWriter, r *http.Request, next http.Handler
 			Response(w, r, nil, http.StatusBadRequest, err.Error())
 			return
 		}
-		if strings.Contains(r.URL.Path, "t_topic") {
+
+		switch {
+		case strings.Contains(r.URL.Path, "t_topic"):
 			var t env.TTopic
 			p.gormDB.First(&t, id)
 			if t.CreatedBy.Int64 != p.user.ID {
-				err := fmt.Errorf("permission denied")
-				Response(w, r, nil, http.StatusBadRequest, err.Error())
-				return
+				err = fmt.Errorf("permission denied")
 			}
-		}
-		if strings.Contains(r.URL.Path, "t_discuss") {
+		case strings.Contains(r.URL.Path, "t_discuss"):
 			var t env.TDiscuss
 			p.gormDB.First(&t, id)
 			if t.CreatedBy.Int64 != p.user.ID {
-				err := fmt.Errorf("permission denied")
-				Response(w, r, nil, http.StatusBadRequest, err.Error())
-				return
+				err = fmt.Errorf("permission denied")
 			}
-		}
-		if strings.Contains(r.URL.Path, "t_relation") {
+		case strings.Contains(r.URL.Path, "t_relation"):
 			var t env.TRelation
 			p.gormDB.First(&t, id)
 			if t.CreatedBy.Int64 != p.user.ID {
-				err := fmt.Errorf("permission denied")
-				Response(w, r, nil, http.StatusBadRequest, err.Error())
-				return
+				err = fmt.Errorf("permission denied")
 			}
+		default:
+			err = fmt.Errorf("illegal request")
+		}
+		if err != nil {
+			logs.Error(err)
+			Response(w, r, nil, http.StatusBadRequest, err.Error())
+			return
 		}
 	default:
 		_, _ = w.Write([]byte("unsupported method: " + r.Method))
@@ -313,4 +323,43 @@ func topicViewCounter(u *url.URL) {
 	db.Model(&env.TTopic{ID: int64(id)}).
 		UpdateColumn("viewed", gorm.Expr("viewed + ?", 1))
 
+}
+
+func notifyCheck(ctx context.Context) (err error) {
+	p := getCtxValue(ctx)
+
+	body, err := ioutil.ReadAll(p.r.Body)
+	if err != nil {
+		logs.Error(err)
+		return
+	}
+	defer p.r.Body.Close()
+	if len(body) == 0 {
+		err = fmt.Errorf("Call api by post with empty body ")
+		logs.Error(err)
+		return
+	}
+	var t []*env.TStuCourse
+	err = json.Unmarshal(body, &t)
+	if err != nil {
+		logs.Error(err)
+		return
+	}
+	for _, v := range t {
+		if v.Start == 0 || v.Start > 11 || v.CourseName == "" ||
+			v.ClassPlace == "" || len(v.WeekSection)&1 != 0 {
+			err = fmt.Errorf("illegal request argument %+v", v)
+			logs.Error(err)
+			return
+		}
+	}
+
+	firstMonday := p.r.URL.Query().Get("first_monday")
+	err = AddCourseNotify(t, firstMonday)
+	if err != nil {
+		logs.Error(err)
+		return
+	}
+
+	return
 }

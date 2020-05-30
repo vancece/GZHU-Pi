@@ -108,7 +108,7 @@ func Response(w http.ResponseWriter, r *http.Request, data interface{}, statusCo
 	}
 }
 
-func PanicMV(h http.HandlerFunc) http.HandlerFunc {
+func Recover(h http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		defer func() {
 			if err := recover(); err != nil {
@@ -186,7 +186,7 @@ func GenerateToken(userID int64, key string) (string, error) {
 	tokenString, err := token.SignedString(SecretKey)
 
 	if err != nil {
-		logs.Error(err)
+		//logs.Error(err)
 		return "", err
 	}
 	return tokenString, nil
@@ -201,7 +201,7 @@ func ParseToken(tokenStr string, key string) (userID int64, err error) {
 		return SecretKey, nil
 	})
 	if err != nil {
-		logs.Error(err)
+		//logs.Error(err)
 		return
 	}
 	claims, ok := token.Claims.(jwt.MapClaims)
@@ -211,8 +211,7 @@ func ParseToken(tokenStr string, key string) (userID int64, err error) {
 	}
 	iss, ok := claims["iss"].(float64)
 	if !ok {
-		err = fmt.Errorf("iss not float64")
-		logs.Error(err)
+		err = fmt.Errorf("iss is not float64")
 		return
 	}
 	if token.Valid {
@@ -229,19 +228,16 @@ func GetUserID(r *http.Request) (userID int64, err error) {
 	var token string
 	if len(r.Cookies()) == 0 {
 		err = ErrMissCookie
-		logs.Error(err)
 		return
 	}
 	cookie, err := r.Cookie("token")
 	if err != nil {
-		logs.Error(err)
 		return
 	}
 	token = cookie.Value
 	secretKey := env.Conf.Secret.JWT
 	userID, err = ParseToken(token, secretKey)
 	if err != nil {
-		//logs.Error(err)
 		return
 	}
 	return

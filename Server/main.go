@@ -2,7 +2,7 @@ package main
 
 import (
 	"GZHU-Pi/env"
-	"GZHU-Pi/routers"
+	rt "GZHU-Pi/routers"
 	"github.com/astaxie/beego/logs"
 	"github.com/gorilla/mux"
 	"github.com/prest/adapters/postgres"
@@ -93,7 +93,7 @@ func runWithPRest(r *mux.Router) {
 		next(w, r)
 	})
 
-	n.UseFunc(routers.TableAccessHandle)
+	n.UseFunc(rt.TableAccessHandle)
 
 	// Get pREST router
 	r = router.Get()
@@ -119,37 +119,37 @@ func customRouter(r *mux.Router) *mux.Router {
 		_, _ = w.Write([]byte("Hello!"))
 	})
 
-	r.HandleFunc("/auth", routers.PanicMV(routers.Auth)).Methods("POST")
-	r.HandleFunc("/param", routers.PanicMV(routers.Param))
-	r.HandleFunc("/upload", routers.PanicMV(routers.Upload))
+	r.HandleFunc("/auth", rt.Recover(rt.Auth)).Methods("POST")
+	r.HandleFunc("/param", rt.Recover(rt.Param))
+	r.HandleFunc("/upload", rt.Recover(rt.Upload))
 
 	//微信公众号接口
-	//r.HandleFunc("/wx/check", routers.PanicMV(routers.WeChatCheck))
-	r.HandleFunc("/wx/check", routers.PanicMV(routers.Hello))
+	//r.HandleFunc("/wx/check", rt.Recover(rt.WeChatCheck))
+	r.HandleFunc("/wx/check", rt.Recover(rt.WxMessage))
 
 	//教务系统
-	r.HandleFunc("/jwxt/course", routers.PanicMV(routers.JWMiddleWare(routers.Course))).Methods("GET", "POST")
-	r.HandleFunc("/jwxt/exam", routers.PanicMV(routers.JWMiddleWare(routers.Exam))).Methods("GET", "POST")
-	r.HandleFunc("/jwxt/grade", routers.PanicMV(routers.JWMiddleWare(routers.Grade))).Methods("GET", "POST")
-	r.HandleFunc("/jwxt/classroom", routers.PanicMV(routers.JWMiddleWare(routers.EmptyRoom))).Methods("GET", "POST")
-	r.HandleFunc("/jwxt/achieve", routers.PanicMV(routers.JWMiddleWare(routers.Achieve))).Methods("GET", "POST")
-	r.HandleFunc("/jwxt/all-course", routers.PanicMV(routers.JWMiddleWare(routers.AllCourse))).Methods("GET", "POST")
-	r.HandleFunc("/jwxt/rank", routers.PanicMV(routers.Rank)).Methods("GET")
+	r.HandleFunc("/jwxt/course", rt.Recover(rt.JWMiddleWare(rt.Course))).Methods("GET", "POST")
+	r.HandleFunc("/jwxt/exam", rt.Recover(rt.JWMiddleWare(rt.Exam))).Methods("GET", "POST")
+	r.HandleFunc("/jwxt/grade", rt.Recover(rt.JWMiddleWare(rt.Grade))).Methods("GET", "POST")
+	r.HandleFunc("/jwxt/classroom", rt.Recover(rt.JWMiddleWare(rt.EmptyRoom))).Methods("GET", "POST")
+	r.HandleFunc("/jwxt/achieve", rt.Recover(rt.JWMiddleWare(rt.Achieve))).Methods("GET", "POST")
+	r.HandleFunc("/jwxt/all-course", rt.Recover(rt.JWMiddleWare(rt.AllCourse))).Methods("GET", "POST")
+	r.HandleFunc("/jwxt/rank", rt.Recover(rt.Rank)).Methods("GET")
 
 	//图书馆
-	r.HandleFunc("/library/search", routers.PanicMV(routers.BookSearch)).Methods("GET")
-	r.HandleFunc("/library/holdings", routers.PanicMV(routers.BookHoldings)).Methods("GET")
+	r.HandleFunc("/library/search", rt.Recover(rt.BookSearch)).Methods("GET")
+	r.HandleFunc("/library/holdings", rt.Recover(rt.BookHoldings)).Methods("GET")
 
 	//第二课堂学分系统
-	r.HandleFunc("/second/my", routers.PanicMV(routers.SecondMiddleWare(routers.MySecond))).Methods("GET", "POST")
-	r.HandleFunc("/second/search", routers.PanicMV(routers.SecondMiddleWare(routers.SecondSearch))).Methods("GET", "POST")
-	r.HandleFunc("/second/image", routers.PanicMV(routers.SecondMiddleWare(routers.SecondImage))).Methods("GET", "POST")
+	r.HandleFunc("/second/my", rt.Recover(rt.SecondMiddleWare(rt.MySecond))).Methods("GET", "POST")
+	r.HandleFunc("/second/search", rt.Recover(rt.SecondMiddleWare(rt.SecondSearch))).Methods("GET", "POST")
+	r.HandleFunc("/second/image", rt.Recover(rt.SecondMiddleWare(rt.SecondImage))).Methods("GET", "POST")
 
 	//物理实验平台
 	//r.HandleFunc("/exp", test).Methods("POST")
 
 	//四六级、普通话考试查询
-	r.HandleFunc("/cet", routers.PanicMV(routers.GetCet)).Methods("GET")
+	r.HandleFunc("/cet", rt.Recover(rt.GetCet)).Methods("GET")
 	//r.HandleFunc("/exam/chinese", test).Methods("POST")
 	return r
 }

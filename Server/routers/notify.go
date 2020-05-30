@@ -24,6 +24,7 @@ import (
 var beforeMinutes time.Duration = 30                               //通知提前时间
 var classNotifyTpl = "aFpe_zN27IOKa3I_WhATW4-CxxcsOhwlFJbLJpz1zuk" //微信公众号上课提醒通知模板
 var classNotifyMgrPath = "pages/Campus/home/home"                  //通知转跳地址
+var mpBindPath = "/pages/Setting/login/auth" //公众号绑定页面
 
 func init() {
 	go func() {
@@ -36,11 +37,13 @@ func init() {
 //把还没有过期的课程通知写入kafka消息队列
 func AddCourseNotify(courses []*env.TStuCourse, firstMonday string) (err error) {
 	if len(courses) == 0 || firstMonday == "" {
+		err = fmt.Errorf("skip adding course notification, empty firstMonday or courses")
+		logs.Warn(err)
 		return
 	}
 	stuID := courses[0].StuID
 	if stuID == "" {
-		err = fmt.Errorf("skip, empty stu_id")
+		err = fmt.Errorf("skip adding course notification, empty stu_id")
 		logs.Warn(err)
 		return
 	}
@@ -52,13 +55,13 @@ func AddCourseNotify(courses []*env.TStuCourse, firstMonday string) (err error) 
 		return
 	}
 	if user.MpOpenID.String == "" {
-		err = fmt.Errorf("skip, empty MpOpenID")
+		err = fmt.Errorf("skip adding course notification, empty mp_open_id of stu_id = %s", stuID)
 		logs.Warn(err)
 		return
 	}
 	appID := env.Conf.WeiXin.MinAppID
 	if appID == "" {
-		err = fmt.Errorf("skip, empty app_id")
+		err = fmt.Errorf("skip adding course notification, empty app_id config")
 		logs.Warn(err)
 		return
 	}

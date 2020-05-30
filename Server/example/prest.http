@@ -13,8 +13,17 @@ Content-Type: application/json
 
 
 # 模糊搜索
-GET {{baseUrl}}/_QUERIES/topic/v_topic_search?match=第二课堂
+GET {{baseUrl}}/_QUERIES/topic/v_topic_search?match=求助
 Content-Type: application/x-www-form-urlencoded
 Cookie: {{cookie}}
 
 ###
+
+# 模糊搜索
+GET {{baseUrl}}/postgres/public/t_notify?status=0&_order=created_at
+Content-Type: application/x-www-form-urlencoded
+Cookie: {{cookie}}
+
+###
+
+

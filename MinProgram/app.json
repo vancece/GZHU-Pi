@@ -32,7 +32,8 @@
     "pages/Campus/grade/list",
     "pages/Life/wall/post",
     "pages/Life/wall/detail",
-    "pages/Setting/webview/webview"
+    "pages/Setting/webview/webview",
+    "pages/Setting/login/auth"
   ],
   "subpackages": [
     {

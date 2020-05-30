@@ -11,6 +11,7 @@ import (
 	"github.com/silenceper/wechat/message"
 	"github.com/silenceper/wechat/util"
 	"net/http"
+	"strings"
 )
 
 var wc *wechat.Wechat
@@ -156,13 +157,13 @@ func wxInit() (ok bool) {
 	return true
 }
 
-func Hello(rw http.ResponseWriter, req *http.Request) {
+func WxMessage(w http.ResponseWriter, r *http.Request) {
 
 	if !wxInit() {
 		return
 	}
 
-	server := wc.GetServer(req, rw)
+	server := wc.GetServer(r, w)
 
 	//设置接收消息的处理方法
 	server.SetMessageHandler(wxReply)
@@ -175,6 +176,10 @@ func Hello(rw http.ResponseWriter, req *http.Request) {
 	}
 	//发送回复的消息
 	err = server.Send()
+	if err != nil {
+		logs.Error(err)
+		return
+	}
 }
 
 func wxReply(msg message.MixMessage) *message.Reply {
@@ -184,7 +189,18 @@ func wxReply(msg message.MixMessage) *message.Reply {
 	switch msg.MsgType {
 	//文本消息
 	case message.MsgTypeText:
-		//do something
+
+		switch {
+		case strings.Contains(msg.Content, "绑定"):
+			replyStr := fmt.Sprintf(`<a href="http://www.qq.com" data-miniprogram-appid="%s" data-miniprogram-path="%s?mp_open_id=%s">绑定小程序</a>`,
+				env.Conf.WeiXin.MinAppID, mpBindPath, msg.FromUserName)
+
+			return &message.Reply{MsgType: message.MsgTypeText,
+				MsgData: message.NewText(replyStr)}
+
+		case strings.Contains(msg.Content, "提醒"):
+
+		}
 
 		//图片消息
 	case message.MsgTypeImage:
@@ -264,9 +280,7 @@ func wxReply(msg message.MixMessage) *message.Reply {
 		}
 	}
 
-	text := message.NewText("派派正在完善功能中，相关功能可点击菜单，其它问题可加微信联系我的主人！")
-
-	return &message.Reply{MsgType: message.MsgTypeText, MsgData: text}
+	return nil
 }
 
 func TplMsg() {
@@ -316,7 +330,7 @@ func TplMsg() {
 	logs.Info(msgID)
 }
 
-func getMedia() []byte {
+func GetMedia() []byte {
 	accessToken, err := wc.GetAccessToken()
 	if err != nil {
 		logs.Error(err)
@@ -334,4 +348,41 @@ func getMedia() []byte {
 	logs.Info(string(response))
 
 	return response
+}
+
+type MinP struct {
+	message.CommonToken
+
+	Miniprogrampage *message.MediaMiniprogrampage `json:"miniprogrampage,omitempty"` //可选
+}
+
+//NewImage 回复图片消息
+func NewImage(mpage *message.MediaMiniprogrampage) *MinP {
+	MP := new(MinP)
+	MP.Miniprogrampage = mpage
+	return MP
+}
+
+func ReplyMp(msg1 message.MixMessage) *message.Reply {
+
+	if !wxInit() {
+		return nil
+	}
+	logs.Info(fmt.Sprintf("收到一条消息：%v", msg1))
+
+	msg := &message.CustomerMessage{
+		ToUser:  "o0NA46MaFl75sPaC8nHS6SZLcWGM",
+		Msgtype: "miniprogrampage",
+		Miniprogrampage: &message.MediaMiniprogrampage{
+			Title:        "hello",
+			Appid:        env.Conf.WeiXin.MinAppID,
+			Pagepath:     classNotifyMgrPath,
+			ThumbMediaID: "oVb96gPsyuxuaUAhLrub2xqckeMWzoCC5UqwkwGUHLo",
+		},
+	}
+
+	msgp := NewImage(msg.Miniprogrampage)
+
+	return &message.Reply{MsgType: "miniprogrampage", MsgData: msgp}
+
 }

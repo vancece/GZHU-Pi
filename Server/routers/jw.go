@@ -162,17 +162,24 @@ func Course(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var userID int64
-	if len(r.Cookies()) > 0 {
-		userID, _ = GetUserID(r)
-	}
-
 	for _, v := range data.CourseList {
 		v.YearSem = ys
 		v.StuID = client.GetUsername()
-		v.CreatedBy = null.IntFrom(userID)
 	}
 	Response(w, r, data, http.StatusOK, "request ok")
+
+	//====响应后的处理
+	var userID int64
+	if len(r.Cookies()) > 0 {
+		userID, err = GetUserID(r)
+		if err != nil {
+			logs.Error(err, r.Cookies())
+			return
+		}
+	}
+	for _, v := range data.CourseList {
+		v.CreatedBy = null.IntFrom(userID)
+	}
 
 	if len(data.CourseList) == 0 {
 		return
@@ -403,8 +410,7 @@ func AllCourse(w http.ResponseWriter, r *http.Request) {
 func Rank(w http.ResponseWriter, r *http.Request) {
 
 	username := r.URL.Query().Get("username")
-	user := &env.TUser{}
-	user, err := AuthByCookies(r)
+	user, err := VUserByCookies(r)
 	if err != nil {
 		Response(w, r, nil, http.StatusBadRequest, err.Error())
 		return

@@ -117,7 +117,7 @@ Page({
         break
       case "navToBind":
         wx.navigateTo({
-          url: "/pages/Setting/login/bindStudent",
+          url: "/pages/Setting/login/auth",
         })
         break
     }

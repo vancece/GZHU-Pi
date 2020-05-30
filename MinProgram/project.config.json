@@ -115,9 +115,9 @@
 					"scene": null
 				},
 				{
-					"id": -1,
-					"name": "登录",
-					"pathName": "pages/Setting/login/bindStudent",
+					"id": 7,
+					"name": "pages/Setting/login/auth",
+					"pathName": "pages/Setting/login/auth",
 					"query": "",
 					"scene": null
 				},

@@ -13,7 +13,7 @@ type piCtx struct {
 	r *http.Request
 	w http.ResponseWriter
 
-	user env.TUser
+	user *env.VUser
 
 	gormDB *gorm.DB
 }
@@ -54,27 +54,15 @@ func InitCtx(w http.ResponseWriter, r *http.Request) (ctx context.Context, err e
 	p := &piCtx{
 		r:    r,
 		w:    w,
-		user: env.TUser{},
+		user: &env.VUser{},
 
 		gormDB: env.GetGorm(),
 	}
 	ctx = context.Background()
 	ctx = context.WithValue(ctx, piKey, p)
 
-	if len(r.Cookies()) == 0 {
-		err = fmt.Errorf("登录信息无效，请退出小程序重新打开")
-		logs.Error(err)
-		Response(w, r, nil, http.StatusUnauthorized, err.Error())
-		return
-	}
-
-	p.user.ID, err = GetUserID(p.r)
+	p.user, err = VUserByCookies(r)
 	if err != nil {
-		Response(w, r, nil, http.StatusUnauthorized, err.Error())
-		return
-	}
-	if p.user.ID <= 0 {
-		err = fmt.Errorf("user not found")
 		logs.Error(err)
 		Response(w, r, nil, http.StatusUnauthorized, err.Error())
 		return

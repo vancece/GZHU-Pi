@@ -22,6 +22,12 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 		AuthBySchool(w, r)
 		return
 	}
+	if r.URL.Query().Get("type") == "bind_mp" {
+		logs.Info("bind mp_open_id")
+		BindMpOpenID(w, r)
+		return
+	}
+
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		logs.Error(err)
@@ -56,7 +62,7 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var user env.VUser
+	var vUser env.VUser
 	db := env.GetGorm()
 
 	key := fmt.Sprintf("gzhupi:vuser:%s", u.OpenID.String)
@@ -73,16 +79,16 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	if err == redis.Nil {
-		err = db.Where("open_id = ?", u.OpenID.String).First(&user).Error
+		err = db.Where("open_id = ?", u.OpenID.String).First(&vUser).Error
 		if err != nil && err != gorm.ErrRecordNotFound {
 			logs.Error(err)
 			Response(w, r, nil, http.StatusInternalServerError, err.Error())
 			return
 		}
-		if err == nil && user.ID > 0 {
+		if err == nil && vUser.ID > 0 {
 			//加入缓存
 			logs.Debug("Set cache %s", key)
-			buf, err := json.Marshal(&user)
+			buf, err := json.Marshal(&vUser)
 			if err != nil {
 				logs.Error(err)
 				Response(w, r, nil, http.StatusInternalServerError, err.Error())
@@ -100,7 +106,7 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 	} else {
 		//解析缓存
 		logs.Debug("Hit cache %s", key)
-		err = json.Unmarshal([]byte(val), &user)
+		err = json.Unmarshal([]byte(val), &vUser)
 		if err != nil {
 			logs.Error(err)
 			Response(w, r, nil, http.StatusInternalServerError, err.Error())
@@ -109,8 +115,8 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 	}
 
 	//创建新用户
-	if user.ID <= 0 || err == gorm.ErrRecordNotFound {
-		logs.Info("new user, create with open_id: %v", u)
+	if vUser.ID <= 0 || err == gorm.ErrRecordNotFound {
+		logs.Info("new vUser, create with open_id: %v", u)
 
 		if u.MinappID.Int64 <= 0 {
 			err = fmt.Errorf("must provide minapp_id")
@@ -134,24 +140,25 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 			Response(w, r, nil, http.StatusBadRequest, err.Error())
 			return
 		}
-		seed := user.StuID.String + user.OpenID.String + user.Nickname.String + fmt.Sprint(time.Now().Unix())
+		seed := vUser.StuID.String + vUser.OpenID.String + vUser.Nickname.String + fmt.Sprint(time.Now().Unix())
 		u.ProfilePic = null.StringFrom(RandomAvatar(seed))
 
 		err = db.Create(&u).Error
 		if err != nil {
+			u.ProfilePic.String = ""
 			logs.Error(err, u)
 			Response(w, r, nil, http.StatusInternalServerError, err.Error())
 			return
 		}
 		logs.Info("创建用户：%v", u)
-		err = db.Where("id = ?", u.ID).First(&user).Error
+		err = db.Where("id = ?", u.ID).First(&vUser).Error
 		if err != nil && err != gorm.ErrRecordNotFound {
 			logs.Error(err)
 			Response(w, r, nil, http.StatusInternalServerError, err.Error())
 			return
 		}
 	} else {
-		if user.MinappID.Int64 != u.MinappID.Int64 {
+		if vUser.MinappID.Int64 != u.MinappID.Int64 {
 			err = fmt.Errorf("auth failed with wrong minapp_id")
 			logs.Error(err)
 			Response(w, r, nil, http.StatusUnauthorized, err.Error())
@@ -163,13 +170,13 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 			Response(w, r, nil, http.StatusBadRequest, err.Error())
 			return
 		}
-		u.ID = user.ID
+		u.ID = vUser.ID
 		//更新用户信息
-		if (user.UnionID.String != u.UnionID.String || user.StuID.String != u.StuID.String ||
-			user.Avatar.String != u.Avatar.String || user.Nickname.String != u.Nickname.String ||
-			user.City.String != u.City.String || user.Province.String != u.Province.String ||
-			user.Country.String != u.Country.String || user.Gender.Int64 != u.Gender.Int64 ||
-			user.Language.String != u.Language.String || user.Phone.String != u.Phone.String) &&
+		if (vUser.UnionID.String != u.UnionID.String || vUser.StuID.String != u.StuID.String ||
+			vUser.Avatar.String != u.Avatar.String || vUser.Nickname.String != u.Nickname.String ||
+			vUser.City.String != u.City.String || vUser.Province.String != u.Province.String ||
+			vUser.Country.String != u.Country.String || vUser.Gender.Int64 != u.Gender.Int64 ||
+			vUser.Language.String != u.Language.String || vUser.Phone.String != u.Phone.String) &&
 			u.Nickname.String != "" {
 
 			err = db.Model(&u).Update(u).Error
@@ -178,17 +185,31 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 				Response(w, r, nil, http.StatusInternalServerError, err.Error())
 				return
 			}
-			logs.Debug("Del key %s", key)
-			_, err = env.RedisCli.Del(key).Result()
-			if err != nil && err != gorm.ErrRecordNotFound {
+
+			err = db.First(&vUser).Error
+			if err != nil {
+				logs.Error(err)
+				Response(w, r, nil, http.StatusInternalServerError, err.Error())
+				return
+			}
+			//更新缓存
+			logs.Debug("Update cache %s", key)
+			buf, err := json.Marshal(&vUser)
+			if err != nil {
+				logs.Error(err)
+				Response(w, r, nil, http.StatusInternalServerError, err.Error())
+				return
+			}
+			err = env.RedisCli.Set(key, string(buf), 30*24*time.Hour).Err()
+			if err != nil {
 				logs.Error(err)
 				Response(w, r, nil, http.StatusInternalServerError, err.Error())
 				return
 			}
 		}
 		//创建随机头像
-		if user.ProfilePic.String == "" {
-			seed := user.StuID.String + user.OpenID.String + user.Nickname.String + fmt.Sprint(time.Now().Unix())
+		if vUser.ProfilePic.String == "" {
+			seed := vUser.StuID.String + vUser.OpenID.String + vUser.Nickname.String + fmt.Sprint(time.Now().Unix())
 			go func() {
 				u.ProfilePic = null.StringFrom(RandomAvatar(seed))
 				err = db.Model(&u).Update(u).Error
@@ -205,16 +226,16 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 			}()
 		}
 	}
-	user.ProfilePic.String = ""
-	logs.Info(user)
-	cookieStr, err := NewCookie(user.ID)
+	vUser.ProfilePic.String = ""
+	logs.Info(vUser)
+	cookieStr, err := NewCookie(vUser.ID)
 	if err != nil {
 		logs.Error(err)
 		Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}
 	w.Header().Set("Set-Cookie", cookieStr)
-	Response(w, r, user, http.StatusOK, "")
+	Response(w, r, vUser, http.StatusOK, "")
 	return
 }
 
@@ -242,20 +263,55 @@ func AuthBySchool(w http.ResponseWriter, r *http.Request) {
 	Jwxt.Store(getCacheKey(r, username), client)
 
 	logs.Info("用户：%s 接口：%s", username, r.URL.Path)
-	Response(w, r, nil, http.StatusOK, "request ok")
+
+	//绑定账号
+	vUser, err := VUserByCookies(r)
+	if err != nil {
+		logs.Error(err)
+		Response(w, r, nil, http.StatusUnauthorized, err.Error())
+		return
+	}
+	vUser.StuID = null.StringFrom(username)
+
+	err = env.GetGorm().Model(&env.TUser{}).UpdateColumns(env.TUser{StuID: vUser.StuID}).Error
+	if err != nil {
+		logs.Error(err)
+		Response(w, r, nil, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	//更新缓存
+	key := fmt.Sprintf("gzhupi:vuser:%s", vUser.OpenID.String)
+	logs.Debug("Update cache %s", key)
+	buf, err := json.Marshal(&vUser)
+	if err != nil {
+		logs.Error(err)
+		Response(w, r, nil, http.StatusInternalServerError, err.Error())
+		return
+	}
+	err = env.RedisCli.Set(key, string(buf), 30*24*time.Hour).Err()
+	if err != nil {
+		logs.Error(err)
+		Response(w, r, nil, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	Response(w, r, vUser, http.StatusOK, "request ok")
+
 }
 
-func AuthByCookies(r *http.Request) (user *env.TUser, err error) {
+func VUserByCookies(r *http.Request) (user *env.VUser, err error) {
 
 	if len(r.Cookies()) == 0 {
-		err = fmt.Errorf("登录信息无效，请退出小程序重新打开")
+		err = fmt.Errorf("微信授权信息无效，请退出小程序重新打开")
 		logs.Error(err)
 		return
 	}
 
-	user = &env.TUser{}
+	user = &env.VUser{}
 	user.ID, err = GetUserID(r)
 	if err != nil {
+		logs.Error(err)
 		return
 	}
 	err = env.GetGorm().First(user).Error
@@ -264,6 +320,50 @@ func AuthByCookies(r *http.Request) (user *env.TUser, err error) {
 		return
 	}
 	return
+}
+
+//绑定微信公众号openid
+func BindMpOpenID(w http.ResponseWriter, r *http.Request) {
+
+	mpOpenID := r.URL.Query().Get("mp_open_id")
+	if mpOpenID == "" || len(mpOpenID) != 28 {
+		err := fmt.Errorf("公众号openid无效: %s", mpOpenID)
+		logs.Error(err)
+		Response(w, r, nil, http.StatusBadRequest, err.Error())
+		return
+	}
+	vUser, err := VUserByCookies(r)
+	if err != nil {
+		logs.Error(err)
+		Response(w, r, nil, http.StatusUnauthorized, err.Error())
+		return
+	}
+	vUser.MpOpenID = null.StringFrom(mpOpenID)
+
+	err = env.GetGorm().Model(&env.TUser{}).UpdateColumns(env.TUser{MpOpenID: vUser.MpOpenID}).Error
+	if err != nil {
+		logs.Error(err)
+		Response(w, r, nil, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	//更新缓存
+	key := fmt.Sprintf("gzhupi:vuser:%s", vUser.OpenID.String)
+	logs.Debug("Update cache %s", key)
+	buf, err := json.Marshal(&vUser)
+	if err != nil {
+		logs.Error(err)
+		Response(w, r, nil, http.StatusInternalServerError, err.Error())
+		return
+	}
+	err = env.RedisCli.Set(key, string(buf), 30*24*time.Hour).Err()
+	if err != nil {
+		logs.Error(err)
+		Response(w, r, nil, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	Response(w, r, vUser, http.StatusOK, "")
 }
 
 //防抖检测，存在该key则返回true，否则设置key在指定时间过期

@@ -187,6 +187,7 @@ func BookSearch(query string, searchPage string) (result map[string]interface{},
 			}
 		}
 		//异步请求豆瓣接口获取图书封面
+		time.Sleep(20 * time.Millisecond)
 		wg.Add(1)
 		go func() {
 			key := fmt.Sprintf("gzhupi:book:cover:%s", book.ISBN)
