@@ -29,8 +29,9 @@ var mpBindPath = "/pages/Setting/login/auth"                       //公众号�
 func init() {
 	go func() {
 		time.Sleep(5 * time.Second)
-		logs.Info("添加定时任务: 上课通知提醒 * 0/5 7-21 * *")
-		env.CornTask("* 0/5 7-21 * *", SentNotification)
+		exp := `0 0/5 * * * *` //每隔5分钟
+		logs.Info("添加定时任务: 上课通知提醒 ", exp)
+		env.CornTask(exp, SentNotification)
 	}()
 }
 
@@ -193,6 +194,8 @@ func CalStartTime(firstMonday string, c *env.TStuCourse) (times []time.Time) {
 }
 
 func SentNotification() {
+
+	logs.Info("发送通知定时任务")
 
 	if !wxInit() {
 		return

@@ -36,8 +36,10 @@ func StringSha1(data string) string {
 
 func CornTask(spec string, task func()) {
 
-	cronTab := cron.New()
-	// 添加定时任务, "* 0/5 7-21 * *" 是 cronTab,表示7-21点，每五分钟
+	//秒 分 时 日 月 星期
+	cronTab := cron.New(cron.WithSeconds())
+
+	// 添加定时任务, "0 0/5 7-21 * * *" 是 cronTab,表示7-21点，每五分钟
 	_, err := cronTab.AddFunc(spec, task)
 	if err != nil {
 		logs.Error(err)
