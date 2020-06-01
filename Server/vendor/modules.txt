@@ -125,6 +125,9 @@ github.com/mitchellh/go-homedir
 # github.com/mitchellh/mapstructure v1.3.0
 ## explicit
 github.com/mitchellh/mapstructure
+# github.com/mo7zayed/reqip v0.0.0-20200520084230-ae375eb9322b
+## explicit
+github.com/mo7zayed/reqip
 # github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd
 ## explicit
 github.com/modern-go/concurrent

@@ -4,6 +4,7 @@ import (
 	"GZHU-Pi/pkg/gzhu_second"
 	"context"
 	"github.com/astaxie/beego/logs"
+	"github.com/mo7zayed/reqip"
 	"net/http"
 	"strings"
 	"time"
@@ -70,7 +71,7 @@ func SecondMiddleWare(next http.HandlerFunc) http.HandlerFunc {
 				client.ExpiresAt = time.Now().Add(20 * time.Minute)
 			}
 		}()
-		logs.Info("用户：%s 接口：%s", username, r.URL.Path)
+		logs.Info("用户：%s IP: %s 接口：%s ", username, reqip.GetClientIP(r), r.URL.Path)
 		//把客户端通过context传递给下一级
 		ctx := context.WithValue(r.Context(), "client", client)
 		// 创建新的请求

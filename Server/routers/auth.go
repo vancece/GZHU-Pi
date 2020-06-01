@@ -2,6 +2,7 @@ package routers
 
 import (
 	"GZHU-Pi/env"
+	"github.com/mo7zayed/reqip"
 
 	"encoding/json"
 	"fmt"
@@ -262,7 +263,7 @@ func AuthBySchool(w http.ResponseWriter, r *http.Request) {
 	//将客户端存入缓存
 	Jwxt.Store(getCacheKey(r, username), client)
 
-	logs.Info("用户：%s 接口：%s", username, r.URL.Path)
+	logs.Info("用户：%s IP: %s 接口：%s ", username, reqip.GetClientIP(r), r.URL.Path)
 	Response(w, r, nil, http.StatusOK, "request ok")
 	return
 
@@ -306,13 +307,16 @@ func VUserByCookies(r *http.Request) (user *env.VUser, err error) {
 
 	if len(r.Cookies()) == 0 {
 		err = fmt.Errorf("微信授权信息无效，请退出小程序重新打开")
-		logs.Error(err)
+		logs.Error(err, r.URL)
 		return
 	}
 
 	user = &env.VUser{}
 	user.ID, err = GetUserID(r)
 	if err != nil {
+		if err.Error() == "Token is expired" {
+			err = fmt.Errorf("登录信息过期，请重新打开小程序")
+		}
 		logs.Error(err)
 		return
 	}

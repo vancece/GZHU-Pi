@@ -46,6 +46,9 @@ type ResponseProto struct {
 //统一响应处理函数
 func Response(w http.ResponseWriter, r *http.Request, data interface{}, statusCode int, msg string) {
 	defer func() {
+		if data == nil && statusCode != 1 && statusCode != 200 {
+			logs.Warn("Response error URL:%s msg:%s", r.URL.String(), msg)
+		}
 		logs.Info("============== Responded ==============")
 	}()
 	if w == nil || r == nil {

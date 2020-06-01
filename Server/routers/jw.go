@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"github.com/astaxie/beego/logs"
 	"github.com/go-redis/redis"
+	"github.com/mo7zayed/reqip"
 	"gopkg.in/guregu/null.v3"
 	"net/http"
 	"strconv"
@@ -85,7 +86,7 @@ func JWMiddleWare(next http.HandlerFunc) http.HandlerFunc {
 			Response(w, r, nil, http.StatusUnauthorized, "Unauthorized")
 			return
 		}
-		logs.Info("用户：%s 接口：%s IP: %s", username, r.URL.Path, r.RemoteAddr)
+		logs.Info("用户：%s IP: %s 接口：%s ", username, reqip.GetClientIP(r), r.URL.Path)
 
 		//从缓存中获取客户端，不存在或者过期则创建
 		//client, ok := Jwxt[getCacheKey(r, username)]
@@ -421,8 +422,8 @@ func Rank(w http.ResponseWriter, r *http.Request) {
 		Response(w, r, nil, http.StatusUnauthorized, err.Error())
 		return
 	}
-	logs.Info("用户：%d 学号：%s 接口：%s IP: %s", user.ID, username, r.URL.Path, r.RemoteAddr)
-
+	logs.Info("用户：%s IP: %s 接口：%s ", username, reqip.GetClientIP(r), r.URL.Path)
+		
 	var data map[string]interface{}
 
 	//====查询缓存

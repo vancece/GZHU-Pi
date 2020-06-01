@@ -24,6 +24,7 @@ require (
 	github.com/json-iterator/go v1.1.9
 	github.com/lib/pq v1.5.1 // indirect
 	github.com/mitchellh/mapstructure v1.3.0 // indirect
+	github.com/mo7zayed/reqip v0.0.0-20200520084230-ae375eb9322b
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/nuveo/log v0.0.0-20190430190217-44d02db6bdf8 // indirect
 	github.com/pelletier/go-toml v1.7.0 // indirect
@@ -40,7 +41,7 @@ require (
 	github.com/silenceper/wechat v1.2.3
 	github.com/spf13/afero v1.2.2 // indirect
 	github.com/spf13/cast v1.3.1 // indirect
-	github.com/spf13/cobra v0.0.5 // indirect
+	github.com/spf13/cobra v0.0.5
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.6.3
