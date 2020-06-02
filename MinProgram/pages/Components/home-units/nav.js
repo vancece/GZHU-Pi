@@ -27,10 +27,22 @@ Component({
   },
 
   lifetimes: {
-    ready: function() {
+    ready: function () {
       this.setData({
         iconList: wx.$param["nav"],
       })
+
+      let count = 0
+      for (let i = 0; i < wx.$param["nav"].length; i++) {
+        if (wx.$param["nav"][i].show == true) {
+          count++
+        }
+      }
+      if (count % 5 == 0) {
+        this.setData({
+          gridCol: 5
+        })
+      }
     }
   }
 })

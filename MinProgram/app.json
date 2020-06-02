@@ -33,7 +33,8 @@
     "pages/Life/wall/post",
     "pages/Life/wall/detail",
     "pages/Setting/webview/webview",
-    "pages/Setting/login/auth"
+    "pages/Setting/login/auth",
+    "pages/Campus/tools/notice"
   ],
   "subpackages": [
     {

@@ -21,15 +21,15 @@ class UserService {
         // stu_id: stu_id,
         minapp_id: user.user_id,
         open_id: user.openid,
-        // union_id: user.unionid,
-        // avatar: user.avatar,
-        // nickname: user.nickname,
-        // city: user.city,
-        // province: user.province,
-        // country: user.country,
-        // gender: user.gender,
-        // language: user.language,
-        // phone: user._phone,
+        union_id: user.unionid,
+        avatar: user.avatar,
+        nickname: user.nickname,
+        city: user.city,
+        province: user.province,
+        country: user.country,
+        gender: user.gender,
+        language: user.language,
+        phone: user._phone,
       }
       wx.$ajax({
           url: wx.$param.server["prest"] + "/auth",
@@ -49,6 +49,8 @@ class UserService {
               data: res.data,
             })
           }
+        }).catch(err=>{
+          console.log(err)
         })
     }).catch(err => {
       if (err.code === 604) {

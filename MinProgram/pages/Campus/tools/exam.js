@@ -3,7 +3,7 @@ var app = getApp()
 var tableID = 57516
 Page({
   data: {
-
+    exam: []
   },
 
   onLoad: function (options) {
@@ -17,10 +17,12 @@ Page({
   },
 
   onShareAppMessage: function () {
-    let recordID = wx.getStorageSync("exam").id
-    return {
-      title: this.data.exam[0].major_class + " - 考试安排",
-      path: '/pages/Campus/tools/exam?recordID=' + recordID,
+    if (this.data.exam.length > 0) {
+      let recordID = wx.getStorageSync("exam").id
+      return {
+        title: this.data.exam[0].major_class + " - 考试安排",
+        path: '/pages/Campus/tools/exam?recordID=' + recordID,
+      }
     }
   },
 
@@ -100,7 +102,7 @@ Page({
     record.set('exam_list', exam)
     record.update().then(res => {
       wx.setStorageSync("exam", res.data)
-    }, err => { })
+    }, err => {})
   },
 
 
@@ -125,11 +127,11 @@ Page({
     let data = that.data.account
     data["year_sem"] = wx.$param.school["year_sem"],
 
-    wx.$ajax({
-      url: "/jwxt/exam",
-      data: data,
-      loading: true
-    })
+      wx.$ajax({
+        url: "/jwxt/exam",
+        data: data,
+        loading: true
+      })
       .then(res => {
         that.setData({
           exam: res.data

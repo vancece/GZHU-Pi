@@ -21,11 +21,11 @@ wx.$ajax = function (option) {
       option.url = wx.$param.server["aliyun_go"] + option.url
     }
     if (typeof option.loading == "boolean" && option.loading) {
-      wx.showLoading({
-        title: '加载中',
-        duration: 60000,
-        mask: true,
-      })
+      // wx.showLoading({
+      //   title: '加载中',
+      //   duration: 60000,
+      //   mask: true,
+      // })
     } else if (typeof option.loading == "string") {
       wx.showLoading({
         title: option.loading,
@@ -107,7 +107,7 @@ wx.$ajax = function (option) {
       },
       complete: (res) => {
         console.log("response :" + option.url, res)
-        wx.hideLoading()
+          wx.hideLoading()
       }
     })
   })
@@ -241,4 +241,25 @@ wx.$subscribe = function () {
       }
     })
   })
+}
+
+/*
+ * 伪双向绑定
+ * wxml input 定义属性：data-field="field1.field2" value="{{field1.field2}}"
+ * 输入内容将绑定到：this.data.field1.field2 = e.detail.value
+ * 
+ * <input bindinput="inputChange" data-field="navTitle" value="{{navTitle}}" ></input>
+ * inputChange(e){
+ *  wx.$bindInput.call(this,e)
+ *  }
+ */
+
+wx.$bindInput = function (e) {
+  if (typeof e.currentTarget.dataset.field != "string") return
+  let field = e.currentTarget.dataset.field
+  console.log("数据绑定：key：", field, " value:", e.detail.value)
+
+  let data = {}
+  data[field] = e.detail.value
+  this.setData(data)
 }
