@@ -290,12 +290,7 @@ func SaveCourseNotify(notifies []TNotify) (err error) {
 			logs.Error(err)
 			return
 		}
-		var c TStuCourse
-		err = json.Unmarshal(v.Addi, &c)
-		if err != nil {
-			logs.Error(err)
-			return
-		}
+
 		var val int64
 		val, err = RedisCli.ZRank(KeyCourseNotifyZSet, v.Digest.String).Result()
 		if err != nil && err != redis.Nil {

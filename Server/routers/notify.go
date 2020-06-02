@@ -23,8 +23,9 @@ import (
 
 var beforeMinutes time.Duration = 30                               //通知提前时间
 var classNotifyTpl = "aFpe_zN27IOKa3I_WhATW4-CxxcsOhwlFJbLJpz1zuk" //微信公众号上课提醒通知模板
-var classNotifyMgrPath = "pages/Campus/home/home"                  //通知转跳地址
-var mpBindPath = "/pages/Setting/login/auth"                       //公众号绑定页面
+//var classNotifyMgrPath = "pages/Campus/tools/notice"               //通知管理转跳地址
+var classNotifyMgrPath = "pages/Campus/home/home" //通知管理转跳地址
+var mpBindPath = "/pages/Setting/login/auth"      //公众号绑定页面
 
 func init() {
 	go func() {
@@ -107,9 +108,9 @@ func AddCourseNotify(courses []*env.TStuCourse, firstMonday string) (err error) 
 				logs.Error(err)
 				return
 			}
-			//Digest唯一哈希： 通知时间、课程、学生、班级都一样的情况下，只能存在一条
+			//Digest唯一哈希： 通知时间、课程、学生、班级、通知对象 都一样的情况下，只能存在一条
 			notify := env.TNotify{
-				Digest:   null.StringFrom(env.StringMD5(t.String() + c.StuID + c.CourseID + c.JghID)),
+				Digest:   null.StringFrom(env.StringMD5(t.String() + c.StuID + c.CourseID + c.JghID + user.MpOpenID.String)),
 				Type:     null.StringFrom("上课提醒"),
 				SentTime: t.Add(-beforeMinutes * time.Minute), //提前指定时间
 
@@ -204,6 +205,7 @@ func SentNotification() {
 	tpl := message.NewTemplate(wc.Context)
 	db := env.GetGorm()
 
+	//在这之前没有发送的通知都发出去
 	key := env.KeyCourseNotifyZSet
 	val, err := env.RedisCli.ZRangeByScoreWithScores(key, redis.ZRangeBy{
 		Min: "0",
@@ -225,15 +227,24 @@ func SentNotification() {
 
 		var n env.TNotify
 		err := db.Where("digest=?", v.Member).First(&n).Error
-		if err != nil {
+		if err != nil && err != gorm.ErrRecordNotFound {
 			logs.Error(err, v.Member)
-			return
+			continue
+		}
+		if err == gorm.ErrRecordNotFound {
+			logs.Debug(v.Member, "任务已经删除")
+			err = env.RedisCli.ZRem(key, v.Member).Err()
+			if err != nil {
+				logs.Error(err, key, v.Member)
+				continue
+			}
+			continue
 		}
 
 		data, err := json.Marshal(n)
 		if err != nil {
 			logs.Error(err, n)
-			return
+			continue
 		}
 		if n.ID <= 0 || n.ToUser.String == "" {
 			err = fmt.Errorf("illegal record: %s", string(data))
@@ -244,12 +255,12 @@ func SentNotification() {
 		err = json.Unmarshal(data, &msg)
 		if err != nil {
 			logs.Error(err)
-			return
+			continue
 		}
 		_, err = tpl.Send(msg)
 		if err != nil {
 			logs.Error(err)
-			return
+			continue
 		}
 		logs.Info("%s通知成功 to:%s id:%d", n.Type.String, n.ToUser.String, n.ID)
 
@@ -257,12 +268,12 @@ func SentNotification() {
 		err = db.Model(&env.TNotify{ID: n.ID}).UpdateColumn("status", 2).Error
 		if err != nil {
 			logs.Error(err, n.ID)
-			return
+			continue
 		}
 		err = env.RedisCli.ZRem(key, v.Member).Err()
 		if err != nil {
 			logs.Error(err, key, v.Member)
-			return
+			continue
 		}
 	}
 }

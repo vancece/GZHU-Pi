@@ -341,6 +341,44 @@ func invalidZeroNullValue(p interface{}) (err error) {
 	return
 }
 
+func validZeroNullValue(p interface{}) (err error) {
+	if p == nil {
+		err = fmt.Errorf("call invalidEmptyNullValue with v==nil")
+		logs.Error(err)
+		return
+	}
+
+	if reflect.TypeOf(p).Kind() != reflect.Ptr {
+		err = fmt.Errorf("please call invalidEmptyNullValue with pointer to struct")
+		logs.Error(err)
+		return
+	}
+
+	s := reflect.ValueOf(p).Elem()
+	t := reflect.TypeOf(s.Interface())
+	if t.Kind() != reflect.Struct {
+		err = fmt.Errorf("Call invalidEmptyNullValue' pointer must to be struct ")
+		logs.Error(err)
+		return
+	}
+
+	for i := 0; i < s.NumField(); i++ {
+		if !s.Field(i).CanInterface() {
+			continue
+		}
+
+		switch s.Field(i).Interface().(type) {
+		case null.String, null.Int, null.Float, null.Bool, null.Time:
+			if s.Field(i).IsValid() && s.Field(i).CanSet() &&
+				s.Field(i).FieldByName("Valid").IsValid() &&
+				s.Field(i).FieldByName("Valid").CanSet() {
+				s.Field(i).FieldByName("Valid").SetBool(true)
+			}
+		}
+	}
+	return
+}
+
 //通过Gravatar服务随机生成头像
 func RandomAvatar(seed string) (baseImg string) {
 

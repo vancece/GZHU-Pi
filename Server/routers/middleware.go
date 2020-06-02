@@ -2,17 +2,22 @@ package routers
 
 import (
 	"GZHU-Pi/env"
+	"GZHU-Pi/services/kafka"
 	"bytes"
 	"context"
 	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego/logs"
+	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
+	"github.com/silenceper/wechat/message"
+	"gopkg.in/guregu/null.v3"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func TableAccessHandle(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
@@ -60,11 +65,14 @@ func TableAccessHandle(w http.ResponseWriter, r *http.Request, next http.Handler
 		case strings.Contains(r.URL.Path, "t_relation"):
 			err = relationCheck(ctx)
 		case strings.Contains(r.URL.Path, "t_notify"):
-			err = notifyCheck(ctx)
-			if err == nil {
+			err = courseNotifyCheck(ctx)
+			if err != nil {
+				Response(w, r, nil, http.StatusBadRequest, err.Error())
+			} else {
 				Response(w, r, nil, http.StatusOK, "")
-				return
 			}
+			return
+
 		default:
 			err = fmt.Errorf("illegal request")
 		}
@@ -117,8 +125,14 @@ func TableAccessHandle(w http.ResponseWriter, r *http.Request, next http.Handler
 			if t.CreatedBy.Int64 != p.user.ID {
 				err = fmt.Errorf("permission denied")
 			}
+		case strings.Contains(r.URL.Path, "t_notify"):
+			var t env.TNotify
+			p.gormDB.First(&t, id)
+			if t.CreatedBy.Int64 != p.user.ID {
+				err = fmt.Errorf("permission denied")
+			}
 		default:
-			err = fmt.Errorf("illegal request")
+			err = fmt.Errorf("illegal request table")
 		}
 		if err != nil {
 			logs.Error(err)
@@ -325,7 +339,7 @@ func topicViewCounter(u *url.URL) {
 
 }
 
-func notifyCheck(ctx context.Context) (err error) {
+func courseNotifyCheck(ctx context.Context) (err error) {
 	p := getCtxValue(ctx)
 
 	body, err := ioutil.ReadAll(p.r.Body)
@@ -334,28 +348,103 @@ func notifyCheck(ctx context.Context) (err error) {
 		return
 	}
 	defer p.r.Body.Close()
+	p.r.Body = ioutil.NopCloser(bytes.NewBuffer(body))
+
 	if len(body) == 0 {
 		err = fmt.Errorf("Call api by post with empty body ")
 		logs.Error(err)
 		return
 	}
-	var t []*env.TStuCourse
+	var t env.TNotify
 	err = json.Unmarshal(body, &t)
 	if err != nil {
 		logs.Error(err)
 		return
 	}
-	for _, v := range t {
-		if v.Start == 0 || v.Start > 11 || v.CourseName == "" ||
-			v.ClassPlace == "" || len(v.WeekSection)&1 != 0 {
-			err = fmt.Errorf("illegal request argument %+v", v)
-			logs.Error(err)
-			return
-		}
+	//err = validZeroNullValue(&t)
+	//if err != nil {
+	//	logs.Error(err)
+	//	return
+	//}
+
+	t.Type = null.StringFrom("上课提醒")
+	if t.SentTime.Unix() < time.Now().Unix() {
+		err = fmt.Errorf("数据非法 %s %d", t.Type.String, t.SentTime.Unix())
+		logs.Error(err)
+		return
 	}
 
-	firstMonday := p.r.URL.Query().Get("first_monday")
-	err = AddCourseNotify(t, firstMonday)
+	if p.user.MpOpenID.String == "" {
+		err = fmt.Errorf("用户未绑定公众号，无法创建提醒")
+		logs.Error(err)
+		return
+	}
+
+	var tplData = make(map[string]*message.DataItem)
+	err = json.Unmarshal(t.Data, &tplData)
+	if err != nil {
+		logs.Error(err)
+		return
+	}
+	keyword1 := tplData["keyword1"].Value
+	keyword2 := tplData["keyword2"].Value
+	keyword3 := tplData["keyword3"].Value
+	if len([]rune(keyword1)) > 50 || len([]rune(keyword2)) > 50 || len([]rune(keyword3)) > 50 {
+		err = fmt.Errorf("模板字段长度超出")
+		logs.Error(err)
+		return
+	}
+	if keyword1 == "" || keyword2 == "" || keyword3 == "" {
+		err = fmt.Errorf("参数非法")
+		logs.Error(err)
+		return
+	}
+	tplData["first"] = &message.DataItem{Value: "您有一门课程即将开始！"}
+	tplData["remark"] = &message.DataItem{Value: "点击进入课程提醒管理"}
+
+	//小程序转跳信息
+	m := message.Message{}
+	m.MiniProgram.AppID = env.Conf.WeiXin.MinAppID
+	m.MiniProgram.PagePath = classNotifyMgrPath
+	miniProgram, err := json.Marshal(&m.MiniProgram)
+	if err != nil {
+		logs.Error(err)
+		return
+	}
+	t.ToUser = null.StringFrom(p.user.MpOpenID.String)
+	t.TemplateID = null.StringFrom(classNotifyTpl)
+	t.Digest = null.StringFrom(env.StringMD5(fmt.Sprintf("%d_%s_%s_%s", p.user.ID, p.user.MpOpenID.String, keyword1, t.SentTime.String())))
+	t.MiniProgram = miniProgram
+	t.CreatedBy = null.IntFrom(p.user.ID)
+
+	//查重
+	_, err = env.RedisCli.ZRank(env.KeyCourseNotifyZSet, t.Digest.String).Result()
+	if err != nil && err != redis.Nil {
+		logs.Error(err)
+		return
+	}
+	if err == nil {
+		err = fmt.Errorf("同一名称时间的提醒任务 %s %s 已经存在", keyword1, t.SentTime.String())
+		logs.Error(err)
+		return
+	}
+
+	if !env.Conf.Kafka.Enabled {
+		err = fmt.Errorf("服务不可用")
+		logs.Error(err)
+		return
+	}
+	notifies := []env.TNotify{t}
+	//写入消息队列
+	info, err := json.Marshal(notifies)
+	if err != nil {
+		logs.Error(err)
+		return
+	}
+	err = env.Kafka.SendData(&kafka.ProduceData{
+		Topic: env.QueueTopicCourse,
+		Data:  info,
+	})
 	if err != nil {
 		logs.Error(err)
 		return

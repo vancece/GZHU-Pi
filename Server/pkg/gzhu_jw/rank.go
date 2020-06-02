@@ -127,22 +127,22 @@ func (c *JWClient) GetRank(stuID string) (result map[string]interface{}, err err
 
 	gpaRanks, err = getGpaRank(gpaSQL)
 	if err != nil {
-		logs.Error(err)
+		logs.Error(err, stuID)
 		return
 	}
 	yearRanks, err = getGpaRank(yearSQL)
 	if err != nil {
-		logs.Error(err)
+		logs.Error(err, stuID)
 		return
 	}
 	semRanks, err = getGpaRank(semSQL)
 	if err != nil {
-		logs.Error(err)
+		logs.Error(err, stuID)
 		return
 	}
 	courseRanks, err = getGpaRank(courseSQL)
 	if err != nil {
-		logs.Error(err)
+		logs.Error(err, stuID)
 		return
 	}
 
