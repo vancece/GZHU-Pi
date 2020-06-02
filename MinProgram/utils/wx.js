@@ -62,7 +62,7 @@ wx.$ajax = function (option) {
         }
 
         // 缓存cookies
-        if (res.header["Set-Cookie"] != undefined) {
+        if (res.header["Set-Cookie"] != undefined && res.header["Set-Cookie"] != "") {
           wx.setStorageSync("gzhupi_cookie", res.header["Set-Cookie"]);
         }
 
@@ -107,7 +107,7 @@ wx.$ajax = function (option) {
       },
       complete: (res) => {
         console.log("response :" + option.url, res)
-          wx.hideLoading()
+        // wx.hideLoading()
       }
     })
   })
@@ -177,7 +177,7 @@ wx.$navTo = function (e, args) {
 
 
 /**
- * 对象转url参数
+ * 对象转url参数(带问号)
  * @method wx.$objectToQuery
  * @param {object}  obj
  * @return {string} query
@@ -262,4 +262,106 @@ wx.$bindInput = function (e) {
   let data = {}
   data[field] = e.detail.value
   this.setData(data)
+}
+
+// 图片预览
+/* <image data-url="{{curImg}}" ></image> */
+wx.$viewImg = function (urls = [], e) {
+
+  if (urls.length == 0) {
+    urls.push(e.currentTarget.dataset.url)
+  }
+
+  wx.previewImage({
+    urls: urls,
+    current: e.currentTarget.dataset.url
+  });
+}
+
+
+// 同步认证
+wx.$authSync = async function (times = 1) {
+
+  if (times > 3) {
+    console.log("转跳认证")
+    wx.$navTo("/pages/Setting/login/auth")
+    return
+  }
+
+  let user
+  user = await wx.BaaS.auth.getCurrentUser().then(user => {
+    return user
+  }).catch(err => {
+    if (err.code === 604) {
+      console.log('用户未登录，发送auth请求失败，重试', err)
+    }
+  })
+
+  // 递归重试
+  if (user == undefined || !user.user_id) {
+    setTimeout(() => {
+      wx.$authSync(times + 1)
+    }, 3000);
+    return
+  }
+
+  let form = {
+    // stu_id: stu_id,
+    minapp_id: user.user_id,
+    open_id: user.openid,
+    union_id: user.unionid,
+    avatar: user.avatar,
+    nickname: user.nickname,
+    city: user.city,
+    province: user.province,
+    country: user.country,
+    gender: user.gender,
+    language: user.language,
+    phone: user._phone,
+  }
+  // console.log("auth data: ", form)
+
+  let v_user = await wx.$ajax({
+      url: wx.$param.server["prest"] + "/auth",
+      // url: "http://localhost:9000/api/v1/auth",
+      method: "post",
+      showErr: false,
+      data: form,
+      header: {
+        "content-type": "application/json"
+      }
+    })
+    .then(res => {
+      console.log("auth resp user:", res.data)
+      if (res.data.open_id == user.openid && res.data.id > 0) {
+        wx.setStorage({
+          key: 'gzhupi_user',
+          data: res.data,
+        })
+      }
+    }).catch(err => {
+      console.log("转跳认证", err)
+      wx.$navTo("/pages/Setting/login/auth")
+    })
+}
+
+
+// 登录、cookie检查
+wx.$checkUser = function (nav = true) {
+  let cookie = wx.getStorageSync("gzhupi_cookie")
+  let v_user = wx.getStorageSync("gzhupi_user")
+
+  if (!v_user || v_user.id <= 0 || !cookie) {
+    wx.showToast({
+      title: '未登录',
+      icon: "none"
+    })
+    if (nav) {
+      console.log("转跳认证")
+      wx.$navTo("/pages/Setting/login/auth")
+    }
+    return false
+  }
+
+  return true
 }

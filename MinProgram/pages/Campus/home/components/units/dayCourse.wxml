@@ -26,8 +26,8 @@
     </view>
   </view>
 </view>
-<button bindtap='nav' hidden="{{account}}" style='width:300rpx;background-color:#18b3eb;color:white'>绑定学号</button>
-<view hidden='{{tools.noCourse(todayCourse,schoolWeek)}}' class='no-course'>今天没课~~</view>
+<button bindtap='nav' wx:if="{{!haveAccount}}" class="bind-btn">绑定学号</button>
+<view wx:if="{{haveAccount}}" hidden='{{tools.noCourse(todayCourse,schoolWeek)}}' class='no-course'>今天没课~~</view>
 
 
 <wxs module="tool">

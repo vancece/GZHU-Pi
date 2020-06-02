@@ -1,9 +1,9 @@
 <navBar title="授权关联"></navBar>
 
 <view class='exchange'>
-	<image mode='widthFix' style="width: 130rpx;" src='https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/icon/gzhupi_logo.png'></image>
-	<image mode='widthFix' style='width:80rpx' src='https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/icon/exchange1.png'></image>
-	<image mode='widthFix' style="width: 130rpx;" src='/assets/weixin.svg'></image>
+	<image mode='widthFix' style="width:130rpx;height:130rpx" src='https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/icon/gzhupi_logo.png'></image>
+	<image mode='widthFix' style='width:80rpx;height:80rpx' src='https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/icon/exchange1.png'></image>
+	<image mode='widthFix' style="width:130rpx;height:130rpx" src='/assets/weixin.svg'></image>
 </view>
 
 
@@ -48,5 +48,10 @@
 			<button bindtap="onClick" class="cu-btn round bg-yellow">关联</button>
 		</view>
 	</view>
+
+	<view class="flex justify-center margin-top-xl">
+		<image mode='widthFix' style="width:350rpx" data-url="{{qrcode}}" bindtap="viewImg" src="{{qrcode}}"></image>
+	</view>
+	<view class="margin text-grey text-center text-df">广大派公众号回复【绑定】</view>
 
 </view>

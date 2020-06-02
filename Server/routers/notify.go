@@ -196,8 +196,6 @@ func CalStartTime(firstMonday string, c *env.TStuCourse) (times []time.Time) {
 
 func SentNotification() {
 
-	logs.Info("发送通知定时任务")
-
 	if !wxInit() {
 		return
 	}
@@ -247,7 +245,8 @@ func SentNotification() {
 			continue
 		}
 		if n.ID <= 0 || n.ToUser.String == "" {
-			err = fmt.Errorf("illegal record: %s", string(data))
+			err = fmt.Errorf("illegal record: %s", v.Member)
+			env.RedisCli.ZRem(key, v.Member)
 			logs.Error(err, v.Member)
 			return
 		}
@@ -259,7 +258,7 @@ func SentNotification() {
 		}
 		_, err = tpl.Send(msg)
 		if err != nil {
-			logs.Error(err)
+			logs.Error(err, v.Member)
 			continue
 		}
 		logs.Info("%s通知成功 to:%s id:%d", n.Type.String, n.ToUser.String, n.ID)

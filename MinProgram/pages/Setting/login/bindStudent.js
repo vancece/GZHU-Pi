@@ -1,9 +1,6 @@
 const Page = require('../../../utils/sdk/ald-stat.js').Page;
 var app = getApp()
 
-import UserService from "../../../services/user.js"
-var userService = new UserService()
-
 Page({
 
   data: {
@@ -17,13 +14,14 @@ Page({
 
   onLoad: function (options) {
 
-    userService.auth()
+    wx.$checkUser()
 
     this.setData({
       show: !app.globalData.isAuthorized,
       hideLogin: app.globalData.bindStatus,
       hideSuccess: !app.globalData.bindStatus,
-      account: options
+      account: options,
+      username: wx.getStorageSync('gzhupi_user').stu_id,
     })
 
     // 用户迁移绑定
@@ -79,6 +77,7 @@ Page({
       syncUserProfile: "overwrite"
     }).then(user => {
       console.log(user)
+      wx.$authSync()
     })
     if (data.detail.errMsg == "getUserInfo:ok") {
       console.log(" 授权", data)

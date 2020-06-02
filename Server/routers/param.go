@@ -25,12 +25,6 @@ func Param(w http.ResponseWriter, r *http.Request) {
 		Response(w, r, nil, http.StatusOK, fmt.Sprint(err))
 		return
 	}
-	open, ok := data["open"]
-	o, ok := open.(bool)
-	if !ok || !o {
-		Response(w, r, nil, http.StatusOK, "close")
-		return
-	}
 
 	var user env.TUser
 	if len(r.Cookies()) == 0 {
@@ -40,6 +34,13 @@ func Param(w http.ResponseWriter, r *http.Request) {
 	user.ID, err = GetUserID(r)
 	if err != nil || user.ID <= 0 {
 		Response(w, r, nil, http.StatusUnauthorized, fmt.Sprintf("%v", err))
+		return
+	}
+
+	open, ok := data["open"]
+	o, ok := open.(bool)
+	if !ok || !o {
+		Response(w, r, nil, http.StatusOK, "close")
 		return
 	}
 

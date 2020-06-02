@@ -51,7 +51,7 @@ Page({
       that.setData({
         loading: false
       })
-    }, 700);
+    }, 1000);
 
     if (this.fake()) return
 
@@ -242,7 +242,7 @@ Page({
       loadDone: false, //加载完毕
       queryStr: "",
       dataSet: [],
-      // loading: true
+      loading: true
     })
 
     this.getTopics()
@@ -255,7 +255,7 @@ Page({
     let query = {
       _page: this.data.page,
       _page_size: this.data.pageSize,
-      type: this.data.type ? this.data.type : "",
+      type: this.data.type ? this.data.type : "$in.日常,情墙,悄悄话",
       _order: "-created_at",
     }
     query = wx.$objectToQuery(query)

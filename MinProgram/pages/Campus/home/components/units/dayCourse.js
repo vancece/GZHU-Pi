@@ -25,20 +25,10 @@ Component({
   },
 
   lifetimes: {
-    attached: function() {
-      let that = this
-      wx.getStorage({
-        key: 'account',
-        success: function(res) {
-          that.setData({
-            account: true
-          })
-        },
-        fail: function(res) {
-          that.setData({
-            account: false
-          })
-        }
+    attached: function () {
+      let account = wx.getStorageSync('account')
+      this.setData({
+        haveAccount: !(account == "" || !account)
       })
     },
   },

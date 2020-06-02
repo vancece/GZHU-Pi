@@ -31,7 +31,15 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: async function (options) {
+
+    // let result = await wx.BaaS.auth.getCurrentUser().then(user => {
+    //   console.log(111, user)
+    //   this.data.uid = user.id
+    //   return 22233
+    // })
+    // console.log(222, result)
+
     let that = this
     setTimeout(() => {
       that.setData({

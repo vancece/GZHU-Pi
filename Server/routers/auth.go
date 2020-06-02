@@ -52,6 +52,7 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 	}
 	if u.OpenID.String == "" || len(u.OpenID.String) != 28 {
 		err = fmt.Errorf("must give openid and with length 28")
+		logs.Error(err)
 		Response(w, r, nil, http.StatusUnauthorized, err.Error())
 		return
 	}
@@ -218,7 +219,7 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 					logs.Error(err)
 					return
 				}
-				logs.Debug("Del key %s", key)
+				logs.Debug("Del key : %s", key)
 				_, err = env.RedisCli.Del(key).Result()
 				if err != nil && err != gorm.ErrRecordNotFound {
 					logs.Error(err)

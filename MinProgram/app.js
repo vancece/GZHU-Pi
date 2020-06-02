@@ -4,9 +4,6 @@ var Request = require("/utils/request.js")
 var startTime = Date.now(); //启动时间
 require("/utils/wx.js")
 
-import UserService from "/services/user.js"
-var userService = new UserService()
-
 App({
 
   globalData: {
@@ -14,11 +11,12 @@ App({
     bindStatus: false //学号绑定
   },
 
-  onLaunch: function (options) {
+  onLaunch: async function (options) {
     wx.cloud.init()
     Config.init() //初始化配置文件
     this.updata() //更新小程序
 
+ 
     console.log("App启动：", options)
     // 初始化知晓云
     wx.BaaS = requirePlugin('sdkPlugin')
@@ -37,13 +35,8 @@ App({
       this.getAuthStatus()
     }
 
+    let res= wx.$authSync()
 
-    userService.auth()
-
-    setTimeout(() => {
-      let u = wx.getStorageSync('gzhupi_user')
-      if (!u) userService.auth()
-    }, 4000);
   },
 
   onError: function (res) {

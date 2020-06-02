@@ -23,7 +23,7 @@
       <form bindsubmit='formSubmit' report-submit='{{true}}'>
         <view>
           <view class='form-item'>
-            <input class='input-content' name="username" type='number' maxlength='10' placeholder="Username" cursor-spacing="120" />
+            <input class='input-content' name="username" type='number' value="{{username}}" maxlength='10' placeholder="Username" cursor-spacing="120" />
           </view>
           <view class='form-item'>
             <input class='input-content' name="password" password='true' placeholder="Password" cursor-spacing="120" />

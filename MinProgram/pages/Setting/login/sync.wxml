@@ -50,7 +50,6 @@
     </form>
     <view class='tips'>
       <view>*00:00~07:00不可同步</view>
-      <view>*后续将支持查看任意班级课表</view>
     </view>
   </swiper-item>
 

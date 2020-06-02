@@ -1,6 +1,4 @@
 const Page = require('../../../utils/sdk/ald-stat.js').Page;
-import UserService from "../../../services/user.js"
-var userService = new UserService()
 Page({
 
   /**
@@ -11,13 +9,18 @@ Page({
     v_user: {},
     bind_success: false,
 
+    qrcode: "https://shaw-1256261760.cos.ap-guangzhou.myqcloud.com/gzhu-pi/images/resource/qrcode.jpg"
   },
 
   onLoad: function (options) {
 
-    userService.auth()
+    if (!wx.$checkUser(false)) {
+      wx.showToast({
+        title: '请先授权微信',
+        icon: "none"
+      })
+    }
 
-    console.log(options)
     let mp_open_id = options.mp_open_id
 
     // 绑定公众号
@@ -33,6 +36,10 @@ Page({
   },
   onShareAppMessage: function () {
 
+  },
+
+  viewImg(e){
+    wx.$viewImg([],e)
   },
 
   // 关联公众号请求
@@ -55,11 +62,6 @@ Page({
           wx.setStorage({
             key: 'gzhupi_user',
             data: res.data,
-          })
-        } else {
-          wx.showToast({
-            title: '未知错误',
-            icon: "none"
           })
         }
       })
@@ -129,14 +131,14 @@ Page({
   },
 
 
-  navTo(e){
+  navTo(e) {
     wx.$navTo(e)
   },
 
-  onClick(){
+  onClick() {
     wx.showModal({
-      title:"提示",
-      content:"在广大派公众号发送【绑定】"
+      title: "提示",
+      content: "在广大派公众号发送【绑定】"
     })
   }
 

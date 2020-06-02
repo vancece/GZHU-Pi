@@ -27,7 +27,7 @@
 			"outputPath": ""
 		},
 		"bundle": true,
-		"useCompilerModule": true,
+		"useCompilerModule": false,
 		"userConfirmedUseCompilerModuleSwitch": false
 	},
 	"compileType": "miniprogram",
@@ -196,6 +196,13 @@
 					"name": "webview",
 					"pathName": "pages/Setting/webview/webview",
 					"query": "src=https://mp.weixin.qq.com/s/IgRFhaFIuv_FFxx0fZLJjg",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "考试查询",
+					"pathName": "pages/Campus/tools/exam",
+					"query": "",
 					"scene": null
 				}
 			]

@@ -57,8 +57,15 @@ button::after {
 }
 
 
-.no-course{
-  padding:30rpx;
-  color:grey;
+.no-course {
+  padding: 30rpx;
+  color: grey;
   text-align: center;
+}
+
+.bind-btn {
+  width: 300rpx;
+  background-color: #18b3eb;
+  color: white;
+  margin-bottom: 40rpx;
 }

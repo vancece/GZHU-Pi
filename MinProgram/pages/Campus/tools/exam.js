@@ -3,7 +3,12 @@ var app = getApp()
 var tableID = 57516
 Page({
   data: {
-    exam: []
+    exam: [],
+
+    sem_list: wx.$param.school["sem_list"],
+    pickerIndex: wx.$param.school["sem_list"].indexOf(wx.$param.school["year_sem"]), //当前学期索引
+
+    sem: wx.$param.school["year_sem"]
   },
 
   onLoad: function (options) {
@@ -26,6 +31,12 @@ Page({
     }
   },
 
+  pickerChange(e) {
+    this.setData({
+      pickerIndex: Number(e.detail.value),
+      sem: this.data.sem_list[Number(e.detail.value)]
+    })
+  },
 
   // 下拉刷新
   onPullDownRefresh: function () {
@@ -125,7 +136,7 @@ Page({
   getExam() {
     let that = this
     let data = that.data.account
-    data["year_sem"] = wx.$param.school["year_sem"],
+    data["year_sem"] = this.data.sem,
 
       wx.$ajax({
         url: "/jwxt/exam",
@@ -136,9 +147,14 @@ Page({
         that.setData({
           exam: res.data
         })
-        if (res.data.length != 0)
+        if (res.data.length != 0) {
           that.handler(res.data)
-
+        } else {
+          wx.showToast({
+            title: '无数据',
+            icon: "none"
+          })
+        }
       })
   },
 
