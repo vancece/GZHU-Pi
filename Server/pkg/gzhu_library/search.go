@@ -201,7 +201,7 @@ func BookSearch(query string, searchPage string) (result map[string]interface{},
 				//加入缓存
 				if book.Image != "" {
 					logs.Debug("Set cache %s", key)
-					err = env.RedisCli.Set(key, book.Image, 120*24*time.Hour).Err()
+					err = env.RedisCli.Set(key, book.Image, 0).Err()
 					if err != nil {
 						logs.Error(err)
 						return

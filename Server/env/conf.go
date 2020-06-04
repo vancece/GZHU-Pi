@@ -78,6 +78,7 @@ type Configure struct {
 	} `json:"facepp" remark:"face++ 人像抠图api"`
 	WeiXin struct {
 		Enabled      bool   `json:"enabled" must:"false"`
+		Notify       bool   `json:"notify" remark:"公众号通知" must:"false"`
 		Token        string `json:"token" remark:"公众号token" must:"false"`
 		AseKey       string `json:"ase_key" remark:"公众号AseKey" must:"false"`
 		AppID        string `json:"app_id" remark:"公众号AppID" must:"false"`

@@ -20,6 +20,7 @@ Page({
         icon: "none"
       })
     }
+    this.auth()
 
     let mp_open_id = options.mp_open_id
 
@@ -38,8 +39,8 @@ Page({
 
   },
 
-  viewImg(e){
-    wx.$viewImg([],e)
+  viewImg(e) {
+    wx.$viewImg([], e)
   },
 
   // 关联公众号请求
@@ -92,7 +93,19 @@ Page({
 
   },
 
-  auth(user) {
+  async auth(user) {
+
+    if (!user || user == undefined || !user.user_id) {
+      user = await wx.BaaS.auth.getCurrentUser().then(user => {
+        return user
+      }).catch(err => {
+        console.error(err)
+      })
+    }
+
+    if (user == undefined || !user.user_id) {
+      return
+    }
 
     let form = {
       minapp_id: user.id,
@@ -118,7 +131,7 @@ Page({
       })
       .then(res => {
         console.log("auth", res)
-        if (res.data.open_id == user.openid) {
+        if (res.data.id > 0 && res.data.open_id == user.openid) {
           wx.setStorage({
             key: 'gzhupi_user',
             data: res.data,

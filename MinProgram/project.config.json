@@ -27,7 +27,7 @@
 			"outputPath": ""
 		},
 		"bundle": true,
-		"useCompilerModule": false,
+		"useCompilerModule": true,
 		"userConfirmedUseCompilerModuleSwitch": false
 	},
 	"compileType": "miniprogram",
@@ -41,6 +41,9 @@
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
 	"cloudfunctionTemplateRoot": "cloudfunctionTemplate",
+	"scripts": {
+		"beforeCompile": ""
+	},
 	"condition": {
 		"search": {
 			"current": -1,
@@ -204,6 +207,13 @@
 					"pathName": "pages/Campus/tools/exam",
 					"query": "",
 					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "本地配置",
+					"pathName": "pages/Campus/home/home",
+					"query": "",
+					"scene": 1077
 				}
 			]
 		}

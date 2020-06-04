@@ -402,6 +402,12 @@ func courseNotifyCheck(ctx context.Context) (err error) {
 	tplData["first"] = &message.DataItem{Value: "您有一门课程即将开始！"}
 	tplData["remark"] = &message.DataItem{Value: "点击进入课程提醒管理"}
 
+	t.Data, err = json.Marshal(tplData)
+	if err != nil {
+		logs.Error(err)
+		return
+	}
+
 	//小程序转跳信息
 	m := message.Message{}
 	m.MiniProgram.AppID = env.Conf.WeiXin.MinAppID
@@ -449,6 +455,8 @@ func courseNotifyCheck(ctx context.Context) (err error) {
 		logs.Error(err)
 		return
 	}
+
+	time.Sleep(200 * time.Millisecond)
 
 	return
 }

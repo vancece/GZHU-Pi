@@ -60,7 +60,7 @@ func Auth(w http.ResponseWriter, r *http.Request) {
 
 	//防抖检测
 	if isDebounce("auth:"+u.OpenID.String, 10*time.Second) {
-		Response(w, r, nil, http.StatusBadRequest, "debounce auth")
+		Response(w, r, nil, http.StatusOK, "debounce auth")
 		return
 	}
 
@@ -266,7 +266,6 @@ func AuthBySchool(w http.ResponseWriter, r *http.Request) {
 
 	logs.Info("用户：%s IP: %s 接口：%s ", username, reqip.GetClientIP(r), r.URL.Path)
 	Response(w, r, nil, http.StatusOK, "request ok")
-	return
 
 	//绑定账号
 	vUser, err := VUserByCookies(r)

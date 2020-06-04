@@ -195,15 +195,21 @@ func wxReply(msg message.MixMessage) *message.Reply {
 	case message.MsgTypeText:
 
 		switch {
-		case strings.Contains(msg.Content, "绑定"):
-			replyStr := fmt.Sprintf(`<a href="http://www.qq.com" data-miniprogram-appid="%s" data-miniprogram-path="%s?mp_open_id=%s">绑定小程序</a>`,
+		case strings.Contains(msg.Content, "绑定") || strings.Contains(msg.Content, "关联"):
+			replyStr := fmt.Sprintf(`<a href="http://www.qq.com" data-miniprogram-appid="%s" data-miniprogram-path="%s?mp_open_id=%s">绑定小程序</a>
+回复【上课提醒】试试`,
 				env.Conf.WeiXin.MinAppID, mpBindPath, msg.FromUserName)
 
 			return &message.Reply{MsgType: message.MsgTypeText,
 				MsgData: message.NewText(replyStr)}
 
-		case strings.Contains(msg.Content, "提醒"):
+		case strings.Contains(msg.Content, "管理") || strings.Contains(msg.Content, "提醒"):
+			replyStr := fmt.Sprintf(`<a href="http://www.qq.com" data-miniprogram-appid="%s" data-miniprogram-path="%s">上课提醒管理</a>
+该功能处于内测阶段，绑定公众号后重新同步一次课表会自动添加提醒记录，也可以手动添加提醒，如通知下发失败请联系派派`,
+				env.Conf.WeiXin.MinAppID, classNotifyMgrPath)
 
+			return &message.Reply{MsgType: message.MsgTypeText,
+				MsgData: message.NewText(replyStr)}
 		}
 
 		//图片消息

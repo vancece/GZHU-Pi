@@ -39,6 +39,7 @@ password = ""
 
 [weixin]
 enabled = false
+notify = false
 token = ""
 ase_key = ""
 app_id = ""

@@ -27,8 +27,11 @@ App({
     })
     wx.BaaS.ErrorTracker.enable()
 
-    this.getAppParam()
-
+    // 1077使用本地配置
+    if (options.scene != 1077){
+      this.getAppParam()
+    }
+    
     if (options.scene == 1037 && JSON.stringify(options.referrerInfo) != "{}") {
       this.getAuthStatus(options.referrerInfo.extraData)
     } else {
