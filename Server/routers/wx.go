@@ -204,9 +204,10 @@ func wxReply(msg message.MixMessage) *message.Reply {
 				MsgData: message.NewText(replyStr)}
 
 		case strings.Contains(msg.Content, "管理") || strings.Contains(msg.Content, "提醒"):
-			replyStr := fmt.Sprintf(`<a href="http://www.qq.com" data-miniprogram-appid="%s" data-miniprogram-path="%s">上课提醒管理</a>
-该功能处于内测阶段，绑定公众号后重新同步一次课表会自动添加提醒记录，也可以手动添加提醒，如通知下发失败请联系派派`,
-				env.Conf.WeiXin.MinAppID, classNotifyMgrPath)
+			replyStr := fmt.Sprintf(`%s
+该功能处于内测阶段，绑定公众号后在 %s 重新同步一次课表会自动添加提醒记录，也可以手动添加提醒。如提醒下发失败请联系派派！`,
+				mpNav(env.Conf.WeiXin.MinAppID, classNotifyMgrPath, "提醒管理"),
+				mpNav(env.Conf.WeiXin.MinAppID, syncPath, "同步中心"))
 
 			return &message.Reply{MsgType: message.MsgTypeText,
 				MsgData: message.NewText(replyStr)}
@@ -291,6 +292,13 @@ func wxReply(msg message.MixMessage) *message.Reply {
 	}
 
 	return nil
+}
+
+//微信转跳地址生成
+func mpNav(appID, path, text string) string {
+	a := fmt.Sprintf(`<a href="http://www.qq.com" data-miniprogram-appid="%s" data-miniprogram-path="%s">%s</a>`,
+		appID, path, text)
+	return a
 }
 
 func GetMedia() []byte {

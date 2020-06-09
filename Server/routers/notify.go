@@ -23,9 +23,9 @@ import (
 
 var beforeMinutes time.Duration = 30                               //通知提前时间
 var classNotifyTpl = "aFpe_zN27IOKa3I_WhATW4-CxxcsOhwlFJbLJpz1zuk" //微信公众号上课提醒通知模板
-var classNotifyMgrPath = "pages/Campus/tools/notice"               //通知管理转跳地址
-//var classNotifyMgrPath = "pages/Campus/home/home" //通知管理转跳地址
-var mpBindPath = "/pages/Setting/login/auth" //公众号绑定页面
+var classNotifyMgrPath = "/pages/Campus/tools/notice"              //通知管理转跳地址
+var mpBindPath = "/pages/Setting/login/auth"                       //公众号绑定页面
+var syncPath = "/pages/Setting/login/sync"                         //同步中心页面
 
 func init() {
 	go func() {

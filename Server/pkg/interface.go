@@ -14,7 +14,7 @@ type Jwxt interface {
 	GetAchieve() (achieves []*gzhu_jw.Achieve, err error)
 	SearchAllCourse(xnm, xqm string, page, count int) (data []gzhu_jw.RawCourse, csvData []byte, err error)
 	GetExpiresAt() time.Time
-	SetExpiresAt(time.Time)
+	SetExpiresAt(t time.Time)
 	GetUsername() string
 	GetRank(stuID string) (result map[string]interface{}, err error)
 }

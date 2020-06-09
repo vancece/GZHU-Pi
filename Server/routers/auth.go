@@ -2,13 +2,12 @@ package routers
 
 import (
 	"GZHU-Pi/env"
-	"github.com/mo7zayed/reqip"
-
 	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego/logs"
 	"github.com/go-redis/redis"
 	"github.com/jinzhu/gorm"
+	"github.com/mo7zayed/reqip"
 	"gopkg.in/guregu/null.v3"
 	"io/ioutil"
 	"net/http"
@@ -271,7 +270,7 @@ func AuthBySchool(w http.ResponseWriter, r *http.Request) {
 	vUser, err := VUserByCookies(r)
 	if err != nil {
 		logs.Error(err)
-		Response(w, r, nil, http.StatusUnauthorized, err.Error())
+		//Response(w, r, nil, http.StatusUnauthorized, err.Error())
 		return
 	}
 	vUser.StuID = null.StringFrom(username)
@@ -279,7 +278,7 @@ func AuthBySchool(w http.ResponseWriter, r *http.Request) {
 	err = env.GetGorm().Model(&env.TUser{ID: vUser.ID}).UpdateColumns(env.TUser{StuID: vUser.StuID}).Error
 	if err != nil {
 		logs.Error(err)
-		Response(w, r, nil, http.StatusInternalServerError, err.Error())
+		//Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -289,17 +288,17 @@ func AuthBySchool(w http.ResponseWriter, r *http.Request) {
 	buf, err := json.Marshal(&vUser)
 	if err != nil {
 		logs.Error(err)
-		Response(w, r, nil, http.StatusInternalServerError, err.Error())
+		//Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}
 	err = env.RedisCli.Set(key, string(buf), 30*24*time.Hour).Err()
 	if err != nil {
 		logs.Error(err)
-		Response(w, r, nil, http.StatusInternalServerError, err.Error())
+		//Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	Response(w, r, vUser, http.StatusOK, "request ok")
+	//Response(w, r, vUser, http.StatusOK, "request ok")
 
 }
 

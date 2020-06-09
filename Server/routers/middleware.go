@@ -130,7 +130,10 @@ func TableAccessHandle(w http.ResponseWriter, r *http.Request, next http.Handler
 			p.gormDB.First(&t, id)
 			if t.CreatedBy.Int64 != p.user.ID {
 				err = fmt.Errorf("permission denied")
+			} else {
+				_ = env.RedisCli.ZRem(env.KeyCourseNotifyZSet, t.Digest.String).Err()
 			}
+
 		default:
 			err = fmt.Errorf("illegal request table")
 		}

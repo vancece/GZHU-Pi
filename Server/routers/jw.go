@@ -26,6 +26,14 @@ var Jwxt sync.Map
 func newJWClient(r *http.Request, username, password string) (client pkg.Jwxt, err error) {
 
 	school := r.URL.Query().Get("school")
+
+	//测试用户
+	u, err := ReadRequestArg(r, "username")
+	user, _ := u.(string)
+	if user == "20180831" {
+		school = "demo"
+	}
+
 	if school == "" {
 		school = "gzhu"
 	}
@@ -36,6 +44,18 @@ func newJWClient(r *http.Request, username, password string) (client pkg.Jwxt, e
 
 	if school == "demo" {
 		client = &pkg.Demo{Username: username, Password: password}
+	}
+	return
+}
+
+//根据时间获取学期字符串，2 <= month < 8 作为第二学期
+func getYearSem(t time.Time) (sem string) {
+	if t.Month() >= 2 && t.Month() < 8 {
+		sem = fmt.Sprintf("%d-%d-2", t.Year()-1, t.Year()) //第二学期
+	} else if t.Month() <= 1 {
+		sem = fmt.Sprintf("%d-%d-1", t.Year()-1, t.Year()) //第一学期
+	} else {
+		sem = fmt.Sprintf("%d-%d-1", t.Year(), t.Year()+1) //第一学期
 	}
 	return
 }
@@ -163,13 +183,20 @@ func Course(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	for _, v := range data.CourseList {
-		v.YearSem = ys
-		v.StuID = client.GetUsername()
+	if data != nil {
+		for _, v := range data.CourseList {
+			v.YearSem = ys
+			v.StuID = client.GetUsername()
+		}
 	}
+
+	pkg.SetDemoCache("course", client.GetUsername(), data)
 	Response(w, r, data, http.StatusOK, "request ok")
 
 	//====响应后的处理
+	if data == nil {
+		return
+	}
 	var userID int64
 	if len(r.Cookies()) > 0 {
 		userID, err = GetUserID(r)
@@ -177,12 +204,21 @@ func Course(w http.ResponseWriter, r *http.Request) {
 			logs.Error(err, r.Cookies())
 			return
 		}
+	} else {
+		logs.Warn("miss cookie 跳过加入提醒")
+		return
 	}
 	for _, v := range data.CourseList {
 		v.CreatedBy = null.IntFrom(userID)
 	}
 
 	if len(data.CourseList) == 0 {
+		return
+	}
+
+	//非本学期课程不加入提醒
+	if ys != getYearSem(time.Now()) {
+		logs.Warn("%s != %s 跳过加入提醒", ys, getYearSem(time.Now()))
 		return
 	}
 
@@ -253,6 +289,7 @@ func Exam(w http.ResponseWriter, r *http.Request) {
 		Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}
+	pkg.SetDemoCache("exam", client.GetUsername(), data)
 	Response(w, r, data, http.StatusOK, "request ok")
 }
 
@@ -280,8 +317,12 @@ func Grade(w http.ResponseWriter, r *http.Request) {
 		Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}
-
+	pkg.SetDemoCache("grade", client.GetUsername(), data)
 	Response(w, r, data, http.StatusOK, "request ok")
+
+	if data == nil || data.StuInfo == nil {
+		return
+	}
 
 	stuInfo := data.StuInfo
 	var grades []*env.TGrade
@@ -345,6 +386,7 @@ func EmptyRoom(w http.ResponseWriter, r *http.Request) {
 		Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}
+	pkg.SetDemoCache("empty-room", client.GetUsername(), data)
 	Response(w, r, data, http.StatusOK, "request ok")
 }
 
@@ -368,6 +410,7 @@ func Achieve(w http.ResponseWriter, r *http.Request) {
 		Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}
+	pkg.SetDemoCache("achieve", client.GetUsername(), data)
 	Response(w, r, data, http.StatusOK, "request ok")
 }
 
@@ -423,7 +466,7 @@ func Rank(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	logs.Info("用户：%s IP: %s 接口：%s ", username, reqip.GetClientIP(r), r.URL.Path)
-		
+
 	var data map[string]interface{}
 
 	//====查询缓存
@@ -468,6 +511,6 @@ func Rank(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
-
+	pkg.SetDemoCache("rank", username, data)
 	Response(w, r, data, http.StatusOK, "request ok")
 }
