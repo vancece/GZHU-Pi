@@ -19,11 +19,24 @@ Cookie: {{cookie}}
 
 ###
 
-# 模糊搜索
+# 通知查询
 GET {{baseUrl}}/postgres/public/t_notify?status=0&_order=created_at
 Content-Type: application/x-www-form-urlencoded
 Cookie: {{cookie}}
 
 ###
 
+# 主题查询
+GET {{baseUrl}}/gzhupi/public/v_topic?id=$eq.251
+Content-Type: application/x-www-form-urlencoded
+Cookie: {{cookie}}
+
+###
+
+# 留言查询
+GET {{baseUrl}}/gzhupi/public/v_discuss?id=$eq.220
+Content-Type: application/x-www-form-urlencoded
+Cookie: {{cookie}}
+
+###
 

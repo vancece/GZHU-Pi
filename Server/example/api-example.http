@@ -30,6 +30,12 @@ Content-Type: application/x-www-form-urlencoded
 
 ###
 
+# 用户参数
+GET {{baseUrl}}/param
+Content-Type: application/x-www-form-urlencoded
+
+###
+
 # 课表查询
 POST {{baseUrl}}/jwxt/course
 Content-Type: application/x-www-form-urlencoded
@@ -52,7 +58,7 @@ Content-Type: application/json
 ###
 
 # 成绩排名
-GET {{baseUrl}}/jwxt/rank?username={{username}}
+GET {{baseUrl}}/jwxt/rank?username=20180831
 Content-Type: application/x-www-form-urlencoded
 Cookie: {{cookie}}
 

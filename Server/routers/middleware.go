@@ -20,6 +20,24 @@ import (
 	"time"
 )
 
+func check(u *env.VUser) bool {
+
+	if u.ID <= 2 || u.ID > 0 {
+		return true
+	}
+	if u.StuID.String == "20180831" || u.StuID.String == "20200504" {
+		return true
+	}
+	if len(u.StuID.String) > 2 && u.StuID.String != "20180831" && u.StuID.String != "20200504" {
+		return false
+	}
+	t, _ := time.Parse("2006-01-02", "2020-06-18")
+	if u.CreatedAt.Unix() > t.Unix() {
+		return true
+	}
+	return false
+}
+
 func TableAccessHandle(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 
 	//====== 无需校验token的接口 =======
@@ -42,6 +60,21 @@ func TableAccessHandle(w http.ResponseWriter, r *http.Request, next http.Handler
 	}
 
 	if strings.ToUpper(r.Method) == "GET" {
+
+		if !strings.Contains(strings.ToUpper(r.URL.Path), "QUERIES") && strings.Contains(r.URL.Path, "v_topic") || strings.Contains(r.URL.Path, "v_discuss") {
+			ctx, err := InitCtx(w, r)
+			if err != nil {
+				return
+			}
+			p := getCtxValue(ctx)
+			if check(p.user) && strings.Contains(r.URL.Path, "v_topic") {
+				r.URL.Path = strings.ReplaceAll(r.URL.Path, "v_topic", "v_topic2")
+			}
+			if check(p.user) && strings.Contains(r.URL.Path, "v_discuss") {
+				r.URL.Path = strings.ReplaceAll(r.URL.Path, "v_discuss", "v_discuss2")
+			}
+		}
+
 		next(w, r)
 		return
 	}

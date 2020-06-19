@@ -51,7 +51,7 @@ func Param(w http.ResponseWriter, r *http.Request) {
 		Response(w, r, nil, http.StatusUnauthorized, err.Error())
 		return
 	}
-	//var data map[string]interface{}
+
 	if err == redis.Nil {
 		var store = map[string]interface{}{
 			"timestamp": time.Now().Unix() * 1000,
@@ -72,8 +72,13 @@ func Param(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	Response(w, r, data, http.StatusOK, "request ok")
-
+	if err == redis.Nil {
+		//第一次才响应数据
+		Response(w, r, data, http.StatusOK, "request ok")
+	} else {
+		//已经有记录了，响应空数据
+		Response(w, r, nil, http.StatusOK, "request ok")
+	}
 }
 
 func getActionParam() (data map[string]interface{}, err error) {

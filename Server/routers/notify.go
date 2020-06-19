@@ -18,6 +18,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/silenceper/wechat/message"
 	"gopkg.in/guregu/null.v3"
+	"strings"
 	"time"
 )
 
@@ -262,8 +263,12 @@ func SentNotification() {
 		}
 		_, err = tpl.Send(msg)
 		if err != nil {
-			logs.Error(err, v.Member)
-			continue
+			if strings.Contains(err.Error(), "43004") { //已经取消关注
+				logs.Warn(msg.ToUser + " 取消关注")
+			} else {
+				logs.Error(err, v.Member)
+				continue
+			}
 		}
 		logs.Info("%s通知成功 to:%s id:%d", n.Type.String, n.ToUser.String, n.ID)
 
