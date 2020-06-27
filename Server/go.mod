@@ -25,7 +25,7 @@ require (
 	github.com/lib/pq v1.5.1 // indirect
 	github.com/mitchellh/mapstructure v1.3.0 // indirect
 	github.com/mo7zayed/reqip v0.0.0-20200520084230-ae375eb9322b
-	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
+	github.com/nacos-group/nacos-sdk-go v0.3.2
 	github.com/nuveo/log v0.0.0-20190430190217-44d02db6bdf8 // indirect
 	github.com/pelletier/go-toml v1.7.0 // indirect
 	github.com/prest/adapters v0.0.0-20190405151647-53750aa8ac63

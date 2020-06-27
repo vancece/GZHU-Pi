@@ -10,6 +10,18 @@ github.com/StackExchange/wmi
 # github.com/ZhenShaw/tesseract-rpc v0.0.0-20200526052921-59dbae21c243
 ## explicit
 github.com/ZhenShaw/tesseract-rpc/proto
+# github.com/aliyun/alibaba-cloud-sdk-go v1.61.18
+github.com/aliyun/alibaba-cloud-sdk-go/sdk
+github.com/aliyun/alibaba-cloud-sdk-go/sdk/auth
+github.com/aliyun/alibaba-cloud-sdk-go/sdk/auth/credentials
+github.com/aliyun/alibaba-cloud-sdk-go/sdk/auth/credentials/provider
+github.com/aliyun/alibaba-cloud-sdk-go/sdk/auth/signers
+github.com/aliyun/alibaba-cloud-sdk-go/sdk/endpoints
+github.com/aliyun/alibaba-cloud-sdk-go/sdk/errors
+github.com/aliyun/alibaba-cloud-sdk-go/sdk/requests
+github.com/aliyun/alibaba-cloud-sdk-go/sdk/responses
+github.com/aliyun/alibaba-cloud-sdk-go/sdk/utils
+github.com/aliyun/alibaba-cloud-sdk-go/services/kms
 # github.com/andybalholm/cascadia v1.0.0
 github.com/andybalholm/cascadia
 # github.com/astaxie/beego v1.12.1
@@ -26,6 +38,8 @@ github.com/boltdb/bolt
 # github.com/bradfitz/gomemcache v0.0.0-20190913173617-a41fca850d0b
 ## explicit
 github.com/bradfitz/gomemcache/memcache
+# github.com/buger/jsonparser v0.0.0-20181115193947-bf1c66bbce23
+github.com/buger/jsonparser
 # github.com/clbanning/mxj v1.8.4
 ## explicit
 github.com/clbanning/mxj
@@ -49,6 +63,8 @@ github.com/fatih/color
 # github.com/fsnotify/fsnotify v1.4.9
 ## explicit
 github.com/fsnotify/fsnotify
+# github.com/go-errors/errors v1.0.1
+github.com/go-errors/errors
 # github.com/go-ole/go-ole v1.2.4
 ## explicit
 github.com/go-ole/go-ole
@@ -98,6 +114,8 @@ github.com/jinzhu/gorm
 github.com/jinzhu/gorm/dialects/postgres
 # github.com/jinzhu/inflection v1.0.0
 github.com/jinzhu/inflection
+# github.com/jmespath/go-jmespath v0.0.0-20180206201540-c2b33e8439af
+github.com/jmespath/go-jmespath
 # github.com/jmoiron/sqlx v1.2.0
 ## explicit
 github.com/jmoiron/sqlx
@@ -106,6 +124,10 @@ github.com/jmoiron/sqlx/types
 # github.com/json-iterator/go v1.1.9
 ## explicit
 github.com/json-iterator/go
+# github.com/lestrrat/go-file-rotatelogs v0.0.0-20180223000712-d3151e2a480f
+github.com/lestrrat/go-file-rotatelogs
+# github.com/lestrrat/go-strftime v0.0.0-20180220042222-ba3bf9c1d042
+github.com/lestrrat/go-strftime
 # github.com/lib/pq v1.5.1
 ## explicit
 github.com/lib/pq
@@ -129,12 +151,28 @@ github.com/mitchellh/mapstructure
 ## explicit
 github.com/mo7zayed/reqip
 # github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd
-## explicit
 github.com/modern-go/concurrent
 # github.com/modern-go/reflect2 v1.0.1
 github.com/modern-go/reflect2
 # github.com/mozillazg/go-httpheader v0.2.1
 github.com/mozillazg/go-httpheader
+# github.com/nacos-group/nacos-sdk-go v0.3.2
+## explicit
+github.com/nacos-group/nacos-sdk-go/clients
+github.com/nacos-group/nacos-sdk-go/clients/cache
+github.com/nacos-group/nacos-sdk-go/clients/config_client
+github.com/nacos-group/nacos-sdk-go/clients/nacos_client
+github.com/nacos-group/nacos-sdk-go/clients/naming_client
+github.com/nacos-group/nacos-sdk-go/common/constant
+github.com/nacos-group/nacos-sdk-go/common/http_agent
+github.com/nacos-group/nacos-sdk-go/common/logger
+github.com/nacos-group/nacos-sdk-go/common/nacos_error
+github.com/nacos-group/nacos-sdk-go/common/nacos_server
+github.com/nacos-group/nacos-sdk-go/common/security
+github.com/nacos-group/nacos-sdk-go/common/util
+github.com/nacos-group/nacos-sdk-go/model
+github.com/nacos-group/nacos-sdk-go/utils
+github.com/nacos-group/nacos-sdk-go/vo
 # github.com/nuveo/log v0.0.0-20190430190217-44d02db6bdf8
 ## explicit
 github.com/nuveo/log
@@ -144,6 +182,8 @@ github.com/pelletier/go-toml
 # github.com/pierrec/lz4 v2.0.5+incompatible
 github.com/pierrec/lz4
 github.com/pierrec/lz4/internal/xxh32
+# github.com/pkg/errors v0.9.1
+github.com/pkg/errors
 # github.com/prest/adapters v0.0.0-20190405151647-53750aa8ac63
 ## explicit
 github.com/prest/adapters
@@ -191,6 +231,8 @@ github.com/rcrowley/go-metrics
 # github.com/robfig/cron/v3 v3.0.1
 ## explicit
 github.com/robfig/cron/v3
+# github.com/satori/go.uuid v1.2.1-0.20181028125025-b2ce2384e17b
+github.com/satori/go.uuid
 # github.com/shiena/ansicolor v0.0.0-20151119151921-a422bbe96644
 github.com/shiena/ansicolor
 # github.com/shirou/gopsutil v2.20.2+incompatible
@@ -239,6 +281,8 @@ github.com/subosito/gotenv
 # github.com/tencentyun/cos-go-sdk-v5 v0.7.4
 ## explicit
 github.com/tencentyun/cos-go-sdk-v5
+# github.com/toolkits/concurrent v0.0.0-20150624120057-a4371d70e3e3
+github.com/toolkits/concurrent/semaphore
 # github.com/urfave/negroni v1.0.0
 ## explicit
 github.com/urfave/negroni
