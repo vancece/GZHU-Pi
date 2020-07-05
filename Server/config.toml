@@ -14,10 +14,10 @@ init_models = true
 
 [acm]
 enabled = false
-access_key =
-secret_key =
-namespace_id =
-group =
+access_key = ""
+secret_key = ""
+namespace_id = ""
+group = ""
 
 [secret]
 jwt = "jwt_secret"
