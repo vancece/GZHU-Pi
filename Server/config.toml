@@ -12,6 +12,13 @@ port = 9000
 prest = true
 init_models = true
 
+[acm]
+enabled = false
+access_key =
+secret_key =
+namespace_id =
+group =
+
 [secret]
 jwt = "jwt_secret"
 

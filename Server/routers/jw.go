@@ -497,8 +497,8 @@ func Rank(w http.ResponseWriter, r *http.Request) {
 			Response(w, r, nil, http.StatusInternalServerError, err.Error())
 			return
 		}
-		//缓存一天
-		err = env.RedisCli.Set(key, string(buf), 1*24*time.Hour).Err()
+		//缓存
+		err = env.RedisCli.Set(key, string(buf), 10*time.Minute).Err()
 		if err != nil {
 			logs.Error(err)
 			Response(w, r, nil, http.StatusInternalServerError, err.Error())

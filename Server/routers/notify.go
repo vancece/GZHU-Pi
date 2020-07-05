@@ -27,6 +27,7 @@ var classNotifyTpl = "aFpe_zN27IOKa3I_WhATW4-CxxcsOhwlFJbLJpz1zuk" //微信公�
 var classNotifyMgrPath = "/pages/Campus/tools/notice"              //通知管理转跳地址
 var mpBindPath = "/pages/Setting/login/auth"                       //公众号绑定页面
 var syncPath = "/pages/Setting/login/sync"                         //同步中心页面
+var wallPost = "/pages/Life/wall/post"                             //广大墙发帖
 
 func init() {
 	go func() {

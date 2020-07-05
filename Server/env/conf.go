@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/astaxie/beego/logs"
 	"github.com/spf13/viper"
+	"io/ioutil"
 	"log"
 	"os"
 	"reflect"
@@ -13,7 +14,7 @@ import (
 func InitViper() {
 
 	//viper.SetConfigFile("config.toml")
-	viper.SetConfigName("config") //指定配置文件的文件名称(不需要制定配置文件的扩展名)
+	viper.SetConfigName("config") //指定配置文件的文件名称(不需要指定配置文件的扩展名)
 	viper.AddConfigPath(".")      // 设置配置文件和可执行二进制文件在用一个目录
 	viper.AutomaticEnv()          //自动从环境变量读取匹配的参数
 
@@ -27,6 +28,32 @@ func InitViper() {
 	// 根据以上配置读取加载配置文件
 	err := viper.ReadInConfig()
 	if err != nil {
+		log.Fatal(err)
+	}
+
+	//=========ACM============
+
+	file := viper.GetViper().ConfigFileUsed()
+	configData, err := ioutil.ReadFile(file)
+	if err != nil {
+		log.Fatal(err)
+	}
+	acm, err := InitAcm()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	configText := strings.ReplaceAll(string(configData), "&", "|||")
+	val, err := acm.GetSetString("config", configText)
+	if err != nil {
+		log.Fatal(err)
+	}
+	val = strings.ReplaceAll(val, "|||", "&")
+	r := strings.NewReader(val)
+
+	err = viper.ReadConfig(r)
+	if err != nil {
+		logs.Critical("初始化配置文件失败", err)
 		log.Fatal(err)
 	}
 }

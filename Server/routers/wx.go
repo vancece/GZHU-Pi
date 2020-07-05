@@ -196,18 +196,23 @@ func wxReply(msg message.MixMessage) *message.Reply {
 
 		switch {
 		case strings.Contains(msg.Content, "绑定") || strings.Contains(msg.Content, "关联"):
-			replyStr := fmt.Sprintf(`<a href="http://www.qq.com" data-miniprogram-appid="%s" data-miniprogram-path="%s?mp_open_id=%s">绑定小程序</a>
-回复【上课提醒】试试`,
+			replyStr := fmt.Sprintf(`<a href="http://www.qq.com" data-miniprogram-appid="%s" data-miniprogram-path="%s?mp_open_id=%s">关联小程序</a> 然后回复【上课提醒】试试`,
 				env.Conf.WeiXin.MinAppID, mpBindPath, msg.FromUserName)
 
 			return &message.Reply{MsgType: message.MsgTypeText,
 				MsgData: message.NewText(replyStr)}
 
 		case strings.Contains(msg.Content, "管理") || strings.Contains(msg.Content, "提醒"):
-			replyStr := fmt.Sprintf(`%s
-该功能处于内测阶段，绑定公众号后在 %s 重新同步一次课表会自动添加提醒记录，也可以手动添加提醒。如提醒下发失败请联系派派！`,
+			replyStr := fmt.Sprintf("%s \n该功能处于内测阶段，绑定公众号后在 %s 重新同步一次课表会自动添加提醒记录，也可以手动添加提醒。如提醒下发失败请联系派派！",
 				mpNav(env.Conf.WeiXin.MinAppID, classNotifyMgrPath, "提醒管理"),
 				mpNav(env.Conf.WeiXin.MinAppID, syncPath, "同步中心"))
+
+			return &message.Reply{MsgType: message.MsgTypeText,
+				MsgData: message.NewText(replyStr)}
+
+		default:
+			replyStr := fmt.Sprintf("未识别的关键词！\n有问题可点击 %s 发帖求助，或者点击菜单加【派派微信】咨询！",
+				mpNav(env.Conf.WeiXin.MinAppID, wallPost, "广大墙"))
 
 			return &message.Reply{MsgType: message.MsgTypeText,
 				MsgData: message.NewText(replyStr)}
@@ -242,7 +247,11 @@ func wxReply(msg message.MixMessage) *message.Reply {
 		switch msg.Event {
 		//EventSubscribe 订阅
 		case message.EventSubscribe:
-			//do something
+			replyStr := fmt.Sprintf(`欢迎关注广大派，为了更好的使用小程序拓展功能，请点击 <a href="http://www.qq.com" data-miniprogram-appid="%s" data-miniprogram-path="%s?mp_open_id=%s">关联小程序</a> 然后回复【上课提醒】试试`,
+				env.Conf.WeiXin.MinAppID, mpBindPath, msg.FromUserName)
+
+			return &message.Reply{MsgType: message.MsgTypeText,
+				MsgData: message.NewText(replyStr)}
 
 			//取消订阅
 		case message.EventUnsubscribe:
