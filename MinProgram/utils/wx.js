@@ -368,3 +368,43 @@ wx.$checkUser = function (nav = true) {
 
   return true
 }
+
+// 违规文本检测
+wx.$checkText = async function (text) {
+  if (text == "" || text == undefined) return
+  var is_risk = await wx.BaaS.wxCensorText(text).then(res => {
+    // console.log(res.data.risky)
+    if (res.data.risky) {
+      wx.showModal({
+        title: '警告',
+        content: '您的发布内容包含违规词语',
+      })
+      return res.data.risky
+    }
+    return res.data.risky
+  }, err => {
+    console.log(err)
+    return false
+  })
+  return is_risk
+}
+
+// 违规图片检测
+wx.$checkImg = async function (path) {
+  if (text == "" || text == undefined) return
+  var is_risk = await wx.BaaS.wxCensorImage(path).then(res => {
+    // console.log(res.data.risky)
+    if (res.data.risky) {
+      wx.showModal({
+        title: '警告',
+        content: '您选择的图片包含敏感内容',
+      })
+      return res.data.risky
+    }
+    return res.data.risky
+  }, err => {
+    console.log(err)
+    return false
+  })
+  return is_risk
+}

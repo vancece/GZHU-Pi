@@ -20,8 +20,6 @@ Component({
         url: '/pages/Setting/login/bindStudent',
       })
     },
-
-
   },
 
   lifetimes: {

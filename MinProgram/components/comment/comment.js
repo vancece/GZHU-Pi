@@ -9,7 +9,7 @@ Component({
     object_id: {
       type: String,
       // id会有延迟传入，需要监听变化
-      observer: function(newVal) {
+      observer: function (newVal) {
         if (!newVal) {
           return
         }
@@ -26,7 +26,7 @@ Component({
   },
 
   lifetimes: {
-    attached: function() {
+    attached: function () {
       wx.BaaS.auth.getCurrentUser().then(user => {
         this.setData({
           uid: user.id
@@ -114,22 +114,13 @@ Component({
     },
 
     // 违规检测
-    checkComment() {
-      // if (this.data.content == "" || this.data.content == undefined) return
-      // wx.BaaS.wxCensorText(this.data.content).then(res => {
-      //   console.log(res.data.risky)
-      //   if (res.data.risky) {
-      //     wx.showModal({
-      //       title: '警告',
-      //       content: '您的发布内容包含违规词语',
-      //     })
-      //     return
-      //   }
+    async checkComment() {
+      if (await wx.$checkText(this.data.content)) {
+        return
+      }
       this.addComment()
-      // }, err => {
-      //   console.log(err)
-      // })
     },
+
     // 发布评论
     addComment() {
 

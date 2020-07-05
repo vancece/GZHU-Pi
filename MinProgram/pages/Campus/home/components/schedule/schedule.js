@@ -2,6 +2,7 @@ var utils = require("../../../../../utils/utils.js")
 var Data = require("../../../../../utils/data.js")
 var Config = require("../../../../../utils/config.js")
 var showTimes = 0
+var maxWeeks = 20
 Component({
   properties: {
     show: {
@@ -49,7 +50,7 @@ Component({
       let week
       if (value == 1 || value == -2) {
         // 下一周
-        if (this.data.week + 1 > 20) {
+        if (this.data.week + 1 > maxWeeks) {
           week = 0
         } else if (this.data.week < 0) {
           week = 1
@@ -59,7 +60,7 @@ Component({
       } else {
         // 上一周
         if (this.data.week - 1 < 0) {
-          week = 20
+          week = maxWeeks
         } else {
           week = this.data.week - 1
         }
@@ -171,7 +172,7 @@ Component({
       let that = this
       let id = this.data.openTarget
       let obj = wx.getStorageSync('course')
-      if(obj=="") return
+      if (obj == "") return
       obj.course_list.splice(id, 1)
       wx.showModal({
         title: '提醒',
@@ -212,18 +213,26 @@ Component({
           kbList: kbList,
           sjkList: course == "" ? [] : course.sjk_course_list
         })
+
+        // 获取最大周数，小于20取20
+        for (let i = 0; i < kbList.length; i++) {
+          let max = Math.max(...kbList[i].week_section)
+          if (max > maxWeeks) {
+            maxWeeks = max
+          }
+        }
       }
     }
   },
 
   lifetimes: {
-    created: function () { },
+    created: function () {},
 
     attached: function () {
       this.viewUpdate()
     },
 
-    ready: function () { }
+    ready: function () {}
   },
 
   pageLifetimes: {

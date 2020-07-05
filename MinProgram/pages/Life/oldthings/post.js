@@ -66,7 +66,7 @@ Page({
   },
 
   // 添加标签
-  labelAdd: function() {
+  labelAdd: function () {
     if (this.data.inputValue == "" || this.data.inputValue == undefined) return
     if (this.data.label.length == 3) {
       wx.showToast({
@@ -89,7 +89,7 @@ Page({
     })
   },
   // 读取标签内容
-  labelInput: function(e) {
+  labelInput: function (e) {
     this.data.inputValue = e.detail.value
   },
 
@@ -113,7 +113,7 @@ Page({
       })
 
       // 删除求购标签
-      Array.prototype.remove = function(val) {
+      Array.prototype.remove = function (val) {
         var index = this.indexOf(val);
         if (index > -1) {
           this.splice(index, 1);
@@ -182,7 +182,7 @@ Page({
   },
 
   // 表单校验提交
-  submit: function(e) {
+  submit: async function (e) {
     wx.BaaS.wxReportTicket(e.detail.formId)
     if (!app.globalData.bindStatus) {
       wx.showToast({
@@ -194,6 +194,11 @@ Page({
 
     var that = this
     let v = e.detail.value
+
+    let text = JSON.stringify(v) + JSON.stringify(that.data.label)
+    if (await wx.$checkText(text)) {
+      return
+    }
 
     wx.showModal({
       title: '提示',
@@ -234,7 +239,7 @@ Page({
   },
 
   // 上传图片并保存记录到数据库
-  saveRecord: function(data) {
+  saveRecord: function (data) {
     let that = this
     this.setData({
       loading: true
@@ -284,13 +289,13 @@ Page({
   },
 
   // 异步上传单个文件
-  uploadFile: function(categoryName, filePath) {
+  uploadFile: function (categoryName, filePath) {
     let MyFile = new wx.BaaS.File()
     let metaData = {
       categoryName: categoryName
     }
     //返回上传文件后的信息
-    return new Promise(function(callback) {
+    return new Promise(function (callback) {
       let fileParams = {
         filePath: filePath
       }
@@ -322,7 +327,7 @@ Page({
   checkImage(tempFilePaths = []) {
     for (let i = 0; i < tempFilePaths.length; i++) {
       wx.BaaS.wxCensorImage(tempFilePaths[i]).then(res => {
-        console.log("图片检测",res.risky)
+        console.log("图片检测", res.risky)
         if (res.risky) {
           wx.showModal({
             title: '警告',
@@ -366,7 +371,7 @@ Page({
 
   checkTimeout(files) {
     let that = this
-    setTimeout(function() {
+    setTimeout(function () {
       if (!that.data.success) {
         that.delFile(files)
         that.setData({

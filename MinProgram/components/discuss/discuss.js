@@ -72,9 +72,10 @@ Component({
       })
       wx.BaaS.auth.getCurrentUser().then(user => {
         console.log("user", user)
-        if (user.gender == 0) this.data.placeholder = "匿名童鞋"
-        if (user.gender == 1) this.data.placeholder = "匿名小哥哥"
-        if (user.gender == 2) this.data.placeholder = "匿名小姐姐"
+        // if (user.gender == 0) this.data.placeholder = "匿名童鞋"
+        // if (user.gender == 1) this.data.placeholder = "匿名小哥哥"
+        // if (user.gender == 2) this.data.placeholder = "匿名小姐姐"
+        this.data.placeholder = user.nickname
         this.setData({
           placeholder: this.data.placeholder
         })
@@ -106,22 +107,13 @@ Component({
     },
 
     // 违规检测
-    checkComment() {
-      // if (this.data.content == "" || this.data.content == undefined) return
-      // wx.BaaS.wxCensorText(this.data.content).then(res => {
-      //   console.log(res.data.risky)
-      //   if (res.data.risky) {
-      //     wx.showModal({
-      //       title: '警告',
-      //       content: '您的发布内容包含违规词语',
-      //     })
-      //     return
-      //   }
+    async checkComment() {
+      if (await wx.$checkText(this.data.content+this.data.anonymity)) {
+        return
+      }
       this.addComment()
-      // }, err => {
-      //   console.log(err)
-      // })
     },
+
     // 发布评论
     addComment() {
       wx.$subscribe()

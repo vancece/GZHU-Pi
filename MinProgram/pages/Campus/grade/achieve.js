@@ -19,6 +19,7 @@ Page({
       }
       this.getData(form)
     }
+    this.count()
   },
 
   // 下拉刷新
@@ -36,7 +37,7 @@ Page({
       wx.stopPullDownRefresh()
     }, 3000)
   },
-  onShareAppMessage: function () { },
+  onShareAppMessage: function () {},
 
   navTo(e) {
     let type = e.currentTarget.dataset.type
@@ -64,17 +65,42 @@ Page({
     }
     let that = this
     wx.$ajax({
-      url: "/jwxt/achieve",
-      data: form,
-      loading: true
-    })
+        url: "/jwxt/achieve",
+        data: form,
+        loading: true
+      })
       .then(res => {
         wx.setStorageSync("achieve", res.data)
         that.setData({
           achieve: res.data
         })
+
+        that.count()
       })
       .catch((e) => {})
+  },
+
+  count() {
+    let achieve = wx.getStorageSync("achieve")
+
+    if (!achieve || achieve.length == 0) {
+      return
+    }
+
+    let required = achieve[0].required
+    let acquired = 0
+
+    for (let i = 0; i < achieve.length; i++) {
+      if (achieve[i].type == "必修类" || achieve[i].type == "选修类") {
+        acquired = acquired + Number(achieve[i].acquired)
+      }
+    }
+
+    this.setData({
+      acquired: acquired,
+      required: required
+    })
+
   }
 
 })

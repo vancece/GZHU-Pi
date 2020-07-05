@@ -37,7 +37,7 @@ function getSchoolWeek() {
   } else {
     schoolWeek = Math.ceil(intervalDays) / 7
     schoolWeek = Math.ceil(schoolWeek)
-    if (schoolWeek > 20) {
+    if (schoolWeek > 25) {
       return 0
     }
     return schoolWeek

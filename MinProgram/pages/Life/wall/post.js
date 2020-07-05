@@ -26,7 +26,7 @@ const tabs = [{
 Page({
   data: {
     mode: wx.$param["mode"],
-    
+
     tabs: tabs,
     currentTab: 0,
     iconCamera: iconCamera,
@@ -76,9 +76,10 @@ Page({
     // 当前用户
     wx.BaaS.auth.getCurrentUser().then(user => {
       console.log("user", user)
-      if (user.gender == 0) this.data.anonymity = "匿名童鞋"
-      if (user.gender == 1) this.data.anonymity = "匿名小哥哥"
-      if (user.gender == 2) this.data.anonymity = "匿名小姐姐"
+      // if (user.gender == 0) this.data.anonymity = "匿名童鞋"
+      // if (user.gender == 1) this.data.anonymity = "匿名小哥哥"
+      // if (user.gender == 2) this.data.anonymity = "匿名小姐姐"
+      this.data.anonymity = user.nickname
       this.setData({
         anonymity: this.data.anonymity
       })
@@ -112,8 +113,8 @@ Page({
     this.checkAndSave()
   },
 
-  checkAndSave() {
- 
+  async checkAndSave() {
+
     let form = {
       type: this.data.tabs[this.data.currentTab].name,
       title: this.data.title,
@@ -135,6 +136,12 @@ Page({
         title: '标题/内容不能为空',
         icon: "none",
       })
+      return
+    }
+
+    // 违规检测
+    let text = JSON.stringify(form)
+    if (await wx.$checkText(text)) {
       return
     }
 
@@ -174,7 +181,7 @@ Page({
     console.log("表单数据", form)
     // 保存数据
     wx.$ajax({
-        url: wx.$param.server["prest"] + wx.$param.server["scheme"] +"/t_topic",
+        url: wx.$param.server["prest"] + wx.$param.server["scheme"] + "/t_topic",
         // url: "http://localhost:9000/api/v1/postgres/public/t_topic",
         data: form,
         loading: true,
