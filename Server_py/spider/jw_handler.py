@@ -196,14 +196,13 @@ def get_grade(text, pwd):
             "admit_year": parse('$.items[0].njdm_id').find(grade_json)[0].value  # 学院名称
         }
 
-        try:
-            table = Models()
-            table.insert_stu_info(stu_info)
-            table.insert_grade(grade_list)
-        except:
-            # 记录出错账号
-            tb = Models()
-            tb.insert_temp(stu_id[0].value, pwd)
+        # try:
+        #     table = Models()
+        #     table.insert_stu_info(stu_info)
+        #     table.insert_grade(grade_list)
+        # except:
+        #     # 记录出错账号
+        #     print(stu_id[0].value)
 
     return dict(grade, **stu_info)  # 合并信息返回
 

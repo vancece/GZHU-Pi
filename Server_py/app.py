@@ -118,16 +118,16 @@ def grade():
 
 
 # 成绩排名
-@app.route("/rank", methods=["POST"])
-def rank():
-    username = request.form['username']
-    password = request.form['password']
-
-    if password != "":
-        data = get_rank(username)
-        return res_json(status=200, data=data, msg="request succeed")
-    else:
-        return res_json(status=401, msg="Unauthorized")
+# @app.route("/rank", methods=["POST"])
+# def rank():
+#     username = request.form['username']
+#     password = request.form['password']
+#
+#     if password != "":
+#         data = get_rank(username)
+#         return res_json(status=200, data=data, msg="request succeed")
+#     else:
+#         return res_json(status=401, msg="Unauthorized")
 
 
 # 考试查询

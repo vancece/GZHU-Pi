@@ -115,11 +115,15 @@ class SQL(object):
         """
 
 
-m = Models()
+m = None
+
 s = SQL()
 
 
 def get_gpa_rank(username):
+    global m
+    if m is None:
+        m = Models()
     query = s.gpa_rank % (username, username, username, username, username)
     rows = m.query(query)
     gpa_rank = {}
@@ -134,6 +138,9 @@ def get_gpa_rank(username):
 
 
 def get_year_rank(username):
+    global m
+    if m is None:
+        m = Models()
     query = s.year_rank % (username, username, username, username, username)
     rows = m.query(query)
     year_rank = []
@@ -151,6 +158,9 @@ def get_year_rank(username):
 
 
 def get_sem_rank(username):
+    global m
+    if m is None:
+        m = Models()
     query = s.sem_rank % (username, username, username, username, username)
     rows = m.query(query)
     sem_rank = []
@@ -168,6 +178,9 @@ def get_sem_rank(username):
 
 
 def get_course_rank(username):
+    global m
+    if m is None:
+        m = Models()
     query = s.course_rank % (username, username, username, username)
     rows = m.query(query)
     course_rank = []
@@ -186,6 +199,9 @@ def get_course_rank(username):
 
 
 def get_stu_count(username):
+    global m
+    if m is None:
+        m = Models()
     query = s.stu_count % (username)
     rows = m.query(query)
     print(rows)
@@ -199,6 +215,9 @@ def get_stu_count(username):
 
 
 def get_rank(username):
+    global m
+    if m is None:
+        m = Models()
     rank = {
         "stu_count": get_stu_count(username),
         "gpa_rank": get_gpa_rank(username),
