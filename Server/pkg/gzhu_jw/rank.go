@@ -16,6 +16,7 @@ type Rank struct {
 	CourseID    string  `json:"course_id"    db:"course_id"`
 	GradeValue  float64 `json:"grade_value"  db:"grade_value"`
 	Gpa         float64 `json:"gpa"          db:"gpa"`
+	Score       float64 `json:"score"        db:"score"`
 	CollegeRank int64   `json:"college_rank" db:"college_rank"`
 	MajorRank   int64   `json:"major_rank"   db:"major_rank"`
 	ClassRank   int64   `json:"class_rank"   db:"class_rank"`
@@ -24,14 +25,15 @@ type Rank struct {
 var (
 	//查询大学GPA排名
 	gpaTpl = `
-            select * from (SELECT stu_id,gpa,college_rank,major_rank,
-                         ROW_NUMBER() over (order by gpa desc) as class_rank
-                  FROM (SELECT class_id, stu_id, gpa, college_rank, ROW_NUMBER()
-                               over (order by gpa desc) as major_rank
-                        FROM (SELECT major_id, class_id, stu_id, gpa, ROW_NUMBER()
-                                     over (order by gpa desc) as college_rank
+            select * from (SELECT stu_id, gpa, score, college_rank, major_rank,
+                         ROW_NUMBER() over (order by score desc) as class_rank
+                  FROM (SELECT class_id, stu_id, gpa, score, college_rank, ROW_NUMBER()
+                               over (order by score desc) as major_rank
+                        FROM (SELECT major_id, class_id, stu_id, gpa, score, ROW_NUMBER()
+                                     over (order by score desc) as college_rank
                               FROM (select major_id, class_id, stu_id,
-                                           cast(sum(credit * course_gpa) / sum(credit) AS decimal(3, 2)) as gpa
+                                           cast(sum(credit * course_gpa) / sum(credit) AS decimal(3, 2)) as gpa,
+                                           cast(sum(credit * grade_value) / sum(credit) AS decimal(5, 2)) as score
                                     from v_grade where stu_id in (select distinct stu_id --学院同级所有学生
                                             from v_grade where college_id = (select college_id from t_stu_info where stu_id = '%s')
                                                        and admit_year = (select admit_year from t_stu_info where stu_id = '%s'))
@@ -43,14 +45,15 @@ var (
         `
 	//学年GPA排名
 	yearTpl = `
-            select * from (SELECT year, stu_id, gpa, college_rank, major_rank,
-                         ROW_NUMBER() over (PARTITION By year order by gpa desc) as class_rank
-                  FROM (SELECT year, class_id, stu_id, gpa, college_rank,
-                               ROW_NUMBER() over (PARTITION By year order by gpa desc) as major_rank
-                        FROM (SELECT year, major_id, class_id, stu_id, gpa,
-                                     ROW_NUMBER() over (PARTITION By year order by gpa desc) as college_rank
+            select * from (SELECT year, stu_id, gpa, score, college_rank, major_rank,
+                         ROW_NUMBER() over (PARTITION By year order by score desc) as class_rank
+                  FROM (SELECT year, class_id, stu_id, gpa, score, college_rank,
+                               ROW_NUMBER() over (PARTITION By year order by score desc) as major_rank
+                        FROM (SELECT year, major_id, class_id, stu_id, gpa, score,
+                                     ROW_NUMBER() over (PARTITION By year order by score desc) as college_rank
                               FROM (select year, major_id, class_id, stu_id,
-                                           cast(sum(credit * course_gpa) / sum(credit) AS decimal(3, 2)) as gpa
+                                           cast(sum(credit * course_gpa) / sum(credit) AS decimal(3, 2)) as gpa,
+                                           cast(sum(credit * grade_value) / sum(credit) AS decimal(5, 2)) as score
                                     from v_grade where stu_id in (select distinct stu_id from v_grade
                                                 where college_id = (select college_id from t_stu_info where stu_id = '%s')
                                                   and admit_year = (select admit_year from t_stu_info where stu_id = '%s'))
@@ -63,14 +66,15 @@ var (
 
 	//查询每学期GPA排名
 	semTpl = `
-            select * from (SELECT year_sem,stu_id,gpa,college_rank,major_rank,
-                         ROW_NUMBER() over (PARTITION By year_sem order by gpa desc) as class_rank
-                  FROM (SELECT year_sem, class_id, stu_id, gpa, college_rank,
-                               ROW_NUMBER() over (PARTITION By year_sem order by gpa desc) as major_rank
-                        FROM (SELECT year_sem, major_id, class_id, stu_id, gpa,
-                                     ROW_NUMBER() over (PARTITION By year_sem order by gpa desc) as college_rank
+            select * from (SELECT year_sem, stu_id, gpa, score, college_rank, major_rank,
+                         ROW_NUMBER() over (PARTITION By year_sem order by score desc) as class_rank
+                  FROM (SELECT year_sem, class_id, stu_id, gpa, score, college_rank,
+                               ROW_NUMBER() over (PARTITION By year_sem order by score desc) as major_rank
+                        FROM (SELECT year_sem, major_id, class_id, stu_id, gpa, score,
+                                     ROW_NUMBER() over (PARTITION By year_sem order by score desc) as college_rank
                               FROM (select year_sem, major_id, class_id, stu_id,
-                                           cast(sum(credit * course_gpa) / sum(credit) AS decimal(3, 2)) as gpa
+                                           cast(sum(credit * course_gpa) / sum(credit) AS decimal(3, 2)) as gpa,
+                                           cast(sum(credit * grade_value) / sum(credit) AS decimal(5, 2)) as score
                                     from v_grade where stu_id in (select distinct stu_id --学院同级所有学生
                                         from v_grade where college_id = (select college_id from t_stu_info where stu_id = '%s')
                                              and admit_year = (select admit_year from t_stu_info where stu_id = '%s'))

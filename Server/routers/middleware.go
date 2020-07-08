@@ -20,15 +20,16 @@ import (
 	"time"
 )
 
-func check(u *env.VUser) bool {
+//是否关闭匿名视图
+func fake(u *env.VUser) bool {
 
 	if u.ID <= 2 || u.ID > 0 {
 		return true
 	}
-	if u.StuID.String == "20180831" || u.StuID.String == "20200504" {
+	if isTestUser(u.StuID.String) {
 		return true
 	}
-	if len(u.StuID.String) > 2 && u.StuID.String != "20180831" && u.StuID.String != "20200504" {
+	if len(u.StuID.String) > 2 {
 		return false
 	}
 	t, _ := time.Parse("2006-01-02", "2020-06-18")
@@ -67,10 +68,10 @@ func TableAccessHandle(w http.ResponseWriter, r *http.Request, next http.Handler
 				return
 			}
 			p := getCtxValue(ctx)
-			if check(p.user) && strings.Contains(r.URL.Path, "v_topic") {
+			if fake(p.user) && strings.Contains(r.URL.Path, "v_topic") {
 				r.URL.Path = strings.ReplaceAll(r.URL.Path, "v_topic", "v_topic2")
 			}
-			if check(p.user) && strings.Contains(r.URL.Path, "v_discuss") {
+			if fake(p.user) && strings.Contains(r.URL.Path, "v_discuss") {
 				r.URL.Path = strings.ReplaceAll(r.URL.Path, "v_discuss", "v_discuss2")
 			}
 		}

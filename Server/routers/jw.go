@@ -23,6 +23,13 @@ import (
 //var Jwxt = make(map[string]pkg.Jwxt)
 var Jwxt sync.Map
 
+func isTestUser(user string) bool {
+	if user == "20180831" || user == "20200504" {
+		return true
+	}
+	return false
+}
+
 func newJWClient(r *http.Request, username, password string) (client pkg.Jwxt, err error) {
 
 	school := r.URL.Query().Get("school")
@@ -30,7 +37,7 @@ func newJWClient(r *http.Request, username, password string) (client pkg.Jwxt, e
 	//测试用户
 	u, err := ReadRequestArg(r, "username")
 	user, _ := u.(string)
-	if user == "20180831" || user == "20200504" {
+	if isTestUser(user) {
 		school = "demo"
 	}
 
@@ -194,7 +201,7 @@ func Course(w http.ResponseWriter, r *http.Request) {
 	Response(w, r, data, http.StatusOK, "request ok")
 
 	//====响应后的处理
-	if client.GetUsername() == "20180831" || client.GetUsername() == "20200504" {
+	if isTestUser(client.GetUsername()) {
 		return
 	}
 	if data == nil {
@@ -462,7 +469,7 @@ func Rank(w http.ResponseWriter, r *http.Request) {
 		Response(w, r, nil, http.StatusBadRequest, err.Error())
 		return
 	}
-	if user.StuID.String != "" && user.StuID.String != username {
+	if user.StuID.String != "" && user.StuID.String != username && !isTestUser(username) {
 		err = fmt.Errorf("Unauthorized ")
 		logs.Error(err)
 		Response(w, r, nil, http.StatusUnauthorized, err.Error())
@@ -482,7 +489,11 @@ func Rank(w http.ResponseWriter, r *http.Request) {
 	}
 	if err == redis.Nil {
 
-		client := &gzhu_jw.JWClient{Username: username}
+		var client pkg.Jwxt
+		client = &gzhu_jw.JWClient{Username: username}
+		if isTestUser(username) {
+			client = &pkg.Demo{Username: username}
+		}
 		data, err = client.GetRank(client.GetUsername())
 		if err != nil {
 			logs.Error(err)
