@@ -197,7 +197,7 @@ func Course(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	pkg.SetDemoCache("course", client.GetUsername(), data)
+	go pkg.SetDemoCache("course", client.GetUsername(), data)
 	Response(w, r, data, http.StatusOK, "request ok")
 
 	//====响应后的处理
@@ -299,11 +299,12 @@ func Exam(w http.ResponseWriter, r *http.Request) {
 		Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}
-	pkg.SetDemoCache("exam", client.GetUsername(), data)
+	go pkg.SetDemoCache("exam", client.GetUsername(), data)
 	Response(w, r, data, http.StatusOK, "request ok")
 }
 
 func Grade(w http.ResponseWriter, r *http.Request) {
+
 	//从context提取客户端
 	c := r.Context().Value("client")
 	if c == nil {
@@ -316,7 +317,16 @@ func Grade(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data, err := client.GetAllGrade("", "")
+	//====缓存处理
+	var gs = &env.CacheOptions{
+		Key:      fmt.Sprintf("gzhupi:grade:%s", client.GetUsername()),
+		Duration: 15 * time.Minute,
+		Receiver: new(gzhu_jw.GradeData),
+		Fun: func() (interface{}, error) {
+			return client.GetAllGrade("", "")
+		},
+	}
+	usingCache, err := env.GetSetCache(gs)
 	if err != nil {
 		logs.Error(err)
 		Jwxt.Delete(getCacheKey(r, client.GetUsername()))
@@ -327,10 +337,12 @@ func Grade(w http.ResponseWriter, r *http.Request) {
 		Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}
-	pkg.SetDemoCache("grade", client.GetUsername(), data)
+	var data = gs.Receiver.(*gzhu_jw.GradeData)
+
+	go pkg.SetDemoCache("grade", client.GetUsername(), data)
 	Response(w, r, data, http.StatusOK, "request ok")
 
-	if data == nil || data.StuInfo == nil {
+	if data == nil || data.StuInfo == nil || usingCache {
 		return
 	}
 
@@ -396,7 +408,7 @@ func EmptyRoom(w http.ResponseWriter, r *http.Request) {
 		Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}
-	pkg.SetDemoCache("empty-room", client.GetUsername(), data)
+	go pkg.SetDemoCache("empty-room", client.GetUsername(), data)
 	Response(w, r, data, http.StatusOK, "request ok")
 }
 
@@ -420,7 +432,7 @@ func Achieve(w http.ResponseWriter, r *http.Request) {
 		Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}
-	pkg.SetDemoCache("achieve", client.GetUsername(), data)
+	go pkg.SetDemoCache("achieve", client.GetUsername(), data)
 	Response(w, r, data, http.StatusOK, "request ok")
 }
 
@@ -477,54 +489,30 @@ func Rank(w http.ResponseWriter, r *http.Request) {
 	}
 	logs.Info("用户：%s IP: %s 接口：%s ", username, reqip.GetClientIP(r), r.URL.Path)
 
-	var data map[string]interface{}
+	var client pkg.Jwxt
+	client = &gzhu_jw.JWClient{Username: username}
+	if isTestUser(username) {
+		client = &pkg.Demo{Username: username}
+	}
 
-	//====查询缓存
-	key := fmt.Sprintf("gzhupi:rank:%s", username)
-	val, err := env.RedisCli.Get(key).Result()
-	if err != nil && err != redis.Nil {
+	//====缓存处理
+	var gs = &env.CacheOptions{
+		Key:      fmt.Sprintf("gzhupi:rank:%s", username),
+		Duration: 15 * time.Minute,
+		Receiver: make(map[string]interface{}),
+		Fun: func() (interface{}, error) {
+			return client.GetRank(client.GetUsername())
+		},
+	}
+	_, err = env.GetSetCache(gs)
+	if err != nil {
 		logs.Error(err)
 		Response(w, r, nil, http.StatusInternalServerError, err.Error())
 		return
 	}
-	if err == redis.Nil {
 
-		var client pkg.Jwxt
-		client = &gzhu_jw.JWClient{Username: username}
-		if isTestUser(username) {
-			client = &pkg.Demo{Username: username}
-		}
-		data, err = client.GetRank(client.GetUsername())
-		if err != nil {
-			logs.Error(err)
-			Response(w, r, nil, http.StatusInternalServerError, err.Error())
-			return
-		}
-		//加入缓存
-		logs.Debug("Set cache %s", key)
-		buf, err := json.Marshal(&data)
-		if err != nil {
-			logs.Error(err)
-			Response(w, r, nil, http.StatusInternalServerError, err.Error())
-			return
-		}
-		//缓存
-		err = env.RedisCli.Set(key, string(buf), 10*time.Minute).Err()
-		if err != nil {
-			logs.Error(err)
-			Response(w, r, nil, http.StatusInternalServerError, err.Error())
-			return
-		}
-	} else {
-		//解析缓存
-		logs.Debug("Hit cache %s", key)
-		err = json.Unmarshal([]byte(val), &data)
-		if err != nil {
-			logs.Error(err)
-			Response(w, r, nil, http.StatusInternalServerError, err.Error())
-			return
-		}
-	}
-	pkg.SetDemoCache("rank", username, data)
+	var data = gs.Receiver.(map[string]interface{})
+
+	go pkg.SetDemoCache("rank", username, data)
 	Response(w, r, data, http.StatusOK, "request ok")
 }
