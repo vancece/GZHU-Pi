@@ -58,8 +58,12 @@ Page({
     this.getTopics()
   },
 
-  onShareAppMessage: function () {
+  onShareAppMessage: function () {},
 
+  onShareTimeline: function () {
+    return {
+      title: "广大墙-属于广大人的专属票圈"
+    }
   },
 
   // 下拉刷新

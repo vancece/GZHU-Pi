@@ -38,6 +38,14 @@ Page({
     }, 500)
   },
 
+  // onShareTimeline: function () {
+  //   return {
+  //     title: this.data.navTitle + ": " + this.data.detail.title,
+  //     query: this.data.id,
+  //     imageUrl: this.data.detail.image[0],
+  //   }
+  // },
+
   onShareAppMessage: function () {
     return {
       title: this.data.navTitle + ": " + this.data.detail.title,
@@ -89,7 +97,7 @@ Page({
 
   // 评论成功回调，发送通知
   discussSuccess(e) {
-    console.log("留言回调",e)
+    console.log("留言回调", e)
     let cur_uid = wx.getStorageSync('gzhupi_user').id
     if (cur_uid == this.data.detail.created_by) return
 
@@ -193,7 +201,7 @@ Page({
     for (let i in list) {
       if (list[i].created_by == cur_uid) {
         wx.$ajax({
-            url: wx.$param.server["prest"] + wx.$param.server["scheme"] +"/t_relation?id=$eq." + list[i].id,
+            url: wx.$param.server["prest"] + wx.$param.server["scheme"] + "/t_relation?id=$eq." + list[i].id,
             method: "delete",
           })
           .then(res => {
@@ -209,7 +217,7 @@ Page({
     }
     console.log("用户未点赞/认领，创建")
     wx.$ajax({
-      url: wx.$param.server["prest"] + wx.$param.server["scheme"] +"/t_relation",
+      url: wx.$param.server["prest"] + wx.$param.server["scheme"] + "/t_relation",
       method: "post",
       data: {
         object_id: Number(object_id),
@@ -238,7 +246,7 @@ Page({
   // 获取详情
   getDetail(id) {
     wx.$ajax({
-        url: wx.$param.server["prest"] + wx.$param.server["scheme"] +"/v_topic?id=$eq." + id,
+        url: wx.$param.server["prest"] + wx.$param.server["scheme"] + "/v_topic?id=$eq." + id,
         method: "get",
         loading: true,
       })
@@ -269,7 +277,7 @@ Page({
   getRelations(id, type) {
     if (!id || !type) return
     wx.$ajax({
-        url: wx.$param.server["prest"] + wx.$param.server["scheme"] +"/v_relation?object_id=$eq." + id + "&type=$eq." + type,
+        url: wx.$param.server["prest"] + wx.$param.server["scheme"] + "/v_relation?object_id=$eq." + id + "&type=$eq." + type,
         method: "get",
       })
       .then(res => {
@@ -292,7 +300,7 @@ Page({
   delByPk(row_id) {
     if (!row_id) return
     wx.$ajax({
-        url: wx.$param.server["prest"] + wx.$param.server["scheme"] +"/t_topic?id=$eq." + row_id,
+        url: wx.$param.server["prest"] + wx.$param.server["scheme"] + "/t_topic?id=$eq." + row_id,
         method: "delete",
         loading: true,
       })

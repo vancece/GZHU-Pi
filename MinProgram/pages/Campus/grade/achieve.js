@@ -1,4 +1,6 @@
 const Page = require('../../../utils/sdk/ald-stat.js').Page;
+let interstitialAd = null
+
 Page({
 
   data: {
@@ -6,8 +8,9 @@ Page({
     colors: ['cyan', 'blue', 'purple', 'mauve', 'pink', 'brown', 'red', 'orange', 'olive', 'green'],
 
   },
-  onLoad: function (options) {
 
+  onLoad: function (options) {
+    this.initAD()
     if (this.data.achieve == "") {
       let form = wx.getStorageSync("account")
       if (form == "") {
@@ -38,6 +41,38 @@ Page({
     }, 3000)
   },
   onShareAppMessage: function () {},
+
+  initAD() {
+    if (wx.createInterstitialAd) {
+      interstitialAd = wx.createInterstitialAd({
+        adUnitId: 'adunit-5336c97b15452cc2'
+      })
+      interstitialAd.onLoad(() => {
+        console.log('onLoad event emit')
+      })
+      interstitialAd.onError((err) => {
+        console.log('onError event emit', err)
+      })
+      interstitialAd.onClose((res) => {
+        console.log('onClose event emit', res)
+      })
+    }
+  },
+
+  insertAD() {
+    if (interstitialAd) {
+      interstitialAd.show().catch((err) => {
+        console.error(err)
+      })
+    }
+  },
+
+  onShow: function () {
+    let that = this
+    setTimeout(function () {
+      that.insertAD()
+    }, 1500)
+  },
 
   navTo(e) {
     let type = e.currentTarget.dataset.type

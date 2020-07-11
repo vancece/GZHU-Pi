@@ -9,7 +9,7 @@
     <view>
       <text class='cuIcon-titles text-orange'></text>同班级/专业/学院的人使用小程序越多，对应数据越准确。</view>
     <view>
-      <text class='cuIcon-titles text-orange'></text>仅提供相对排名率，具体准确排名请查看奕报告。</view>
+      <text class='cuIcon-titles text-orange'></text>仅提供相对排名率，具体准确排名请请留言官方途径。</view>
     <view>
       <text class='cuIcon-titles text-orange'></text>部分未补考/重修用户可能存在计算错误。</view>
   </view>
@@ -19,6 +19,8 @@
   <view bindtap='switch' id='0' class='{{current==0?"selected":""}}'>百分比</view>
   <view bindtap='switch' id='1' class='{{current==1?"selected":""}}'>排名</view>
 </view>
+
+<view class="margin text-grey text-center text-df">非准确数据仅供参考，请勿用作证明用途！</view>
 
 <view class="part">
   <view class="title">统计人数</view>

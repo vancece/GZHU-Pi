@@ -185,7 +185,7 @@
 					"name": "广大墙详情",
 					"pathName": "pages/Life/wall/detail",
 					"query": "id=1",
-					"scene": null
+					"scene": 1154
 				},
 				{
 					"id": 17,

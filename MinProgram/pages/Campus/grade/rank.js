@@ -1,4 +1,6 @@
 const Page = require('../../../utils/sdk/ald-stat.js').Page;
+let interstitialAd = null
+
 Page({
 
   data: {
@@ -6,6 +8,9 @@ Page({
     rankType: "rate" // abs绝对排名，rate百分百相对排名
   },
   onLoad: function (options) {
+
+    this.initAD()
+
     let account = wx.getStorageSync("account")
     if (account != "") {
       this.setData({
@@ -31,15 +36,41 @@ Page({
         }
       })
     } else {
-      this.setData({
-        showAgree: true
-      })
+      // this.setData({
+      //   showAgree: true
+      // })
       this.syncData()
       // this.setData({
       //   rank: wx.getStorageSync("rank")
       // })
     }
   },
+
+  initAD() {
+    if (wx.createInterstitialAd) {
+      interstitialAd = wx.createInterstitialAd({
+        adUnitId: 'adunit-237e68290f5143a2'
+      })
+      interstitialAd.onLoad(() => {
+        console.log('onLoad event emit')
+      })
+      interstitialAd.onError((err) => {
+        console.log('onError event emit', err)
+      })
+      interstitialAd.onClose((res) => {
+        console.log('onClose event emit', res)
+      })
+    }
+  },
+
+  insertAD() {
+    if (interstitialAd) {
+      interstitialAd.show().catch((err) => {
+        console.error(err)
+      })
+    }
+  },
+
   onShareAppMessage: function () {
     return {
       title: '成绩排名统计',
@@ -74,6 +105,12 @@ Page({
         url: '/pages/Setting/login/bindStudent',
       })
     }
+
+    let that = this
+    setTimeout(function () {
+      that.insertAD()
+    }, 1500)
+    
   },
 
   switch (e) {

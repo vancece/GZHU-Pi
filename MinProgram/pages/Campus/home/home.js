@@ -12,12 +12,16 @@ Page({
     arrowUrl: "https://cos.ifeel.vip/gzhu-pi/images/icon/right-arrow.svg",
   },
 
-  onLoad: function (options) {
+  onLoad: function (options) {},
+
+  onShareAppMessage: function () {},
+
+  onShareTimeline: function () {
+    return {
+      title: "广大派-广大人必备的掌中宝"
+    }
   },
 
-  onShareAppMessage: function () {
-
-  },
   onReady() {
     wx.hideLoading()
     this.updateCheck()
