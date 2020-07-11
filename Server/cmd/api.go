@@ -25,6 +25,7 @@ import (
 	"github.com/spf13/viper"
 	"log"
 	"net/http"
+	_ "net/http/pprof"
 	"os"
 	"regexp"
 	"strings"

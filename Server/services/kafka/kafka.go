@@ -109,7 +109,7 @@ func NewKafka(broker []string, config *sarama.Config) (k *Kafka, err error) {
 }
 
 func (k *Kafka) AddCustomer(h *CustomHandler) (err error) {
-	if h == nil {
+	if h == nil || k.consumer == nil {
 		return
 	}
 	if h.Offset == 0 {
@@ -120,7 +120,7 @@ func (k *Kafka) AddCustomer(h *CustomHandler) (err error) {
 }
 
 func (k *Kafka) SendData(data *ProduceData) (err error) {
-	if data == nil {
+	if data == nil || k.producer == nil {
 		return
 	}
 	k.data <- data
@@ -142,7 +142,7 @@ func (k *Kafka) produce() {
 			partition, offset, err := k.producer.SendMessage(msg)
 			if err != nil {
 				logs.Error(err)
-				return
+				continue
 			}
 			logs.Info("消息加入队列成功 topic: %s, partition: %d, offset: %d", p.Topic, partition, offset)
 		}
@@ -165,7 +165,7 @@ func (k *Kafka) consume() {
 			}
 
 			var pc sarama.PartitionConsumer
-			pc, err := k.consumer.ConsumePartition(h.Topic, h.Partition, h.Offset)
+			pc, err := k.consumer.ConsumePartition(h.Topic, h.Partition, sarama.OffsetNewest)
 			if err != nil {
 				if strings.Contains(err.Error(), "outside") {
 					pc, err = k.consumer.ConsumePartition(h.Topic, h.Partition, sarama.OffsetNewest)
